@@ -8,11 +8,13 @@
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org
  * Plugin Type: Piklist
- * Description: Docalist : gestion de notices bibliographiques.
+ * Description: Docalist: bibliographic data manager.
  * Version:     0.1
  * Author:      Docalist
  * Author URI:  http://docalist.org
- *
+ * Text Domain: docalist-biblio
+ * Domain Path: /languages
+ * 
  * @package     Docalist
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
