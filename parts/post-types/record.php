@@ -11,24 +11,26 @@
  * @version     SVN: $Id$
  */
 
-namespace Docalist;
-
+namespace Docalist\Biblio;
+ 
 return array(
     'name' => 'record',
     'labels' => array(
-        'name' => __('Bibliographic records', 'docalist-biblio'), //addoption
-        'singular_name' => __('New record', 'docalist-biblio'), // dans le menu
-        // nouveau de la admin bar
-        'add_new' => __('New record', 'docalist-biblio'),
-        'all_items' => __('All records', 'docalist-biblio'),
-        'add_new_item' => __('New bibliographic record', 'docalist-biblio'),
-        'edit_item' => __('Edit bibliographic record', 'docalist-biblio'),
-        'new_item' => __('Add New Notice', 'docalist-biblio'),
-        'view_item' => __('View record', 'docalist-biblio'), // dans admin bar
-        'search_items' => __('Search records', 'docalist-biblio'),
-        'not_found' => __('No bibliographic records found.', 'docalist-biblio'),
-        'not_found_in_trash' => __('No bibliographic records found in trash.', 'docalist-biblio'),
+        'name' => $this->option('Biblio.menu'),
+        'singular_name' => $this->option('Biblio.name'),
+        'add_new' => $this->option('Biblio.new'),
+        'add_new_item' => $this->option('Biblio.new'),
+        'edit_item' => $this->option('Biblio.edit'),
+        'new_item' => $this->option('Biblio.new'),
+        'view_item' => $this->option('Biblio.view'),
+        'search_items' => $this->option('Biblio.search'),
+        'not_found' => $this->option('Biblio.notfound'),
+        'not_found_in_trash' => $this->option('Biblio.notfound'),
+        'all_items' => $this->option('Biblio.all'),
+        'menu_name' => $this->option('Biblio.menu'),
+        'name_admin_bar' => $this->option('Biblio.name'),
     ),
+
     'public' => true,
     'rewrite' => array(
         'slug' => 'base', // addoption

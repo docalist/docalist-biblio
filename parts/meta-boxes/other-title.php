@@ -16,7 +16,7 @@
  */
 
 namespace Docalist\Biblio;
-use Docalist\Utils;
+use Docalist\Core\Utils;
 
 piklist('field', array(
     'type' => 'group',
