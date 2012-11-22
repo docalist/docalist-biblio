@@ -11,8 +11,8 @@
  * Description: Docalist: bibliographic data manager.
  * Version:     0.1
  * Author:      Docalist
- * Author URI:  http://docalist.org
- * Text Domain: docalist-biblio
+ * Author:      Daniel Ménard
+ * Author URI:  http://docalist.org/
  * Domain Path: /languages
  * 
  * @package     Docalist
@@ -25,5 +25,9 @@ namespace Docalist\Biblio;
 use Docalist;
 
 if (class_exists('Docalist')) {
-    Docalist::load('Docalist\\Biblio\\Plugin', __DIR__);
+    // Enregistre notre espace de noms
+    Docalist::registerNamespace(__NAMESPACE__, __DIR__ . '/class');
+    
+    // Charge le plugin
+    Docalist::load('Docalist\\Biblio\\Plugin', __FILE__);
 }

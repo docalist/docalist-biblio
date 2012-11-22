@@ -18,7 +18,7 @@
 namespace Docalist\Biblio;
 use Docalist;
 
-$plugin = Docalist::plugin('Biblio');
+$plugin = Docalist::plugin('docalist-biblio');
 
 _e('<p>Utilisez les options ci-dessous pour modifier les libellés utilisés pour désigner la base et son contenu.</p>', 'docalist-biblio');
 
