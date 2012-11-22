@@ -10,7 +10,6 @@
  * Plugin Type: Piklist
  * Description: Docalist: bibliographic data manager.
  * Version:     0.1
- * Author:      Docalist
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Domain Path: /languages
