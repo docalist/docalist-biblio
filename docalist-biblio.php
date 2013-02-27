@@ -12,8 +12,9 @@
  * Version:     0.1
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
+ * Text Domain: docalist-biblio
  * Domain Path: /languages
- * 
+ *
  * @package     Docalist
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
@@ -21,12 +22,12 @@
  */
 
 namespace Docalist\Biblio;
-use Docalist;
+use Docalist, Docalist\Autoloader;
 
 if (class_exists('Docalist')) {
     // Enregistre notre espace de noms
-    Docalist::registerNamespace(__NAMESPACE__, __DIR__ . '/class');
-    
+    Autoloader::register(__NAMESPACE__, __DIR__ . '/class');
+
     // Charge le plugin
-    Docalist::load('Docalist\\Biblio\\Plugin', __FILE__);
+    Docalist::load('Docalist\Biblio\Biblio', __FILE__);
 }
