@@ -13,14 +13,14 @@
 
 namespace Docalist\Biblio\Metabox;
 
-use Docalist\Metabox, Docalist\Forms\Fieldset;
+use Docalist\Metabox, Docalist\Forms\Fragment;
 
 class Authors extends Metabox {
     /**
      * @inheritdoc
      */
     public function __construct() {
-        $box = new Fieldset();
+        $box = new Fragment();
 
         //@formatter:off
         $box->label(__('Auteurs', 'docalist-biblio'));
