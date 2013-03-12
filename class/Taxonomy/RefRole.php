@@ -35,7 +35,7 @@ class RefRole extends Taxonomy {
         return array(
             'label' => __('Etiquettes de rôle', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'query_var' => true,
             'rewrite' => false,
         );

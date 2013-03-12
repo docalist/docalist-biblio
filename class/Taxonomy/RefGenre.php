@@ -35,7 +35,7 @@ class RefGenre extends Taxonomy {
         return array(
             'label' => __('Genres de documents', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'show_admin_column' => true,
             'query_var' => true,
             'rewrite' => false,

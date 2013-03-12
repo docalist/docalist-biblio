@@ -41,7 +41,7 @@ class RefType extends Taxonomy {
             ),
 */
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'show_admin_column' => true,
             'query_var' => true,
             'rewrite' => false,

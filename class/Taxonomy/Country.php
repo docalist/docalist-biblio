@@ -35,7 +35,7 @@ class Country extends Taxonomy {
         return array(
             'label' => __('Pays', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'query_var' => true,
             'rewrite' => false,
         );

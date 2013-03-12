@@ -35,7 +35,7 @@ class Language extends Taxonomy {
         return array(
             'label' => __('Langues', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'query_var' => true,
             'rewrite' => false,
         );

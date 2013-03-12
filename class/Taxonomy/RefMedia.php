@@ -35,7 +35,7 @@ class RefMedia extends Taxonomy {
         return array(
             'label' => __('Supports', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'query_var' => true,
             'rewrite' => false,
         );

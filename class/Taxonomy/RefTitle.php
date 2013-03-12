@@ -35,7 +35,7 @@ class RefTitle extends Taxonomy {
         return array(
             'label' => __('Types de titres', 'docalist-biblio'),
             'hierarchical' => false,
-            'show_ui' => true,
+            'show_ui' => false,
             'query_var' => true,
             'rewrite' => false,
         );
