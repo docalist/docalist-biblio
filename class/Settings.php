@@ -84,6 +84,12 @@ class Settings extends AbstractSettings {
                     'name_admin_bar' => $name,
                 )
             ),
+
+            'import' => array(
+                // Lors d'un import, appeller wp_cache_init toutes les x notices
+                // pour éviter les erreurs "memory exhausted"
+                'reinitcache' => 100,
+            )
         );
     }
 
