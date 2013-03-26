@@ -21,7 +21,7 @@ class Biblio extends Plugin {
     /**
      * @inheritdoc
      */
-     public function register() {
+    public function register() {
         // Configuration du plugin
         $this->add(new Settings);
 
@@ -35,7 +35,18 @@ class Biblio extends Plugin {
         $this->add(new Taxonomy\RefTitle);
 
         // Custom Post Types
-        $this->add(new References);
-     }
+        $references = new References;
+        $this->add($references);
 
+        add_action('admin_menu', function() use($references) {
+            $tools = new Tools;
+            $this->add($tools);
+
+            $tools->addToMenu(
+                array('DeleteAll', 'Import'),
+                'edit.php?post_type=' . $references->id()
+            );
+
+        });
+    }
 }
