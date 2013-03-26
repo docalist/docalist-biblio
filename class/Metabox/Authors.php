@@ -38,7 +38,7 @@ class Authors extends Metabox {
             ->parent()
                 ->select('role')
                 ->label('Rôle')
-                ->options(array('pref','trad','ill','dir','coord','postf','intro'))
+                ->options($this->taxonomy('dclrefrole'))
                 ->addClass('span3');
 
         $box->table('organisation')
@@ -54,12 +54,12 @@ class Authors extends Metabox {
             ->parent()
                 ->select('country')
                 ->label('Pays')
-                ->options(array('france', 'usa', 'espagne', 'italie'))
+                ->options($this->taxonomy('dclcountry'))
                 ->addClass('span2')
             ->parent()
                 ->select('role')
                 ->label('Rôle')
-                ->options(array('com','financ'))
+                ->options($this->taxonomy('dclrefrole'))
                 ->addClass('span2');
 
         //@formatter:on

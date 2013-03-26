@@ -35,7 +35,7 @@ class Biblio extends Metabox {
             ->repeatable(true)
             ->description(__('Langue(s) dans laquelle est écrit le document.', 'docalist-biblio'))
             ->addClass('span6')
-            ->options(array('fre','eng','ita','spa','deu'));
+            ->options($this->taxonomy('dcllanguage'));
 
         $box->input('pagination')
             ->label(__('Pagination', 'docalist-biblio'))

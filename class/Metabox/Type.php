@@ -27,15 +27,15 @@ class Type extends Metabox {
 
         $box->select('type')
             ->label(__('Type de document', 'docalist-biblio'))
-            ->options(array('article','livre','rapport'));
+            ->options($this->taxonomy('dclreftype'));
 
         $box->checklist('genre')
             ->label(__('Genre de document', 'docalist-biblio'))
-            ->options(array('communication','decret','didacticiel','etat de l\'art'));
+            ->options($this->taxonomy('dclrefgenre'));
 
         $box->checklist('media')
             ->label(__('Support de document', 'docalist-biblio'))
-            ->options(array('cd-rom','internet','papier','dvd','vhs'));
+            ->options($this->taxonomy('dclrefmedia'));
         //@formatter:on
 
         $this->form = $box;

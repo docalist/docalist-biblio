@@ -40,7 +40,7 @@ class Editor extends Metabox {
                 ->select('country')
                 ->label(__('Pays', 'docalist-biblio'))
                 ->addClass('span2')
-                ->options(array('france', 'usa', 'espagne', 'italie'));
+                ->options($this->taxonomy('dclcountry'));
 
         $box->table('collection')
             ->label(__('Collection', 'docalist-biblio'))

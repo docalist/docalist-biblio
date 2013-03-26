@@ -48,7 +48,7 @@ class Title extends Metabox {
             ->repeatable(true)
                 ->select('language')
                 ->label('Langue')
-                ->options(array('fre','eng','ita','spa','deu'))
+                ->options($this->taxonomy('dcllanguage'))
                 ->addClass('span4')
             ->parent()
                 ->input('title')
