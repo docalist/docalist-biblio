@@ -497,6 +497,7 @@ class Prisme implements Iterator
         // TY - Type de document
         if (isset($data->TY)) {
             $doc->type = $data->TY; // TODO : convertir les types de doc
+            $this->log(array('TY' => $data->TY), array('type' => $doc->type));
             unset($data->TY);
         } else {
             $this->missing('TY', 'Type de document absent');
@@ -505,12 +506,14 @@ class Prisme implements Iterator
         // GEN - Genre du document
         if (isset($data->GEN)) {
             $doc->genre[] = $data->GEN; // TODO: convertir les genres
+            $this->log(array('GEN' => $data->GEN), array('genre' => $doc->genre));
             unset($data->GEN);
         }
 
         // SUP - Support du document
         if (isset($data->SUP)) {
             $doc->media[] = $data->SUP; // TODO : convertir les supports
+            $this->log(array('SUP' => $data->SUP), array('media' => $doc->media));
             unset($data->SUP);
         }
 
