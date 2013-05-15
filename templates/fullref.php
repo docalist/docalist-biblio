@@ -236,8 +236,21 @@ function row($field, $label, $sep = ', ', Closure $writer = null) {
 
     row($status, 'Statut');
     row($statusdate, 'Depuis le');
-?>
-</table>
 
-<a href="#" onclick="jQuery(this).next().toggle('normal'); return false;">Voir la notice importée</a>
-<pre class="imported" style="display: none"><?= $imported ?></pre>
+    row($errors, 'Erreurs', ', ', function($code, $value='', $message='') {  ?>
+        <span class="organisation"><?php
+            echo $message;
+            echo wrap(' : <code>', $value, '</code>');
+            echo wrap(' (', $code, ')');
+            ?>
+        </span>
+    <?php });
+?>
+<tr>
+    <th></th>
+    <td>
+        <a href="#" onclick="jQuery(this).next().toggle('normal'); return false;">Voir la notice importée</a>
+        <pre class="imported" style="display: none"><?= $imported ?></pre>
+    </td>
+</tr>
+</table>
