@@ -327,7 +327,7 @@ class Prisme implements Iterator
         if (! isset($this->handles[$filename])) {
             $path = $this->path . "-$filename.txt";
             $this->handles[$filename] = fopen($path, 'w');
-            $header = 'REF';
+            $header = 'ref';
             foreach($old as $key => $value) {
                 $header .= "\t$key";
             }
@@ -393,13 +393,14 @@ class Prisme implements Iterator
         $this->errors[] = $error;
     }
 
-    protected function missing($field) {
+    protected function missing($field, $message = null) {
         $error = array('code' => $field . 'Missing');
+        if (! is_null($message)) $error['message'] = $message;
 
         $this->errors[] = $error;
     }
 
-    protected function authors(stdClass $data) {
+    protected function authors(stdClass $data, stdClass $doc) {
         $reEtAl='~\s*et\s*al[\s\.]*~i';
         $etal = false;
         foreach(array('AU' => '', 'AS' => 'interviewer') as $field => $defaultRole) {
@@ -418,7 +419,7 @@ class Prisme implements Iterator
                             );
                             $match[3] = trim($match[3]);
                             if (!$match[3] && $defaultRole) $match[3] = $defaultRole;
-                            $match[3] && $aut['role'] = $match[3];
+                            $match[3] && $aut['role'] = $match[3]; // TODO: convertir étiquette de rôle
 
                             $doc->author[] = $aut;
                         } else {
@@ -455,11 +456,14 @@ class Prisme implements Iterator
             $doc->ref = (int) $data->REF;
             if ($doc->ref != $data->REF) {
                 $this->error('REF', $data->REF, 'entier attendu');
+            } else {
+                $this->log(array('REF' => $data->REF), array('ref' => $doc->ref));
             }
             unset($data->REF);
             $this->ref = $doc->ref;
+
         } else {
-            $this->missing('REF');
+            $this->missing('REF', 'Champ REF absent');
             $this->ref = 'n/a';
         }
 
@@ -468,7 +472,7 @@ class Prisme implements Iterator
         if (isset($data->OP)) {
             $op = $data->OP;
         } else {
-            $this->missing('OP');
+            $this->missing('OP', 'Organisme producteur non indiqué');
         }
 
         $ds = '';
@@ -481,69 +485,72 @@ class Prisme implements Iterator
                 $ds = '';
             }
         } else {
-            $this->missing('DS');
+            $this->missing('DS', 'Pas de date de saisie');
         }
 
         ($ds || $op) && $doc->creation = array('date' => $ds, 'by' => $op);
         $op && $doc->owner = array($op);
+
+        $this->log(array('OP' => $op, 'DS' => $ds), array('creation.date' => $doc->creation['date'], 'creation.by' => $doc->creation['by'], 'owner' => isset($doc->owner) ? $doc->owner : ''));
         unset($data->OP, $data->DS);
 
         // TY - Type de document
         if (isset($data->TY)) {
-            $doc->type = $data->TY;
+            $doc->type = $data->TY; // TODO : convertir les types de doc
             unset($data->TY);
         } else {
-            $this->missing('TY');
+            $this->missing('TY', 'Type de document absent');
         }
 
         // GEN - Genre du document
         if (isset($data->GEN)) {
-            $doc->genre[] = $data->GEN;
+            $doc->genre[] = $data->GEN; // TODO: convertir les genres
             unset($data->GEN);
-        } else {
-//            $this->missing('GEN');
         }
 
         // SUP - Support du document
         if (isset($data->SUP)) {
-            $doc->media[] = $data->SUP;
+            $doc->media[] = $data->SUP; // TODO : convertir les supports
             unset($data->SUP);
-        } else {
-//            $this->missing('SUP');
         }
 
         // URL, DC
         $url = '';
         if (isset($data->URL)) {
             $url = $data->URL;
-            unset($data->URL);
 
             if (false !== $pt = strpos($url, ' ')) {
                 $url = substr($url, $pt - 1);
                 $url = trim($url, ',');
             }
+
             $doc->link[] = array('type' => 'url', 'url' => $url);
+            $this->log(array('URL' => $data->URL, 'DC' => ''), array('link.type' => $doc->link[0]['type'], 'link.url' => $doc->link[0]['type']));
+
+            unset($data->URL);
         }
         // TODO: DC (absent du fichier actuel)
 
         // AU - Auteurs et AS - Auteurs secondaires
-        $this->authors($data);
+        $this->authors($data, $doc);
 
         // AUCO - Collectivités Auteurs
         if (isset($data->AUCO)) {
             foreach($data->AUCO as $aut) {
                 // Ressemble à un auteur physique ?
                 if (preg_match('~^([A-Z -]+)\s*\(([A-Z][^\)]+)\)$~', $aut, $match)) {
-                    $aut = array(
-                        'name' => $match[1],
+                    $author = array(
+                        'name' => trim($match[1]),
                         'firstname' => trim($match[2]),
-                        'role' => 'dir.',
+                        'role' => 'dir.', // TODO: convertir étiquette de rôle
                     );
 
-                    $doc->author[] = $aut;
+                    $doc->author[] = $author;
+                    $this->log(array('AUCO' => $aut), array('type auteur' => 'physique', 'result' => $author));
 
                 } else {
                     $doc->organisation[] = array('name' => $data->AUCO);
+                    $this->log(array('AUCO' => $aut), array('type auteur' => 'moral', 'result' => $data->AUCO));
                 }
             }
             unset($data->AUCO);
@@ -552,48 +559,86 @@ class Prisme implements Iterator
         // TI - Titre
         if (isset($data->TI)) {
             $doc->title = $data->TI;
+            $this->log(array('TI' => $data->TI), array('title' => $doc->title));
             unset($data->TI);
         } else {
-            $this->missing('TI');
+            $this->missing('TI', 'Pas de titre');
         }
 
         // TN - Titre du Numéro (= titre du dossier)
         if (isset($data->TN)) {
             $doc->othertitle[] = array('type' => 'dossier', 'title' => $data->TN);
+            $this->log(array('TN' => $data->TN), array('othertitle.type' => 'dossier', 'othertitle.title' => $data->TN));
             unset($data->TN);
         }
 
         // COL - Titre du colloque, congrès, conférence
         if (isset($data->COL)) {
-            $doc->event[] = array('title' => $data->COL); // todo date, place, number
-            // event multivalué. Utile ?
+            $doc->event[] = array('title' => $data->COL); // TODO: extraire date, place, number
+            $this->log(array('COL' => $data->COL), array('event.title' => $data->COL));
+            // TODO : dans docalist, event est multivalué. Utile ?
             unset($data->COL);
         }
 
         // TP - Titre du Périodique
+        // STP - Sous titre du périodique
+        $tp = '';
         if (isset($data->TP)) {
-            $doc->journal = $data->TP;
+            $tp = $data->TP;
             unset($data->TP);
         }
-
-        // TODO : STP
+        $stp='';
+        if (isset($data->STP)) {
+            $stp = $data->STP;
+            unset($data->STP);
+        }
+        if ($tp || $stp) {
+            if ($tp) {
+                $journal = $tp;
+                if ($stp) $journal .= " ($stp)";
+            } else {
+                $journal = $stp;
+            }
+            $doc->journal = $journal;
+            $this->log(array('TP' => $tp, 'STP' => $stp), array('journal' => $journal));
+        }
 
         // VOL - Volume de parution
         if (isset($data->VOL)) {
             $doc->volume = $data->VOL;
+            $this->log(array('VOL' => $data->VOL), array('volume' => $doc->volume));
             unset($data->VOL);
+            // TODO : extraire la mention qui figure au début (vol, t.) et la traduire en format docalist (champ à introduire : type de volume)
         }
 
         // NUM - Numéro de fascicule
         if (isset($data->NUM)) {
             $doc->issue = $data->NUM;
+            $this->log(array('NUM' => $data->NUM), array('issue' => $doc->issue));
             unset($data->NUM);
+            // TODO : extraire la mention qui figure au début ("n°", supp) et la traduire en format docalist (champ à introduire : type de numéro)
         }
 
-        // DATE - "périodicité"
-        if (isset($data->DATE)) {
-            $doc->date = $data->DATE;
-            // strptime ?
+        // DATE - "périodicité", DATRI - "Date pour le tri", DP - "Année de publication"
+        // DATE contient la version texte de la date (14 janvier 2000)
+        // DP ne contient que l'année (2000). On ne l'utilise pas.
+        // DATRI semble identique mais est plus facile à convertir (2000-01-14)
+        if (isset($data->DATRI)) {
+
+            if (preg_match('~^(\d{4})[/-](\d{2})[/-](\d{2})$~', $data->DATRI, $match)) {
+                $doc->date = $match[1] . $match[2] . $match[3];
+                $this->log(array('DATRI' => $data->DATRI), array('date' => $doc->date));
+            } else {
+                $this->error('DATRI', $data->DATRI, 'Date non reconnue');
+                $ds = '';
+            }
+
+            unset($data->DATRI);
+        }
+
+        unset($data->DP); // que l'année, non utilisé
+        if (isset($data->DATE)) { // non utilisé pour le moment, juste pour logguer
+            $this->log(array('DATE' => $data->DATE), array('non traité' => ''));
             unset($data->DATE);
         }
 
@@ -601,16 +646,17 @@ class Prisme implements Iterator
         $ed = '';
         if (isset($data->ED)) {
             $ed = $data->ED;
-            unset($data->ED);
         }
         $ville = '';
         if (isset($data->VILLE)) {
             $ville = $data->VILLE;
-            unset($data->VILLE);
         }
         if ($ed || $ville) {
-            $doc->editor[] = array('name' => $ed, 'city' => $ville);
+            $doc->editor[] = $editor = array('name' => $ed, 'city' => $ville);
+            $this->log(array('ED' => $ed, 'VILLE' => $ville), array('editor.name' => $editor['name'], 'editor.city' => $editor['city']));
         }
+        unset($data->VILLE);
+        unset($data->ED);
 
         // COLL - Collection (de l'éditeur)
 /*
@@ -633,12 +679,16 @@ class Prisme implements Iterator
 */
         if (isset($data->COLL)) {
             $doc->collection[] = array('name' => $data->COLL);
+            $this->log(array('COLL' => $data->COLL), array('collection.name' => $data->COLL));
+            // TODO : voir si on peut structurer COLL
             unset($data->COLL);
         }
 
         // Mentions d'édition
         if (isset($data->REED)) {
             $doc->edition[] = array('type' => $data->REED);
+            $this->log(array('REED' => $data->REED), array('edition.type' => $data->REED));
+            // TODO : normaliser
             unset($data->REED);
         }
 
@@ -647,22 +697,26 @@ class Prisme implements Iterator
             $isbn = $data->ISBN;
             $isbn = strtr($data->ISBN, array('-'=>'', ' '=>''));
             $doc->isbn[] = $isbn;
-            unset($data->ISBN);
 
+            $error = '';
             if (!preg_match('~\d{9}[\dxX]~', $isbn) && ! preg_match('~\d{13}~', $isbn)) {
-                $this->error('ISBN', $isbn, 'Isbn Incorrect');
+                $error = 'Isbn Incorrect';
+                $this->error('ISBN', $isbn, $error);
             }
+
+            $this->log(array('ISBN' => $data->ISBN), array('isbn' => $isbn, 'error' => $error));
+
+            unset($data->ISBN);
         }
 
         // DP - Date de publication
         // TODO: année uniquement. Peut être multivalué ?
 
-        // DATRI
-
         // ND - Nom du diplôme
         // Forme : Mémoire DEES : Paris : IRTS : 2003
         if (isset($data->ND)) {
             $doc->degree[] = array('title' => $data->ND);
+            $this->log(array('ND' => $data->ND), array('degree.title' => $data->ND));
             unset($data->ND);
         }
 
@@ -671,84 +725,88 @@ class Prisme implements Iterator
             // pagination de type analytique : "p. x", "p. x-y", "pp. x-y", etc.
             if (preg_match('~^p+[.\s]*(\d+(?:\s*-\s*\d+)?)$~', $data->PAG, $match)) {
                 $doc->pagination = $match[1];
+                $type = 'analytique';
             }
 
             // pagination de type monographique (x p.)
             elseif (preg_match('~^(\d+)\s*p+[.\s]*$~', $data->PAG, $match)) {
                 $doc->pagination = $match[1] . 'p';
+                $type = 'monographique';
             }
 
             // pagination non reconnue / erreur
             else {
-                $this->error('PAG');
+                $this->error('PAG', $data->PAG, 'Format de pagination non reconnu');
                 $doc->pagination = $data->PAG;
+                $type = 'non reconnue';
             }
+            $this->log(array('PAG' => $data->PAG), array('pagination' => $doc->pagination, 'type' => $type));
+
             unset($data->PAG);
         } else {
-            $this->missing('PAG');
+            $this->missing('PAG', 'Pas de pagination');
         }
 
         // NO - Etiquettes de collation (autres caractéristiques matérielles)
         if (isset($data->NO)) {
             $doc->format = $data->NO;
+            $this->log(array('NO' => $data->NO), array('format' => $doc->format));
+            // TODO: normaliser les étiquettes
             unset($data->NO);
         }
 
         // GO - Descripteurs Géographiques
-        if (isset($data->GO)) {
-            $doc->topic[] = array('type' => 'geo', 'term' => $data->GO);
-            unset($data->GO);
-        }
-
         // HI - Descripteurs Période Historique
-        if (isset($data->HI)) {
-            $doc->topic[] = array('type' => 'period', 'term' => $data->HI);
-            unset($data->HI);
-        }
-
         // DENP - Descripteurs Noms Propres
-        if (isset($data->DENP)) {
-            $doc->topic[] = array('type' => 'names', 'term' => $data->DENP);
-            unset($data->DENP);
-        }
-
         // DE - Descripteurs
-        if (isset($data->DE)) {
-            $doc->topic[] = array('type' => 'prisme', 'term' => $data->DE);
-            unset($data->DE);
-        } else {
-            $this->missing('DE');
-        }
-
         // CD - Candidats Descripteurs
-        if (isset($data->CD)) {
-            $doc->topic[] = array('type' => 'free', 'term' => $data->CD);
-            unset($data->CD);
+        $fields = array('GO' => 'geo', 'HI' => 'period', 'DENP' => 'names', 'DE' => 'prisme', 'CD' => 'free');
+        foreach ($fields as $field => $type) {
+            if (isset($data->$field)) {
+                $doc->topic[] = array('type' => $type, 'term' => $data->$field);
+                foreach ($data->$field as $keyword) {
+                    $this->log(array($field => $keyword), array('topic.type' => $type, 'topic.term' => $keyword));
+                }
+                unset($data->$field);
+            }
         }
 
         // LA - Langue
         if (isset($data->LA)) {
             $doc->language[] = $la;
-            unset($data->RESU);
+            $this->log(array('LA' => $data->LA), array('language' => $la));
+            unset($data->LA);
         } else {
             $doc->language[] = 'fre';
+            $this->log(array('LA' => ''), array('language' => 'fre'));
         }
 
         // RESU - Résumé
         if (isset($data->RESU)) {
             $doc->abstract[] = array('language' => 'fre', 'content' => $data->RESU);
+            $snip = substr($data->RESU, 0, 15) . '...';
+            $this->log(array('RESU' => $snip), array('abstract.language' => 'fre', 'abstract.content' => $snip));
             unset($data->RESU);
         }
 
         // Terminé
         if ($this->errors) {
             $doc->errors = $this->errors;
+            foreach($this->errors as $error) {
+                $code = isset($error['code']) ? $error['code'] : '';
+                $value = isset($error['value']) ? $error['value'] : '';
+                $message = isset($error['message']) ? $error['message'] : '';
+
+                $this->log(array('errors' => $value), array('message' => $message, 'code' => $code));
+            }
         }
 
-        unset($data->SO, $data->DATRI, $data->NO);
-
+        // CHamps non traités
         $data=(array)$data;
-        if ($data) $doc->todo = array_keys($data);
+        if ($data) {
+            $doc->todo = array_keys($data);
+            $this->log(array('errors' => $doc->todo), array('message' => 'champs non traités', 'code' => 'TODO'));
+        }
 
         return $doc;
     }
