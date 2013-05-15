@@ -104,16 +104,36 @@ return array(
                 ),
 
                 'genre' => array(
-                    'type' => 'string',
+                    'type' => 'multi_field',
                     'repeatable=' => true,
+                    'fields' => array(
+                        'genre' => array(
+                            'type' => 'string',
+                        ),
+                        'keyword' => array(
+                            'type' => 'string',
+                            'index' => 'not_analyzed',
+                        )
+                    )
                 ),
+
                 'media' => array(
-                    'type' => 'string',
-                    'repeatable' => true
+                    'type' => 'multi_field',
+                    'repeatable=' => true,
+                    'fields' => array(
+                        'media' => array(
+                            'type' => 'string',
+                        ),
+                        'keyword' => array(
+                            'type' => 'string',
+                            'index' => 'not_analyzed',
+                        )
+                    )
                 ),
+
                 'author' => array(
-                    'type' => 'nested',
-                    'include_in_parent' => true,
+                    'type' => 'object',
+//                    'include_in_parent' => true,
                     'repeatable' => true,
                     'properties' => array(
                         'name' => array(
@@ -127,9 +147,14 @@ return array(
                         'role' => array(
                             'type' => 'string',
                             'index' => 'no'
-                        )
+                        ),
+                        'keyword' => array(
+                            'type' => 'string',
+                            'index' => 'not_analyzed',
+                        ),
                     ),
                 ),
+
                 'organisation' => array(
                     'type' => 'object',
                     'repeatable' => true,
@@ -198,7 +223,10 @@ return array(
                     'type' => 'string',
                     'repeatable' => true
                 ),
-                'format' => array('type' => 'string'),
+                'format' => array(
+                    'type' => 'string',
+                    'index' => 'no',
+                ),
                 'isbn' => array(
                     'type' => 'string',
                     'repeatable' => true
@@ -260,7 +288,7 @@ return array(
                     'repeatable' => true,
                     'properties' => array(
                         'type' => array('type' => 'string'),
-                        'term' => array(// TODO : terms au singulier ?
+                        'term' => array(
                             'type' => 'multi_field',
                             'repeatable' => true,
                             'fields' => array(
@@ -339,7 +367,15 @@ return array(
                     'index' => 'no'
                     // http://elasticsearch-users.115913.n3.nabble.com/disabling-a-field-td3805952.html
                 ),
-                'errors' => array('type' => 'string'),
+                'errors' => array(
+                    'type' => 'object',
+                    'repeatable' => true,
+                    'properties' => array(
+                        'code' => array('type' => 'string'),
+                        'value' => array('type' => 'string'),
+                        'message' => array('type' => 'string'),
+                    ),
+                ),
                 'todo' => array('type' => 'string'),
             ),
         ),
