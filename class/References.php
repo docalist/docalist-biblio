@@ -51,7 +51,15 @@ class References extends PostType {
         add_action("dclsearch_{$this->id}_index", function($post) {
             // TODO: c'est à PostType de faire le boulot, pas de get_post_meta ici
 
-            return get_post_meta($post->ID, self::META, true);
+            $data = get_post_meta($post->ID, self::META, true);
+            if (isset($data['author'])) {
+                foreach($data['author'] as & $author) {
+                    $key = (isset($author['name']) ? $author['name'] : '') . ' '
+                         . (isset($author['firstname']) ? $author['firstname'] : '');
+                    $author['keyword'] = $key;
+                }
+            }
+            return $data;
         });
 
         add_filter('the_content', function($content) {
@@ -69,7 +77,8 @@ class References extends PostType {
 
             // Affichage de résultats de recherche
             if (is_search()) {
-                return $this->getExcerpt($post);
+                return $this->getContent($post);
+//                return $this->getExcerpt($post);
             }
 
             // Affichage liste de notices
