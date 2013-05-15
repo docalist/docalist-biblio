@@ -27,7 +27,7 @@
         <span class="date"><?= $date ?></span>.
     <?php endif ?>
 </div>
-<br />
+
 <div class="snippet">
     <?php if ($abstract): extract($abstract[0]) ?>
         <div class="abstract"><?= $content ?></div>,
