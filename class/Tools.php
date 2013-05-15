@@ -40,13 +40,23 @@ class Tools extends AbstractAdminPage {
         }
 
         echo '<p>Suppression en cours...</p>';
+        set_time_limit(3600);
+        while(ob_get_level()) ob_end_flush();
         flush();
 
         $postType = $this->plugin()->get('references')->id();
 
         // Adapté de http://wpquestions.com/question/show/id/1363 (John Cotton)
+        echo "<p>Suppression des posts de type $postType...</p>";
+        flush();
         $posts = $wpdb->query("DELETE FROM `$wpdb->posts` WHERE post_type='$postType'");
+
+        echo "<p>Suppression des postmeta qui ne sont pas associés à un post...</p>";
+        flush();
         $metas = $wpdb->query("DELETE FROM `$wpdb->postmeta` WHERE post_id NOT IN (SELECT ID FROM `$wpdb->posts`)");
+
+        echo "<p>Suppression des term_relationships qui ne sont pas associés à un post...</p>";
+        flush();
         $terms = $wpdb->query("DELETE FROM `$wpdb->term_relationships` WHERE object_id NOT IN (SELECT ID FROM `$wpdb->posts`)");
 
         // Remarque : dans l'ordre où on le fait, on peut supprimer des metas
@@ -76,16 +86,20 @@ class Tools extends AbstractAdminPage {
      * Importe le fichier Prisme dans la base.
      */
     public function actionImport() {
+        $uploads = wp_upload_dir();
+        $uploadDir = $uploads['basedir'];
+        $uploadUrl = $uploads['baseurl'];
 
         if (true) {
-            $path = 'd:/prisme/BASE PRISME NOUVEAU FORMAT.TXT';
+//          $path = 'd:/prisme/BASE PRISME NOUVEAU FORMAT.TXT';
+            $path = $uploadDir . '/prisme/BaseV3/BDD PRISME separateur habituel.txt';
             $class= 'Docalist\Biblio\Import\Prisme';
         } else {
-            $path = 'd:/temp/BDSP/Bdsp.csv';
+            $path = $uploadDir . '/BDSP/Bdsp.csv';
             $class= 'Docalist\Biblio\Import\BdspCsv';
         }
 
-        echo "<p>Path du fichier à importer : ", realpath($path), "</p>";
+        echo "<p>Le fichier suivant va être importé : <code>", realpath($path), "</code></p>";
         if (! $this->confirm('Etes-vous sur ?', "Lancer l'import")) {
             return;
         }
@@ -101,21 +115,21 @@ class Tools extends AbstractAdminPage {
         $nb = 0;
         foreach($records as $record) {
             ++$nb;
+
+            // Appelles wp_cache_init toutes les reinitcache notices
+            if (0 === $nb % $reinitCache) {
+                wp_cache_init();
+            }
+
+            // Toute sles 500 notices, stats sur le temps et la mémoire utilisée
             if (0 === $nb % 500) {
                 echo round(microtime(true)-$time,2), ' ; ', $nb, ' ; ', memory_get_usage(), ' ; ', memory_get_usage(true), ' ; ', memory_get_peak_usage(), ' ; ', memory_get_peak_usage(true), '<br />';
                 flush();
-                \wp_cache_init();
             }
-
-            if (0 === $nb % $reinitCache) {
-//                echo 'Appel de wp_cache_init()<br />';
-//                wp_cache_init();
-            }
-
 
             $references->store($record);
 //echo "<pre>"; print_r($record); echo "</pre>";
-//            if ($nb >= 100) break;
+//            if ($nb >= 1000) break;
         }
         echo '<br />';
         echo "<p>Temps total : ", round(microtime(true)-$time,2), ' secondes</p>';
