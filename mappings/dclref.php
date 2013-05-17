@@ -339,9 +339,32 @@ return array(
                     ),
                 ),
                 'owner' => array(
-                    'type' => 'string',
-                    'repeatable' => true
+                    'type' => 'multi_field',
+                    'repeatable' => true,
+                    'fields' => array(
+                        'owner' => array(
+                            'type' => 'string',
+                        ),
+                        'keyword' => array(
+                            'type' => 'string',
+                            'index' => 'not_analyzed',
+                        )
+                    )
                 ),
+                'genre' => array(
+                    'type' => 'multi_field',
+                    'repeatable=' => true,
+                    'fields' => array(
+                        'genre' => array(
+                            'type' => 'string',
+                        ),
+                        'keyword' => array(
+                            'type' => 'string',
+                            'index' => 'not_analyzed',
+                        )
+                    )
+                ),
+
                 'creation' => array(
                     'type' => 'object',
                     'properties' => array(
