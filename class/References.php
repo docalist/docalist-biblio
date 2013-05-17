@@ -54,8 +54,8 @@ class References extends PostType {
             $data = get_post_meta($post->ID, self::META, true);
             if (isset($data['author'])) {
                 foreach($data['author'] as & $author) {
-                    $key = (isset($author['name']) ? $author['name'] : '') . ' '
-                         . (isset($author['firstname']) ? $author['firstname'] : '');
+                    $key = (isset($author['name']) ? $author['name'] : '')
+                         . (isset($author['firstname']) ? (' ' . $author['firstname']) : '');
                     $author['keyword'] = $key;
                 }
             }
