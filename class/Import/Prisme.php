@@ -414,7 +414,7 @@ class Prisme implements Iterator
                     else {
                         if (preg_match('~^([A-Z\' -]+)\s*\(([^\)]+)\)*(.*)$~', $au, $match)) {
                             $aut = array(
-                                'name' => $match[1],
+                                'name' => trim($match[1]),
                                 'firstname' => trim($match[2]),
                             );
                             $match[3] = trim($match[3]);
