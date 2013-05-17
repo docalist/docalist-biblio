@@ -143,9 +143,9 @@ function row($field, $label, $sep = ', ', Closure $writer = null) {
     row($isbn, 'ISBN');
     row($editor, 'Editeur', ', ', function($name, $city, $country) {  ?>
         <span class="editor"><?php
-            echo implode(', ', $name);
-            echo wrap(', ', $city);
-            echo wrap(', ', $country) ?>
+            echo $name;
+            echo wrap(' : ', $city);
+            echo wrap(' (', $country, ')') ?>
         </span>
     <?php });
 

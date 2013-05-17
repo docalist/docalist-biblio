@@ -258,6 +258,7 @@ return array(
                 ),
                 'event' => array(
                     'type' => 'object',
+                    'repeatable' => true,
                     'properties' => array(
                         'title' => array('type' => 'string'),
                         'date' => array('type' => 'string'),
@@ -267,6 +268,7 @@ return array(
                 ),
                 'degree' => array(
                     'type' => 'object',
+                    'repeatable' => true,
                     'properties' => array(
                         'level' => array('type' => 'string'),
                         'title' => array('type' => 'string')
