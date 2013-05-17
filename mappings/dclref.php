@@ -351,20 +351,6 @@ return array(
                         )
                     )
                 ),
-                'genre' => array(
-                    'type' => 'multi_field',
-                    'repeatable=' => true,
-                    'fields' => array(
-                        'genre' => array(
-                            'type' => 'string',
-                        ),
-                        'keyword' => array(
-                            'type' => 'string',
-                            'index' => 'not_analyzed',
-                        )
-                    )
-                ),
-
                 'creation' => array(
                     'type' => 'object',
                     'properties' => array(
