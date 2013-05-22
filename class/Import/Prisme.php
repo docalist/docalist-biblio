@@ -229,6 +229,16 @@ class Prisme implements Iterator
         $data = $this->stream_get_line();
         $data = utf8_encode($data);
         $data = explode(self::FIELD_DELIMITER, $data);
+
+        // Si le champ est entre guillemets, on les supprime et on dédouble les guillemets doubles
+        $data = array_map(function($field) {
+            if (strlen($field) && $field[0] === '"' && $field[strlen($field) - 1] === '"') {
+                $field = trim($field, '"');
+                $field = str_replace('""', '"', $field);
+            }
+            return $field;
+        }, $data);
+
         return $data;
     }
 
