@@ -92,7 +92,8 @@ class Tools extends AbstractAdminPage {
 
         if (true) {
 //          $path = 'd:/prisme/BASE PRISME NOUVEAU FORMAT.TXT';
-            $path = $uploadDir . '/prisme/BaseV3/BDD PRISME separateur habituel.txt';
+//            $path = $uploadDir . '/prisme/BaseV3/BDD PRISME separateur habituel.txt';
+            $path = $uploadDir . '/prisme/BaseV4/BDDPrismeModifie.txt';
             $class= 'Docalist\Biblio\Import\Prisme';
         } else {
             $path = $uploadDir . '/BDSP/Bdsp.csv';
