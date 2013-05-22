@@ -285,6 +285,10 @@ class Prisme implements Iterator
             $imported = '';
             foreach($this->data as $name => $value)
             {
+                if (empty($name)) {
+                    echo "<p>Champ sans nom dans la notice ", $record->REF, ' (décalage des colonnes)</p>';
+                    continue;
+                }
                 $value = trim($value);
                 if (empty($value))
                 {
