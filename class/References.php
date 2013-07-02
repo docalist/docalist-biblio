@@ -12,13 +12,13 @@
  */
 
 namespace Docalist\Biblio;
-use Docalist\PostType;
+use Docalist\AbstractPostType;
 use WP_Post;
 
 /**
  * Gère le type de contenu "références bibliographiques"
  */
-class References extends PostType {
+class References extends AbstractPostType {
     /**
      * @inheritdoc
      */
