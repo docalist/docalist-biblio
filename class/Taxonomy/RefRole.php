@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Etiquettes de rôle".
  */
-class RefRole extends Taxonomy {
+class RefRole extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

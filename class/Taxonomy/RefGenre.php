@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Genres de documents".
  */
-class RefGenre extends Taxonomy {
+class RefGenre extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

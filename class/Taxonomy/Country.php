@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Pays".
  */
-class Country extends Taxonomy {
+class Country extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

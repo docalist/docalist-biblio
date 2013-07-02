@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Types de titres".
  */
-class RefTitle extends Taxonomy {
+class RefTitle extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

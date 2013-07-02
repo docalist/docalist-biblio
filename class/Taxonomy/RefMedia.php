@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Supports de documents".
  */
-class RefMedia extends Taxonomy {
+class RefMedia extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Langues".
  */
-class Language extends Taxonomy {
+class Language extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */

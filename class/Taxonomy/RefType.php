@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio\Taxonomy;
-use Docalist\Taxonomy;
+use Docalist\AbstractTaxonomy;
 
 /**
  * Taxonomie "Types de documents".
  */
-class RefType extends Taxonomy {
+class RefType extends AbstractTaxonomy {
     /**
      * @inheritdoc
      */
