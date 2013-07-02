@@ -13,9 +13,9 @@
 
 namespace Docalist\Biblio\Metabox;
 
-use Docalist\Metabox, Docalist\Forms\Fragment;
+use Docalist\AbstractMetabox, Docalist\Forms\Fragment;
 
-class Management extends Metabox {
+class Management extends AbstractMetabox {
     /**
      * @inheritdoc
      */
