@@ -12,12 +12,12 @@
  */
 
 namespace Docalist\Biblio;
-use Docalist\Plugin;
+use Docalist\AbstractPlugin;
 
 /**
  * Plugin de gestion de notices bibliographiques.
  */
-class Biblio extends Plugin {
+class Biblio extends AbstractPlugin {
     /**
      * @inheritdoc
      */
