@@ -9,7 +9,6 @@
  *
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org
- * Plugin Type: Piklist
  * Description: Docalist: bibliographic data manager.
  * Version:     0.1
  * Author:      Daniel Ménard
