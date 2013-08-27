@@ -28,7 +28,7 @@ class Settings extends AbstractSettingsEntity /* implements RegistrableInterface
     protected function loadSchema() {
         return array(
             'databases' => array(
-                'type' => 'Settings\Database*',
+                'type' => 'Settings\DatabaseSettings*',
                 'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
                 'default' => array(
                     array(

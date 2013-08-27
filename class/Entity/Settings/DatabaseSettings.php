@@ -21,7 +21,7 @@ use DateTime;
  * @property string $label Libellé de la base
  * @property string $creation Date de création de la base
  */
-class Database extends AbstractEntity {
+class DatabaseSettings extends AbstractEntity {
     protected function loadSchema() {
         // @formatter:off
         return array(
