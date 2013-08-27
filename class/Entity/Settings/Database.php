@@ -43,6 +43,10 @@ class Database extends AbstractEntity {
         // @formatter:on
     }
 
+    public function postType() {
+        return 'dclref' . $this->name;
+    }
+
     private function now() {
         return new DateTime;
     }
