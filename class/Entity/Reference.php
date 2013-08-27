@@ -66,12 +66,12 @@ class Reference extends AbstractEntity {
             ),
             'genre' => array(
                 'type' => 'string*',
-                'label' => __('Nature(s) du document', 'docalist-biblio'),
+                'label' => __('Genre de document', 'docalist-biblio'),
                 'description' => __('Nature du document catalogué', 'docalist-biblio'),
             ),
             'media' => array(
                 'type' => 'string*',
-                'label' => __('Support(s) du document', 'docalist-biblio'),
+                'label' => __('Support du document', 'docalist-biblio'),
                 'description' => __('Support physique du document (papier, dvd, etc.)', 'docalist-biblio'),
             ),
             'author' => array(
@@ -126,12 +126,12 @@ class Reference extends AbstractEntity {
                 'description' => __("Langues des textes qui figurent dans le document.", 'docalist-biblio'),
             ),
             'pagination' => array(
-                'type' => 'string*',
+                'type' => 'string', // @todo mettre en multivalué
                 'label' => __('Pagination', 'docalist-biblio'),
                 'description' => __("Pour un ouvrage : nombre de pages (180p.), pour un article : numéro de page (10) ou pages de début et de fin (10-15).", 'docalist-biblio'),
             ),
             'format' => array(
-                'type' => 'string*',
+                'type' => 'string',
                 'label' => __('Format du document', 'docalist-biblio'),
                 'description' => __('Caractéristiques matérielles du document : étiquettes de collation (tabl, ann, fig...), références bibliographiques, etc.', 'docalist-biblio'),
             ),
