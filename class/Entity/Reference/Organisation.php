@@ -46,4 +46,22 @@ class Organisation extends AbstractEntity {
         );
         // @formatter:on
     }
+
+    public function __toString() {
+        $result = $this->name;
+
+        if ($this->city || $this->country) {
+            $result .= ' (';
+            $this->city && $result .= $this->city;
+            if ($this->country) {
+                $this->city && $result .= ', ';
+                $result .= $this->country;
+            }
+            $result .= ')';
+        }
+
+        $this->role && $result .= ' / ' . $this->role;
+
+        return $result;
+    }
 }
