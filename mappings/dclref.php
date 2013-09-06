@@ -354,14 +354,14 @@ return array(
                 'creation' => array(
                     'type' => 'object',
                     'properties' => array(
-                        'date' => array('type' => 'date'), // TODO: format
+                        'date' => array('type' => 'string'), // TODO: format
                         'by' => array('type' => 'string')
                     ),
                 ),
                 'lastupdate' => array(
                     'type' => 'object',
                     'properties' => array(
-                        'date' => array('type' => 'date'), // TODO: format
+                        'date' => array('type' => 'string'), // TODO: format
                         'by' => array('type' => 'string')
                     ),
                 ),
