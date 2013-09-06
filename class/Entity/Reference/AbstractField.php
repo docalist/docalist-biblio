@@ -40,4 +40,12 @@ class AbstractField extends AbstractEntity {
         );
         // @formatter:on
     }
+
+    public function __toString() {
+        $result = $this->content;
+
+        $this->language && $result = '(' . $this->language . ') ' . $result;
+
+        return $result;
+    }
 }
