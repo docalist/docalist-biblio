@@ -46,7 +46,7 @@ class Author extends AbstractEntity {
         $result = $this->name;
 
         $this->firstname && $result .= ' (' . $this->firstname . ')';
-        $this->role && $result .= ' / ' . $role;
+        $this->role && $result .= ' / ' . $this->role;
 
         return $result;
     }
