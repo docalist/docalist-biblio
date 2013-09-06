@@ -41,4 +41,25 @@ class Editor extends AbstractEntity {
         );
         // @formatter:on
     }
+
+    public function __toString() {
+        $this->name = 'NOM';
+        $this->city = 'RENNES';
+        $this->country = 'FRANCE';
+
+
+        $result = $this->name;
+
+        if ($this->city || $this->country) {
+            $result .= ' (';
+            $this->city && $result .= $this->city;
+            if ($this->country) {
+                $this->city && $result .= ', ';
+                $result .= $this->country;
+            }
+            $result .= ')';
+        }
+
+        return $result;
+    }
 }
