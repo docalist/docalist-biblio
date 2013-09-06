@@ -41,4 +41,13 @@ class Author extends AbstractEntity {
         );
         // @formatter:on
     }
+
+    public function __toString() {
+        $result = $this->name;
+
+        $this->firstname && $result .= ' (' . $this->firstname . ')';
+        $this->role && $result .= ' / ' . $role;
+
+        return $result;
+    }
 }
