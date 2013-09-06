@@ -566,7 +566,7 @@ class Prisme implements Iterator
                     $this->log(array('AUCO' => $aut), array('type auteur' => 'physique', 'result' => $author));
 
                 } else {
-                    $doc->organisation[] = array('name' => $data->AUCO);
+                    $doc->organisation[] = array('name' => $aut);
                     $this->log(array('AUCO' => $aut), array('type auteur' => 'moral', 'result' => $data->AUCO));
                 }
             }
@@ -591,9 +591,9 @@ class Prisme implements Iterator
 
         // COL - Titre du colloque, congrès, conférence
         if (isset($data->COL)) {
-            $doc->event[] = array('title' => $data->COL); // TODO: extraire date, place, number
+            $doc->event= array('title' => $data->COL); // TODO: extraire date, place, number
             $this->log(array('COL' => $data->COL), array('event.title' => $data->COL));
-            // TODO : dans docalist, event est multivalué. Utile ?
+            // TODO : dans docalist, event est multivalué. Utile ? Plus maintenant
             unset($data->COL);
         }
 
@@ -732,7 +732,7 @@ class Prisme implements Iterator
         // ND - Nom du diplôme
         // Forme : Mémoire DEES : Paris : IRTS : 2003
         if (isset($data->ND)) {
-            $doc->degree[] = array('title' => $data->ND);
+            $doc->degree = array('title' => $data->ND);
             $this->log(array('ND' => $data->ND), array('degree.title' => $data->ND));
             unset($data->ND);
         }
