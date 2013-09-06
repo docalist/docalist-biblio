@@ -10,7 +10,7 @@
 * @author Daniel Ménard <daniel.menard@laposte.net>
 * @version SVN: $Id$
 */
-namespace Docalist\Biblio\Entity\Settings;
+namespace Docalist\Biblio;
 
 use Docalist\Data\Entity\AbstractEntity;
 use DateTime;
