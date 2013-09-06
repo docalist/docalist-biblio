@@ -79,7 +79,6 @@ class Reference extends AbstractEntity {
                 'label' => __('Auteur(s) du document', 'docalist-biblio'),
                 'description' => __('Liste des personnes physiques auteurs du document', 'docalist-biblio'),
             ),
-
             'organisation' => array(
                 'type' => 'Reference\Organisation*',
                 'label' => __('Organisme(s) auteur(s) du document', 'docalist-biblio'),
@@ -225,5 +224,40 @@ class Reference extends AbstractEntity {
             'todo',
         );
         // @formatter:on
+    }
+
+    /**
+     * Retourne la première valeur du premier des champs qui est renseigné.
+     *
+     * @param string $field ... Le ou les champs à examiner.
+     *
+     * @return string
+     */
+    public function first($field) {
+        foreach(func_get_args() as $field) {
+            $field = $this->$field;
+            if (is_scalar($field)) {
+                if (! empty($field)) {
+                    return $field;
+                }
+            }
+            elseif ($field->count()) {
+                return (string) $field[0];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Formatte le champ date.
+     *
+     * @param string $format
+     * @return string
+     */
+    public function formatDate($format = 'j F Y') {
+        $date = $this->date ?: $this->creation->date;
+
+        return date_i18n('F Y', strtotime($this->date));
     }
 }
