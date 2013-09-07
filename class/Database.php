@@ -190,6 +190,7 @@ class Database extends PostTypeRepository {
         // Ces deux optimisations ont permis de ramener le temps de réindexation
         // de la base Prisme (75000 notices) de 865 secondes (14'25") à 132
         // secondes (2'12").
+        // Même mieux : avec un bulkMaxDoc à 10000 : 61 secondes.
 
         global $wpdb;
 
