@@ -8,9 +8,9 @@
  * LICENSE.txt file that was distributed with this source code.
  *
  * Plugin Name: Docalist Biblio
- * Plugin URI:  http://docalist.org
+ * Plugin URI:  http://docalist.org/
  * Description: Docalist: bibliographic data manager.
- * Version:     0.1
+ * Version:     0.2
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Text Domain: docalist-biblio
@@ -30,5 +30,5 @@ if (class_exists('Docalist')) {
     Autoloader::register(__NAMESPACE__, __DIR__ . '/class');
 
     // Charge le plugin
-    Docalist::load('Docalist\Biblio\Biblio', __FILE__);
+    Docalist::load('Docalist\Biblio\Plugin', __FILE__);
 }
