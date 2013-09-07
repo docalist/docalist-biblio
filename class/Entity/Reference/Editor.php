@@ -43,11 +43,6 @@ class Editor extends AbstractEntity {
     }
 
     public function __toString() {
-        $this->name = 'NOM';
-        $this->city = 'RENNES';
-        $this->country = 'FRANCE';
-
-
         $result = $this->name;
 
         if ($this->city || $this->country) {
