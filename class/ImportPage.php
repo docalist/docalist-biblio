@@ -103,4 +103,36 @@ class ImportPage extends AbstractAdminPage {
 
         printf($msg, $count);
     }
+
+    /**
+     * Taxonomies
+     */
+    public function actionTaxonomies() {
+        // $posttype = $this->plugin()->get('references')->id();
+        // $taxonomies = get_taxonomies(array('object_type' => array($posttype)), 'objects');
+        $taxonomies = get_taxonomies(array(), 'objects');
+
+        echo '<ul class="ul-disc">';
+        foreach($taxonomies as $taxonomy) {
+/*
+            //@formatter:off
+            $url = admin_url(sprintf(
+                    'edit-tags.php?taxonomy=%s&post_type=%s',
+                    $taxonomy->name,
+                    $posttype
+            ));
+            //@formatter:off
+*/
+
+            //@formatter:off
+            $url = admin_url(sprintf(
+                    'edit-tags.php?taxonomy=%s',
+                    $taxonomy->name
+            ));
+            //@formatter:off
+            printf('<li><a href="%s">%s</a></li>', $url, $taxonomy->label);
+        }
+        echo '</ul>';
+    }
+
 }
