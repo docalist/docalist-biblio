@@ -60,7 +60,6 @@ class Plugin extends AbstractPlugin {
                 new EditReference($database);
                 $this->add(new ImportPage($database)); // @todo : enlever le add() quand AdminPage ne sera plus un registrable
             }
-            $this->add(new Tools());
         });
 
         // Nos filtres
