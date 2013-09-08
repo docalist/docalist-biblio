@@ -26,18 +26,23 @@ class DatabaseSettings extends AbstractEntity {
         // @formatter:off
         return array(
             'name' => array(
-//                 'label' => 'Identifiant de la base de données',
-//                 'description' => 'Ce nom sert a créer le slug de la base et le type des posts créés (dclrefxxx)',
+                'label' => __('Nom de la base de données', 'docalist-biblio'),
+                'description' => __('Détermine le post-type (le préfixe dclref est ajouté). 14 caractères maxi, [a-z-]+. ', 'docalist-biblio'),
             ),
 
             'label' => array(
-//                 'label' => 'Nom de la base de données',
-//                 'description' => 'Nom utilisé dans les menus, dans les écrans, etc.',
+                'label' => __('Libellé de la base de données', 'docalist-biblio'),
+                'description' => __('Libellé utilisé dans les menus, dans les écrans, etc.', 'docalist-biblio'),
+            ),
+
+            'slug' => array(
+                'label' => __('Slug de la base de données', 'docalist-biblio'),
+                'description' => __('Détermine la page d\'accueil de la base et les urls des notices.', 'docalist-biblio'),
             ),
 
             'creation' => array(
-//                 'label' => 'Date/heure de création de la base',
-//                 'default' => array($this, 'now')
+                'label' => __('Date/heure de création de la base', 'docalist-biblio'),
+                //'default' => array($this, 'now')
             ),
         );
         // @formatter:on
