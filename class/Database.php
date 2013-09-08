@@ -60,7 +60,7 @@ class Database extends PostTypeRepository {
             'labels' => $this->postTypelabels(),
             'public' => true,
             'rewrite' => array(
-                'slug' => $this->settings->name,
+                'slug' => $this->settings->slug,
                 'with_front' => false,
             ),
             'capability_type' => 'post',
