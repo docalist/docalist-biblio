@@ -28,18 +28,9 @@ class Settings extends AbstractSettingsEntity
                 'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
                 'default' => array(
                     array(
-                        'name' => '',
+                        'name' => 'prisme',
+                        'slug' => 'base-prisme',
                         'label' => 'Base Prisme',
-                        'creation' => 'datecreat',
-                    ),
-                    array(
-                        'name' => 'bdsp',
-                        'label' => 'Base BDSP',
-                        'creation' => 'datecreat',
-                    ),
-                    array(
-                        'name' => 'prisme-travail',
-                        'label' => 'Base de travail Prisme',
                         'creation' => 'datecreat',
                     ),
                 ),
