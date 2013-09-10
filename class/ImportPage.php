@@ -14,7 +14,9 @@ namespace Docalist\Biblio;
 
 use Docalist\Biblio\Entity\Reference;
 use Docalist\AbstractAdminPage;
-
+use Docalist\Data\Schema\Schema;
+use Docalist\Data\Schema\Field;
+use Docalist\Utils;
 /**
  * Page "Importer" d'une base
  */
@@ -135,4 +137,65 @@ class ImportPage extends AbstractAdminPage {
         echo '</ul>';
     }
 
+    /**
+     * Format de la base.
+     *
+     * Documentation sur le format de la base documentaire.
+     */
+    public function actionDoc() {
+        // Récupère le type des entités
+        $class = $this->database->type();
+
+        // Récupère le schéma
+        /* @var $ref Reference */
+        $ref = new $class;
+        $schema = $ref->schema();
+
+        $maxlevel = 4;
+
+        $msg = '<table class="widefat"><thead><tr><th colspan="%d">%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></thead>';
+        printf($msg,
+            $maxlevel,
+            __('Nom du champ', 'docalist-biblio'),
+            __('Libellé', 'docalist-biblio'),
+            __('Description', 'docalist-biblio'),
+            __('Type', 'docalist-biblio'),
+            __('Répétable', 'docalist-biblio')
+        );
+
+        $this->doc($schema->fields(), 0, $maxlevel);
+        echo '</table>';
+    }
+
+    protected function doc(array $fields, $level, $maxlevel) {
+        // var_dump($schema);
+
+        /* @var $field Field */
+        foreach($fields as $field) {
+            echo '<tr>';
+
+            //$level && printf('<td colspan="%d">x</td>', $level);
+            for ($i = 0; $i < $level; $i++) {
+                echo '<td></td>';
+            }
+
+            $repeat = $field->repeatable() ? __('<b>Répétable</b>', 'docalist-biblio') : __('Monovalué', 'docalist-biblio');
+            $type = $field->entity() ? Utils::classname($field->entity()) : $field->type();
+            $msg = '<th colspan="%1$d"><h%2$d style="margin: 0">%3$s</h%2$d></th><td class="row-title">%4$s</td><td><i>%5$s</i></td><td>%6$s</td><td>%7$s</td>';
+            printf($msg,
+                $maxlevel - $level,     // %1
+                $level + 3,             // %2
+                $field->name(),         // %3
+                $field->label(),        // %4
+                $field->description(),  // %5
+                $type,         // %6
+                $repeat // %7
+            );
+
+            echo '</tr>';
+
+            $subfields = $field->fields();
+            $subfields && $this->doc($subfields, $level + 1, $maxlevel);
+        }
+    }
 }
