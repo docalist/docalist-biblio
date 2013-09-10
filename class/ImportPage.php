@@ -50,7 +50,7 @@ class ImportPage extends AbstractAdminPage {
         $uploadDir = $uploads['basedir'];
         $uploadUrl = $uploads['baseurl'];
 
-        $path = $uploadDir . '/prisme/BaseV5/PrismeV5-22-07-13.txt';
+        $path = $uploadDir . '/prisme/1309/201309_BDD PRISME_septembre 2013.TXT';
         $class= 'Docalist\Biblio\Import\Prisme';
 
         $msg = 'Le fichier <code>%s</code> va être importé dans la base <b>%s</b>.';
