@@ -139,12 +139,15 @@ class Database extends PostTypeRepository {
 
         // Settings de l'index Elastic Search
         add_filter("docalist_search_get_{$type}_settings", function ($settings) {
+            $ours = require_once __DIR__ . '/../mappings/dclref-index-settings.php';
+            $settings = array_merge_recursive($settings, $ours);
+
             return $settings; // @todo
         });
 
         // Mappings
         add_filter("docalist_search_get_{$type}_mappings", function ($mappings) {
-            return $this->mappings();
+            return require_once __DIR__ . '/../mappings/dclref-mapping.php';
         });
 
         // Reindexation
@@ -154,23 +157,137 @@ class Database extends PostTypeRepository {
     }
 
     /**
-     * Retourne les mappings Docalist Search à utiliser pour cette base de
-     * données.
-     *
-     * @return array
-     */
-    protected function mappings() {
-        $temp = require_once(__DIR__ . '/../mappings/dclref.php');
-        return $temp['mappings']['dclref']; //@ todo réorganiser dclref
-    }
-
-    /**
      * Transforme une notice de la base en document Docalist Search.
      *
      * @return array
      */
     public function map(array $ref) {
+/*
+        $ref=array (
+            'ref' => 1,
+            'creation' => array (
+                'date' => '20000127',
+                'by' => 'IRTS-Ile-de-France-Montrouge-Neuilly sur Marne',
+            ),
+            'owner' => array ('IRTS-Ile-de-France'),
+            'type' => 'Article',
+            'title' => 'L\'avenir du social à l\'aube du XXIème siècle',
+            'journal' => 'Actualités sociales hebdomadaires (ASH)',
+            'issue' => 'n° 2149',
+            'date' => '20000114',
+            'pagination' => '21-25',
+            'othertitle' =>  array (
+                array (
+                  'type' => 'dossier',
+                  'title' => 'Le social historique',
+                ),
+                array (
+                  'type' => 'hs',
+                  'title' =>  'titre du hors série',
+                ),
+            ),
+            'topic' =>  array (
+                array (
+                  'type' => 'period',
+                  'term' => array ('XXIEME SIECLE'),
+                ),
+                array (
+                  'type' => 'prisme',
+                  'term' =>  array('TRAVAIL SOCIAL', 'TRAVAILLEUR SOCIAL', 'ASSOCIATION LOI 1901'),
+                ),
+            ),
+            'language' => array ('fre'),
+        );
+*/
+
+//         if (isset($ref['title']) && isset($ref['language'])) {
+//             $ref['title' . $ref['language']] = $ref['title'];
+//         }
+//         if (isset($ref['othertitle'])) {
+//             var_dump($ref);
+//             die();
+//             foreach($ref['othertitle'] as $title) {
+
+//             }
+//         }
+/*
+        echo 'AVANT<pre>', var_export($ref,true), '</pre>';
+        $this->degroup($ref, 'othertitle', 'type', 'title');
+        $this->degroup($ref, 'abstract', 'language', 'content');
+        $this->degroup($ref, 'topic', 'type', 'term');
+        // $this->degroup($ref, 'note', 'type', 'content');
+        echo 'APRES<pre>', var_export($ref,true), '</pre>';
+*/
+/*
+        if (isset($ref['author'])) {
+            foreach($ref['author'] as &$author) {
+                $aut = isset($author['name']) ? $author['name'] : '';
+                $aut .= '¤';
+                isset($author['firstname']) && $aut .= $author['firstname'];
+
+                $author = $aut;
+            }
+        }
+*/
+        $this->concat($ref, 'author', 'name', 'firstname');
+        $this->concat($ref, 'organisation', 'name', 'city', 'country');
+        $this->concat($ref, 'othertitle', 'title');
+        $this->concat($ref, 'translation', 'title');
+        unset($ref['pagination']);
+        unset($ref['format']);
+        $this->concat($ref, 'editor', 'name', 'city', 'country');
+        unset($ref['edition']);
+        $this->concat($ref, 'collection', 'name');
+        $this->concat($ref, 'event', 'title', 'date', 'place', 'number');
+        $this->concat($ref, 'degree', 'level', 'title');
+        $this->concat($ref, 'abstract', 'content');
+        if (isset($ref['topic'])) {
+            $terms = array();
+            foreach($ref['topic'] as $topic) {
+                isset($topic['term']) && $terms += $topic['term'];
+            }
+            $ref['topic'] = $terms;
+        }
+        unset($ref['note']);
+        $this->concat($ref, 'link', 'url');
+
+        unset($ref['statusdate']);
+        unset($ref['imported']);
+        unset($ref['todo']);
+
         return $ref; // @todo à affiner
+    }
+
+    protected function concat(& $ref, $field, $subfield1 /*...*/) {
+        // Si le champ est vide, rien à faire
+        if (! isset($ref[$field])) {
+            return;
+        }
+
+        $args = func_get_args();
+        $field = & $ref[$field];
+
+        // Champ structuré non répétable (exemple : event)
+        if (is_string(key($field))) {
+            $result = '';
+            for ($i = 2 ; $i < count($args) ; $i++) {
+                $i > 2 && $result .= '¤';
+                $result .= isset($field[$args[$i]]) ? $field[$args[$i]] : '';
+            }
+            $field = $result;
+
+            return;
+        }
+
+        // Champ structuré répétable
+        foreach($field as & $item) {
+            $result = '';
+            for ($i = 2 ; $i < count($args) ; $i++) {
+                $i > 2 && $result .= '¤';
+                $result .= isset($item[$args[$i]]) ? $item[$args[$i]] : '';
+            }
+            $item = $result;
+        }
     }
 
     /**
@@ -220,13 +337,14 @@ class Database extends PostTypeRepository {
                 $data = json_decode($post->post_excerpt, true);
                 if (is_null($data)) {echo "data empty<br />";}
                 do_action('docalist_search_index', $type, $post->ID, $this->map($data)); // this map(data)
+                //die();
             }
 
             // Passe au lot suivant
             $offset += count($posts);
 
             // La ligne (commentée) suivante ets pratique pour les tests
-            // if ($offset >= 3000) break;
+//             if ($offset >= 3000) break;
         }
         return;
 
@@ -304,49 +422,87 @@ class Database extends PostTypeRepository {
                 'ref.type' => array(
                     'label' => __('Type de document', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'type.keyword',
-                        //                    'order' => 'term',
+                        'field' => 'type.filter',
+                        // 'order' => 'term',
                     )
                 ),
-                'ref.topic' => array(
-                    'label' => __('Mot-clé', 'docalist-biblio'),
+                'ref.genre' => array(
+                    'label' => __('Genre de document', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'topic.term.keyword',
-                        'size'  => 10,
-                        //                    'order' => 'term',
+                        'field' => 'genre.filter',
                     )
                 ),
                 'ref.media' => array(
                     'label' => __('Support de document', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'media.keyword',
-                    )
-                ),
-                'ref.journal' => array(
-                    'label' => __('Revue', 'docalist-biblio'),
-                    'facet' => array(
-                        'field' => 'journal.keyword',
+                        'field' => 'media.filter',
                     )
                 ),
                 'ref.author' => array(
                     'label' => __('Auteur', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'author.keyword',
-                        'exclude' => array('et al.'),
+                        'field' => 'author.filter',
+                        'exclude' => array('et al.¤'),
                     )
                 ),
-                'ref.genre' => array(
-                    'label' => __('Producteur de la notice', 'docalist-biblio'),
+                'ref.organisation' => array(
+                    'label' => __('Organisme', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'owner.keyword',
+                        'field' => 'organisation.filter',
+                    )
+                ),
+                'ref.journal' => array(
+                    'label' => __('Revue', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'journal.filter',
+                    )
+                ),
+                'ref.editor' => array(
+                    'label' => __('Editeur', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'editor.filter',
+                    )
+                ),
+                'ref.event' => array(
+                    'label' => __('Evénement', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'event.filter',
+                    )
+                ),
+                'ref.degree' => array(
+                    'label' => __('Diplôme', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'degree.filter',
+                    )
+                ),
+                /*//@todo : pas trouvé comment
+                'ref.abstract' => array(
+                    'label' => __('Résumé', 'docalist-biblio'),
+                    'type' => 'range',
+                    'facet' => array(
+                        'abstract' => array(
+                            array('from' => '*', 'to' => '*')
+
+                        ),
+                    )
+                ),
+                */
+                'ref.topic' => array(
+                    'label' => __('Mot-clé', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'topic.filter',
+                        'size'  => 10,
+                        //                    'order' => 'term',
                     )
                 ),
                 'ref.owner' => array(
-                    'label' => __('Genre de document', 'docalist-biblio'),
+                    'label' => __('Producteur de la notice', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'genre.keyword',
+                        'field' => 'owner.filter',
                     )
                 ),
+                // creation
+                // lastupdate
                 'ref.errors' => array(
                     //'state' => 'closed',
                     'label' => __('Erreurs détectées', 'docalist-biblio'),
