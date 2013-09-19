@@ -451,6 +451,14 @@ class Database extends PostTypeRepository {
                         'field' => 'organisation.filter',
                     )
                 ),
+                'ref.date' => array(
+                    'label' => __('Année du document', 'docalist-biblio'),
+                    'type' => 'date_histogram',
+                    'facet' => array(
+                        'field' => 'date',
+                        'interval' => 'year'
+                    )
+                ),
                 'ref.journal' => array(
                     'label' => __('Revue', 'docalist-biblio'),
                     'facet' => array(
@@ -501,6 +509,25 @@ class Database extends PostTypeRepository {
                         'field' => 'owner.filter',
                     )
                 ),
+
+                'ref.creation.date' => array(
+                    'label' => __('Année de création de la notice', 'docalist-biblio'),
+                    'type' => 'date_histogram',
+                    'facet' => array(
+                        'field' => 'creation.date',
+                        'interval' => 'year'
+                    )
+                ),
+
+                'ref.lastupdate.date' => array(
+                    'label' => __('Année de mise à jour de la notice', 'docalist-biblio'),
+                    'type' => 'date_histogram',
+                    'facet' => array(
+                        'field' => 'lastupdate.date',
+                        'interval' => 'year'
+                    )
+                ),
+
                 // creation
                 // lastupdate
                 'ref.errors' => array(
