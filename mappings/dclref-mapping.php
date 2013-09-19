@@ -207,9 +207,10 @@ return [
             'analyzer' => 'dclref-default-fr'
         ],
 
-        // @todo : voir comment on gère les dates
         'date' => [
-            'type' => 'string'
+            'type' => 'date',
+            'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
+            'ignore_malformed' => true
         ],
 
         // @todo : pour filter, faire titre¤issn
@@ -422,12 +423,27 @@ return [
             ]
         ],
 
+        /*
+         * ISO 8601
+         * formats des dates ES :
+         * year_month_day :  yyyy-MM-dd (= date)
+         * year_month : yyyy-MM
+         * year : yyyy
+         *
+         * basic_date : yyyyMMdd
+         *
+         */
         'creation' => [
             'type' => 'object',
             'properties' => [
                 'date' => [
                     'type' => 'date',
-                    'format' => 'year_month_day||year_month||year',
+                    'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
+                    // yyyyMMdd     = format ISO 'basic-date'
+                    // yyyyMM       = non autorisé en ISO (confusion avec yyMMdd : 201005 = mai 2010 ou 5 octobre 2000)
+                    // yyyy         = format ISO 'year'
+                    // yyyy-MM-dd   = format ISO 'year_month_day'
+                    // yyyy-MM      = format ISO 'year_month'
                     'ignore_malformed' => true
                 ],
                 'by' => [
@@ -439,8 +455,8 @@ return [
             'type' => 'object',
             'properties' => [
                 'date' => [
-                    'type' => 'string',
-                    'format' => 'year_month_day||year_month||year',
+                    'type' => 'date',
+                    'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
                     'ignore_malformed' => true
                 ],
                 'by' => [
