@@ -79,7 +79,7 @@ class EditReference {
         // Supprime la metabox "Identifiant"
         remove_meta_box('slugdiv', $this->database->postType(), 'normal');
 
-        add_action('edit_form_after_title', function(WP_Post $post) {
+        add_action('edit_form_after_title', function() {
             $this->createNonce();
         });
 
