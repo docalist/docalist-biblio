@@ -163,6 +163,11 @@ return [
                 'filter' => [
                     'type' => 'string',
                     'index' => 'not_analyzed'
+                ],
+                'suggest' => [
+                    'type' => 'completion',
+                    'index_analyzer' => 'suggest',
+                    'search_analyzer' => 'suggest',
                 ]
             ]
         ],
@@ -183,6 +188,11 @@ return [
                 'filter' => [
                     'type' => 'string',
                     'index' => 'not_analyzed'
+                ],
+                'suggest' => [
+                    'type' => 'completion',
+                    'index_analyzer' => 'suggest',
+                    'search_analyzer' => 'suggest',
                 ]
             ]
         ],
@@ -227,6 +237,11 @@ return [
                 'filter' => [
                     'type' => 'string',
                     'index' => 'not_analyzed'
+                ],
+                'suggest' => [
+                    'type' => 'completion',
+                    'index_analyzer' => 'suggest',
+                    'search_analyzer' => 'suggest',
                 ]
             ]
         ],
@@ -370,6 +385,11 @@ return [
                 'filter' => [
                     'type' => 'string',
                     'index' => 'not_analyzed'
+                ],
+                'suggest' => [
+                    'type' => 'completion',
+                    'index_analyzer' => 'suggest',
+                    'search_analyzer' => 'suggest',
                 ]
             ]
         ],
