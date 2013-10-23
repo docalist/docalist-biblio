@@ -1,0 +1,270 @@
+http://www.fatcow.com/free-icons
+D:\fatcow-hosting-icons-3500\FatCow_Icons32x32
+
+Article :
+    - align_center.png (left, right, none)
+    - blogs.png
+    - column_left.png et suivantes
+    - document_back.png
+    - document_comment_above.png
+    - document_image.png
+    - document_next.png (idée "extrait de")
+    - newspaper_go.png
+    - newspaper_link.png (idée de "article en ligne")
+    - text_large_cap.png
+
+Book :
+    - book_open.png (et suivantes) 
+    - book.png (et suivante)
+    - books.png
+    - books_stack.png
+    - bookshelf.png
+    - education.png
+
+Chapter :
+    - book_next.png
+    - book_go.png ?
+
+Degree :
+    - report_user.png
+    - reseller_account.png, reseller_account_template.png (idée de qq avec un cartable)
+    - restaurant_menu.png (un cahier, un classeur)
+    - user_student.png (et suivants)
+
+Issue :
+
+Legislation :
+    - balance.png
+    - balance_unbalance.png
+    - domain_legal_issues.png
+    - entity.png
+    - price_comparison.png
+
+Meeting :
+    - events.png
+
+Periodical :
+    - newspaper.png
+
+Report :
+    - document_notes.png
+    - open_folder.png
+    - report.png
+    - report_go.png (extrait de rapport)
+    - report_link.png (rapport en ligne)
+    - reports.png
+    - text_area.png
+
+WebSite :
+    - addon_domains.png
+    - domain_names_advanced.png
+    - link.png
+    - orbit.png
+    - subdomains.png
+    - world.png
+
+WebPage :
+    - file_extension_html.png
+    - html.png
+    - www_page.png
+    
+Person :
+    - administrator.png
+    - angel.png
+    - attribution.png
+    - ceo.png
+    - client_account_template.png
+    - ssl_tls_manager.png
+    - telephone.png
+    - user.png
+    - user_angel.png et suivantes
+
+Organization :
+    - building.png
+    - chart_organisation.png (organigramme)
+    - reseller_programm.png (plusieurs personnes)
+    - sitemap.png et suivantes
+
+Recipe :
+    - chefs_hat.png
+    - cookie_chocolate.png
+    - cookies.png
+    - cutleries.png
+    - cutlery.png
+    - dish.png
+    - donut.png
+    - user_cook.png
+
+Image, peinture :
+    - artwork.png
+    - button_picture.png
+    - image.png
+    - monitor_wallpaper.png
+    - palette.png
+    - photo.png
+    - photo_album.png
+    - picture.png
+    - sharpen.png
+    
+Courriel :
+    - at_sign.png
+    - autoresponders.png
+    - contact_email.png
+    - documents_email.png
+    - email.png
+    - email_at_sign.png
+    - email_open.png
+    - emails.png
+    - mail_black.png (et suivantes)
+    
+Lettre : 
+    - email_air.png    
+    - envelope.png
+    
+Dictionnaire ou liste de qq chose :
+    - application_side_list.png (et suivantes)
+    - book_spelling.png
+    - date_task.png (todo list)
+    - directory_listing.png
+    - document_index.png
+    - document_prepare.png
+    - document_todo.png
+    - error_log.png
+    - index-cards.png
+    - legend.png
+    
+Code barre : 
+    - barcode.png
+    
+Document projeté, non publié :
+    - billboard_empty.png
+    - billboard_picture.png
+    - blackboard_drawing.png
+    - blackboard_empty.png
+            
+Jeu :
+    - board_game.png
+    - checkerboard.png
+    - chess_bishop.png ( et suivantes : toutes les pièces d'échec)
+    - controller.png
+    - dice.png
+    - joystick.png
+    
+Dessin : 
+    - border_color.png
+    - brushes.png
+    
+Graphique :
+    - bubblechart.png
+    - candlestickchart.png
+    - chart_bar.png
+    - chart_curve.png
+    - chart_pie.png
+    - chart_stock.png
+    - diagnostic_chart.png
+    - diagramm.png
+    - disk_space.png
+    
+Photo :
+    - camera.png
+    - camera_black.png
+    - film_photo.png
+    
+Objet en 3D :
+    - box.png
+    - box_closed.png
+    - brick.png
+    - bricks.png
+    - package.png
+
+Finances :    
+    - calculator.png
+    - calculator_black.png
+    - cash_terminal.png
+    - credit.png
+    - finance.png
+    
+Calendrier, agenda :
+    - calendar.png
+    - calendar_copy.png
+    - data_chooser.png   
+    - date.png 
+    - time.png
+    
+Fiche (dans un classeur, etc.)
+    - cards_bind_address.png
+    - curriculum_vitae.png
+    - medical_record.png
+    - vcard.png
+    
+Logiciel, programme :
+    - cd.png
+    - cd_case.png 
+    - computer.png
+    - disk.png
+    - dvd.png   
+    - file_extension_exe.png
+    - keyboard.png
+    - laptop.png
+    - monitor.png
+    - terminal.png
+    
+Film :
+    - cinema_ticket.png (bof)
+    - clip_splitter.png
+    - edit_free.png
+    - eye.png
+    - file_extension_mswmm.png
+    - film.png
+    - hd_ready.png
+    - lcd_tv.png, lcd_tv_image.png (émission de tv)
+    - movies.png
+    - slideshow.png (projection)
+    - television.png
+    - vhs.png (une cassette vhs)
+    - video.png (un caméscope)
+    
+Discussion, chat, etc.
+    - comment.png
+    - comment_box.png
+    - comments.png
+        
+Spectacle :
+    - curtain.png
+    
+Base de données
+    - database.png
+    - database_server.png
+    - form.png
+    - formheading.png
+    - table.png (et suivantes)    
+    
+Son, enregistrement sonore :
+    - ear_listen.png    
+    - electric_guitar.png
+    - headphone.png
+    - metronome.png
+    - microphone.png
+    - mixer.png
+    - music.png
+    - piano.png
+    - radio_1.png, radio_2.png (émissionde radio)
+    - sound.png
+    - speakers.png
+    - subwoofer.png
+    
+Clé USB :
+    - flashdisk.png
+    - flashdisk_logo.png
+    
+Carte géographique, planisphère :
+    - globe_model.png
+    - globe_place.png
+    - google_map.png    
+    - map.png
+    
+Affiche, feuille unique
+    - page.png
+    - page_white_text_width.png (et similaires)
+    - postage_stamp.png (timbre, pour évoquer une carte postale)
+    - resources.png
