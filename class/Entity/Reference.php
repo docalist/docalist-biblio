@@ -1,14 +1,16 @@
 <?php
 /**
- * This file is part of a "Docalist Biblio" plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
+ *
+ * Copyright (C) 2012, 2013 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  *
- * @package Docalist
- * @subpackage Biblio
- * @author Daniel Ménard <daniel.menard@laposte.net>
- * @version SVN: $Id$
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 namespace Docalist\Biblio\Entity;
 
@@ -75,27 +77,26 @@ class Reference extends AbstractEntity {
                 'description' => __('Support physique du document (papier, dvd, etc.)', 'docalist-biblio'),
             ),
             'author' => array(
-                'type' => 'Reference\Author*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Author*',
                 'label' => __('Auteur(s)', 'docalist-biblio'),
                 'description' => __('Liste des personnes physiques auteurs du document', 'docalist-biblio'),
             ),
             'organisation' => array(
-                'type' => 'Reference\Organisation*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Organisation*',
                 'label' => __('Organisme(s)', 'docalist-biblio'),
                 'description' => __('Liste des auteurs moraux : organismes, collectivités auteurs, commanditaires, etc.', 'docalist-biblio'),
             ),
             'title' => array(
                 'label' => __('Titre', 'docalist-biblio'),
                 'description' => __('Titre original du document catalogué', 'docalist-biblio'),
-
             ),
             'othertitle' => array(
-                'type' => 'Reference\OtherTitle*',
+                'type' => 'Docalist\Biblio\Entity\Reference\OtherTitle*',
                 'label' => __('Autre(s) titre(s)', 'docalist-biblio'),
                 'description' => __("Titre de l'ensemble, du dossier, du supplément, etc.", 'docalist-biblio'),
             ),
             'translation' => array(
-                'type' => 'Reference\Translation*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Translation*',
                 'label' => __('Traduction(s)', 'docalist-biblio'),
                 'description' => __('Traduction en une ou plusieurs langue du titre original qui figure dans Titre.', 'docalist-biblio'),
             ),
@@ -139,47 +140,47 @@ class Reference extends AbstractEntity {
                 'description' => __('International Standard Book Number (identifiant du livre) composé de 13 chiffres (10 pour des ouvrages anciens).', 'docalist-biblio'),
             ),
             'editor' => array(
-                'type' => 'Reference\Editor*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Editor*',
                 'label' => __("Editeur(s)", 'docalist-biblio'),
                 'description' => __("Société ou organisme délégué par l'auteur pour assurer la diffusion du document.", 'docalist-biblio'),
             ),
             'edition' => array(
-                'type' => 'Reference\Edition*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Edition*',
                 'label' => __("Mention(s) d'édition", 'docalist-biblio'),
                 'description' => __("Mentions d'édition et numéros divers qui ne font pas l'objet d'un champ spécifique.", 'docalist-biblio'),
             ),
             'collection' => array(
-                'type' => 'Reference\Collection*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Collection*',
                 'label' => __('Collection', 'docalist-biblio'),
                 'description' => __('Collection et numéro dans la collection, sous-collection et numéro dans la sous-collection, etc.', 'docalist-biblio'),
             ),
             'event' => array(
-                'type' => 'Reference\Event',
+                'type' => 'Docalist\Biblio\Entity\Reference\Event',
                 'label' => __("Evènement", 'docalist-biblio'),
                 'description' => __('Evènement (congrès, colloque, manifestation, soutenance de thèse, etc.) qui a donné lieu au document', 'docalist-biblio'),
             ),
             'degree' => array(
-                'type' => 'Reference\Degree',
+                'type' => 'Docalist\Biblio\Entity\Reference\Degree',
                 'label' => __('Diplôme', 'docalist-biblio'),
                 'description' => __("Nom du diplôme pour les documents donnant lieu à l'attribution d'un titre universitaire ou professionnel.", 'docalist-biblio'),
             ),
             'abstract' => array(
-                'type' => 'Reference\AbstractField*',
+                'type' => 'Docalist\Biblio\Entity\Reference\AbstractField*',
                 'label' => __('Résumé(s)', 'docalist-biblio'),
                 'description' => __('Résumé du document et langue du résumé.', 'docalist-biblio'),
             ),
             'topic' => array(
-                'type' => 'Reference\Topic*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Topic*',
                 'label' => __('Indexation', 'docalist-biblio'),
                 'description' => __('Liste de listes de mots-clés.', 'docalist-biblio'),
             ),
             'note' => array(
-                'type' => 'Reference\Note*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Note*',
                 'label' => __('Notes', 'docalist-biblio'),
                 'description' => __('Notes, remarques et informations supplémentaires sur le document.', 'docalist-biblio'),
             ),
             'link' => array(
-                'type' => 'Reference\Link*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Link*',
                 'label' => __('Lien(s)', 'docalist-biblio'),
                 'description' => __("Liste de liens relatifs au document.", 'docalist-biblio'),
             ),
@@ -188,7 +189,7 @@ class Reference extends AbstractEntity {
                 'description' => __('Digital Object Identifier : identifiant unique de la ressource électronique.', 'docalist-biblio'),
             ),
             'relations' => array(// TODO : au singulier
-                'type' => 'Reference\Relation*',
+                'type' => 'Docalist\Biblio\Entity\Reference\Relation*',
                 'label' => __('Relation(s)', 'docalist-biblio'),
                 'description' => __("Relations entre la notice cataloguée et d'autres notices de la même base.", 'docalist-biblio'),
             ),
@@ -198,12 +199,12 @@ class Reference extends AbstractEntity {
                 'description' => __('Personne ou organisme producteur de la notice.', 'docalist-biblio'),
             ),
             'creation' => array(
-                'type' => 'Reference\DateBy',
+                'type' => 'Docalist\Biblio\Entity\Reference\DateBy',
                 'label' => __('Création', 'docalist-biblio'),
                 'description' => __('Date de création de la notice et agent.', 'docalist-biblio'),
             ),
             'lastupdate' => array(
-                'type' => 'Reference\DateBy',
+                'type' => 'Docalist\Biblio\Entity\Reference\DateBy',
                 'label' => __('Mise à jour', 'docalist-biblio'),
                 'description' => __('Date de dernière mise à jour de la notice et agent.', 'docalist-biblio'),
             ),
