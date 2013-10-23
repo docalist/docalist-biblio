@@ -1,0 +1,40 @@
+Prisme : faire types pour "CDROM" (ne va pas, désigne un support)
+= CDROM/Logiciel/Programme/Base de données/Document informatique
+    - principales caractéristiques
+    - immatériel
+    - il faut un ordinateur pour consulter/utiliser
+    - a une certaine version ?
+
+    
+Prisme : faire types pour "document audiovisuel" (trop large, à découper).
+- film : une vidéo, qui est distribuée (possède un diffuseur, etc. comme un livre)
+- video recording : un film, mais non distribué (gris, comme un rapport)
+- TvBroadcast : émission de télé (documentaire, journal, débat, reportage, etc.)
+- enregistrement sonore (chanson en CSL) : audioRecording (chanson, discours, etc.)
+- émission de radio (radioBroadcast)
+- podcast / ballado diffusion
+
+BDSP : Faire un type pour : "Affiche/affichette/Carte postale/Tract"
+    - est-ce que tout ça peut aller ensemble
+    - trouver un nom générique
+
+WebPage : partir de WebSite ?
+BlogPost : type particulier de WebPage ?
+
+Bookmark ?
+
+Organisme
+
+Personne/personnage
+
+Brochure ?
+    - définir ce que c'est
+
+Recette de cuisine ???
+
+Voir les types BDSP qui manquent
+Vérifier que Asco couvert
+
+Cas limites :
+- une communication a un congrès qui est publiée dans une revue. Qui est le record
+  parent ? le congrès ? la revue ? les deux ?
