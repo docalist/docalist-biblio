@@ -1,21 +1,24 @@
 <?php
 /**
- * This file is part of a "Docalist Biblio" plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
+ *
+ * Copyright (C) 2012, 2013 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  *
- * @package Docalist
- * @subpackage Biblio
- * @author Daniel Ménard <daniel.menard@laposte.net>
- * @version SVN: $Id$
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 namespace Docalist\Biblio;
 
-use Docalist\Forms\Fragment;
+use Docalist\Biblio\Entity\Reference;
 use Docalist\Forms\Themes;
 use Docalist\Utils;
 use WP_Post;
+use Exception;
 
 /**
  * La page "création/modification d'une notice" d'une base documentaire.
@@ -34,59 +37,180 @@ class EditReference {
     protected $database;
 
     /**
+     * Le post-type de la base.
+     *
+     * Equivalent à $this->database->postType().
+     *
+     * @var string
+     */
+    protected $postType;
+
+    /**
+     * La notice en cours d'édition.
+     *
+     * @var Reference
+     */
+    protected $reference;
+
+    /**
      *
      * @param Database $database
      */
     public function __construct(Database $database) {
         $this->database = $database;
-        $this->id = 'edit-' . $database->postType();
+        $this->postType = $database->postType();
+        $this->id = 'edit-' . $this->postType;
 
-        add_action('add_meta_boxes_' . $database->postType(), function(WP_Post $post) {
+        add_action('load-post.php', function() {
+            if (! $this->isMyPostType()) {
+                return;
+            }
+
+            if (isset($_GET['action']) && $_GET['action'] === 'edit') {
+                $this->reference = $this->database->load($_GET['post']);
+                $this->setPageTitle($this->reference->type, false);
+            }
+        });
+
+        add_action('load-post-new.php', function() {
+            $this->isMyPostType() && $this->create();
+        });
+
+        add_action('add_meta_boxes_' . $this->postType, function(WP_Post $post) {
             $this->edit($post->ID);
         });
 
         add_action('post_updated', function($id, WP_Post $post, WP_Post $previous) {
-            if ($post->post_type === $this->database->postType()) {
+            if ($post->post_type === $this->postType) {
                 $this->save($post->ID);
             }
         }, 10, 3);
     }
 
-    protected function save($id) {
-        // Vérifie le nonce
-        if (! $this->checkNonce()) {
-            return;
-        }
+    /**
+     * Indique si la requête en cours concerne un enregistrement du post-type
+     * géré par cette base.
+     *
+     * @return boolean
+     */
+    protected function isMyPostType() {
+        global $typenow;
 
-        // Charge la notice à mettre à jour
-        $reference = $this->database->load($id);
-
-        // Met à jour la notice à partir des données transmises dans $_POST
-        $record = wp_unslash($_POST);
-        foreach($this->metaboxes() as $id => $metabox) {
-            $metabox->bind($record);
-            foreach($metabox->data() as $key => $data) {
-                $reference->$key = $data;
-            }
-        }
-
-        // Enregistre la notice modifiée
-        $this->database->store($reference);
+        return $typenow === $this->postType;
     }
 
+    /**
+     * Modifie le titre de l'écran d'édition en fonction du type de notice en
+     * cours.
+     *
+     * @param string $type le type en cours
+     * @param boolean $creation true s'il s'agit d'un nouvele enregistrement,
+     * false s'il s'agit d'une mise à jour.
+     */
+    protected function setPageTitle($type, $creation = false) {
+        $base = $this->database->settings()->label;
+
+        $type = $type ? $this->database->classForType($type, true) : 'Type inconnu';
+        $type = $type->label;
+
+        if ($creation) {
+            $op = __('création', 'docalist-biblio');
+            $label = 'add_new_item';
+        } else {
+            $op = __('édition', 'docalist-biblio');
+            $label = 'edit_item';
+        }
+
+        $title = sprintf('%s - %s : %s', $base, $type, $op);
+
+        get_post_type_object($this->postType)->labels->$label = $title;
+    }
+
+    /**
+     * Affiche l'écran "choix du type de notice à créer".
+     */
+    protected function create(){
+        // Si le type de ref a déjà été indiqué, laisse wp faire son job
+        if (isset($_REQUEST['ref_type'])) {
+            return $this->setPageTitle($_REQUEST['ref_type'], true);
+        }
+
+        // Indique à WP l'option de menu en cours
+        // cf. wp-admin/post-new.php, lignes 28 et suivantes
+        global $submenu_file;
+        $submenu_file = "post-new.php?post_type=$this->postType";
+
+        // Affiche la page "Choix du type de notice à créer"
+        require_once('./admin-header.php');
+        $this->chooseType();
+        include('./admin-footer.php');
+
+        // Empêche wp d'afficher le formulaire edit-form standard
+        die();
+    }
+
+    /**
+     * Permet à l'utilisateur de choisir le type de référence à créer.
+     *
+     * Liste tous les types enregistrés pour la base, génère des liens qui
+     * permettent à l'utilisateur de choisir et rappelle la page
+     * wp-admin/post-new.php en passant l'argument ref_type en paramètre.
+     *
+     * @throws Exception
+     */
+    protected function chooseType() {
+        $postType = get_post_type_object($this->postType);
+
+        // Début de page
+        echo '<div class="wrap">';
+
+        // Icone et titre de la page
+        screen_icon();
+        $title = $this->database->settings()->label . ' - ' . $postType->labels->add_new_item;
+        printf('<h2>%s</h2>', $title);
+
+        // Texte d'intro
+        $msg = __('Choisissez le type de notice à créer :', 'docalist-biblio');
+        printf('<p>%s</p>', $msg);
+
+        // Table widefat avec la liste des types disponibles
+        echo '<table class="widefat">';
+        foreach($this->database->settings()->types as $i => $type) {
+            $class = $i % 2 ? 'alternate' : '';
+            $link = add_query_arg('ref_type', $type->name);
+            printf('<tr class="%s"><td class="row-title"><a href="%s">%s</a></td><td class="desc">%s</td></tr>', $class, $link, $type->label, $type->description);
+        }
+
+        if (!isset($i)) {
+            $msg = __('Aucun type de notices dans cette base.', 'docalist-biblio');
+            printf('<tr><td class="desc" colspan="2">%s</td></tr>', $msg);
+        }
+
+        echo '</table>';
+
+        // Fin de page
+        echo '</div>';
+    }
 
     protected function edit($id) {
         // Supprime la metabox "Identifiant"
-        remove_meta_box('slugdiv', $this->database->postType(), 'normal');
+        remove_meta_box('slugdiv', $this->postType, 'normal');
 
         add_action('edit_form_after_title', function() {
             $this->createNonce();
         });
 
         // Charge la notice à éditer
-        $reference = $this->database->load($id);
+        if (! isset($this->reference)) {
+            $this->reference = $this->database->load($id);
+        }
+
+        // Détermine la grille de saisie à utiliser
+        isset($_REQUEST['ref_type']) && $this->reference->type = $_REQUEST['ref_type'];
+        $type = $this->database->classForType($this->reference->type, true);
+
         $assets = Themes::assets('wordpress');
-        foreach($this->metaboxes() as $id => $form) {
+        foreach($type->metaboxes() as $id => $form) {
             $title = $form->label() ?: $id;
 
             // @formatter:off
@@ -100,19 +224,54 @@ class EditReference {
                     // Affiche le formulaire
                     $form->render('wordpress');
                 },
-                $this->database->postType(),// posttype
-                'normal',                   // contexte
-                'default'                   // priorité
+                $this->postType,    // posttype
+                'normal',           // contexte
+                'default'           // priorité
             );
             // @formatter:on
 
-            $form->bind($reference);
+            $form->bind($this->reference);
             $assets->add($form->assets());
         }
 
         // Insère tous les assets dans la page
         Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
     }
+
+    /**
+     * Enregistre la notice.
+     *
+     * @param int $id ID de la notice à enregistrer.
+     */
+    protected function save($id) {
+        // Vérifie le nonce
+        if (! $this->checkNonce()) {
+            return;
+        }
+
+        // Récupère les données transmises dans $_POST
+        $record = wp_unslash($_POST);
+
+        // Charge la notice à mettre à jour
+        $this->reference = $this->database->load($id);
+        if (! isset($record['type'])) {
+            throw new Exception('Pas de type de notice dans $_POST');
+        }
+        $type = $this->database->classForType($record['type'], true);
+
+        // Met à jour la notice
+        $record = wp_unslash($_POST);
+        foreach($type->metaboxes() as $id => $metabox) {
+            $metabox->bind($record);
+            foreach($metabox->data() as $key => $data) {
+                $this->reference->$key = $data;
+            }
+        }
+
+        // Enregistre la notice modifiée
+        $this->database->store($this->reference);
+    }
+
 
     /**
      * Génère un nonce WordPress lorsque l'écran d'édition du post type
@@ -130,192 +289,5 @@ class EditReference {
      */
     protected function checkNonce() {
         return isset($_POST[self::NONCE]) && wp_verify_nonce($_POST[self::NONCE], 'edit-post');
-    }
-
-    protected function metaboxes() {
-        /*
-        $metaboxes = wp_cache_get(__METHOD__);
-
-        if ($metaboxes !== false) {
-            echo 'metaboxes chargées depuis le cache wp<br />';
-            return $metaboxes;
-        }
-        */
-        $metaboxes = array();
-        // @formatter:off
-
-        // Type, Genre, Media
-        $box = new Fragment();
-        $box->label(__('Nature du document', 'docalist-biblio'));
-        $box->select('type')
-            ->options($this->taxonomy('dclreftype'));
-        $box->select('genre')
-            ->options($this->taxonomy('dclrefgenre'));
-        $box->select('media')
-            ->options($this->taxonomy('dclrefmedia'));
-        $metaboxes['dclreftype'] = $box;
-
-        // Title, OtherTitle, Translation
-        $box = new Fragment();
-        $box->label(__('Titre du document', 'docalist-biblio'));
-        $box->input('title')
-            ->addClass('large-text')
-            ->attribute('id', 'DocTitle');
-        $box->table('othertitle')
-                ->select('type')
-                ->options($this->taxonomy('dclreftitle'))
-            ->parent()
-                ->input('title');
-        $box->table('translation')
-                ->select('language')
-                ->options($this->taxonomy('dcllanguage'))
-            ->parent()
-                ->input('title');
-        $metaboxes['dclreftitles'] = $box;
-
-        // Author, Organisation
-        $box = new Fragment();
-        $box->label(__('Auteurs', 'docalist-biblio'));
-        $box->table('author')
-                ->input('name')
-            ->parent()
-                ->input('firstname')
-            ->parent()
-                ->select('role')
-                ->options($this->taxonomy('dclrefrole'));
-        $box->table('organisation')
-                ->input('name')
-            ->parent()
-                ->input('city')
-            ->parent()
-                ->select('country')
-                ->options($this->taxonomy('dclcountry'))
-            ->parent()
-                ->select('role')
-                ->options($this->taxonomy('dclrefrole'));
-        $metaboxes['dclrefauthors'] = $box;
-
-        // Journal, Issn, Volume, Issue
-        $box = new Fragment();
-        $box->label(__('Journal / périodique', 'docalist-biblio'));
-        $box->input('journal')
-            ->attribute('class', 'large-text');
-        $box->input('issn');
-        $box->input('volume');
-        $box->input('issue');
-        $metaboxes['dclrefjournal'] = $box;
-
-        // Date / language / pagination / format
-        $box = new Fragment();
-        $box->label(__('Informations bibliographiques', 'docalist-biblio'));
-        $box->input('date');
-        $box->select('language')
-            ->options($this->taxonomy('dcllanguage'));
-        $box->input('pagination');
-        $box->input('format');
-        $metaboxes['dclrefbiblio'] = $box;
-
-        // Editor / Collection / Edition / Isbn
-        $box = new Fragment();
-        $box->label(__('Informations éditeur', 'docalist-biblio'));
-        $box->table('editor')
-                ->input('name')
-            ->parent()
-                ->input('city')
-            ->parent()
-                ->select('country')
-                ->options($this->taxonomy('dclcountry'));
-        $box->table('collection')
-                ->input('name')
-            ->parent()
-                ->input('number');
-        $box->table('edition')
-                ->input('type')
-            ->parent()
-                ->input('value');
-        $box->input('isbn');
-        $metaboxes['dclrefeditor'] = $box;
-
-        // Event / Degree
-        $box = new Fragment();
-        $box->label(__('Congrès et diplômes', 'docalist-biblio'));
-        $box->table('event')
-                ->input('title')
-            ->parent()
-                ->input('date')
-            ->parent()
-                ->input('place')
-            ->parent()
-                ->input('number');
-        $box->table('degree')
-                ->select('level')
-                ->options(array('licence','master','doctorat'))
-            ->parent()
-                ->input('title');
-        $metaboxes['dclrefevent'] = $box;
-
-        // Topic / Abstract / Note
-        $box = new Fragment();
-        $box->label(__('Indexation et résumé', 'docalist-biblio'));
-        $box->table('topic')
-                ->select('type')
-                ->options(array('prisme', 'names', 'geo', 'free'))
-            ->parent()
-                ->input('term');
-
-        $box->table('abstract')
-                ->select('language')
-                ->options($this->taxonomy('dcllanguage'))
-            ->parent()
-                ->textarea('content');
-        $box->table('note')
-                ->select('type')
-                ->options($this->taxonomy('dclrefnote'))
-            ->parent()
-                ->textarea('content');
-
-        $metaboxes['dclreftopics'] = $box;
-
-        // Ref / Owner / Creation / Lastupdate
-        $box = new Fragment();
-        $box->label(__('Informations de gestion', 'docalist-biblio'));
-        $box->input('ref');
-        $box->input('owner');
-        $box->table('creation')
-                ->input('date')
-            ->parent()
-                ->input('by');
-        $box->table('lastupdate')
-                ->input('date')
-            ->parent()
-                ->input('by');
-        $metaboxes['dclrefmanagement'] = $box;
-
-        //@formatter:on
-/*
-        $box = new Fragment();
-        $box->label(__('Notice brute', 'docalist-biblio'));
-        $box->tag('pre', 'content');
-        $metaboxes['dclrefjson'] = $box;
-*/
-        /*
-        wp_cache_set(__METHOD__, $metaboxes);
-        echo 'metaboxes enregistrées dans le cache wp<br />';
-        */
-
-        return $metaboxes;
-    }
-
-    protected function taxonomy($name) {
-        $terms = get_terms($name, array(
-            'hide_empty' => false,
-        ));
-
-        $result = array();
-        foreach ($terms as $term) {
-            $result[$term->slug] = $term->name;
-        }
-
-        return $result;
     }
 }
