@@ -1,14 +1,16 @@
 <?php
 /**
- * This file is part of a "Docalist Biblio" plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
+ *
+ * Copyright (C) 2012, 2013 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  *
- * @package Docalist
- * @subpackage Biblio
- * @author Daniel Ménard <daniel.menard@laposte.net>
- * @version SVN: $Id$
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 namespace Docalist\Biblio;
 
@@ -16,6 +18,7 @@ use Docalist\Data\Repository\PostTypeRepository;
 use Docalist\Data\Entity\EntityInterface;
 use Docalist\Biblio\Entity\Reference;
 use WP_Post;
+use Exception;
 
 /**
  * Une base de données documentaire.
@@ -34,7 +37,7 @@ class Database extends PostTypeRepository {
      */
     public function __construct(DatabaseSettings $settings) {
         // Construit le dépôt
-        parent::__construct('Entity\Reference', 'dclref' . $settings->name);
+        parent::__construct('Docalist\Biblio\Entity\Reference', 'dclref' . $settings->name);
 
         // Stocke nos paramètres
         $this->settings = $settings;
@@ -47,6 +50,52 @@ class Database extends PostTypeRepository {
 
         // Déclare nos facettes
         $this->docalistSearchFacets();
+    }
+
+    /**
+     * Retourne les paramètres de la base de données.
+     *
+     * @return DatabaseSettings
+     */
+    public function settings() {
+        return $this->settings;
+    }
+
+    /**
+     * Retourne le nom complet de la classe associée au type de notice passé
+     * en paramètre, ou une instance de cette classe si le paramètre
+     * $isntance est à true.
+     *
+     * @param string $type Le nom du type de notice.
+     * @param bool $instance false pour retourner le nom de la classe, true pour
+     * retourner une nouvelle instance de ce type.
+     *
+     * @throws Exception Si le type de notice indiqué n'existe pas (n'est pas
+     * enregistré).
+     *
+     * @return string|AbstractType
+     */
+    public function classForType($type, $instance = false) {
+        // Récupère la liste de tous les types définis
+        $types = apply_filters('docalist_biblio_get_types', array());
+
+        // Vérifie que le type passé en paramètre existe
+        if (! isset($types[$type])) {
+            $msg = __('Le type %s n\'existe pas', 'docalist-biblio');
+            throw new Exception(sprintf($msg, $type));
+        }
+
+        // Vérifie que ce type est utilisé dans cette base de données
+        /*
+        if (! in_array($type, $this->settings->types->toArray())) {
+            $msg = __('Le type %s n\'est pas autorisé pour la base %s', 'docalist-biblio');
+            throw new Exception(sprintf($msg, $type, $this->settings->name));
+        }
+        */
+
+        $class = $types[$type];
+
+        return $instance ? new $class() : $class;
     }
 
     /**
