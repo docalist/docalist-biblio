@@ -15,14 +15,14 @@
 namespace Docalist\Biblio;
 
 use Docalist\Biblio\Entity\Reference;
-use Docalist\AbstractAdminPage;
+use Docalist\AdminPage;
 use Docalist\Data\Schema\Schema;
 use Docalist\Data\Schema\Field;
 use Docalist\Utils;
 /**
  * Page "Importer" d'une base
  */
-class ImportPage extends AbstractAdminPage {
+class ImportPage extends AdminPage {
 
     /**
      *
@@ -35,19 +35,18 @@ class ImportPage extends AbstractAdminPage {
      * @param Database $database
      */
     public function __construct(Database $database) {
-//         echo "Création de la page 'liste des notices' pour la base ", $database->settings()->name, '<br />';
-        $parent = 'edit.php?post_type=' . $database->postType();
-        $title = $database->label();
-        $menu = __('Gérer', 'docalist-biblio');
-        parent::__construct($parent, $title, $menu);
+        parent::__construct(
+            'import-' . $database->postType(),              // ID
+            'edit.php?post_type=' . $database->postType(),  // Page parent
+            __('Gérer', 'docalist-biblio')                  // Libellé du menu
+        );
         $this->database = $database;
-        $this->id = 'import-' . $database->postType();
     }
 
     /**
      * Import de fichier
      */
-    public function actionImport() {
+    public function actionImport($confirm = false) {
         $uploads = wp_upload_dir();
         $uploadDir = $uploads['basedir'];
         $uploadUrl = $uploads['baseurl'];
@@ -55,10 +54,10 @@ class ImportPage extends AbstractAdminPage {
         $path = $uploadDir . '/prisme/130912/base-prisme-2013-09-12.TXT';
         $class= 'Docalist\Biblio\Import\Prisme';
 
-        $msg = 'Le fichier <code>%s</code> va être importé dans la base <b>%s</b>.';
-        $msg = sprintf($msg, realpath($path), $this->database->label());
-        if (! $this->confirm($msg, "Lancer l'import")) {
-            return;
+        if (! $confirm) {
+            $msg = 'Le fichier <code>%s</code> va être importé dans la base <b>%s</b>.';
+            $msg = sprintf($msg, realpath($path), $this->database->label());
+            return $this->confirm($msg, "Lancer l'import");
         }
 
         $records = new $class($path, true);
@@ -95,10 +94,11 @@ class ImportPage extends AbstractAdminPage {
 
     }
 
-    public function actionDeleteAll() {
-        if (! $this->confirm('Toutes les notices vont être supprimées.')) {
-            return;
+    public function actionDeleteAll($confirm = false) {
+        if (! $confirm) {
+            return $this->confirm('Toutes les notices vont être supprimées.');
         }
+
         echo __('<p>Suppression en cours...</p>', 'docalist-search');
 
         $count = $this->database->deleteAll();
