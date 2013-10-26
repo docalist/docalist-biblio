@@ -96,7 +96,7 @@ class AdminDatabases extends AdminPage {
      * Liste des bases de données.
      */
     public function actionDatabasesList() {
-        return $this->view('docalist-biblio:admin/databases-list', [
+        return $this->view('docalist-biblio:database/list', [
             'databases' => $this->settings->databases
         ]);
     }
@@ -122,7 +122,7 @@ class AdminDatabases extends AdminPage {
 
         // Affiche le formulaire
         if (! $this->isPost()) {
-            return $this->view('docalist-biblio:admin/database-edit', [
+            return $this->view('docalist-biblio:database/edit', [
                 'database' => $database,
                 'dbindex' => $dbindex,
             ]);
@@ -176,7 +176,7 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Liste des types
-        return $this->view('docalist-biblio:admin/types-list', [
+        return $this->view('docalist-biblio:type/list', [
             'database' => $database,
             'dbindex' => $dbindex
         ]);
@@ -220,7 +220,7 @@ class AdminDatabases extends AdminPage {
             }
 
             // Choisit le type
-            return $this->view('docalist-biblio:admin/type-add', [
+            return $this->view('docalist-biblio:type/add', [
                 'database' => $database,
                 'dbindex' => $dbindex,
                 'types' => $types,
@@ -262,7 +262,7 @@ class AdminDatabases extends AdminPage {
 
         //TODO : if is post!!
 
-        return $this->view('docalist-biblio:admin/type-edit', [
+        return $this->view('docalist-biblio:type/edit', [
             'dbindex' => $dbindex,
             'typeindex' => $typeindex,
             'database' => $database,
@@ -306,7 +306,7 @@ class AdminDatabases extends AdminPage {
             return $this->redirect($this->url('TypesList', $dbindex), 303);
         }
 
-        return $this->view('docalist-biblio:admin/type-fields', [
+        return $this->view('docalist-biblio:type/fields', [
             'dbindex' => $dbindex,
             'typeindex' => $typeindex,
             'database' => $database,
