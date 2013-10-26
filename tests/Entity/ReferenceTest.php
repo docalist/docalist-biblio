@@ -19,8 +19,8 @@ class ReferenceTest extends EntityTestCase {
         $this->checkIs($ref, 'volume'       , 'string');
         $this->checkIs($ref, 'issue'        , 'string');
         $this->checkIs($ref, 'language'     , 'string*');
-        $this->checkIs($ref, 'pagination'   , 'string*');
-        $this->checkIs($ref, 'format'       , 'string*');
+        $this->checkIs($ref, 'pagination'   , 'string');
+        $this->checkIs($ref, 'format'       , 'string');
         $this->checkIs($ref, 'isbn'         , 'string');
         $this->checkIs($ref, 'editor'       , 'Docalist\Biblio\Entity\Reference\Editor*');
         $this->checkIs($ref, 'edition'      , 'Docalist\Biblio\Entity\Reference\Edition*');
