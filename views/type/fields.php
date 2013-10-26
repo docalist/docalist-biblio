@@ -34,7 +34,7 @@ use Docalist\Forms\Fragment;
 
 wp_enqueue_script(
     'docalist-biblio-type-fields',
-    plugins_url('docalist-biblio/js/type-fields.js'),
+    plugins_url('docalist-biblio/views/type/fields.js'),
     array( 'jquery-ui-sortable'),
     '20131026',
     true
