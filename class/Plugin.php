@@ -1,14 +1,16 @@
 <?php
 /**
- * This file is part of a "Docalist Biblio" plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
+ *
+ * Copyright (C) 2012, 2013 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  *
- * @package Docalist
- * @subpackage Biblio
- * @author Daniel Ménard <daniel.menard@laposte.net>
- * @version SVN: $Id$
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 namespace Docalist\Biblio;
 
@@ -25,40 +27,69 @@ use Docalist\Data\Repository\RepositoryInterface;
 class Plugin extends AbstractPlugin {
 
     /**
+     * La configuration du plugin.
+     *
+     * @var Settings
+     */
+    protected $settings;
+
+    /**
+     * La liste des bases
+     *
+     * @var Database[]
+     */
+    protected $databases;
+
+    /**
      * Les taxonomies créées par ce plugin
      *
      * @var Taxonomies
      */
     protected $taxonomies;
 
-    /**
-     * Les bases documentaires définies par l'utilisateur
-     *
-     * @var Database[]
-     */
-    protected $databases;
-
-
     public function register() {
         // Charge la configuration du plugin
-        $settings = new Settings('docalist-biblio');
-        $this->add($settings);
+        $this->settings = new Settings('docalist-biblio');
 
         // Crée les bases de données définies par l'utilisateur
-        foreach ($settings->databases as $databaseSettings) {
-            $database = new Database($databaseSettings);
+        $this->databases = array();
+        foreach ($this->settings->databases as $settings) {
+            /* @var $settings DatabaseSettings */
+            $database = new Database($settings);
             $this->databases[$database->postType()] = $database;
         }
 
         // Crée les taxonomies
         $this->registerTaxonomies();
 
-        // Ajoute les pages d'administration dans le back-office de wordpress
+        // Enregistre les types de référence pré-définis
+        add_filter('docalist_biblio_get_types', function(array $types) {
+            return $types + [
+                'article'       => 'Docalist\Biblio\Type\Article',
+                'Article'       => 'Docalist\Biblio\Type\Article', // TODO: à enlever, type incorrect dans la base prisme actuelle
+                'book'          => 'Docalist\Biblio\Type\Book',
+                'chapter'       => 'Docalist\Biblio\Type\Chapter',
+                'degree'        => 'Docalist\Biblio\Type\Degree',
+                'issue'         => 'Docalist\Biblio\Type\Issue',
+                'legislation'   => 'Docalist\Biblio\Type\Legislation',
+                'meeting'       => 'Docalist\Biblio\Type\Meeting',
+                'periodical'    => 'Docalist\Biblio\Type\Periodical',
+                'report'        => 'Docalist\Biblio\Type\Report',
+                'website'       => 'Docalist\Biblio\Type\WebSite',
+            ];
+        });
+
+        // Back office
         add_action('admin_menu', function () {
+            // Page "Gestion des bases"
+            new AdminDatabases($this->settings);
+
+            // Bases de données
             foreach($this->databases as $database) {
                 new ListReferences($database);
                 new EditReference($database);
-                $this->add(new ImportPage($database)); // @todo : enlever le add() quand AdminPage ne sera plus un registrable
+
+                new ImportPage($database);
             }
         });
 
@@ -137,7 +168,7 @@ class Plugin extends AbstractPlugin {
         $args['label'] = __('Supports de documents', 'docalist-biblio');
         register_taxonomy('dclrefmedia', array(), $args);
 
-        // Etiquettes de rôle
+        // DONE Etiquettes de rôle
         $args['label'] = __('Etiquettes de rôle', 'docalist-biblio');
         register_taxonomy('dclrefrole', array(), $args);
 
@@ -148,5 +179,17 @@ class Plugin extends AbstractPlugin {
         // Types de notes
         $args['label'] = __('Types de notes', 'docalist-biblio');
         register_taxonomy('dclrefnote', array(), $args);
+
+        // Types de liens
+        $args['label'] = __('Types de liens', 'docalist-biblio');
+        register_taxonomy('dclreflink', array(), $args);
+
+        // Types de relations
+        $args['label'] = __('Types de relations', 'docalist-biblio');
+        register_taxonomy('dclrefrelation', array(), $args);
+
+        // collations
+        // degreee levels
+        // liste des thesaurus
     }
 }
