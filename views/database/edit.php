@@ -22,6 +22,7 @@ use Docalist\Forms\Form;
  *
  * @param DatabaseSettings $database La base à éditer.
  * @param int $dbindex L'index de la base.
+ * @param string $error Erreur éventuelle à afficher.
  */
 ?>
 <div class="wrap">
@@ -29,15 +30,21 @@ use Docalist\Forms\Form;
     <h2><?= __('Paramètres de la base', 'docalist-biblio') ?></h2>
 
     <p class="description">
-        <?= __('Utilisez le formulaire ci-dessous pour modifier les paramètres de votre base :', 'docalist-biblio') ?>
+        <?= __('Utilisez le formulaire ci-dessous pour modifier les paramètres de votre base de données :', 'docalist-biblio') ?>
     </p>
+
+    <?php if ($error) :?>
+        <div class="error">
+            <p><?= $error ?></p>
+        </div>
+    <?php endif ?>
 
     <?php
         $form = new Form('', 'post');
         $form->input('name')->attribute('class', 'regular-text');
-        $form->input('label')->attribute('class', 'regular-text');
-        $form->textarea('description')->attribute('rows', '2')->attribute('class', 'large-text');
         $form->input('slug')->attribute('class', 'regular-text');
+        $form->input('label')->attribute('class', 'large-text');
+        $form->textarea('description')->attribute('rows', 10)->attribute('class', 'large-text');
         $form->submit(__('Enregistrer les modifications', 'docalist-search'));
 
         $form->bind($database)->render('wordpress');
