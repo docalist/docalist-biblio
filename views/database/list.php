@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
+use Docalist\Biblio\TypeSettings;
 
 /**
  * Affiche la liste des bases de données existantes.
@@ -22,6 +23,13 @@ use Docalist\Biblio\DatabaseSettings;
  * @param DatabaseSettings[] $databases Liste des bases de données.
  */
 ?>
+<style>
+div.dbdesc{
+    white-space: pre-wrap;
+    max-height: 10em;
+    overflow-y: auto;
+}
+</style>
 <div class="wrap">
     <?= screen_icon() ?>
     <h2><?= __('Gestion des bases documentaires', 'docalist-biblio') ?></h2>
@@ -34,11 +42,11 @@ use Docalist\Biblio\DatabaseSettings;
 
     <thead>
         <tr>
-            <th><?= __('Libellé', 'docalist-biblio') ?></th>
-            <th><?= __('Identifiant', 'docalist-biblio') ?></th>
+            <th><?= __('Nom de la base', 'docalist-biblio') ?></th>
             <th><?= __('Slug', 'docalist-biblio') ?></th>
-            <th><?= __('Types', 'docalist-biblio') ?></th>
-            <th><?= __('Notices', 'docalist-biblio') ?></th>
+            <th><?= __('Types de notices', 'docalist-biblio') ?></th>
+            <th><?= __('Nombre de notices', 'docalist-biblio') ?></th>
+            <th><?= __('Description / notes', 'docalist-biblio') ?></th>
         </tr>
     </thead>
 
@@ -55,6 +63,7 @@ use Docalist\Biblio\DatabaseSettings;
         $types === '' && $types = __('Aucun type défini pour cette base.', 'docalist-biblio');
 
         $count = wp_count_posts($database->postType())->publish;
+        $listRefs = esc_url(admin_url('edit.php?post_type=' . $database->postType()));
         $nb++; ?>
 
         <tr>
@@ -83,10 +92,24 @@ use Docalist\Biblio\DatabaseSettings;
                 </div>
             </td>
 
-            <td><?= $database->name ?></td>
-            <td><?= $database->slug ?></td>
-            <td><?= $types ?></td>
-            <td><?= $count ?></td>
+            <td><a href="<?= $database->url() ?>"><?= $database->slug ?></a></td>
+            <td>
+                <?php if (0 === count($database->types)): ?>
+                    <a href="<?= esc_url($this->url('TypeAdd', $dbindex)) ?>">
+                        <?= __('Ajouter un type...', 'docalist-biblio') ?>
+                    </a>
+                <?php else: ?>
+                    <?php foreach ($database->types as $typeindex => $type): /* @var $type TypeSettings */ ?>
+                        <a href="<?= esc_url($this->url('TypeFields', $dbindex, $typeindex)) ?>">
+                            <?= $type->label ?>
+                        </a>
+                        <br />
+                    <?php endforeach ?>
+                <?php endif ?>
+
+            </td>
+            <td><a href="<?= $listRefs ?>"><?= $count ?></a></td>
+            <td><div class="dbdesc"><?= $database->description ?></div></td>
         </tr>
         <?php
     } // end foreach
