@@ -121,23 +121,30 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Affiche le formulaire
-        if (! $this->isPost()) {
-            return $this->view('docalist-biblio:database/edit', [
-                'database' => $database,
-                'dbindex' => $dbindex,
-            ]);
+        $error = '';
+        if ($this->isPost()) {
+            // Enregistre les paramètres de la base
+            try {
+                $_POST = wp_unslash($_POST);
+                $database->name = $_POST['name'];
+                $database->label = $_POST['label'];
+                $database->description = $_POST['description'];
+                $database->slug = $_POST['slug'];
+
+                $database->validate();
+                $this->settings->save();
+
+                return $this->redirect($this->url('DatabasesList'), 303);
+            } catch (Exception $e) {
+                $error = $e->getMessage();
+            }
         }
 
-        // Enregistre les paramètres de la base
-        $_POST = wp_unslash($_POST);
-        $database->name = $_POST['name'];
-        $database->label = $_POST['label'];
-        $database->description = $_POST['description'];
-        $database->slug = $_POST['slug'];
-
-        $this->settings->save();
-
-        return $this->redirect($this->url('DatabasesList'), 303);
+        return $this->view('docalist-biblio:database/edit', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'error' => $error
+        ]);
     }
 
     /**
