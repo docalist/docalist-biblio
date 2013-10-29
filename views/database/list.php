@@ -24,7 +24,7 @@ use Docalist\Biblio\DatabaseSettings;
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= __('Gestion des bases de données Docalist Biblio', 'docalist-biblio') ?></h2>
+    <h2><?= __('Gestion des bases documentaires', 'docalist-biblio') ?></h2>
 
     <p class="description">
         <?= __('Voici la liste de vos bases de données :', 'docalist-biblio') ?>
