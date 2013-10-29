@@ -16,6 +16,7 @@ namespace Docalist\Biblio;
 
 use Docalist\Data\Entity\AbstractEntity;
 use DateTime;
+use Exception;
 
 /**
  * Paramètres d'une base de données.
@@ -34,22 +35,22 @@ class DatabaseSettings extends AbstractEntity {
         return array(
             'name' => array(
                 'label' => __('Nom de la base de données', 'docalist-biblio'),
-                'description' => __('Détermine le post-type (le préfixe dclref est ajouté). 14 caractères maxi, [a-z-]+.', 'docalist-biblio'),
-            ),
-
-            'label' => array(
-                'label' => __('Libellé de la base de données', 'docalist-biblio'),
-                'description' => __('Libellé utilisé dans les menus, dans les écrans, etc.', 'docalist-biblio'),
-            ),
-
-            'description' => array(
-                'label' => __('Description de la base de données', 'docalist-biblio'),
-                'description' => __('Description de la base.', 'docalist-biblio'),
+                'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
             ),
 
             'slug' => array(
-                'label' => __('Slug de la base de données', 'docalist-biblio'),
-                'description' => __('Détermine la page d\'accueil de la base et les urls des notices.', 'docalist-biblio'),
+                'label' => __('Slug de la base', 'docalist-biblio'),
+                'description' => __("Votre base sera accessible à l'adresse <code>http://votre-site/<b>slug</b></code> et les références auront une url de la forme <code>http://votre-site/<b>slug</b>/ref</code>. Au moins un caractère, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
+            ),
+
+            'label' => array(
+                'label' => __('Libellé à afficher', 'docalist-biblio'),
+                'description' => __('Libellé affiché dans les menus et dans les pages du back-office.', 'docalist-biblio'),
+            ),
+
+            'description' => array(
+                'label' => __('Description, notes, remarques', 'docalist-biblio'),
+                'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
             ),
 
             'types' => array(
@@ -63,6 +64,29 @@ class DatabaseSettings extends AbstractEntity {
             ),
         );
         // @formatter:on
+    }
+
+    /**
+     * Valide les propriétés de la base.
+     *
+     * Retourne true si tout est correct, génère une exception sinon.
+     *
+     * @return boolean
+     *
+     * @throws Exception
+     */
+    public function validate() {
+        if (!preg_match('~^[a-z-]{1,14}$~', $this->name)) {
+            throw new Exception(__("Le nom de la base est invalide.", 'docalist-biblio'));
+        }
+
+        if (! preg_match('~^[a-z-]+$~', $this->slug)) {
+            throw new Exception(__('Le slug de la base est incorrect.', 'docalist-biblio'));
+        }
+
+        $this->label = strip_tags($this->label);
+
+        return true;
     }
 
     public function postType() {
