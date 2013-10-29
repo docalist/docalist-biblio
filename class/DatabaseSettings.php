@@ -85,12 +85,22 @@ class DatabaseSettings extends AbstractEntity {
         }
 
         $this->label = strip_tags($this->label);
+        empty($this->label) && $this->label = $this->name;
 
         return true;
     }
 
     public function postType() {
         return 'dclref' . $this->name;
+    }
+
+    /**
+     * Retourne l'url de la page d'accueil de la base.
+     *
+     * @return string
+     */
+    public function url() {
+        return get_post_type_archive_link($this->postType());
     }
 
     private function now() {
