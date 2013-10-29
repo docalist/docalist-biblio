@@ -103,7 +103,7 @@ use Docalist\Biblio\DatabaseSettings;
 
     <p>
         <a href="<?= esc_url($this->url('DatabaseAdd')) ?>" class="button button-primary">
-            <?= __('Créer une nouvelle base...', 'docalist-biblio') ?>
+            <?= __('Créer une base...', 'docalist-biblio') ?>
         </a>
     </p>
 </div>
