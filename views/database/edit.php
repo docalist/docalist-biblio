@@ -50,3 +50,26 @@ use Docalist\Forms\Form;
         $form->bind($database)->render('wordpress');
     ?>
 </div>
+<script type="text/javascript">
+(function($) {
+    /**
+     * Si la base n'a pas de slug, change le slug quand on tape le nom
+     */
+    $(document).ready(function () {
+        var noslug;
+
+        var update = function() {
+            var slug = $('#slug').val(), name = $('#name').val();
+            noslug = slug === '' || slug === name;
+        };
+
+        update();
+
+        $(document).on('keydown', '#slug', update);
+
+        $(document).on('input propertychange', '#name', function() {
+            noslug && $('#slug').val($(this).val());
+        });
+    });
+}(jQuery));
+</script>
