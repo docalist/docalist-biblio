@@ -93,6 +93,40 @@ class AdminDatabases extends AdminPage {
     }
 
     /**
+     * Met à jour les rewrite rules wordpress et retourne une redirection
+     * vers l'action DatabasesList.
+     *
+     * Lorqu'une base de données est créée ou supprimée ou lorsque son slug
+     * change, il faut mettre à jour les rewrite rules wordpress.
+     *
+     * Malheureusement, si une action appelle directement flush_rewrite_rules()
+     * après avoir modifié les paramètres des bases, ça n'aura aucun effet car
+     * wordpress a encore les "anciennes" rules : les objets Database ont déjà
+     * été créés, les appels à register_post_type ont déjà été faits avec les
+     * anciens slugs des bases, etc.
+     *
+     * Si on appelle flush_rewrite_rules() à ce stade, ça va regénérer
+     * exactement les mêmes rules que celles qu'on avait avant de modifier les
+     * paramètres des bases (ou alors il faudrait faire une espèce de
+     * 'unregister_post_type" pour toutes les bases, puis les recréer, etc.)
+     *
+     * Pour régler le problème simplement, on passe par une redirection :
+     * - Lorsqu'un slug est créé, modifié ou supprimé (actionDatabaseAdd,
+     *   actionDatabaseEdit ou actionDatabaseDelete), on retourne une
+     *   redirection vers actionRewriteRules().
+     * - Lorsque actionRewriteRules() s'exécute, les "bons" settings sont relus,
+     *   les objets Database sont recréés et les appels à registerPostType sont
+     *   faits avec les bonnes valeurs.
+     * - On se contente d'appeller flush_rewrite_rules() et on redirige vers
+     *   actionDatabaseList().
+     */
+    public function actionRewriteRules() {
+        flush_rewrite_rules(false);
+
+        return $this->redirect($this->url('DatabasesList'), 303);
+    }
+
+    /**
      * Liste des bases de données.
      */
     public function actionDatabasesList() {
@@ -120,10 +154,10 @@ class AdminDatabases extends AdminPage {
         // Vérifie que la base à éditer existe
         $database = $this->database($dbindex);
 
-        // Affiche le formulaire
+        // Requête POST : enregistre les paramètres de la base
         $error = '';
         if ($this->isPost()) {
-            // Enregistre les paramètres de la base
+            $oldSlug = $database->slug;
             try {
                 $_POST = wp_unslash($_POST);
                 $database->name = $_POST['name'];
@@ -134,12 +168,18 @@ class AdminDatabases extends AdminPage {
                 $database->validate();
                 $this->settings->save();
 
+                // Met à jour les rewrite rules si le slug a changé
+                if ($oldSlug !== $database->slug) {
+                    return $this->redirect($this->url('RewriteRules'), 303);
+                }
+
                 return $this->redirect($this->url('DatabasesList'), 303);
             } catch (Exception $e) {
                 $error = $e->getMessage();
             }
         }
 
+        // Affiche le formulaire
         return $this->view('docalist-biblio:database/edit', [
             'database' => $database,
             'dbindex' => $dbindex,
@@ -170,7 +210,8 @@ class AdminDatabases extends AdminPage {
         unset($this->settings->databases[$dbindex]);
         $this->settings->save();
 
-        return $this->redirect($this->url('DatabasesList'), 303);
+        // Met à jour les rewrite rules
+        return $this->redirect($this->url('RewriteRules'), 303);
     }
 
     /**
