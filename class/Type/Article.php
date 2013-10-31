@@ -74,7 +74,7 @@ class Article extends AbstractType {
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
-
+/*
                 // Editor / Collection / Edition / Isbn
                 ['name' => 'group', 'label' => 'Informations éditeur'],
                 ['name' => 'editor'],
@@ -86,7 +86,7 @@ class Article extends AbstractType {
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
                 ['name' => 'event'],
                 ['name' => 'degree'],
-
+*/
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],

@@ -35,6 +35,8 @@ namespace Docalist\Biblio\Type;
  * - pas d'éditeur
  * - pas d'isbn
  */
+
+// TODO : ne pas appeller ça "rapport". Ce que ça désigne, c'est une monographie non éditée (pas d'isbn)
 class Report extends AbstractType {
     public function __construct() {
         // @formatter:off
@@ -46,27 +48,19 @@ class Report extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+                ['name' => 'genre', 'table' => ['dclrefgenre']], // rapport officiel, rapport moral, étude, rapport financier, fin de contrat...
+                ['name' => 'media', 'table' => ['dclrefmedia']], // papier, web
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+                // ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // pas de othertitle pour un rapport
                 ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
+                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']], // /com
                 ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
-
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
@@ -75,18 +69,6 @@ class Report extends AbstractType {
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
-
-                // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
-
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],

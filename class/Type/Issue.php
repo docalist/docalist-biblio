@@ -32,7 +32,7 @@ class Issue extends AbstractType {
             'label' => __('Numéro de périodique', 'docalist-biblio'),
             'description' => __('Une parution d\'un périodique.', 'docalist-biblio'),
             'fields' => [
-
+// !!! UN issue peut avoir un isbn = un fascicule
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
                 ['name' => 'type', 'table' => ['dclreftype']],

@@ -113,27 +113,20 @@ class Meeting extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
+                ['name' => 'genre', 'table' => ['dclrefgenre']], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
                 ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+                ['name' => 'event'],
+//              ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // sous-titre du congrès ?
                 ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
                 ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
-
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
+                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
@@ -142,18 +135,6 @@ class Meeting extends AbstractType {
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
-
-                // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
-
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
