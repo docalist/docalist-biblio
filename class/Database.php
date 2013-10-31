@@ -188,7 +188,7 @@ class Database extends PostTypeRepository {
 
         // Settings de l'index Elastic Search
         add_filter("docalist_search_get_{$type}_settings", function ($settings) {
-            $ours = require_once __DIR__ . '/../mappings/dclref-index-settings.php';
+            $ours = require __DIR__ . '/../mappings/dclref-index-settings.php';
             $settings = array_merge_recursive($settings, $ours);
 
             return $settings; // @todo
@@ -196,7 +196,7 @@ class Database extends PostTypeRepository {
 
         // Mappings
         add_filter("docalist_search_get_{$type}_mappings", function ($mappings) {
-            return require_once __DIR__ . '/../mappings/dclref-mapping.php';
+            return require __DIR__ . '/../mappings/dclref-mapping.php';
         });
 
         // Reindexation
