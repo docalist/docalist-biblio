@@ -308,7 +308,16 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
 
-        //TODO : if is post!!
+        if ($this->isPost()) {
+            $_POST = wp_unslash($_POST);
+
+            $type->label = $_POST['label'];
+            $type->description = $_POST['description'];
+
+            $this->settings->save();
+
+            return $this->redirect($this->url('TypesList', $dbindex), 303);
+        }
 
         return $this->view('docalist-biblio:type/edit', [
             'dbindex' => $dbindex,
