@@ -15,11 +15,9 @@
 namespace Docalist\Biblio;
 
 use Docalist\AbstractPlugin;
-use Docalist\Biblio\Repository\References;
-use Docalist\Utils;
+use Docalist\Table\TableManager;
+use Docalist\Table\TableInfo;
 use Docalist\Biblio\Entity\Reference;
-use Docalist\Forms\Themes;
-use Docalist\Data\Repository\RepositoryInterface;
 
 /**
  * Plugin de gestion de notices bibliographiques.
@@ -79,6 +77,9 @@ class Plugin extends AbstractPlugin {
             ];
         });
 
+        // Enregistre les tables prédéfinies
+        add_action('docalist_register_tables', array($this, 'registerTables'));
+
         // Back office
         add_action('admin_menu', function () {
             // Page "Gestion des bases"
@@ -121,6 +122,8 @@ class Plugin extends AbstractPlugin {
      * Implémentation du filtre 'docalist_biblio_get_reference'.
      *
      * @param string $id
+     * @return Reference
+     *
      * @throws Exception
      */
     public function getReference($id = null) {
@@ -191,5 +194,55 @@ class Plugin extends AbstractPlugin {
         // collations
         // degreee levels
         // liste des thesaurus
+    }
+
+    /**
+     * Enregistre les tables prédéfinies.
+     *
+     * @param TableManager $tableManager
+     */
+    public function registerTables(TableManager $tableManager) {
+        //return;
+        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tables'  . DIRECTORY_SEPARATOR;
+
+        $tableManager->register(new TableInfo([
+            'name' => 'roles-author',
+            'path' => $dir . 'roles-author.txt',
+            'label' => __('Etiquettes de rôles pour les auteurs', 'docalist-core'),
+            'type' => 'roles',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'roles-organisations',
+            'path' => $dir . 'roles-organisations.txt',
+            'label' => __('Etiquettes de rôles pour les organismes', 'docalist-core'),
+            'type' => 'roles',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-article',
+            'path' => $dir . 'genres-article.txt',
+            'label' => __("Genres d'articles", 'docalist-core'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-book',
+            'path' => $dir . 'genres-book.txt',
+            'label' => __("Genres de livres", 'docalist-core'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-legislation',
+            'path' => $dir . 'genres-legislation.txt',
+            'label' => __("Genres de législations", 'docalist-core'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
     }
 }
