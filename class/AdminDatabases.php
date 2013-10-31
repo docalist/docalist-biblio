@@ -333,11 +333,18 @@ class AdminDatabases extends AdminPage {
      * @param int $dbindex Base à éditer
      * @param int $typeindex Type à supprimer
      */
-    public function actionTypeDelete($dbindex, $typeindex) {
+    public function actionTypeDelete($dbindex, $typeindex, $confirm = false) {
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
-// TODO : confirmation
-// TODO : toutes les actions devraient être en protected
+
+        // Demande confirmation
+        if (! $confirm) {
+            return $this->confirm(
+                sprintf(__('Le type <strong>%s</strong> va être supprimé de la base <strong>%s</strong>. Tous les paramètres de ce type (propriétés, grille de saisie...) vont être perdus.', 'docalist-biblio'), $type->label, $database->label),
+                __('Supprimer un type', 'docalist-biblio')
+            );
+        }
+
         // Supprime le type
         unset($this->settings->databases[$dbindex]->types[$typeindex]);
         $this->settings->save();
