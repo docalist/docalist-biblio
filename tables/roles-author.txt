@@ -1,0 +1,105 @@
+# ------------------------------------------------------------------------------
+# Etiquettes de rôles pour les personnes physiques, en français
+#
+# Cette liste correspond à la liste 17 de onix 3.
+#
+# Les libellés en français ont été traduits et adaptés.
+#
+# @todo: La description n'a pas encore été traduite.
+#
+# 2013-10-02 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+A01;Auteur;Author of a textual work.
+A02;Avec;With or as told to: ‘ghost’ author of a literary work.
+A03;Scénario de;Writer of screenplay or script (film or video).
+A04;Livret de;Writer of libretto (opera): see also A31.
+A05;Paroles de;Author of lyrics (song): see also A31.
+A06;Compositeur;Composer of music.
+A07;Artiste;Visual artist when named as the primary creator of, eg, a book of reproductions of artworks.
+A08;Photographe;Photographer when named as the primary creator of, eg, a book of photographs.
+A09;Créé par;
+A10;D'après une idée de;
+A11;Conçu par;
+A12;Illustré par;Artist when named as the creator of artwork which illustrates a text, or of the artwork of a graphic novel or comic book.
+A13;Photographies de;Photographer when named as the creator of photographs which illustrate a text.
+A14;Texte de;Author of text which accompanies art reproductions or photographs, or which is part of a graphic novel or comic book.
+A15;Préface de;Author of preface.
+A16;Prologue de;Author of prologue.
+A17;Résumé de;Author of summary.
+A18;Supplément;Author of supplement.
+A19;Postface de;Author of afterword.
+A20;Annotations de;Author of notes or annotations: see also A29.
+A21;Commentaires de;Author of commentaries on the main text.
+A22;Epilogue de;Author of epilogue.
+A23;Avant-propos de;Author of foreword.
+A24;Introduction de;Author of introduction: see also A29.
+A25;Notes de bas de pages de;Author/compiler of footnotes.
+A26;Etude de;Author of memoir accompanying main text.
+A27;Expériences de;Person who carried out experiments reported in the text.
+A29;Introduction et notes de;Author of introduction and notes: see also A20 and A24.
+A30;Logiciel écrit par;Writer of computer programs ancillary to the text.
+A31;Livret et paroles de;Author of the textual content of a musical drama: see also A04 and A05.
+A32;Contributions de;Author of additional contributions to the text.
+A33;Annexes de;Author of appendix.
+A34;Index de;Compiler of index.
+A35;Dessins de;
+A36;Maquette de couverture de;Use also for the cover artist of a graphic novel or comic book if named separately.
+A37;Œuvre préliminaire de;Responsible for preliminary work on which the work is based.
+A38;Auteur original;Author of the first edition (usually of a standard work) who is not an author of the current edition.
+A39;Cartes de;Maps drawn or otherwise contributed by.
+A40;Mis en encre ou mis en couleur par;When separate persons are named as having respectively drawn and colored artwork, eg for a graphic novel or comic book, use A12 for ‘drawn by’ and A40 for ‘colored by’.
+A41;Pop-ups de;Designer of pop-ups in a pop-up book, who may be different from the illustrator.
+A42;Continué par;Use where a standard work is being continued by somebody other than the original author.
+A43;Interviewer;
+A44;Interviewé;
+A99;Autre créateur primaire;Other type of primary creator not specified above.
+B01;Edité par;
+B02;Révisé par;
+B03;Reformulé par;
+B04;Abrégé par;
+B05;Adapté par;
+B06;Traduit par;
+B07;Formulé par;
+B08;Traduit et commenté par;This code applies where a translator has provided a commentary on issues relating to the translation. If the translator has also provided a commentary on the work itself, codes B06 and A21 should be used.
+B09;Collection éditée par;Name of a series editor when the product belongs to a series.
+B10;Edité et traduit par;
+B11;Editeur en chef;
+B12;Editeur invité;
+B13;Editeur du volume;
+B14;Membre du comité éditorial;
+B15;Coordination éditoriale de;
+B16;Directeur éditorial;
+B17;Fondé par;Usually the founder editor of a serial publication: Begruendet von.
+B18;Préparé pour la publication par;
+B19;Editeur associé;
+B20;Editeur conseil;Use also for ‘advisory editor’.
+B21;Editeur général;
+B22;Scénarisé par;
+B23;Rapporteur général;In Europe, an expert editor who takes responsibility for the legal content of a collaborative law volume.
+B24;Editeur littéraire;An editor who is responsible for establishing the text used in an edition of a literary work, where this is recognised as a distinctive role (in Spain, ‘editor literario’).
+B25;Arrangement de la musique;
+B26;Rédactrice en chef technique;
+B99;Autre adaptation par;Other type of adaptation or editing not specified above.
+C01;Compilé par;
+C02;Sélection de;
+C99;Autre compilation par;Other type of compilation not specified above.
+D01;Producteur;
+D02;Réalisateur;
+D03;Sous la direction de;Conductor of a musical performance.
+D99;Autre direction de;Other type of direction not specified above.
+E01;Acteur;
+E02;Danseur;
+E03;Narrateur;
+E04;Commentateur;
+E05;Soliste vocal;Singer etc.
+E06;Soliste instrumental;
+E07;Lu par;Reader of recorded text, as in an audiobook.
+E08;Interprété par (orchestre, groupe, ensemble);Name of a musical group in a performing role.
+E09;Orateur;Of a speech, lecture etc.
+E99;Interprété par;Other type of performer not specified above: use for a recorded performance which does not fit a category above, eg a performance by a stand-up comedian.
+F01;Filmé / photographié par;
+F99;Autre enregistrement par;Other type of recording not specified above.
+Z01;Assisté par;May be associated with any contributor role, and placement should therefore be controlled by contributor sequence numbering.
+Z98;(Rôles variés);For use ONLY with ‘et al’ or ‘Various’ within <UnnamedPersons>, where the roles of the multiple contributors vary.
+Z99;Autre;Other creative responsibility not falling within A to F above.

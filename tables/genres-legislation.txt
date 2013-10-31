@@ -1,0 +1,23 @@
+# ------------------------------------------------------------------------------
+# Table des genres pour les notices de type Legislation
+# Basé sur http://www.snphar.com/data/A_la_une/phar27/legislation27.pdf
+# 2013-10-31 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+L01;Proposition de loi;
+L02;Projet de loi;
+L03;Loi;Loi ordinaire portant des règles de droit.
+L02;Décision du président;Acte pris par le Président de la République, en cas d’interruption du fonctionnement régulier des pouvoirs publics.
+L03;Directive européenne;Directive européenne (applicable ou non transposée).
+L04;Réglement communautaire;Réglement communautaire applicable dans le droit des états membres.
+#Bloc réglementaire
+R01;Ordonnance;art 38 de la constitution.
+D01;Décret;Décret usuel signé par le Premier Ministre.
+D02;Décret Présidentiel;Décret signé par le Président de la République en conseil des ministres.
+D03;Décret en Conseil d'Etat;Décret signé par le Premier Ministre sur avis conforme du Conseil d'Etat.
+A01;Arrêté ministériel;
+A02;Arrêté interministériel;
+A03;Arrêté préféctoral;
+circulaire;Circulaire;
+convention;Convention;
+...;TODO : faire table;

@@ -1,0 +1,9 @@
+# ------------------------------------------------------------------------------
+# Table des genres pour les notices de type Degree
+#
+# 2013-10-31 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+memoire;Mémoire;
+these;Thèse;
+pratiques;Dossier de pratiques professionnelles;

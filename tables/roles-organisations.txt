@@ -1,0 +1,8 @@
+# ------------------------------------------------------------------------------
+# Etiquettes de rôles pour les organismes, en français
+#
+# Cette liste correspond à ???
+#
+# 2013-10-02 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description

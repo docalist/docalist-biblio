@@ -1,0 +1,13 @@
+# ------------------------------------------------------------------------------
+# Table des genres pour les notices de type Book
+#
+# 2013-10-31 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+rapport;Rapport;
+rapport-officiel;Rapport officiel;
+rapport-activite;Rapport d'activité;
+roman;Roman;
+jeunes;Album jeunesse;
+bd;Bande dessinée;
+colloque;Actes de colloque;
