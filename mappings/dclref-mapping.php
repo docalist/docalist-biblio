@@ -406,7 +406,7 @@ return [
         // link : que l'url, searchable, pas dans _all
         'link' => [
             'type' => 'string', // @todo : pathhierarchy tokenizer
-            'analyzer' => 'dclref-url',
+            // 'analyzer' => 'dclref-url',
         ],
 
 
