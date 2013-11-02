@@ -36,7 +36,7 @@ class Issue extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
-//                ['name' => 'genre', 'table' => ['dclrefgenre']],
+//                ['name' => 'genre', 'table' => ['dclrefgenre']], // numéro spécial, hors série, etc ?
 //                ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation

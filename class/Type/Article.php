@@ -46,7 +46,7 @@ class Article extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']], // interview, reportage, enquête
+                ['name' => 'genre', 'table' => ['genres-article']], // interview, reportage, enquête
                 ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation

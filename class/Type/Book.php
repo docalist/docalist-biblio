@@ -45,8 +45,7 @@ class Book extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']], // roman, rapport, rapport instit
+                ['name' => 'genre', 'table' => ['genres-book']], // roman, rapport, rapport instit
                 ['name' => 'media', 'table' => ['dclrefmedia']], //
 
                 // Title, OtherTitle, Translation
@@ -100,6 +99,7 @@ class Book extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type', 'table' => ['dclreftype']], // hidden
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

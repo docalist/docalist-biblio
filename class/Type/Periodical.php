@@ -43,9 +43,9 @@ namespace Docalist\Biblio\Type;
  *   journée, d'où le nom). Par extension, un journal désigne une publication
  *   regroupant des articles sur l'actualité du jour.
  *
- * @see http://fr.wikipedia.org/wiki/Journal
+ * @see http://fr.wikipedia.org/wiki/Journal @see http://en.wikipedia.org/wiki/Newspaper
  * @see http://fr.wikipedia.org/wiki/Revue
- * @see http://fr.wikipedia.org/wiki/Magazine
+ * @see http://fr.wikipedia.org/wiki/Magazine @see http://en.wikipedia.org/wiki/Magazine
  *
  * Principales caractéristiques :
  * - a un éditeur (un organisme)
@@ -64,7 +64,7 @@ class Periodical extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
+                ['name' => 'genre', 'table' => ['genres-periodical']],
                 ['name' => 'media', 'table' => ['dclrefmedia']], // papier, web, archives sur dvd
 
                 // Title, OtherTitle, Translation
