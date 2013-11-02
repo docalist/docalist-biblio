@@ -168,8 +168,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclrefgenre', array(), $args);
 
         // Supports de documents
-        $args['label'] = __('Supports de documents', 'docalist-biblio');
-        register_taxonomy('dclrefmedia', array(), $args);
+//         $args['label'] = __('Supports de documents', 'docalist-biblio');
+//         register_taxonomy('dclrefmedia', array(), $args);
 
         // DONE Etiquettes de rôle
         $args['label'] = __('Etiquettes de rôle', 'docalist-biblio');
@@ -217,6 +217,14 @@ class Plugin extends AbstractPlugin {
             'name' => 'roles-organisations',
             'path' => $dir . 'roles-organisations.txt',
             'label' => __('Etiquettes de rôles pour les organismes', 'docalist-biblio'),
+            'type' => 'roles',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'roles-editor',
+            'path' => $dir . 'roles-editor.txt',
+            'label' => __('Etiquettes de rôles pour les éditeurs', 'docalist-biblio'),
             'type' => 'roles',
             'user' => false,
         ]));
@@ -281,6 +289,14 @@ class Plugin extends AbstractPlugin {
             'name' => 'genres-website',
             'path' => $dir . 'genres-website.txt',
             'label' => __("Table des genres pour les références de type WebSite", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'medias',
+            'path' => $dir . 'medias.txt',
+            'label' => __("Supports de documents", 'docalist-biblio'),
             'type' => 'genres',
             'user' => false,
         ]));
