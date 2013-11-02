@@ -1,0 +1,35 @@
+# ------------------------------------------------------------------------------
+# Etiquettes de rôles pour les personnes physiques, en français
+#
+# Cette liste correspond à la liste 45 de onix 3.
+#
+# Les libellés en français ont été traduits et adaptés.
+#
+# @todo: La description n'a pas encore été traduite.
+#
+# 2013-10-02 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+01;Éditeur;Rôle par défaut.
+02;Coéditeur;Quand plusieurs éditeurs publient exactement le même ouvrage sous un même ISBN ou avec des ISBN différents.
+06;Publié pour le compte de;
+07;Publié en association avec;
+09;Nouvel éditeur;Quand les droits sont transférés d'un éditeur à un autre. 
+13;Ancien éditeur;Quand les droits sont transférés d'un éditeur à un autre.
+10;Groupe d'édition;Pour préciser le groupe d'édition auquel appartient l'éditeur indiqué.
+05;Editeur de la version électronique;
+04;Éditeur de la version originale;Pour une oeuvre traduite.
+11;Editeur de l'original du fac-similé;Quand le document est une reproduction ou un fac-similé d'une oeuvre originale. 
+#
+# L'étiquette suivante n'existe pas en onix :
+D1;Diffuseur;
+#
+# Etiquettes Onix non reprises :
+# 08;deprecated;
+# 12;Repackager;???
+#
+# Les rôles suivants sont plutôt des rôles d'organismes auteurs :
+# 03;Commanditaire;
+# 14;Financeur de l'édition;
+# 15;Financeur de la recherche;
+# 16;Financeur;
