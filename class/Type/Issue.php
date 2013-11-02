@@ -35,47 +35,47 @@ class Issue extends AbstractType {
 // !!! UN issue peut avoir un isbn = un fascicule
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+//                ['name' => 'type', 'table' => ['dclreftype']],
+//                ['name' => 'genre', 'table' => ['dclrefgenre']],
+//                ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
-                ['name' => 'translation', 'table' => ['dcllanguage']],
+//                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+//                ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
+//                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
+//                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
+//                ['name' => 'journal'],
+//                ['name' => 'issn'],
                 ['name' => 'volume'],
                 ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-                ['name' => 'language', 'table' => ['dcllanguage']],
-                ['name' => 'pagination'],
-                ['name' => 'format'],
-                ['name' => 'doi'],
+//                ['name' => 'language', 'table' => ['dcllanguage']],
+                ['name' => 'pagination'], // nb de p/ de ce n°
+                ['name' => 'format'], // matériel d'accompagnement
+//                ['name' => 'doi'],
 
                 // Editor / Collection / Edition / Isbn
                 ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
+//                 ['name' => 'editor'],
+//                 ['name' => 'collection'],
+//                 ['name' => 'edition'],
                 ['name' => 'isbn'],
 
                 // Event / Degree
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
                 ['name' => 'event'],
-                ['name' => 'degree'],
+//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -86,7 +86,7 @@ class Issue extends AbstractType {
                 // Liens et relations
                 ['name' => 'group', 'label' => 'Liens et relations'],
                 ['name' => 'link'],
-                ['name' => 'relations'],
+                ['name' => 'relations'], // hidden
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],

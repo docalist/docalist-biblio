@@ -45,9 +45,9 @@ class Book extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+//                ['name' => 'type', 'table' => ['dclreftype']],
+                ['name' => 'genre', 'table' => ['dclrefgenre']], // roman, rapport, rapport instit
+                ['name' => 'media', 'table' => ['dclrefmedia']], //
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
@@ -61,11 +61,11 @@ class Book extends AbstractType {
                 ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
 
                 // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
+//                ['name' => 'group', 'label' => 'Journal / Périodique'],
+//                ['name' => 'journal'],
+//                ['name' => 'issn'],
+                ['name' => 'volume'], // n° de tome
+//                ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
@@ -77,14 +77,14 @@ class Book extends AbstractType {
 
                 // Editor / Collection / Edition / Isbn
                 ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
+                ['name' => 'editor'], // ajouter sous champ role
                 ['name' => 'collection'],
                 ['name' => 'edition'],
                 ['name' => 'isbn'],
 
                 // Event / Degree
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
+                ['name' => 'event'], // acte de colloque
                 ['name' => 'degree'],
 
                 // Topic / Abstract / Note

@@ -45,19 +45,19 @@ class Article extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-                ['name' => 'genre', 'table' => ['dclrefgenre']],
+//                ['name' => 'type', 'table' => ['dclreftype']],
+                ['name' => 'genre', 'table' => ['dclrefgenre']], // interview, reportage, enquête
                 ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // à voir, pas de titre ens si type dossier
                 ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
+                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],// dégraissée
                 ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
 
                 // Journal, Issn, Volume, Issue
@@ -66,10 +66,10 @@ class Article extends AbstractType {
                 ['name' => 'issn'],
                 ['name' => 'volume'],
                 ['name' => 'issue'],
+                ['name' => 'date'], // injecté à partir de l'issue
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
-                ['name' => 'date'],
                 ['name' => 'language', 'table' => ['dcllanguage']],
                 ['name' => 'pagination'],
                 ['name' => 'format'],
@@ -81,12 +81,12 @@ class Article extends AbstractType {
                 ['name' => 'collection'],
                 ['name' => 'edition'],
                 ['name' => 'isbn'],
-
+*/
                 // Event / Degree
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
-*/
+//                ['name' => 'event'],
+//                ['name' => 'degree'],
+
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],

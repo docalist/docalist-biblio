@@ -134,7 +134,7 @@ class Meeting extends AbstractType {
                 ['name' => 'language', 'table' => ['dcllanguage']],
                 ['name' => 'pagination'],
                 ['name' => 'format'],
-                ['name' => 'doi'],
+//                ['name' => 'doi'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],

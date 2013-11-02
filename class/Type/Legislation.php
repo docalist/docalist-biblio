@@ -37,15 +37,15 @@ class Legislation extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
+//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['dclrefgenre']],
                 ['name' => 'media', 'table' => ['dclrefmedia']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
-                ['name' => 'translation', 'table' => ['dcllanguage']],
+//                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+//                ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
@@ -62,22 +62,24 @@ class Legislation extends AbstractType {
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-                ['name' => 'language', 'table' => ['dcllanguage']],
+                ['name' => 'language', 'table' => ['dcllanguage']], // fre par défaut
                 ['name' => 'pagination'],
                 ['name' => 'format'],
-                ['name' => 'doi'],
+//                ['name' => 'doi'],
+
+// numéro de texte officiel
 
                 // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
+//                 ['name' => 'group', 'label' => 'Informations éditeur'],
+//                 ['name' => 'editor'],
+//                 ['name' => 'collection'],
+//                 ['name' => 'edition'],
+//                 ['name' => 'isbn'],
 
                 // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
+//                ['name' => 'group', 'label' => 'Congrès et diplômes'],
+//                ['name' => 'event'],
+//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],

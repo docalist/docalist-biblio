@@ -63,53 +63,53 @@ class Periodical extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
+//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['dclrefgenre']],
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+                ['name' => 'media', 'table' => ['dclrefmedia']], // papier, web, archives sur dvd
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
-                ['name' => 'translation', 'table' => ['dcllanguage']],
+                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // oui avec table
+//                ['name' => 'translation', 'table' => ['dcllanguage']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
+                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
+                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']], // exemple : asso auteur d'une revue
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
+//                ['name' => 'journal'],
+                ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
+//                ['name' => 'volume'],
+//                ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
                 ['name' => 'language', 'table' => ['dcllanguage']],
-                ['name' => 'pagination'],
-                ['name' => 'format'],
-                ['name' => 'doi'],
+                ['name' => 'pagination'], // nombre moyen de pages par numéro
+                ['name' => 'format'], // taille, couleur,
+//                ['name' => 'doi'],
 
                 // Editor / Collection / Edition / Isbn
                 ['name' => 'group', 'label' => 'Informations éditeur'],
                 ['name' => 'editor'],
                 ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
+//                ['name' => 'edition'],
+//                ['name' => 'isbn'],
 
                 // Event / Degree
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
+//                ['name' => 'event'],
+//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
                 ['name' => 'abstract'],
-                ['name' => 'note'],
+                ['name' => 'note'], // coordonnées postales, coordonnées téléphoniques. Mailing
 
                 // Liens et relations
                 ['name' => 'group', 'label' => 'Liens et relations'],
