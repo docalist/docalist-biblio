@@ -26,7 +26,10 @@ use Docalist\Forms\Hidden;
 
 use Docalist\Utils;
 
+use Docalist\Table\TableManager;
+
 use Exception;
+use Docalist\Forms\Checklist;
 
 /**
  * Classe de base pour les types de documents de docalist-biblio.
@@ -113,33 +116,36 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'type':
-                $table = $def->table[0] ?: 'dclreftype';
+                $types = apply_filters('docalist_biblio_get_types', array()); // code => class
+                $types = array_keys($types);
 
-                $field = new Hidden($name);
-//                $field->options($this->taxonomy($table));
+                $field = new Select($name);
+                $field->options($types);
                 break;
 
             case 'genre':
-                $table = $def->table[0] ?: 'dclrefgenre';
-
+                $table = $def->table[0];
                 $field = new Select($name);
-                $field->options($this->taxonomy($table));
+                $field->options($this->tableOptions($table));
                 break;
 
             case 'media':
-                $table = $def->table[0] ?: 'dclrefmedia';
-
+                $table = $def->table[0];
                 $field = new Select($name);
-                $field->options($this->taxonomy($table));
+                $field->options($this->tableOptions($table));
                 break;
 
             case 'author':
                 $table = $def->table[0] ?: 'dclrefrole';
 
-                $field = new Table($name);
-                $field->input('name');
-                $field->input('firstname');
-                $field->select('role')->options($this->taxonomy($table));
+                $field = (new Table($name))->attribute('class', 'author');
+                $field->input('name')
+                      ->attribute('class', 'name');
+                $field->input('firstname')
+                      ->attribute('class', 'firstname');
+                $field->select('role')
+                      ->options($this->taxonomy($table))
+                      ->attribute('class', 'role');
 
                 break;
 
@@ -147,13 +153,17 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 $countries = $def->table[0] ?: 'dclcountry';
                 $roles = $def->table[1] ?: 'dclrefrole';
 
-                $field = new Table($name);
-                $field->input('name');
-                $field->input('city');
+                $field = (new Table($name))->attribute('class', 'organisation');
+                $field->input('name')
+                      ->attribute('class', 'name');
+                $field->input('city')
+                      ->attribute('class', 'city');
                 $field->select('country')
-                ->options($this->taxonomy($countries));
+                      ->options($this->taxonomy($countries))
+                      ->attribute('class', 'country');
                 $field->select('role')
-                ->options($this->taxonomy($roles));
+                      ->options($this->taxonomy($roles))
+                      ->attribute('class', 'role');
                 break;
 
             case 'title':
@@ -343,5 +353,11 @@ class AbstractType extends TypeSettings /* extends Reference */ {
         }
 
         return $result;
+    }
+
+    protected function tableOptions($table, $fields = 'code,label') {
+        /* @var $tableManager TableManager */
+        $tableManager = apply_filters('docalist_get_table_manager', null);
+        return $tableManager->get($table)->search($fields);
     }
 }
