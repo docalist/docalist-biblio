@@ -1,0 +1,12 @@
+# ------------------------------------------------------------------------------
+# Table des genres pour les notices de type Report
+#
+# 2013-11-02 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+r01;Rapport officiel;
+r02;Rapport moral;
+r03;Rapport financier;
+r04;Etude scientifique;
+r05;Résultats d'enquête;
+r06;Rapport de fin de contrat;
