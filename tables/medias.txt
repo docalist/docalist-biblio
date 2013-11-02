@@ -1,0 +1,137 @@
+# ------------------------------------------------------------------------------
+# Table des supports de documents
+#
+# Inspiré de Onix liste 7
+#
+# 2013-11-02 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+# ------------------------------------------------------------------------------
+# A - Audio
+# ------------------------------------------------------------------------------
+AB;Cassette audio;Cassette audio analogique.
+AC;CD audio;Disque audio compact (red book ou SACD).
+AD;DAT;Cassette audio numérique.
+AE;Disque audio;Disque audio (hors CD).
+AF;Bande audio;Bande magnétique en bobine pour enregistrement audio.
+AG;Minidisc; Disque magnéto optique (Sony, 1992).
+AH;CD extra;CD combinant audio et données (CD-Plus, Enhanced-CD, 'blue book', 'yellow/red book').
+AI;DVD audio;DVD contenant uniquement de l'audio.
+AJ;Fichier audio téléchargeable;Fichier audio disponible en ligne sur internet.
+AK;Lecteur audio pré-enregistré;Exemple : playaway.
+AL;Audio sur carte SD pré-enregistrée;Exemple : Audiofy.
+AA;Autre format audio;
+#AZ;autre audio
+# ------------------------------------------------------------------------------
+# B - Book : livres
+# ------------------------------------------------------------------------------
+BB;Livre relié;Livre relié avec une couverture rigide ou semi-rigide.
+BC;Livre broché;Livre encollé avec une couverture souple (exemple : livre de poche).
+BG;Livre précieux;Livre relié avec une couverture luxueuse (cuir par exemple).
+BE;Reliure à spirale;Ensemble de feuilles reliées avec une reliure à spirale ou un peigne.
+BL;Reliure à réglette;Ensemble de feuilles reliées avec une réglette en plastique.
+BF;Brochure;Ensemble de feuilles agraphées ensemble.
+BD;Feuillets mobiles;Ensemble de feuilles destinées à un classeur.
+BH;Livre carton;Livre pour enfant sur pages cartonnées.
+BI;Livre en tissu;Livre pour enfant en tissu.
+BJ;Livre de bain;Livre pour enfant adapté au bain.
+BK;Livre d'activité;Livre pour enfant (à trous, à toucher, à volets, à tirettes, etc.)
+BP;Livre en mousse;Livre en mousse pour les enfants.
+BM;Très grand livre;Livre de grande taille pour l'enseignement (UK essentiellement).
+BN;Fascicule;Chacune des parties détachées d’un ouvrage publié par livraisons. Chaque partie a son propre ISBN.
+BO;Leporello;Livre qui se déplie : livre accordéon, livre frise.
+BA;Autre type de livre;
+#BZ;Autre type de livre
+# ------------------------------------------------------------------------------
+# C - Cartographie (cartes)
+# ------------------------------------------------------------------------------
+CB;Carte pliée;Carte géographique pliée.
+CC;Carte à plat;Carte géographique à plat.
+CD;Carte roulée;Carte géographique roulée.
+CE;Planisphère;Planisphère, globe, mappemonde.
+CA;Autre support cartographique;
+#CZ;Autre type de carte;
+# ------------------------------------------------------------------------------
+# D - Digital : Supports numériques
+# ------------------------------------------------------------------------------
+DB;CD-ROM;CD de données.
+DC;CD-I;CD interactive ("green book").   
+#DD;DVD DEPRECATED – use VI for DVD video, AI for DVD audio, DI for DVD-ROM   
+DE;Cartouche de jeu;Cartouche de jeu pour console.
+DF;Disquette;Disquette pour ordinateur, souple (8" ou 5"¼) ou rigide (3" ou 3"½).
+DG;Texte numérique;Livre électronique qui peut être téléchargé.   
+DH;Ressource en ligne;Une ressource électronique consultable sur internet.   
+DI;DVD-ROM;Un DVD contenant des données (voir aussi "DVD audio" et "DVD Vidéo")   
+DJ;Carte SD;Carte mémoire de type "Secure Digital Memory Card" (SD)   
+DK;Carte Compact Flash;Carte mémoire de type "Compact Flash Memory Card" (CF)   
+DL;Carte Memory Stick;Carte mémoire de type "Memory Stick"
+DM;Clé USB;
+DN;CD ou DVD double face;CD ou DVD avec une face contenant des données (ROM) et une face contenant de l'audio ou de la vidéo.   
+#DO;Digital product license key Digital product license delivered through the retail supply chain as a physical “key”, typically a card or booklet containing a code enabling the purchaser to download or activate the associated product. 21  
+DA;Autre support numérique;
+#DZ;Other digital   Other digital or multimedia not specified by DB to DN.
+# ------------------------------------------------------------------------------
+# F - Films et transparents
+# ------------------------------------------------------------------------------
+# FB  Film    Continuous film or filmstrip: DEPRECATED – use FE or FF.    2   
+FC;Diapositives;Film inversible montrant une photographie, inséré dans un cadre plastique ou en carton et destiné à être projeté ou regardé par transparence.   
+FD;Transparents pour rétroprojecteur;   
+FE;Film pour images fixes;Images fixes stockées sur une pellicule, affichées une par une.   
+FF;Film;Images animées   
+FA;Autre support projetté;
+#FZ  Other film or transparency format   Other film or transparency format not specified by FB to FF.    0
+# ------------------------------------------------------------------------------
+# M - Micro-formes
+# ------------------------------------------------------------------------------
+MB;Microfiche;   
+MC;Microfilm;   
+MA;Autre micro-forme;   
+#MZ;Other microform Other microform not specified by MB or MC.  0
+# ------------------------------------------------------------------------------
+# P - Print : imprimés divers
+# ------------------------------------------------------------------------------
+#PB;Carnet d'adresses;
+#PC;Calendrier;
+PD;Fiches;
+#PE;Copie maître;
+#PF;Agenda;
+#PG;Frise pour enfants;
+PH;Kit;
+PI;Partition de musique;
+PJ;Cartes postales;
+PK;Affiche;
+#PL;Livre souvenir;
+#PM;Portfolio;
+PN;Poster;Reproduction grande taille d'une image ou d'une photographie. 
+PO;Poster éducatif;Poster d'information ou de formation (diagrammes, tableaux...)
+PP;Autocollants;
+PQ;Planche;
+#PR;Bloc-note;
+#PS;Organiseur;
+#PT;Favoris;
+PA;Autre support imprimé;
+#PZ;Autre article imprimé" textEN="Other printed item" />
+# ------------------------------------------------------------------------------
+# V - Vidéo
+# ------------------------------------------------------------------------------
+#VB;Vidéo VHS/PAL;DEPRECATED 
+#VC;Vidéo VHS/NSTC;DEPRECATED 
+#VD;Vidéo Betamax/PAL;DEPRECATED 
+#VE;Vidéo Betamax/NSTC;DEPRECATED 
+VF;Vidéodisque;Exemple : Laserdisc.
+#VG;Vidéo VHS/SECAM;DEPRECATED 
+#VH;Vidéo Betamax/SECAM;DEPRECATED 
+VJ;VHS;
+VK;Betamax;
+VL;VCD;Video CD
+VM;SVCD;Super Video CD
+VI;DVD Vidéo;
+VN;DVD HD;DVD Haute définition de Toshiba.
+VO;Blu-ray;DVD Haute définition de Sony.
+VP;UMD Video;Sony Universal Media disc
+VA;Autre support vidéo;
+#VZ;Autre format vidéo;
+# ------------------------------------------------------------------------------
+# autres types onix
+# ------------------------------------------------------------------------------
+# WW -> ZZ : non repris
