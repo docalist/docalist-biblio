@@ -160,12 +160,12 @@ class Plugin extends AbstractPlugin {
         register_taxonomy('dcllanguage', array(), $args);
 
         // Types de documents
-        $args['label'] = __('Types de documents', 'docalist-biblio');
-        register_taxonomy('dclreftype', array(), $args);
+//         $args['label'] = __('Types de documents', 'docalist-biblio');
+//         register_taxonomy('dclreftype', array(), $args);
 
         // Genres de documents
-        $args['label'] = __('Genres de documents', 'docalist-biblio');
-        register_taxonomy('dclrefgenre', array(), $args);
+//         $args['label'] = __('Genres de documents', 'docalist-biblio');
+//         register_taxonomy('dclrefgenre', array(), $args);
 
         // Supports de documents
         $args['label'] = __('Supports de documents', 'docalist-biblio');
@@ -208,7 +208,7 @@ class Plugin extends AbstractPlugin {
         $tableManager->register(new TableInfo([
             'name' => 'roles-author',
             'path' => $dir . 'roles-author.txt',
-            'label' => __('Etiquettes de rôles pour les auteurs', 'docalist-core'),
+            'label' => __('Etiquettes de rôles pour les auteurs', 'docalist-biblio'),
             'type' => 'roles',
             'user' => false,
         ]));
@@ -216,7 +216,7 @@ class Plugin extends AbstractPlugin {
         $tableManager->register(new TableInfo([
             'name' => 'roles-organisations',
             'path' => $dir . 'roles-organisations.txt',
-            'label' => __('Etiquettes de rôles pour les organismes', 'docalist-core'),
+            'label' => __('Etiquettes de rôles pour les organismes', 'docalist-biblio'),
             'type' => 'roles',
             'user' => false,
         ]));
@@ -224,7 +224,7 @@ class Plugin extends AbstractPlugin {
         $tableManager->register(new TableInfo([
             'name' => 'genres-article',
             'path' => $dir . 'genres-article.txt',
-            'label' => __("Genres d'articles", 'docalist-core'),
+            'label' => __("Table des genres pour les références de type Article", 'docalist-biblio'),
             'type' => 'genres',
             'user' => false,
         ]));
@@ -232,7 +232,15 @@ class Plugin extends AbstractPlugin {
         $tableManager->register(new TableInfo([
             'name' => 'genres-book',
             'path' => $dir . 'genres-book.txt',
-            'label' => __("Genres de livres", 'docalist-core'),
+            'label' => __("Table des genres pour les références de type Book", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-degree',
+            'path' => $dir . 'genres-degree.txt',
+            'label' => __("Table des genres pour les références de type Degree", 'docalist-biblio'),
             'type' => 'genres',
             'user' => false,
         ]));
@@ -240,7 +248,39 @@ class Plugin extends AbstractPlugin {
         $tableManager->register(new TableInfo([
             'name' => 'genres-legislation',
             'path' => $dir . 'genres-legislation.txt',
-            'label' => __("Genres de législations", 'docalist-core'),
+            'label' => __("Table des genres pour les références de type Legislation", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-meeting',
+            'path' => $dir . 'genres-meeting.txt',
+            'label' => __("Table des genres pour les références de type Meeting", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-periodical',
+            'path' => $dir . 'genres-periodical.txt',
+            'label' => __("Table des genres pour les références de type Periodical", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-report',
+            'path' => $dir . 'genres-report.txt',
+            'label' => __("Table des genres pour les références de type Report", 'docalist-biblio'),
+            'type' => 'genres',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'genres-website',
+            'path' => $dir . 'genres-website.txt',
+            'label' => __("Table des genres pour les références de type WebSite", 'docalist-biblio'),
             'type' => 'genres',
             'user' => false,
         ]));
