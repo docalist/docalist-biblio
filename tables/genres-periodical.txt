@@ -1,0 +1,25 @@
+# ------------------------------------------------------------------------------
+# Table des genres pour les notices de type Periodical
+#
+# 2013-11-02 Version initiale
+# @see http://www.bibliotheques.uqam.ca/infosphere/fichiers_communs/module3/articles1.html
+# @see http://giry.enc.sorbonne.fr/cerise/Module2/les-periodiques/decouvrir-ledition-des-periodiques
+# @see http://www1.univ-ag.fr/buag/cours/LS5-web/co/Cours9.html
+# ------------------------------------------------------------------------------
+code;label;description
+journal;Revue;Périodique spécialisé dans un domaine précis.
+journal-academic;Revue scientifique;Publication périodique, souvent dotée d'un comité de lecture, dont l'objectif est de faire connaître des travaux de recherche originaux ou de fond, et de contribuer au débat scientifique entre spécialistes
+#
+magazine;Magasine;Périodique, le plus souvent illustré, traitant de divers sujets.
+magazine-xxx;Magasine de vulgarisation;
+magazine-yyy;Revue littéraire;
+#
+newspaper;Journal;Périodique regroupant des articles sur l'actualité du jour ou d'une période donnée.
+newspaper-local;Presse locale;
+newspaper-regional;Presse régionale;
+newspaper-national;Presse nationale;
+newspaper-international;Presse internationale;
+#
+official;Journaux officiels;Périodiques officiels et administratifs (JO, BO, bottins, annuaires, etc.)
+#
+todo;Divers;Gazettes, lettres d'info, feuilles de choux
