@@ -37,7 +37,7 @@ class Issue extends AbstractType {
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
 //                ['name' => 'genre', 'table' => ['dclrefgenre']], // numéro spécial, hors série, etc ?
-//                ['name' => 'media', 'table' => ['dclrefmedia']],
+//                ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

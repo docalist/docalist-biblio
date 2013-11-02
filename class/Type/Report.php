@@ -49,7 +49,7 @@ class Report extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
                 ['name' => 'genre', 'table' => ['genres-report']], // rapport officiel, rapport moral, étude, rapport financier, fin de contrat...
-                ['name' => 'media', 'table' => ['dclrefmedia']], // papier, web
+                ['name' => 'media', 'table' => ['medias']], // papier, web
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

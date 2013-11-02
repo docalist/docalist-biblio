@@ -47,7 +47,7 @@ class Degree extends AbstractType {
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-degree']], // mémoire, thèse, écrit de certification
-                ['name' => 'media', 'table' => ['dclrefmedia']], // papier, internet, cd, dvd
+                ['name' => 'media', 'table' => ['medias']], // papier, internet, cd, dvd
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

@@ -39,7 +39,7 @@ class Legislation extends AbstractType {
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-legislation']],
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+                ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

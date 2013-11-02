@@ -65,7 +65,7 @@ class Periodical extends AbstractType {
                 ['name' => 'group', 'label' => 'Nature du document'],
 //                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-periodical']],
-                ['name' => 'media', 'table' => ['dclrefmedia']], // papier, web, archives sur dvd
+                ['name' => 'media', 'table' => ['medias']], // papier, web, archives sur dvd
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

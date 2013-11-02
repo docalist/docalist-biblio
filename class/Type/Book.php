@@ -46,7 +46,7 @@ class Book extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
                 ['name' => 'genre', 'table' => ['genres-book']], // roman, rapport, rapport instit
-                ['name' => 'media', 'table' => ['dclrefmedia']], //
+                ['name' => 'media', 'table' => ['medias']], //
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],

@@ -114,7 +114,7 @@ class Meeting extends AbstractType {
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
                 ['name' => 'genre', 'table' => ['genres-meeting']], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
-                ['name' => 'media', 'table' => ['dclrefmedia']],
+                ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
