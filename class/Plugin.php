@@ -297,7 +297,7 @@ class Plugin extends AbstractPlugin {
             'name' => 'medias',
             'path' => $dir . 'medias.txt',
             'label' => __("Supports de documents", 'docalist-biblio'),
-            'type' => 'genres',
+            'type' => 'medias',
             'user' => false,
         ]));
     }
