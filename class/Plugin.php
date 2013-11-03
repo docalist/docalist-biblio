@@ -172,8 +172,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclrefmedia', array(), $args);
 
         // DONE Etiquettes de rôle
-        $args['label'] = __('Etiquettes de rôle', 'docalist-biblio');
-        register_taxonomy('dclrefrole', array(), $args);
+//         $args['label'] = __('Etiquettes de rôle', 'docalist-biblio');
+//         register_taxonomy('dclrefrole', array(), $args);
 
         // Types de titres
         $args['label'] = __('Types de titres', 'docalist-biblio');

@@ -136,7 +136,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'author':
-                $table = $def->table[0] ?: 'dclrefrole';
+                $roles = $def->table[0];
 
                 $field = (new Table($name))->attribute('class', 'author');
                 $field->input('name')
@@ -144,7 +144,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 $field->input('firstname')
                       ->attribute('class', 'firstname');
                 $field->select('role')
-                      ->options($this->taxonomy($table))
+                      ->options($this->tableOptions($roles))
                       ->attribute('class', 'role');
 
                 break;
@@ -162,7 +162,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                       ->options($this->tableOptions($countries))
                       ->attribute('class', 'country');
                 $field->select('role')
-                      ->options($this->taxonomy($roles))
+                      ->options($this->tableOptions($roles))
                       ->attribute('class', 'role');
                 break;
 
@@ -172,10 +172,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'othertitle':
-                $table = $def->table[0] ?: 'dclrefrole';
+                //$table = $def->table[0] ?: 'dclrefrole';
 
                 $field = new Table($name);
-                $field->select('type')->options($this->taxonomy($table));
+                $field->select('type');//->options($this->taxonomy($table));
                 $field->input('title');
                 break;
 

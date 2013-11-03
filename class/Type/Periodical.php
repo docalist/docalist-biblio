@@ -75,8 +75,8 @@ class Periodical extends AbstractType {
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
-                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']], // exemple : asso auteur d'une revue
+                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
+                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // exemple : asso auteur d'une revue
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],

@@ -49,8 +49,8 @@ class Legislation extends AbstractType {
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']],
+                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
+                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],

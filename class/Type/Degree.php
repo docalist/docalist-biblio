@@ -57,8 +57,8 @@ class Degree extends AbstractType {
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'], // / dir
-                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']], // libellé : organisme de soutenance
+                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // / dir
+                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // libellé : organisme de soutenance
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],

@@ -59,8 +59,8 @@ class Report extends AbstractType {
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']], // /com
-                ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
+                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // /com
+                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
