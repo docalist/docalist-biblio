@@ -57,7 +57,7 @@ class Book extends AbstractType {
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
                 ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
+                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']],
 
                 // Journal, Issn, Volume, Issue
 //                ['name' => 'group', 'label' => 'Journal / Périodique'],
@@ -76,7 +76,7 @@ class Book extends AbstractType {
 
                 // Editor / Collection / Edition / Isbn
                 ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'], // ajouter sous champ role
+                ['name' => 'editor', 'table' => ['countries']], // ajouter sous champ role
                 ['name' => 'collection'],
                 ['name' => 'edition'],
                 ['name' => 'isbn'],

@@ -150,7 +150,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'organisation':
-                $countries = $def->table[0] ?: 'dclcountry';
+                $countries = $def->table[0];
                 $roles = $def->table[1] ?: 'dclrefrole';
 
                 $field = (new Table($name))->attribute('class', 'organisation');
@@ -159,7 +159,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 $field->input('city')
                       ->attribute('class', 'city');
                 $field->select('country')
-                      ->options($this->taxonomy($countries))
+                      ->options($this->tableOptions($countries))
                       ->attribute('class', 'country');
                 $field->select('role')
                       ->options($this->taxonomy($roles))
@@ -234,12 +234,12 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'editor':
-                $table = $def->table[0] ?: 'dclcountry';
+                $countries = $def->table[0];
 
                 $field = new Table($name);
                 $field->input('name');
                 $field->input('city');
-                $field->select('country')->options($this->taxonomy($table));
+                $field->select('country')->options($this->tableOptions($countries));
                 break;
 
             case 'edition':

@@ -152,8 +152,8 @@ class Plugin extends AbstractPlugin {
         // @formatter:on
 
         // Codes pays
-        $args['label'] = __('Codes pays', 'docalist-biblio');
-        register_taxonomy('dclcountry', array(), $args);
+//         $args['label'] = __('Codes pays', 'docalist-biblio');
+//         register_taxonomy('dclcountry', array(), $args);
 
         // Codes langues
         $args['label'] = __('Codes langues', 'docalist-biblio');

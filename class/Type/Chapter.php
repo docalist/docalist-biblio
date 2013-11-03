@@ -53,7 +53,7 @@ class Chapter extends AbstractType {
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
                 ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
+                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']],
 
                 // Journal, Issn, Volume, Issue
                 ['name' => 'group', 'label' => 'Journal / Périodique'],

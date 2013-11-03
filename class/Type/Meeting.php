@@ -125,7 +125,7 @@ class Meeting extends AbstractType {
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'organisation', 'table' => ['dclcountry', 'dclrefrole']],
+                ['name' => 'organisation', 'table' => ['countries', 'dclrefrole']],
                 ['name' => 'author', 'table' => ['dclrefrole'], 'format' => 'fmt1'],
 
                 // Date / Language / Pagination / Format
