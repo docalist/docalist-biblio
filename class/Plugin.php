@@ -156,8 +156,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclcountry', array(), $args);
 
         // Codes langues
-        $args['label'] = __('Codes langues', 'docalist-biblio');
-        register_taxonomy('dcllanguage', array(), $args);
+//         $args['label'] = __('Codes langues', 'docalist-biblio');
+//         register_taxonomy('dcllanguage', array(), $args);
 
         // Types de documents
 //         $args['label'] = __('Types de documents', 'docalist-biblio');

@@ -45,7 +45,7 @@ class Legislation extends AbstractType {
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
 //                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
-//                ['name' => 'translation', 'table' => ['dcllanguage']],
+//                ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
@@ -62,7 +62,7 @@ class Legislation extends AbstractType {
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-                ['name' => 'language', 'table' => ['dcllanguage']], // fre par défaut
+                ['name' => 'language', 'table' => ['languages']], // fre par défaut
                 ['name' => 'pagination'],
                 ['name' => 'format'],
 //                ['name' => 'doi'],
@@ -84,7 +84,7 @@ class Legislation extends AbstractType {
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract'],
+                ['name' => 'abstract', 'table' => ['languages']],
                 ['name' => 'note'],
 
                 // Liens et relations

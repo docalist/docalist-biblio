@@ -53,7 +53,7 @@ class Degree extends AbstractType {
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
                 ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
-//                ['name' => 'translation', 'table' => ['dcllanguage']],
+//                ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
@@ -70,7 +70,7 @@ class Degree extends AbstractType {
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-                ['name' => 'language', 'table' => ['dcllanguage']],
+                ['name' => 'language', 'table' => ['languages']],
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
@@ -94,7 +94,7 @@ class Degree extends AbstractType {
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract'],
+                ['name' => 'abstract', 'table' => ['languages']],
                 ['name' => 'note'],
 
                 // Liens et relations

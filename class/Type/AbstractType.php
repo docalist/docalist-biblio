@@ -180,10 +180,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'translation':
-                $table = $def->table[0] ?: 'dcllanguage';
+                $languages = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('language')->options($this->taxonomy($table));
+                $field->select('language')->options($this->tableOptions($languages));
                 $field->input('title');
                 break;
 
@@ -214,10 +214,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'language':
-                $table = $def->table[0] ?: 'dcllanguage';
+                $languages = $def->table[0];
 
                 $field = new Select($name);
-                $field->options($this->taxonomy($table));
+                $field->options($this->tableOptions($languages));
 
                 break;
 
@@ -269,18 +269,19 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'abstract':
-                $table = $def->table[0] ?: 'dcllanguage';
+                $languages = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('language')->options($this->taxonomy($table));
+                $field->select('language')->options($this->tableOptions($languages));
                 $field->textarea('content');
                 break;
 
             case 'topic':
-                $table = $def->table[0] ?: 'dcllanguage';
-
+//                 $table = $def->table[0] ?: 'dcllanguage'; // TODO mettre la bonne table
+// var_dump($def->table->toArray());
+// die();
                 $field = new Table($name);
-                $field->select('type')->options($def->table->toArray());
+                $field->select('type');//->options($def->table->toArray());
                 $field->input('term');
                 break;
 

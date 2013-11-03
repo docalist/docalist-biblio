@@ -121,7 +121,7 @@ class Meeting extends AbstractType {
                 ['name' => 'title'],
                 ['name' => 'event'],
 //              ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // sous-titre du congrès ?
-                ['name' => 'translation', 'table' => ['dcllanguage']],
+                ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
@@ -131,7 +131,7 @@ class Meeting extends AbstractType {
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-                ['name' => 'language', 'table' => ['dcllanguage']],
+                ['name' => 'language', 'table' => ['languages']],
                 ['name' => 'pagination'],
                 ['name' => 'format'],
 //                ['name' => 'doi'],
@@ -139,7 +139,7 @@ class Meeting extends AbstractType {
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract'],
+                ['name' => 'abstract', 'table' => ['languages']],
                 ['name' => 'note'],
 
                 // Liens et relations
