@@ -214,8 +214,8 @@ class Plugin extends AbstractPlugin {
         ]));
 
         $tableManager->register(new TableInfo([
-            'name' => 'roles-organisations',
-            'path' => $dir . 'roles-organisations.txt',
+            'name' => 'roles-organisation',
+            'path' => $dir . 'roles-organisation.txt',
             'label' => __('Etiquettes de rôles pour les organismes', 'docalist-biblio'),
             'type' => 'roles',
             'user' => false,

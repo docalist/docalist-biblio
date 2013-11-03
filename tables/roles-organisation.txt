@@ -6,3 +6,4 @@
 # 2013-10-02 Version initiale
 # ------------------------------------------------------------------------------
 code;label;description
+com;Commanditaire;
