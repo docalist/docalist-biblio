@@ -47,7 +47,7 @@ class Chapter extends AbstractType {
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true],
+                ['name' => 'othertitle', 'table' => ['titles']],
                 ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation

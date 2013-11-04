@@ -54,7 +54,7 @@ class Report extends AbstractType {
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                // ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // pas de othertitle pour un rapport
+                // ['name' => 'othertitle', 'table' => ['titles']], // pas de othertitle pour un rapport
                 ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation

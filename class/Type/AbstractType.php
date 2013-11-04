@@ -172,10 +172,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'othertitle':
-                //$table = $def->table[0] ?: 'dclrefrole';
+                $titles = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('type');//->options($this->taxonomy($table));
+                $field->select('type')->options($this->tableOptions($titles));
                 $field->input('title');
                 break;
 

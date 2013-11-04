@@ -52,7 +52,7 @@ class Article extends AbstractType {
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // à voir, pas de titre ens si type dossier
+                ['name' => 'othertitle', 'table' => ['titles']], // à voir, pas de titre ens si type dossier
                 ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation

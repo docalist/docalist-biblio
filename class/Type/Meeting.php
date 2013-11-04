@@ -120,7 +120,7 @@ class Meeting extends AbstractType {
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
                 ['name' => 'event'],
-//              ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // sous-titre du congrès ?
+//              ['name' => 'othertitle', 'table' => ['titles']], // sous-titre du congrès ?
                 ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation

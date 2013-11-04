@@ -176,8 +176,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclrefrole', array(), $args);
 
         // Types de titres
-        $args['label'] = __('Types de titres', 'docalist-biblio');
-        register_taxonomy('dclreftitle', array(), $args);
+//         $args['label'] = __('Types de titres', 'docalist-biblio');
+//         register_taxonomy('dclreftitle', array(), $args);
 
         // Types de notes
         $args['label'] = __('Types de notes', 'docalist-biblio');
@@ -298,6 +298,14 @@ class Plugin extends AbstractPlugin {
             'path' => $dir . 'medias.txt',
             'label' => __("Supports de documents", 'docalist-biblio'),
             'type' => 'medias',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'titles',
+            'path' => $dir . 'titles.txt',
+            'label' => __("Types de titres", 'docalist-biblio'),
+            'type' => 'titles',
             'user' => false,
         ]));
     }

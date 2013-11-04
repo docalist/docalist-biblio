@@ -70,7 +70,7 @@ class Periodical extends AbstractType {
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['dclreftitle'], 'split' => true], // oui avec table
+                ['name' => 'othertitle', 'table' => ['titles']], // oui avec table
 //                ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation
