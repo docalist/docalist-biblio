@@ -1,0 +1,62 @@
+# ------------------------------------------------------------------------------
+# Table "Types de notes"
+#
+# sources : listes onix/pubmed
+#
+#  
+#
+# 2013-10-04 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+# ------------------------------------------------------------------------------
+# Général
+# ------------------------------------------------------------------------------
+general;Note;Note d'information générale (à utiliser si aucun type de note ne convient).
+private;Note interne;Note ou remarque "privée", visible uniquement en interne.
+warning;Avertissement sur le contenu;Remarques sur un contenu litigieux, un document sujet à caution ou ayant fait l'objet d'un polémique, etc.
+comments;Commentaires sur le document;Visibles sur le front-office.
+# ------------------------------------------------------------------------------
+# Contenu du document
+# ------------------------------------------------------------------------------
+promo;Accroche promotionnelle;Une phrase de promotion du document.
+excerpt;Extrait du document;Extrait du document.
+intro;Texte d'introduction;Texte intégral de l'introduction ou de la préface.
+toc;Sommaire;Sommaire ou table des matières.
+index;Index;Index des mots-clés.
+sample;Échantillon de contenu;Similaire à extrait mais présente un échantillon du document.
+# ------------------------------------------------------------------------------
+# Critiques
+# ------------------------------------------------------------------------------
+review;Critique;Texte intégral d'une critique du document.
+review-citation;Extrait de critique;Citation ou extrait d'une critique concernant le document.
+press;Ce qu'en dit la presse;Mentions et citations dans les médias.
+prize;Prix décernés;Prix et mentions qui ont été décernés au document.
+# ------------------------------------------------------------------------------
+# Auteurs
+# ------------------------------------------------------------------------------
+author-comment;Commentaire de l'auteur;Commentaire du ou des auteurs.
+author-interview;Interview de l'auteur;
+funding;Mode de financement;Informations sur le mode de financement du document ou des travaux liés à ce document.
+coi;Conflits d'intérêt;Conflits d'intérêts éventuels susceptibles d'altérer la netutralité ou l'impartialité de du document.
+# ------------------------------------------------------------------------------
+# Catégorisation
+# ------------------------------------------------------------------------------
+audience;Public visé;A qui s'adresse le document : audience, public visé, niveau, etc.
+goals;Objectifs pédagogiques;Objectifs pédagogiques ou éducatifs, objectif de formation, niveau visé, etc.
+prerequisites;Pré-requis;Connaissances, techniques et savoirs-faires requis pour appréhender le document.
+copyright;Copyright;Remarques ou informations sur les droits d'auteurs, de copie ou de diffusion.
+# ------------------------------------------------------------------------------
+# Accès
+# ------------------------------------------------------------------------------
+embargo;Informations sur l'embargo appliqué;Par exemple pour une revue.
+access;Modalités d'accès;Comment accéder ou se procurer le document (ou une copie de celui-ci).
+# ------------------------------------------------------------------------------
+# Infos produit
+# ------------------------------------------------------------------------------
+price; Informations tarifaires;Informations sur le prix, les tarifs, les conditions, etc.
+packaging;Emballage;Remarques sur le packaging, l'emballage, etc.
+# ------------------------------------------------------------------------------
+# Contact
+# ------------------------------------------------------------------------------
+address;Adresse postale;Coordonnées postales : à qui s'adresser pour obtenir des informations sur ce document.
+contact;Contact;Téléphone/fax/e-mail disponibles pour d'informer sur le document.
