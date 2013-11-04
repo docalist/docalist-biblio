@@ -85,7 +85,7 @@ class Legislation extends AbstractType {
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
                 ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
                 ['name' => 'abstract', 'table' => ['languages']],
-                ['name' => 'note'],
+                ['name' => 'note', 'table' => ['notes']],
 
                 // Liens et relations
                 ['name' => 'group', 'label' => 'Liens et relations'],

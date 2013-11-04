@@ -180,8 +180,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclreftitle', array(), $args);
 
         // Types de notes
-        $args['label'] = __('Types de notes', 'docalist-biblio');
-        register_taxonomy('dclrefnote', array(), $args);
+//         $args['label'] = __('Types de notes', 'docalist-biblio');
+//         register_taxonomy('dclrefnote', array(), $args);
 
         // Types de liens
         $args['label'] = __('Types de liens', 'docalist-biblio');
@@ -306,6 +306,14 @@ class Plugin extends AbstractPlugin {
             'path' => $dir . 'titles.txt',
             'label' => __("Types de titres", 'docalist-biblio'),
             'type' => 'titles',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'notes',
+            'path' => $dir . 'notes.txt',
+            'label' => __("Types de notes", 'docalist-biblio'),
+            'type' => 'notes',
             'user' => false,
         ]));
     }

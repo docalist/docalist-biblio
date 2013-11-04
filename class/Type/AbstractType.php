@@ -286,10 +286,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'note':
-                $table = $def->table[0] ?: 'dclrefnote';
+                $notes = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('type')->options($this->taxonomy($table));
+                $field->select('type')->options($this->tableOptions($notes));
                 $field->textarea('content');
                 break;
 
