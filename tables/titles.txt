@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------
+# Table "Autres titres"
+#
+# sources : onix list 15/unimarc
+#
+# 2013-10-03 Version initiale
+# ------------------------------------------------------------------------------
+code;label;description
+subtitle;Sous-titre;
+complement;Complément du titre;
+original;Titre original;Titre du document dans sa langue d'origine dans le cas d'une oeuvre traduite.
+serial;Titre de série;Titre d'un ensemble d'ouvrages dont chacun porte un titre significatif et autonome (différent de collection). Exemple : les aventures de Lucky Luke, Harry Potter.
+other;Autre titre;Titre propre d'un auteur différent
+XX1;Titre de l'ensemble;Lorsqu'une publication en plusieurs volumes porte un titre d'ensemble que l'on retrouve sur chacun des volumes, ce titre prend le nom de titre commun à la condition essentielle que chaque volume porte un titre non significatif (terme générique).
+acronym;Sigle ou acronym;
+abbreviated;Titre abrégé;
+former;Titre précédent;Ancien titre si le document à changé de titre.
+alternative;Variante du titre;Par exemple si la couverture ou le dos du document fait apparaître un titre autre que celui indiqué dans la zone titre.
+expanded;Titre développé;Pour un manuel, par exemple.
+distributor;Titre donné par le distributeur;Quand un distributeur distribue un document sous un autre titre que le titre d'origine.
+XX2;Titre du dossier;Titre (souvent thématique) du dossier dans lequel sont réunis plusieurs articles.
+XX3;Titre du numéro;Pour un numéro de périodique, lorsque celui-ci comporte un titre spécifique. 
