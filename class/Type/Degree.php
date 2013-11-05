@@ -100,7 +100,7 @@ class Degree extends AbstractType {
                 // Liens et relations
                 ['name' => 'group', 'label' => 'Liens et relations'],
                 ['name' => 'link', 'table' => ['links']],
-                ['name' => 'relations'],
+                ['name' => 'relations', 'table' => ['relations']],
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],

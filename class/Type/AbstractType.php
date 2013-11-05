@@ -308,10 +308,10 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'relations':
-                $table = $def->table[0] ?: 'dclrefrelation';
+                $relations = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('type')->options($this->taxonomy($table));
+                $field->select('type')->options($this->tableOptions($relations));
                 $field->input('ref');
                 break;
 
