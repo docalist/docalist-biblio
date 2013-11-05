@@ -37,7 +37,7 @@ class Database extends PostTypeRepository {
      */
     public function __construct(DatabaseSettings $settings) {
         // Construit le dépôt
-        parent::__construct('Docalist\Biblio\Entity\Reference', 'dclref' . $settings->name);
+        parent::__construct('Docalist\Biblio\Entity\Reference', $settings->postType());
 
         // Stocke nos paramètres
         $this->settings = $settings;
