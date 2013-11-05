@@ -45,7 +45,6 @@ class Article extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-article']], // interview, reportage, enquête
                 ['name' => 'media', 'table' => ['medias']],
 
@@ -74,18 +73,6 @@ class Article extends AbstractType {
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
-/*
-                // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor'],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
-*/
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-//                ['name' => 'event'],
-//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -100,6 +87,7 @@ class Article extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

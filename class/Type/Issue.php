@@ -32,50 +32,19 @@ class Issue extends AbstractType {
             'label' => __('Numéro de périodique', 'docalist-biblio'),
             'description' => __('Une parution d\'un périodique.', 'docalist-biblio'),
             'fields' => [
-// !!! UN issue peut avoir un isbn = un fascicule
-                // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
-//                ['name' => 'genre', 'table' => ['dclrefgenre']], // numéro spécial, hors série, etc ?
-//                ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
-                ['name' => 'group', 'label' => 'Titres'],
-                ['name' => 'title'],
-//                ['name' => 'othertitle', 'table' => ['titles']],
-//                ['name' => 'translation', 'table' => ['languages']],
-
-                // Author, Organisation
-                ['name' => 'group', 'label' => 'Auteurs'],
-//                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
-//                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
-
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-//                ['name' => 'journal'],
-//                ['name' => 'issn'],
+                ['name' => 'group', 'label' => 'Numéro de périodique'],
                 ['name' => 'volume'],
                 ['name' => 'issue'],
+                ['name' => 'title'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
-//                ['name' => 'language', 'table' => ['languages']],
+                ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
                 ['name' => 'pagination'], // nb de p/ de ce n°
                 ['name' => 'format'], // matériel d'accompagnement
-//                ['name' => 'doi'],
-
-                // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-//                 ['name' => 'editor'],
-//                 ['name' => 'collection'],
-//                 ['name' => 'edition'],
-                ['name' => 'isbn'],
-
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -90,6 +59,7 @@ class Issue extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

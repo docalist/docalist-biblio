@@ -151,7 +151,7 @@ class AbstractType extends TypeSettings /* extends Reference */ {
 
             case 'organisation':
                 $countries = $def->table[0];
-                $roles = $def->table[1] ?: 'dclrefrole';
+                $roles = $def->table[1];
 
                 $field = (new Table($name))->attribute('class', 'organisation');
                 $field->input('name')

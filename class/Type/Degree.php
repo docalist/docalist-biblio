@@ -45,13 +45,13 @@ class Degree extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-degree']], // mémoire, thèse, écrit de certification
                 ['name' => 'media', 'table' => ['medias']], // papier, internet, cd, dvd
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
+                ['name' => 'degree'],
                 ['name' => 'othertitle', 'table' => ['titles']],
 //                ['name' => 'translation', 'table' => ['languages']],
 
@@ -60,32 +60,18 @@ class Degree extends AbstractType {
                 ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // / dir
                 ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // libellé : organisme de soutenance
 
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-//                ['name' => 'journal'],
-//                ['name' => 'issn'],
-                ['name' => 'volume'], // n° de tome
-//                ['name' => 'issue'],
-
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
                 ['name' => 'language', 'table' => ['languages']],
+                ['name' => 'volume'], // n° de tome
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
 
-                // Editor / Collection / Edition / Isbn
-//                 ['name' => 'group', 'label' => 'Informations éditeur'],
-//                 ['name' => 'editor'],
-//                 ['name' => 'collection'],
-//                 ['name' => 'edition'],
-//                 ['name' => 'isbn'],
-
                 // Event / Degree
                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'], // date de soutenance
-                ['name' => 'degree'],
+//                ['name' => 'event'], // date de soutenance
 
 // numéro de thèse
 // numéro de promotion
@@ -104,6 +90,7 @@ class Degree extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

@@ -39,10 +39,8 @@ class Chapter extends AbstractType {
             'fields' => [
 
                 // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'type', 'table' => ['dclreftype']],
-//                 ['name' => 'genre', 'table' => ['??']], // genres-chapter ? pas de genre pour un chapitre ?
-                ['name' => 'media', 'table' => ['medias']],
+//                 ['name' => 'group', 'label' => 'Nature du document'],
+//                 ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
@@ -56,11 +54,11 @@ class Chapter extends AbstractType {
                 ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
 
                 // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
+//                 ['name' => 'group', 'label' => 'Journal / Périodique'],
+//                 ['name' => 'journal'],
+//                 ['name' => 'issn'],
+//                 ['name' => 'volume'],
+//                 ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
@@ -71,16 +69,16 @@ class Chapter extends AbstractType {
                 ['name' => 'doi'],
 
                 // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor', 'table' => ['countries']],
-                ['name' => 'collection'],
-                ['name' => 'edition'],
-                ['name' => 'isbn'],
+//                 ['name' => 'group', 'label' => 'Informations éditeur'],
+//                 ['name' => 'editor', 'table' => ['countries']],
+//                 ['name' => 'collection'],
+//                 ['name' => 'edition'],
+//                 ['name' => 'isbn'],
 
                 // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-                ['name' => 'event'],
-                ['name' => 'degree'],
+//                 ['name' => 'group', 'label' => 'Congrès et diplômes'],
+//                 ['name' => 'event'],
+//                 ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -95,6 +93,7 @@ class Chapter extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

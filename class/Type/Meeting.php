@@ -149,6 +149,7 @@ class Meeting extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

@@ -45,8 +45,8 @@ class Book extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'genre', 'table' => ['genres-book']], // roman, rapport, rapport instit
-                ['name' => 'media', 'table' => ['medias']], //
+                ['name' => 'genre', 'table' => ['genres-book']],
+                ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
@@ -59,17 +59,11 @@ class Book extends AbstractType {
                 ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
                 ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
 
-                // Journal, Issn, Volume, Issue
-//                ['name' => 'group', 'label' => 'Journal / Périodique'],
-//                ['name' => 'journal'],
-//                ['name' => 'issn'],
-                ['name' => 'volume'], // n° de tome
-//                ['name' => 'issue'],
-
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
                 ['name' => 'date'],
                 ['name' => 'language', 'table' => ['languages']],
+                ['name' => 'volume'], // n° de tome
                 ['name' => 'pagination'],
                 ['name' => 'format'],
                 ['name' => 'doi'],
@@ -99,7 +93,7 @@ class Book extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
-                ['name' => 'type', 'table' => ['dclreftype']], // hidden
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

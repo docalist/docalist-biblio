@@ -63,13 +63,13 @@ class Periodical extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-periodical']],
                 ['name' => 'media', 'table' => ['medias']], // papier, web, archives sur dvd
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
+                ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
                 ['name' => 'othertitle', 'table' => ['titles']], // oui avec table
 //                ['name' => 'translation', 'table' => ['languages']],
 
@@ -77,13 +77,6 @@ class Periodical extends AbstractType {
                 ['name' => 'group', 'label' => 'Auteurs'],
                 ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
                 ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // exemple : asso auteur d'une revue
-
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-//                ['name' => 'journal'],
-                ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
-//                ['name' => 'volume'],
-//                ['name' => 'issue'],
 
                 // Date / Language / Pagination / Format
                 ['name' => 'group', 'label' => 'Informations bibliographiques'],
@@ -97,13 +90,6 @@ class Periodical extends AbstractType {
                 ['name' => 'group', 'label' => 'Informations éditeur'],
                 ['name' => 'editor', 'table' => ['countries']],
                 ['name' => 'collection'],
-//                ['name' => 'edition'],
-//                ['name' => 'isbn'],
-
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-//                ['name' => 'event'],
-//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -118,6 +104,7 @@ class Periodical extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],

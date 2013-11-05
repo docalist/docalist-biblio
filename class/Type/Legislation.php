@@ -37,15 +37,12 @@ class Legislation extends AbstractType {
 
                 // Type, Genre, Media
                 ['name' => 'group', 'label' => 'Nature du document'],
-//                ['name' => 'type', 'table' => ['dclreftype']],
                 ['name' => 'genre', 'table' => ['genres-legislation']],
                 ['name' => 'media', 'table' => ['medias']],
 
                 // Title, OtherTitle, Translation
                 ['name' => 'group', 'label' => 'Titres'],
                 ['name' => 'title'],
-//                ['name' => 'othertitle', 'table' => ['titles']],
-//                ['name' => 'translation', 'table' => ['languages']],
 
                 // Author, Organisation
                 ['name' => 'group', 'label' => 'Auteurs'],
@@ -65,21 +62,8 @@ class Legislation extends AbstractType {
                 ['name' => 'language', 'table' => ['languages']], // fre par défaut
                 ['name' => 'pagination'],
                 ['name' => 'format'],
-//                ['name' => 'doi'],
 
 // numéro de texte officiel
-
-                // Editor / Collection / Edition / Isbn
-//                 ['name' => 'group', 'label' => 'Informations éditeur'],
-//                 ['name' => 'editor'],
-//                 ['name' => 'collection'],
-//                 ['name' => 'edition'],
-//                 ['name' => 'isbn'],
-
-                // Event / Degree
-//                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-//                ['name' => 'event'],
-//                ['name' => 'degree'],
 
                 // Topic / Abstract / Note
                 ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -94,6 +78,7 @@ class Legislation extends AbstractType {
 
                 // Ref / Owner / Creation / Lastupdate
                 ['name' => 'group', 'label' => 'Informations de gestion'],
+                ['name' => 'type'],
                 ['name' => 'ref'],
                 ['name' => 'owner'],
                 ['name' => 'creation'],
