@@ -188,8 +188,8 @@ class Plugin extends AbstractPlugin {
 //         register_taxonomy('dclreflink', array(), $args);
 
         // Types de relations
-        $args['label'] = __('Types de relations', 'docalist-biblio');
-        register_taxonomy('dclrefrelation', array(), $args);
+//         $args['label'] = __('Types de relations', 'docalist-biblio');
+//         register_taxonomy('dclrefrelation', array(), $args);
 
         // collations
         // degreee levels
@@ -322,6 +322,14 @@ class Plugin extends AbstractPlugin {
             'path' => $dir . 'links.txt',
             'label' => __("Types de liens", 'docalist-biblio'),
             'type' => 'links',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'relations',
+            'path' => $dir . 'relations.txt',
+            'label' => __("Types de relations", 'docalist-biblio'),
+            'type' => 'relations',
             'user' => false,
         ]));
     }
