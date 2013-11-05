@@ -294,11 +294,12 @@ class AbstractType extends TypeSettings /* extends Reference */ {
                 break;
 
             case 'link':
-                $table = $def->table[0] ?: 'dclreflink';
+                $links = $def->table[0];
 
                 $field = new Table($name);
-                $field->select('type')->options($this->taxonomy($table));
                 $field->input('url');
+                $field->select('type')->options($this->tableOptions($links));
+                $field->input('label');
                 $field->input('date');
                 break;
 

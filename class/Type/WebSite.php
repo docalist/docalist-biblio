@@ -91,7 +91,7 @@ class WebSite extends AbstractType {
 
                 // Liens et relations
                 ['name' => 'group', 'label' => 'Liens et relations'],
-                ['name' => 'link'],
+                ['name' => 'link', 'table' => ['links']],
                 ['name' => 'relations'],
 
                 // Ref / Owner / Creation / Lastupdate
