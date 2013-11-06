@@ -30,9 +30,9 @@ namespace Docalist\Biblio\Type;
  * - a une pagination de type "page de début - page de fin"
  */
 class Chapter extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'chapter',
             'label' => __('Chapitre de livre', 'docalist-biblio'),
             'description' => __('Un chapitre extrait d\'un livre publié.', 'docalist-biblio'),
@@ -99,7 +99,7 @@ class Chapter extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

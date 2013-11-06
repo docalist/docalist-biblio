@@ -31,9 +31,9 @@ namespace Docalist\Biblio\Type;
  * - a un organisme ou une personne auteur
  */
 class WebSite extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'website',
             'label' => __('Site web', 'docalist-biblio'),
             'description' => __('Un site web.', 'docalist-biblio'),
@@ -101,7 +101,7 @@ class WebSite extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

@@ -27,9 +27,9 @@ namespace Docalist\Biblio\Type;
  * - est publié ou nom au bo, au jo, etc.
  */
 class Legislation extends AbstractType {
-    public function __construct() {
+    public function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'legislation',
             'label' => __('Législation', 'docalist-biblio'),
             'description' => __('Un texte législatif ou réglementaire.', 'docalist-biblio'),
@@ -84,7 +84,7 @@ class Legislation extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

@@ -38,9 +38,9 @@ namespace Docalist\Biblio\Type;
 
 // TODO : ne pas appeller ça "rapport". Ce que ça désigne, c'est une monographie non éditée (pas d'isbn)
 class Report extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'report',
             'label' => __('Rapport', 'docalist-biblio'),
             'description' => __('Un rapport d\'activité ou une étude non publiée', 'docalist-biblio'),
@@ -89,7 +89,7 @@ class Report extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

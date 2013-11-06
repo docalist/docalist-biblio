@@ -35,9 +35,9 @@ namespace Docalist\Biblio\Type;
  */
 class Book extends AbstractType {
 
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'book',
             'label' => __('Livre', 'docalist-biblio'),
             'description' => __('Un livre publié par un éditeur.', 'docalist-biblio'),
@@ -99,7 +99,7 @@ class Book extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

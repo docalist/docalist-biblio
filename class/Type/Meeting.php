@@ -103,9 +103,9 @@ namespace Docalist\Biblio\Type;
  * - pas d'auteur personne physique
  */
 class Meeting extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'meeting',
             'label' => __('Congrès / colloque', 'docalist-biblio'),
             'description' => __('Une manisfestation ou un regroupement professionnel.', 'docalist-biblio'),
@@ -155,7 +155,7 @@ class Meeting extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

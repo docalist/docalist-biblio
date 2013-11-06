@@ -35,9 +35,9 @@ namespace Docalist\Biblio\Type;
  * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
  */
 class Degree extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'degree',
             'label' => __('Mémoire ou thèse', 'docalist-biblio'),
             'description' => __('Un document élaboré en vue de l\'obtention d\'un diplôme.', 'docalist-biblio'),
@@ -96,7 +96,7 @@ class Degree extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

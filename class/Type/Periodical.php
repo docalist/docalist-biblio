@@ -53,9 +53,9 @@ namespace Docalist\Biblio\Type;
  * - a une périodicité
  */
 class Periodical extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'periodical',
             'label' => __('Périodique', 'docalist-biblio'),
             'description' => __('Une publication périodique (revue, magazine, journal...)', 'docalist-biblio'),
@@ -110,7 +110,7 @@ class Periodical extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }

@@ -35,9 +35,9 @@ namespace Docalist\Biblio\Type;
  * - pagination de type "page de début - page de fin"
  */
 class Article extends AbstractType {
-    public function __construct() {
+    protected function defaults() {
         // @formatter:off
-        parent::__construct([
+        return [
             'name' => 'article',
             'label' => __('Article de périodique', 'docalist-biblio'),
             'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
@@ -93,7 +93,7 @@ class Article extends AbstractType {
                 ['name' => 'creation'],
                 ['name' => 'lastupdate'],
             ]
-        ]);
+        ];
         // @formatter:on
     }
 }
