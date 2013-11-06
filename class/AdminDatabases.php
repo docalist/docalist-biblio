@@ -241,7 +241,7 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Récupère la liste des types existants
-        $types = apply_filters('docalist_biblio_get_types', array()); // code => class
+        $types = apply_filters('docalist_biblio_get_types', array()); // code => defaults (array, path ou closure)
 
         // Récupère la liste des types qui existent déjà dans la base
         $selected = $database->typeNames();
@@ -250,11 +250,11 @@ class AdminDatabases extends AdminPage {
         if (empty($name)) {
 
             // Construit la liste tous les types qui ne sont pas déjà dans la base
-            foreach($types as $name => $class) {
+            foreach($types as $name => $defaults) {
                 if (isset($selected[$name])) {
                     unset($types[$name]);
                 } else {
-                    $types[$name] = new $class();
+                    $types[$name] = apply_filters('docalist_biblio_get_type', $name);
                 }
             }
 
@@ -290,9 +290,8 @@ class AdminDatabases extends AdminPage {
         }
 
         // Ajoute le type
-        $class = $types[$name];
-        $type = new $class();
-        $database->types[] = $type->toArray();
+        $defaults = apply_filters('docalist_biblio_get_type', $name, false);
+        $database->types[] = $defaults;
         $this->settings->save();
 
         return $this->redirect($this->url('TypesList', $dbindex), 303);
