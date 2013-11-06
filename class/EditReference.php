@@ -20,6 +20,15 @@ use Docalist\Utils;
 use WP_Post;
 use Exception;
 
+use Docalist\Forms\Fragment;
+use Docalist\Forms\Table;
+use Docalist\Forms\Input;
+use Docalist\Forms\Select;
+//use Docalist\Forms\Hidden;
+
+
+use Docalist\Table\TableManager;
+
 /**
  * La page "création/modification d'une notice" d'une base documentaire.
  */
@@ -108,10 +117,16 @@ class EditReference {
      * false s'il s'agit d'une mise à jour.
      */
     protected function setPageTitle($type, $creation = false) {
-        $base = $this->database->settings()->label;
+        // Détermine le libellé du type
+        foreach($this->database->settings()->types as $item){
+            if ($item->name === $type) {
+                $type = $item->label;
+                break;
+            }
+        };
+        // TODO : indexer les types par nom pour permettre una ccès direct au label
 
-        $type = $type ? $this->database->classForType($type, true) : 'Type inconnu';
-        $type = $type->label;
+        $base = $this->database->settings()->label;
 
         if ($creation) {
             $op = __('création', 'docalist-biblio');
@@ -207,10 +222,9 @@ class EditReference {
 
         // Détermine la grille de saisie à utiliser
         isset($_REQUEST['ref_type']) && $this->reference->type = $_REQUEST['ref_type'];
-        $type = $this->database->classForType($this->reference->type, true);
 
         $assets = Themes::assets('wordpress');
-        foreach($type->metaboxes() as $id => $form) {
+        foreach($this->metaboxes($this->reference->type) as $id => $form) {
             $title = $form->label() ?: $id;
 
             // @formatter:off
@@ -257,11 +271,11 @@ class EditReference {
         if (! isset($record['type'])) {
             throw new Exception('Pas de type de notice dans $_POST');
         }
-        $type = $this->database->classForType($record['type'], true);
+        $type = $record['type'];
 
         // Met à jour la notice
         $record = wp_unslash($_POST);
-        foreach($type->metaboxes() as $id => $metabox) {
+        foreach($this->metaboxes($type) as $id => $metabox) {
             $metabox->bind($record);
             foreach($metabox->data() as $key => $data) {
                 $this->reference->$key = $data;
@@ -289,5 +303,293 @@ class EditReference {
      */
     protected function checkNonce() {
         return isset($_POST[self::NONCE]) && wp_verify_nonce($_POST[self::NONCE], 'edit-post');
+    }
+
+    /**
+     * Retourne les formulaires utilisés pour saisir une notice de ce type.
+     *
+     * @param string $type
+     * @return Fragment[] Un tableau de la forme id metabox => form fragment
+     */
+    protected function metaboxes($type) {
+        // Récupère la grille de saisie de ce type
+        // TODO : indexer les types par nom, on ne peut pas accéder directement aux settings d'un type
+        $fields = null;
+        foreach($this->database->settings()->types as $t) {
+            if ($t->name === $type) {
+                $fields = $t->fields;
+                break;
+            }
+        }
+
+        $metaboxes = array();
+        $box = new Fragment();
+        foreach($fields as $field) {
+            // Nouvelle métabox. Sauve la courante si non vide et crée une nouvelle
+            if ($field->name === 'group') {
+                if (count($box->fields()) !== 0) {
+                    $id = $type . '-' . $box->fields()[0]->name();
+                    $metaboxes[$id] = $box;
+                }
+
+                $box = new Fragment();
+                $box->label($field->label)->description($field->description);
+            } else {
+                $field = $this->createField($field);
+                // $field->label($def->label)->description($def->label);
+                $box->add($field);
+            }
+        }
+
+        if (count($box->fields()) !== 0) {
+            $id = $type . '-' . $box->fields()[0]->name();
+            $metaboxes[$id] = $box;
+        }
+//         var_dump($metaboxes);
+//         die();
+        return $metaboxes;
+
+    }
+    protected function createField(FieldSettings $def) {
+        $name = $def->name;
+        switch($name) {
+            case 'ref':
+                $field = new Input($name);
+                break;
+
+            case 'type':
+                $types = apply_filters('docalist_biblio_get_types', array()); // code => class
+                $types = array_keys($types);
+
+                $field = new Select($name);
+                $field->options($types);
+                break;
+
+            case 'genre':
+                $table = $def->table[0];
+                $field = new Select($name);
+                $field->options($this->tableOptions($table));
+                break;
+
+            case 'media':
+                $table = $def->table[0];
+                $field = new Select($name);
+                $field->options($this->tableOptions($table));
+                break;
+
+            case 'author':
+                $roles = $def->table[0];
+
+                $field = (new Table($name))->attribute('class', 'author');
+                $field->input('name')
+                ->attribute('class', 'name');
+                $field->input('firstname')
+                ->attribute('class', 'firstname');
+                $field->select('role')
+                ->options($this->tableOptions($roles))
+                ->attribute('class', 'role');
+
+                break;
+
+            case 'organisation':
+                $countries = $def->table[0];
+                $roles = $def->table[1];
+
+                $field = (new Table($name))->attribute('class', 'organisation');
+                $field->input('name')
+                ->attribute('class', 'name');
+                $field->input('city')
+                ->attribute('class', 'city');
+                $field->select('country')
+                ->options($this->tableOptions($countries))
+                ->attribute('class', 'country');
+                $field->select('role')
+                ->options($this->tableOptions($roles))
+                ->attribute('class', 'role');
+                break;
+
+            case 'title':
+                $field = new Input($name);
+                $field->addClass('large-text')->attribute('id', 'DocTitle');
+                break;
+
+            case 'othertitle':
+                $titles = $def->table[0];
+
+                $field = new Table($name);
+                $field->select('type')->options($this->tableOptions($titles));
+                $field->input('title');
+                break;
+
+            case 'translation':
+                $languages = $def->table[0];
+
+                $field = new Table($name);
+                $field->select('language')->options($this->tableOptions($languages));
+                $field->input('title');
+                break;
+
+            case 'date':
+                $field = new Input($name);
+
+                break;
+
+            case 'journal':
+                $field = new Input($name);
+                $field->attribute('class', 'large-text');
+
+                break;
+
+            case 'issn':
+                $field = new Input($name);
+
+                break;
+
+            case 'volume':
+                $field = new Input($name);
+
+                break;
+
+            case 'issue':
+                $field = new Input($name);
+
+                break;
+
+            case 'language':
+                $languages = $def->table[0];
+
+                $field = new Select($name);
+                $field->options($this->tableOptions($languages));
+
+                break;
+
+            case 'pagination':
+                $field = new Input($name);
+                break;
+
+            case 'format':
+                $field = new Input($name);
+                break;
+
+            case 'isbn':
+                $field = new Input($name);
+                break;
+
+            case 'editor':
+                $countries = $def->table[0];
+
+                $field = new Table($name);
+                $field->input('name');
+                $field->input('city');
+                $field->select('country')->options($this->tableOptions($countries));
+                break;
+
+            case 'edition':
+                $field = new Table($name);
+                $field->input('type');
+                $field->input('value');
+                break;
+
+            case 'collection':
+                $field = new Table($name);
+                $field->input('name');
+                $field->input('number');
+                break;
+
+            case 'event':
+                $field = new Table($name);
+                $field->input('title');
+                $field->input('date');
+                $field->input('place');
+                $field->input('number');
+                break;
+
+            case 'degree':
+                $field = new Table($name);
+                $field->input('title');
+                $field->input('level');
+                break;
+
+            case 'abstract':
+                $languages = $def->table[0];
+
+                $field = new Table($name);
+                $field->select('language')->options($this->tableOptions($languages));
+                $field->textarea('content');
+                break;
+
+            case 'topic':
+                //                 $table = $def->table[0] ?: 'dcllanguage'; // TODO mettre la bonne table
+                // var_dump($def->table->toArray());
+                // die();
+                $field = new Table($name);
+                $field->select('type');//->options($def->table->toArray());
+                $field->input('term');
+                break;
+
+            case 'note':
+                $notes = $def->table[0];
+
+                $field = new Table($name);
+                $field->select('type')->options($this->tableOptions($notes));
+                $field->textarea('content');
+                break;
+
+            case 'link':
+                $links = $def->table[0];
+
+                $field = new Table($name);
+                $field->input('url');
+                $field->select('type')->options($this->tableOptions($links));
+                $field->input('label');
+                $field->input('date');
+                break;
+
+            case 'doi':
+                $field = new Input($name);
+                break;
+
+            case 'relations':
+                $relations = $def->table[0];
+
+                $field = new Table($name);
+                $field->select('type')->options($this->tableOptions($relations));
+                $field->input('ref');
+                break;
+
+            case 'owner':
+                $field = new Input($name);
+                break;
+
+            case 'creation':
+                $field = new Table($name);
+                $field->input('date');
+                $field->input('by');
+                break;
+
+            case 'lastupdate':
+                $field = new Table($name);
+                $field->input('date');
+                $field->input('by');
+                break;
+
+            case 'status':
+                $field = new Input($name);
+                break;
+
+            default:
+                throw new \Exception("Champ inconnu : '$name'");
+        }
+
+        $field->label($def->label)->description($def->description);
+
+        return $field;
+    }
+
+    protected function tableOptions($table, $fields = 'code,label') {
+        empty($table) && $table = 'countries';
+        /* @var $tableManager TableManager */
+        $tableManager = apply_filters('docalist_get_table_manager', null);
+        return $tableManager->get($table)->search($fields);
     }
 }
