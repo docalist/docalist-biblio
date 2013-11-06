@@ -57,9 +57,6 @@ class Plugin extends AbstractPlugin {
             $this->databases[$database->postType()] = $database;
         }
 
-        // Crée les taxonomies
-        $this->registerTaxonomies();
-
         // Enregistre les types de référence pré-définis
         add_filter('docalist_biblio_get_types', function(array $types) {
             return $types + [
@@ -135,65 +132,6 @@ class Plugin extends AbstractPlugin {
         }
 
         return $this->databases[$type]->load($id);
-    }
-
-    /**
-     * Déclare dans WordPress les taxonomies utilisées.
-     */
-    protected function registerTaxonomies() {
-        // Paramètres communs à toutes les taxonomies
-        // @formatter:off
-        $args = array(
-            'hierarchical' => false,
-            'show_ui' => true,
-            'query_var' => false,
-            'rewrite' => false,
-        );
-        // @formatter:on
-
-        // Codes pays
-//         $args['label'] = __('Codes pays', 'docalist-biblio');
-//         register_taxonomy('dclcountry', array(), $args);
-
-        // Codes langues
-//         $args['label'] = __('Codes langues', 'docalist-biblio');
-//         register_taxonomy('dcllanguage', array(), $args);
-
-        // Types de documents
-//         $args['label'] = __('Types de documents', 'docalist-biblio');
-//         register_taxonomy('dclreftype', array(), $args);
-
-        // Genres de documents
-//         $args['label'] = __('Genres de documents', 'docalist-biblio');
-//         register_taxonomy('dclrefgenre', array(), $args);
-
-        // Supports de documents
-//         $args['label'] = __('Supports de documents', 'docalist-biblio');
-//         register_taxonomy('dclrefmedia', array(), $args);
-
-        // DONE Etiquettes de rôle
-//         $args['label'] = __('Etiquettes de rôle', 'docalist-biblio');
-//         register_taxonomy('dclrefrole', array(), $args);
-
-        // Types de titres
-//         $args['label'] = __('Types de titres', 'docalist-biblio');
-//         register_taxonomy('dclreftitle', array(), $args);
-
-        // Types de notes
-//         $args['label'] = __('Types de notes', 'docalist-biblio');
-//         register_taxonomy('dclrefnote', array(), $args);
-
-        // Types de liens
-//         $args['label'] = __('Types de liens', 'docalist-biblio');
-//         register_taxonomy('dclreflink', array(), $args);
-
-        // Types de relations
-//         $args['label'] = __('Types de relations', 'docalist-biblio');
-//         register_taxonomy('dclrefrelation', array(), $args);
-
-        // collations
-        // degreee levels
-        // liste des thesaurus
     }
 
     /**
