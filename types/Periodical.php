@@ -52,65 +52,61 @@ namespace Docalist\Biblio\Type;
  * - a un ISSN
  * - a une périodicité
  */
-class Periodical extends AbstractType {
-    protected function defaults() {
-        // @formatter:off
-        return [
-            'name' => 'periodical',
-            'label' => __('Périodique', 'docalist-biblio'),
-            'description' => __('Une publication périodique (revue, magazine, journal...)', 'docalist-biblio'),
-            'fields' => [
+// @formatter:off
+return [
+    'name' => 'periodical',
+    'label' => __('Périodique', 'docalist-biblio'),
+    'description' => __('Une publication périodique (revue, magazine, journal...)', 'docalist-biblio'),
+    'fields' => [
 
-                // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'genre', 'table' => ['genres-periodical']],
-                ['name' => 'media', 'table' => ['medias']], // papier, web, archives sur dvd
+        // Type, Genre, Media
+        ['name' => 'group', 'label' => 'Nature du document'],
+        ['name' => 'genre', 'table' => ['genres-periodical']],
+        ['name' => 'media', 'table' => ['medias']], // papier, web, archives sur dvd
 
-                // Title, OtherTitle, Translation
-                ['name' => 'group', 'label' => 'Titres'],
-                ['name' => 'title'],
-                ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
-                ['name' => 'othertitle', 'table' => ['titles']], // oui avec table
-//                ['name' => 'translation', 'table' => ['languages']],
+        // Title, OtherTitle, Translation
+        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'title'],
+        ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
+        ['name' => 'othertitle', 'table' => ['titles']], // oui avec table
+        // ['name' => 'translation', 'table' => ['languages']],
 
-                // Author, Organisation
-                ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
-                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // exemple : asso auteur d'une revue
+        // Author, Organisation
+        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
+        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // exemple : asso auteur d'une revue
 
-                // Date / Language / Pagination / Format
-                ['name' => 'group', 'label' => 'Informations bibliographiques'],
-                ['name' => 'date'],
-                ['name' => 'language', 'table' => ['languages']],
-                ['name' => 'pagination'], // nombre moyen de pages par numéro
-                ['name' => 'format'], // taille, couleur,
-//                ['name' => 'doi'],
+        // Date / Language / Pagination / Format
+        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'date'],
+        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'pagination'], // nombre moyen de pages par numéro
+        ['name' => 'format'], // taille, couleur,
+        // ['name' => 'doi'],
 
-                // Editor / Collection / Edition / Isbn
-                ['name' => 'group', 'label' => 'Informations éditeur'],
-                ['name' => 'editor', 'table' => ['countries']],
-                ['name' => 'collection'],
+        // Editor / Collection / Edition / Isbn
+        ['name' => 'group', 'label' => 'Informations éditeur'],
+        ['name' => 'editor', 'table' => ['countries']],
+        ['name' => 'collection'],
 
-                // Topic / Abstract / Note
-                ['name' => 'group', 'label' => 'Indexation et résumé'],
-                ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract', 'table' => ['languages']],
-                ['name' => 'note', 'table' => ['notes']],
+        // Topic / Abstract / Note
+        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
+        ['name' => 'abstract', 'table' => ['languages']],
+        ['name' => 'note', 'table' => ['notes']],
 
-                // Liens et relations
-                ['name' => 'group', 'label' => 'Liens et relations'],
-                ['name' => 'link', 'table' => ['links']],
-                ['name' => 'relations', 'table' => ['relations']],
+        // Liens et relations
+        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'link', 'table' => ['links']],
+        ['name' => 'relations', 'table' => ['relations']],
 
-                // Ref / Owner / Creation / Lastupdate
-                ['name' => 'group', 'label' => 'Informations de gestion'],
-                ['name' => 'type'],
-                ['name' => 'ref'],
-                ['name' => 'owner'],
-                ['name' => 'creation'],
-                ['name' => 'lastupdate'],
-            ]
-        ];
-        // @formatter:on
-    }
-}
+        // Ref / Owner / Creation / Lastupdate
+        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'type'],
+        ['name' => 'ref'],
+        ['name' => 'owner'],
+        ['name' => 'creation'],
+        ['name' => 'lastupdate'],
+    ]
+];
+// @formatter:on

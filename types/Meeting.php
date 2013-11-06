@@ -102,60 +102,56 @@ namespace Docalist\Biblio\Type;
  * - était organisé à l'initiative d'un ou plusieurs organismes
  * - pas d'auteur personne physique
  */
-class Meeting extends AbstractType {
-    protected function defaults() {
-        // @formatter:off
-        return [
-            'name' => 'meeting',
-            'label' => __('Congrès / colloque', 'docalist-biblio'),
-            'description' => __('Une manisfestation ou un regroupement professionnel.', 'docalist-biblio'),
-            'fields' => [
+// @formatter:off
+return [
+    'name' => 'meeting',
+    'label' => __('Congrès / colloque', 'docalist-biblio'),
+    'description' => __('Une manisfestation ou un regroupement professionnel.', 'docalist-biblio'),
+    'fields' => [
 
-                // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'genre', 'table' => ['genres-meeting']], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
-                ['name' => 'media', 'table' => ['medias']],
+        // Type, Genre, Media
+        ['name' => 'group', 'label' => 'Nature du document'],
+        ['name' => 'genre', 'table' => ['genres-meeting']], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
+        ['name' => 'media', 'table' => ['medias']],
 
-                // Title, OtherTitle, Translation
-                ['name' => 'group', 'label' => 'Titres'],
-                ['name' => 'title'],
-                ['name' => 'event'],
-//              ['name' => 'othertitle', 'table' => ['titles']], // sous-titre du congrès ?
-                ['name' => 'translation', 'table' => ['languages']],
+        // Title, OtherTitle, Translation
+        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'title'],
+        ['name' => 'event'],
+        // ['name' => 'othertitle', 'table' => ['titles']], // sous-titre du congrès ?
+        ['name' => 'translation', 'table' => ['languages']],
 
-                // Author, Organisation
-                ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
-                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
+        // Author, Organisation
+        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
+        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
 
-                // Date / Language / Pagination / Format
-                ['name' => 'group', 'label' => 'Informations bibliographiques'],
-                ['name' => 'date'],
-                ['name' => 'language', 'table' => ['languages']],
-                ['name' => 'pagination'],
-                ['name' => 'format'],
-//                ['name' => 'doi'],
+        // Date / Language / Pagination / Format
+        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'date'],
+        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'pagination'],
+        ['name' => 'format'],
+        // ['name' => 'doi'],
 
-                // Topic / Abstract / Note
-                ['name' => 'group', 'label' => 'Indexation et résumé'],
-                ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract', 'table' => ['languages']],
-                ['name' => 'note', 'table' => ['notes']],
+        // Topic / Abstract / Note
+        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
+        ['name' => 'abstract', 'table' => ['languages']],
+        ['name' => 'note', 'table' => ['notes']],
 
-                // Liens et relations
-                ['name' => 'group', 'label' => 'Liens et relations'],
-                ['name' => 'link', 'table' => ['links']],
-                ['name' => 'relations', 'table' => ['relations']],
+        // Liens et relations
+        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'link', 'table' => ['links']],
+        ['name' => 'relations', 'table' => ['relations']],
 
-                // Ref / Owner / Creation / Lastupdate
-                ['name' => 'group', 'label' => 'Informations de gestion'],
-                ['name' => 'type'],
-                ['name' => 'ref'],
-                ['name' => 'owner'],
-                ['name' => 'creation'],
-                ['name' => 'lastupdate'],
-            ]
-        ];
-        // @formatter:on
-    }
-}
+        // Ref / Owner / Creation / Lastupdate
+        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'type'],
+        ['name' => 'ref'],
+        ['name' => 'owner'],
+        ['name' => 'creation'],
+        ['name' => 'lastupdate'],
+    ]
+];
+// @formatter:on

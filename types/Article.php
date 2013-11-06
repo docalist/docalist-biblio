@@ -34,66 +34,62 @@ namespace Docalist\Biblio\Type;
  * - pas d'auteur organisme
  * - pagination de type "page de début - page de fin"
  */
-class Article extends AbstractType {
-    protected function defaults() {
-        // @formatter:off
-        return [
-            'name' => 'article',
-            'label' => __('Article de périodique', 'docalist-biblio'),
-            'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
-            'fields' => [
+// @formatter:off
+return [
+    'name' => 'article',
+    'label' => __('Article de périodique', 'docalist-biblio'),
+    'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
+    'fields' => [
 
-                // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'genre', 'table' => ['genres-article']], // interview, reportage, enquête
-                ['name' => 'media', 'table' => ['medias']],
+        // Type, Genre, Media
+        ['name' => 'group', 'label' => 'Nature du document'],
+        ['name' => 'genre', 'table' => ['genres-article']], // interview, reportage, enquête
+        ['name' => 'media', 'table' => ['medias']],
 
-                // Title, OtherTitle, Translation
-                ['name' => 'group', 'label' => 'Titres'],
-                ['name' => 'title'],
-                ['name' => 'othertitle', 'table' => ['titles']], // à voir, pas de titre ens si type dossier
-                ['name' => 'translation', 'table' => ['languages']],
+        // Title, OtherTitle, Translation
+        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'title'],
+        ['name' => 'othertitle', 'table' => ['titles']], // à voir, pas de titre ens si type dossier
+        ['name' => 'translation', 'table' => ['languages']],
 
-                // Author, Organisation
-                ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],// dégraissée
-                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
+        // Author, Organisation
+        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],// dégraissée
+        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
 
-                // Journal, Issn, Volume, Issue
-                ['name' => 'group', 'label' => 'Journal / Périodique'],
-                ['name' => 'journal'],
-                ['name' => 'issn'],
-                ['name' => 'volume'],
-                ['name' => 'issue'],
-                ['name' => 'date'], // injecté à partir de l'issue
+        // Journal, Issn, Volume, Issue
+        ['name' => 'group', 'label' => 'Journal / Périodique'],
+        ['name' => 'journal'],
+        ['name' => 'issn'],
+        ['name' => 'volume'],
+        ['name' => 'issue'],
+        ['name' => 'date'], // injecté à partir de l'issue
 
-                // Date / Language / Pagination / Format
-                ['name' => 'group', 'label' => 'Informations bibliographiques'],
-                ['name' => 'language', 'table' => ['languages']],
-                ['name' => 'pagination'],
-                ['name' => 'format'],
-                ['name' => 'doi'],
+        // Date / Language / Pagination / Format
+        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'pagination'],
+        ['name' => 'format'],
+        ['name' => 'doi'],
 
-                // Topic / Abstract / Note
-                ['name' => 'group', 'label' => 'Indexation et résumé'],
-                ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract', 'table' => ['languages']],
-                ['name' => 'note', 'table' => ['notes']],
+        // Topic / Abstract / Note
+        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
+        ['name' => 'abstract', 'table' => ['languages']],
+        ['name' => 'note', 'table' => ['notes']],
 
-                // Liens et relations
-                ['name' => 'group', 'label' => 'Liens et relations'],
-                ['name' => 'link', 'table' => ['links']],
-                ['name' => 'relations', 'table' => ['relations']],
+        // Liens et relations
+        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'link', 'table' => ['links']],
+        ['name' => 'relations', 'table' => ['relations']],
 
-                // Ref / Owner / Creation / Lastupdate
-                ['name' => 'group', 'label' => 'Informations de gestion'],
-                ['name' => 'type'],
-                ['name' => 'ref'],
-                ['name' => 'owner'],
-                ['name' => 'creation'],
-                ['name' => 'lastupdate'],
-            ]
-        ];
-        // @formatter:on
-    }
-}
+        // Ref / Owner / Creation / Lastupdate
+        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'type'],
+        ['name' => 'ref'],
+        ['name' => 'owner'],
+        ['name' => 'creation'],
+        ['name' => 'lastupdate'],
+    ]
+];
+// @formatter:on

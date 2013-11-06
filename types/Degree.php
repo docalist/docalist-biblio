@@ -34,69 +34,65 @@ namespace Docalist\Biblio\Type;
  * - a un seul auteur physique
  * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
  */
-class Degree extends AbstractType {
-    protected function defaults() {
-        // @formatter:off
-        return [
-            'name' => 'degree',
-            'label' => __('Mémoire ou thèse', 'docalist-biblio'),
-            'description' => __('Un document élaboré en vue de l\'obtention d\'un diplôme.', 'docalist-biblio'),
-            'fields' => [
+// @formatter:off
+return [
+    'name' => 'degree',
+    'label' => __('Mémoire ou thèse', 'docalist-biblio'),
+    'description' => __('Un document élaboré en vue de l\'obtention d\'un diplôme.', 'docalist-biblio'),
+    'fields' => [
 
-                // Type, Genre, Media
-                ['name' => 'group', 'label' => 'Nature du document'],
-                ['name' => 'genre', 'table' => ['genres-degree']], // mémoire, thèse, écrit de certification
-                ['name' => 'media', 'table' => ['medias']], // papier, internet, cd, dvd
+        // Type, Genre, Media
+        ['name' => 'group', 'label' => 'Nature du document'],
+        ['name' => 'genre', 'table' => ['genres-degree']], // mémoire, thèse, écrit de certification
+        ['name' => 'media', 'table' => ['medias']], // papier, internet, cd, dvd
 
-                // Title, OtherTitle, Translation
-                ['name' => 'group', 'label' => 'Titres'],
-                ['name' => 'title'],
-                ['name' => 'degree'],
-                ['name' => 'othertitle', 'table' => ['titles']],
-//                ['name' => 'translation', 'table' => ['languages']],
+        // Title, OtherTitle, Translation
+        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'title'],
+        ['name' => 'degree'],
+        ['name' => 'othertitle', 'table' => ['titles']],
+        // ['name' => 'translation', 'table' => ['languages']],
 
-                // Author, Organisation
-                ['name' => 'group', 'label' => 'Auteurs'],
-                ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // / dir
-                ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // libellé : organisme de soutenance
+        // Author, Organisation
+        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // / dir
+        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // libellé : organisme de soutenance
 
-                // Date / Language / Pagination / Format
-                ['name' => 'group', 'label' => 'Informations bibliographiques'],
-                ['name' => 'date'],
-                ['name' => 'language', 'table' => ['languages']],
-                ['name' => 'volume'], // n° de tome
-                ['name' => 'pagination'],
-                ['name' => 'format'],
-                ['name' => 'doi'],
+        // Date / Language / Pagination / Format
+        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'date'],
+        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'volume'], // n° de tome
+        ['name' => 'pagination'],
+        ['name' => 'format'],
+        ['name' => 'doi'],
 
-                // Event / Degree
-                ['name' => 'group', 'label' => 'Congrès et diplômes'],
-//                ['name' => 'event'], // date de soutenance
+        // Event / Degree
+        ['name' => 'group', 'label' => 'Congrès et diplômes'],
+        // ['name' => 'event'], // date de soutenance
 
-// numéro de thèse
-// numéro de promotion
-// nom de promotion
+        // numéro de thèse
+        // numéro de promotion
+        // nom de promotion
 
-                // Topic / Abstract / Note
-                ['name' => 'group', 'label' => 'Indexation et résumé'],
-                ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-                ['name' => 'abstract', 'table' => ['languages']],
-                ['name' => 'note', 'table' => ['notes']],
+        // Topic / Abstract / Note
+        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
+        ['name' => 'abstract', 'table' => ['languages']],
+        ['name' => 'note', 'table' => ['notes']],
 
-                // Liens et relations
-                ['name' => 'group', 'label' => 'Liens et relations'],
-                ['name' => 'link', 'table' => ['links']],
-                ['name' => 'relations', 'table' => ['relations']],
+        // Liens et relations
+        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'link', 'table' => ['links']],
+        ['name' => 'relations', 'table' => ['relations']],
 
-                // Ref / Owner / Creation / Lastupdate
-                ['name' => 'group', 'label' => 'Informations de gestion'],
-                ['name' => 'type'],
-                ['name' => 'ref'],
-                ['name' => 'owner'],
-                ['name' => 'creation'],
-                ['name' => 'lastupdate'],
-            ]
-        ];
-        // @formatter:on
-    }
-}
+        // Ref / Owner / Creation / Lastupdate
+        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'type'],
+        ['name' => 'ref'],
+        ['name' => 'owner'],
+        ['name' => 'creation'],
+        ['name' => 'lastupdate'],
+    ]
+];
+// @formatter:on
