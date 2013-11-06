@@ -31,23 +31,23 @@ class TypeSettings extends AbstractEntity {
         // @formatter:off
         return array(
             'name' => array(
-                'label' => __('Nom du type', 'docalist-biblio'),
-                'description' => __('Doit être un type enregistré (article, book, periodical website, etc.)', 'docalist-biblio'),
+                'label' => __('Nom', 'docalist-biblio'),
+                'description' => __('Doit être un type enregistré (article, book, periodical, website, etc.)', 'docalist-biblio'),
             ),
 
             'label' => array(
-                'label' => __('Libellé du type', 'docalist-biblio'),
+                'label' => __('Libellé', 'docalist-biblio'),
                 'description' => __('Libellé utilisé pour désigner ce type', 'docalist-biblio'),
             ),
 
             'description' => array(
-                'label' => __('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'),
-                'description' => __('Détermine la page d\'accueil de la base et les urls des notices.', 'docalist-biblio'),
+                'label' => __('Description', 'docalist-biblio'),
+                'description' => __('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'),
             ),
 
             'fields' => array(
                 'type' => 'Docalist\Biblio\FieldSettings*',
-                'label' => __('Liste des champs pour ce type', 'docalist-biblio'),
+                'label' => __('Grille de saisie', 'docalist-biblio'),
                 'description' => __('Liste des champs et paramètres de chaque champ.', 'docalist-biblio'),
             ),
         );
