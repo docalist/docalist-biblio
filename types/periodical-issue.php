@@ -26,7 +26,7 @@ namespace Docalist\Biblio\Type;
  */
 // @formatter:off
 return [
-    'name' => 'issue',
+    'name' => 'periodical-issue',
     'label' => __('Numéro de périodique', 'docalist-biblio'),
     'description' => __('Une parution d\'un périodique.', 'docalist-biblio'),
     'fields' => [

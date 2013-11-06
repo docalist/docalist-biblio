@@ -31,7 +31,7 @@ namespace Docalist\Biblio\Type;
  */
 // @formatter:off
 return [
-    'name' => 'chapter',
+    'name' => 'book-chapter',
     'label' => __('Chapitre de livre', 'docalist-biblio'),
     'description' => __('Un chapitre extrait d\'un livre publié.', 'docalist-biblio'),
     'fields' => [
