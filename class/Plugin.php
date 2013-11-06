@@ -18,6 +18,7 @@ use Docalist\AbstractPlugin;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
 use Docalist\Biblio\Entity\Reference;
+use Exception;
 
 /**
  * Plugin de gestion de notices bibliographiques.
@@ -59,20 +60,62 @@ class Plugin extends AbstractPlugin {
 
         // Enregistre les types de référence pré-définis
         add_filter('docalist_biblio_get_types', function(array $types) {
+            $dir = dirname(__DIR__) . '/types';
             return $types + [
-                'article'       => 'Docalist\Biblio\Type\Article',
-                'Article'       => 'Docalist\Biblio\Type\Article', // TODO: à enlever, type incorrect dans la base prisme actuelle
-                'book'          => 'Docalist\Biblio\Type\Book',
-                'chapter'       => 'Docalist\Biblio\Type\Chapter',
-                'degree'        => 'Docalist\Biblio\Type\Degree',
-                'issue'         => 'Docalist\Biblio\Type\Issue',
-                'legislation'   => 'Docalist\Biblio\Type\Legislation',
-                'meeting'       => 'Docalist\Biblio\Type\Meeting',
-                'periodical'    => 'Docalist\Biblio\Type\Periodical',
-                'report'        => 'Docalist\Biblio\Type\Report',
-                'website'       => 'Docalist\Biblio\Type\WebSite',
+                'article'       => "$dir/article.php",
+                'book'          => "$dir/book.php",
+                'chapter'       => "$dir/book-chapter.php",
+                'degree'        => "$dir/degree.php",
+                'issue'         => "$dir/periodical-issue.php",
+                'legislation'   => "$dir/legislation.php",
+                'meeting'       => "$dir/meeting.php",
+                'periodical'    => "$dir/periodical.php",
+                'report'        => "$dir/report.php",
+                'website'       => "$dir/website.php",
             ];
         });
+
+        /**
+         * Permet à un tiers de récupérer un objet TypeSettings pour le type
+         * indiqué ou les valeurs par défaut de ce type si $instantiate est à
+         * false
+         *
+         * @param string $type Le nom du type a retourner
+         * @param bool $instantiate true (valeur par défaut) pour instancier le
+         * type, false pour retourner ses valeurs par défaut.
+         *
+         * @return TypeSettings|array
+         *
+         * @throws Exception Si le type indiqué n'existe pas.
+         */
+        add_filter('docalist_biblio_get_type', function($type, $instantiate = true) {
+            // Récupère la liste des types enregistrés
+            $types = apply_filters('docalist_biblio_get_types', array());
+
+            // Vérifie que le type demandé existe
+            if (! isset($types[$type])) {
+                $msg = __("Le type '%s' n'existe pas", 'docalist-biblio');
+                throw new Exception(sprintf($msg, $type));
+            }
+
+            // La définition d'un type peut être faite en retournant :
+            // - un tableau contenant les valeurs par défaut de ce type
+            // - le path d'un fichier php qui retourne le tableau
+            // - une closure qui prend en paramètre le nom du type et retourne le tableau
+            $defaults = $types[$type];
+
+            // Path
+            if (is_string($defaults)) {
+                $defaults = require $defaults;
+            }
+
+            // Closure
+            elseif (is_callable($defaults)) {
+                $defaults = $defaults($name);
+            }
+
+            return $instantiate ? new TypeSettings($defaults) : $defaults;
+        }, 10, 2);
 
         // Enregistre les tables prédéfinies
         add_action('docalist_register_tables', array($this, 'registerTables'));
