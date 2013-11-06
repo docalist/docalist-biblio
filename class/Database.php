@@ -62,43 +62,6 @@ class Database extends PostTypeRepository {
     }
 
     /**
-     * Retourne le nom complet de la classe associée au type de notice passé
-     * en paramètre, ou une instance de cette classe si le paramètre
-     * $isntance est à true.
-     *
-     * @param string $type Le nom du type de notice.
-     * @param bool $instance false pour retourner le nom de la classe, true pour
-     * retourner une nouvelle instance de ce type.
-     *
-     * @throws Exception Si le type de notice indiqué n'existe pas (n'est pas
-     * enregistré).
-     *
-     * @return string|AbstractType
-     */
-    public function classForType($type, $instance = false) {
-        // Récupère la liste de tous les types définis
-        $types = apply_filters('docalist_biblio_get_types', array());
-
-        // Vérifie que le type passé en paramètre existe
-        if (! isset($types[$type])) {
-            $msg = __('Le type %s n\'existe pas', 'docalist-biblio');
-            throw new Exception(sprintf($msg, $type));
-        }
-
-        // Vérifie que ce type est utilisé dans cette base de données
-        /*
-        if (! in_array($type, $this->settings->types->toArray())) {
-            $msg = __('Le type %s n\'est pas autorisé pour la base %s', 'docalist-biblio');
-            throw new Exception(sprintf($msg, $type, $this->settings->name));
-        }
-        */
-
-        $class = $types[$type];
-
-        return $instance ? new $class() : $class;
-    }
-
-    /**
      * Crée un custom post type wordpress pour la base documentaire.
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
