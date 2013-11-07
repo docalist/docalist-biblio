@@ -45,7 +45,7 @@ class Link extends AbstractEntity {
             ),
             'date' => array(
                 'label' => __('Accédé le', 'docalist-biblio'),
-                'description' => __('Date à laquelle le documentaliste a accédé à la ressource', 'docalist-biblio'),
+                'description' => __('Date', 'docalist-biblio'),
             ),
             'lastcheck' => array(
                 'label' => __('Lien vérifié le', 'docalist-biblio'),

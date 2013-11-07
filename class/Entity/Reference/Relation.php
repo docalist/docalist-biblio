@@ -33,8 +33,8 @@ class Relation extends AbstractEntity {
             ),
             'ref' => array(
                 'type' => 'long*',
-                'label' => __('Référence(s)', 'docalist-biblio'),
-                'description' => __('Numéros de références des notices liées', 'docalist-biblio'),
+                'label' => __('Notices liées', 'docalist-biblio'),
+                'description' => __('Numéro de référence des notices (Ref)', 'docalist-biblio'),
             )
         );
         // @formatter:on

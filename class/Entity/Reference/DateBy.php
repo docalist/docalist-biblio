@@ -29,11 +29,11 @@ class DateBy extends AbstractEntity {
         return array(
             'date' => array(
                 'label' => __('Le', 'docalist-biblio'),
-                'description' => __('Date', 'docalist-biblio'),
+//                 'description' => __('Date', 'docalist-biblio'),
             ),
             'by' => array(
                 'label' => __('Par', 'docalist-biblio'),
-                'description' => __('Utilisateur', 'docalist-biblio'),
+//                 'description' => __('Utilisateur', 'docalist-biblio'),
             ),
         );
         // @formatter:on

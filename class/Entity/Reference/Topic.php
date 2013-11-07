@@ -29,12 +29,12 @@ class Topic extends AbstractEntity {
         return array(
             'type' => array(
                 'label' => __('Type', 'docalist-biblio'),
-                'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
+//                 'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
             ),
             'term' => array( // @todo : au pluriel ?
                 'repeatable' => true,
                 'label' => __('Termes', 'docalist-biblio'),
-                'description' => __('Liste des mots-clés.', 'docalist-biblio'),
+//                 'description' => __('Liste des mots-clés.', 'docalist-biblio'),
             ),
         );
         // @formatter:on

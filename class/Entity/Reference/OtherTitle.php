@@ -31,7 +31,7 @@ class OtherTitle extends AbstractEntity {
                 'label' => __('Type de titre', 'docalist-biblio'),
             ),
             'title' => array(
-                'label' => __('Titre', 'docalist-biblio'),
+                'label' => __('Autre titre', 'docalist-biblio'),
             ),
         );
         // @formatter:on

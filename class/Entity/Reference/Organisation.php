@@ -35,15 +35,15 @@ class Organisation extends AbstractEntity {
             ),
             'city' => array(
                 'label' => __('Ville', 'docalist-biblio'),
-                'description' => __("Ville du siège social de l'organisme", 'docalist-biblio'),
+                'description' => __('Ville du siège social', 'docalist-biblio'),
             ),
             'country' => array(
                 'label' => __('Pays', 'docalist-biblio'),
-                'description' => __("Pays du siège social de l'organisme", 'docalist-biblio'),
+                'description' => __('Pays du siège social', 'docalist-biblio'),
             ),
             'role' => array(
                 'label' => __('Rôle', 'docalist-biblio'),
-                'description' => __("Nature de la contribution de l'organisme", 'docalist-biblio'),
+                'description' => __('Fonction', 'docalist-biblio'),
             )
         );
         // @formatter:on

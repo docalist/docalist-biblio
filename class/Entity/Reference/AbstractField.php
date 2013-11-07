@@ -33,11 +33,11 @@ class AbstractField extends AbstractEntity {
         return array(
             'language' => array(
                 'label' => __('Langue', 'docalist-biblio'),
-                'description' => __('Langue du résumé', 'docalist-biblio'),
+//                 'description' => __('Langue du résumé', 'docalist-biblio'),
             ),
             'content' => array(
                 'label' => __('Résumé', 'docalist-biblio'),
-                'description' => __("Résumé du document.", 'docalist-biblio'),
+//                 'description' => __("Résumé du document.", 'docalist-biblio'),
             ),
         );
         // @formatter:on

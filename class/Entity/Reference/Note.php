@@ -29,12 +29,12 @@ class Note extends AbstractEntity {
         // @formatter:off
         return array(
             'type' => array(
-                'label' => __('Type de note', 'docalist-biblio'),
-                'description' => __('Nature de la note', 'docalist-biblio'),
+                'label' => __('Type', 'docalist-biblio'),
+//                 'description' => __('Nature de la note', 'docalist-biblio'),
             ),
             'content' => array(
                 'label' => __('Contenu', 'docalist-biblio'),
-                'description' => __('Texte de la note.', 'docalist-biblio'),
+                'description' => __('Notes, remarques et informations complémentaires.', 'docalist-biblio'),
             ),
         );
         // @formatter:on

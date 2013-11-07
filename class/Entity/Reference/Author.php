@@ -30,15 +30,15 @@ class Author extends AbstractEntity {
         return array(
             'name' => array(
                 'label' => __('Nom', 'docalist-biblio'),
-                'description' => __("Nom de l'auteur", 'docalist-biblio'),
+                'description' => __("Nom de la personne", 'docalist-biblio'),
             ),
             'firstname' => array(
                 'label' => __('Prénom', 'docalist-biblio'),
-                'description' => __("Prénom de l'auteur", 'docalist-biblio'),
+                'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
             ),
             'role' => array(
                 'label' => __('Rôle', 'docalist-biblio'),
-                'description' => __('Nature de la contribution pour un auteur secondaire', 'docalist-biblio'),
+                'description' => __('Fonction', 'docalist-biblio'),
             )
         );
         // @formatter:on

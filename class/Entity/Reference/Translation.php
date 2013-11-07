@@ -29,11 +29,9 @@ class Translation extends AbstractEntity {
         return array(
             'language' => array(
                 'label' => __('Langue', 'docalist-biblio'),
-                'description' => __('Langue de la traduction', 'docalist-biblio'),
             ),
             'title' => array(
-                'label' => __('Titre', 'docalist-biblio'),
-                'description' => __('Titre traduit', 'docalist-biblio'),
+                'label' => __('Titre traduit', 'docalist-biblio'),
             ),
         );
         // @formatter:on
