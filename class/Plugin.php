@@ -62,16 +62,16 @@ class Plugin extends AbstractPlugin {
         add_filter('docalist_biblio_get_types', function(array $types) {
             $dir = dirname(__DIR__) . '/types';
             return $types + [
-                'article'       => "$dir/article.php",
-                'book'          => "$dir/book.php",
-                'chapter'       => "$dir/book-chapter.php",
-                'degree'        => "$dir/degree.php",
-                'issue'         => "$dir/periodical-issue.php",
-                'legislation'   => "$dir/legislation.php",
-                'meeting'       => "$dir/meeting.php",
-                'periodical'    => "$dir/periodical.php",
-                'report'        => "$dir/report.php",
-                'website'       => "$dir/website.php",
+                'article'           => "$dir/article.php",
+                'book'              => "$dir/book.php",
+                'book-chapter'      => "$dir/book-chapter.php",
+                'degree'            => "$dir/degree.php",
+                'periodical-issue'  => "$dir/periodical-issue.php",
+                'legislation'       => "$dir/legislation.php",
+                'meeting'           => "$dir/meeting.php",
+                'periodical'        => "$dir/periodical.php",
+                'report'            => "$dir/report.php",
+                'website'           => "$dir/website.php",
             ];
         });
 
