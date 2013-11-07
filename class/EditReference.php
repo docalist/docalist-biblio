@@ -318,6 +318,8 @@ class EditReference {
      * @return Fragment[] Un tableau de la forme id metabox => form fragment
      */
     protected function metaboxes($type) {
+        $type = strtolower($type); // TODO : prisme contient 'Article' au lieu de 'article'
+
         // Récupère la grille de saisie de ce type
         // TODO : indexer les types par nom, on ne peut pas accéder directement aux settings d'un type
         $fields = null;
