@@ -1,0 +1,58 @@
+/* debug */
+/*
+.field-table th:nth-child(even) {
+    background: #def;
+}
+.field-table th:nth-child(odd) {
+    background: #cde;
+}
+*/
+
+/* Réduit un peu la largeur des th (label) dans le formulaire (200px par défaut) */
+.form-table th {
+    width: 100px;
+}
+
+.field-table td input, .field-table td select, .field-table td textarea {
+    width: 100%;
+}
+
+select.genre, 
+select.media, 
+select.language         { width: 20%; }
+
+.othertitle th.type     { width: 20%; }
+.othertitle th.title    { width: 80%; }
+
+.translation th.type    { width: 20%; }
+.translation th.title   { width: 80%; }
+
+.author th.name         { width: 50%; }
+.author th.firstname    { width: 40%; }
+.author th.role         { width: 10%; }
+
+.organisation th.name   { width: 50%; }
+.organisation th.city   { width: 20%; }
+.organisation th.country{ width: 20%; }
+.organisation th.role   { width: 10%; }
+
+.topic th.type          { width: 20%; }
+.topic th.term          { width: 80%; }
+
+.topic td .term         { width: 24%; }
+
+.abstract th.language   { width: 20%; }
+.abstract th.content    { width: 80%; }
+
+.note th.type           { width: 20%; }
+.note th.content        { width: 80%; }
+
+.link th.url            { width: 50%; }
+.link th.type           { width: 20%; }
+.link th.label          { width: 20%; }
+.link th.date           { width: 10%; }
+
+.relations th.type      { width: 20%; }
+.relations th.ref       { width: 80%; }
+
+.relations td .ref      { width: 10%; }
