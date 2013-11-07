@@ -26,7 +26,6 @@ use Docalist\Forms\Input;
 use Docalist\Forms\Select;
 //use Docalist\Forms\Hidden;
 
-
 use Docalist\Table\TableManager;
 
 /**
@@ -366,46 +365,46 @@ class EditReference {
                 break;
 
             case 'genre':
-                $table = $def->table[0];
+                $table = $def->table;
                 $field = new Select($name);
                 $field->options($this->tableOptions($table));
                 break;
 
             case 'media':
-                $table = $def->table[0];
+                $table = $def->table;
                 $field = new Select($name);
                 $field->options($this->tableOptions($table));
                 break;
 
             case 'author':
-                $roles = $def->table[0];
+                $roles = $def->table;
 
                 $field = (new Table($name))->attribute('class', 'author');
                 $field->input('name')
-                ->attribute('class', 'name');
+                      ->attribute('class', 'name');
                 $field->input('firstname')
-                ->attribute('class', 'firstname');
+                      ->attribute('class', 'firstname');
                 $field->select('role')
-                ->options($this->tableOptions($roles))
-                ->attribute('class', 'role');
+                      ->options($this->tableOptions($roles))
+                      ->attribute('class', 'role');
 
                 break;
 
             case 'organisation':
-                $countries = $def->table[0];
-                $roles = $def->table[1];
+                $countries = $def->table;
+                $roles = $def->table2;
 
                 $field = (new Table($name))->attribute('class', 'organisation');
                 $field->input('name')
-                ->attribute('class', 'name');
+                      ->attribute('class', 'name');
                 $field->input('city')
-                ->attribute('class', 'city');
+                      ->attribute('class', 'city');
                 $field->select('country')
-                ->options($this->tableOptions($countries))
-                ->attribute('class', 'country');
+                      ->options($this->tableOptions($countries))
+                      ->attribute('class', 'country');
                 $field->select('role')
-                ->options($this->tableOptions($roles))
-                ->attribute('class', 'role');
+                      ->options($this->tableOptions($roles))
+                      ->attribute('class', 'role');
                 break;
 
             case 'title':
@@ -414,7 +413,7 @@ class EditReference {
                 break;
 
             case 'othertitle':
-                $titles = $def->table[0];
+                $titles = $def->table;
 
                 $field = new Table($name);
                 $field->select('type')->options($this->tableOptions($titles));
@@ -422,7 +421,7 @@ class EditReference {
                 break;
 
             case 'translation':
-                $languages = $def->table[0];
+                $languages = $def->table;
 
                 $field = new Table($name);
                 $field->select('language')->options($this->tableOptions($languages));
@@ -456,7 +455,7 @@ class EditReference {
                 break;
 
             case 'language':
-                $languages = $def->table[0];
+                $languages = $def->table;
 
                 $field = new Select($name);
                 $field->options($this->tableOptions($languages));
@@ -476,7 +475,7 @@ class EditReference {
                 break;
 
             case 'editor':
-                $countries = $def->table[0];
+                $countries = $def->table;
 
                 $field = new Table($name);
                 $field->input('name');
@@ -511,7 +510,7 @@ class EditReference {
                 break;
 
             case 'abstract':
-                $languages = $def->table[0];
+                $languages = $def->table;
 
                 $field = new Table($name);
                 $field->select('language')->options($this->tableOptions($languages));
@@ -519,7 +518,7 @@ class EditReference {
                 break;
 
             case 'topic':
-                //                 $table = $def->table[0] ?: 'dcllanguage'; // TODO mettre la bonne table
+                //                 $table = $def->table ?: 'dcllanguage'; // TODO mettre la bonne table
                 // var_dump($def->table->toArray());
                 // die();
                 $field = new Table($name);
@@ -528,7 +527,7 @@ class EditReference {
                 break;
 
             case 'note':
-                $notes = $def->table[0];
+                $notes = $def->table;
 
                 $field = new Table($name);
                 $field->select('type')->options($this->tableOptions($notes));
@@ -536,7 +535,7 @@ class EditReference {
                 break;
 
             case 'link':
-                $links = $def->table[0];
+                $links = $def->table;
 
                 $field = new Table($name);
                 $field->input('url');
@@ -550,7 +549,7 @@ class EditReference {
                 break;
 
             case 'relations':
-                $relations = $def->table[0];
+                $relations = $def->table;
 
                 $field = new Table($name);
                 $field->select('type')->options($this->tableOptions($relations));
@@ -578,7 +577,7 @@ class EditReference {
                 break;
 
             default:
-                throw new \Exception("Champ inconnu : '$name'");
+                throw new Exception("Champ inconnu : '$name'");
         }
 
         $field->label($def->label)->description($def->description);
