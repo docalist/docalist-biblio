@@ -117,34 +117,18 @@ function makeBox(FieldSettings $field, & $lastGroup, $closed = true) { ?>
  * @param FieldSettings $field Le champ à éditer.
  */
 function fieldForm(FieldSettings $field, & $lastGroup) {
-    // Chaque séparateur doit avoir un nom unique
-    $name = $field->name;
-    $name === 'group' && $name .= ++$lastGroup;
-
-    // Crée le formulaire du champ
-    $form = new Fragment();
-    $form->hidden('name')
-         ->attribute('class', 'name');
-    $form->input('label')
-         ->attribute('id', $name . '-label')
-         ->attribute('class', 'label regular-text');
-    $form->textarea('description')
-         ->attribute('id', $name . '-description')
-         ->attribute('class', 'description large-text')
-         ->attribute('rows', 2);
+    // Crée le formulaire permettant d'éditer les paramètres de ce champ
+    $form = $field->editForm();
 
     // Affiche le formulaire
     // On veut que les champs aient un nom de la forme champ[label]
-    // Pour cela, on insère le formulaire dans un fragment qui contient le nom du champ
-    $parent = new Fragment($name);
+    // Pour cela, on insère le formulaire dans un fragment parent qui contient
+    // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
+    // peut pas récupérer les libellés/desc par défaut).
+    $parent = new Fragment($form->name());
+    $form->name('');
     $parent->add($form);
     $form->bind($field)->render('wordpress', array('indent' => true));
-
-    if ($field->name === 'group') { ?>
-        <button class="delete-group button right" type="button"><?= __('Supprimer ce groupe', 'docalist-biblio') ?></button>
-        <br class="clear" />
-        <?php
-    }
 }?>
 
 <?php
