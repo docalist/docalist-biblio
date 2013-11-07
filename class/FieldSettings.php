@@ -15,6 +15,9 @@
 namespace Docalist\Biblio;
 
 use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Forms\Fragment;
+use Docalist\Table\TableManager;
+use Docalist\Table\TableInfo;
 
 /**
  * Un champ d'une base.
@@ -41,12 +44,15 @@ class FieldSettings extends AbstractEntity {
             ),
             'description' => array(
                 'label' => __('Description', 'docalist-biblio'),
-                'description' => __("Libellé du champ", 'docalist-biblio'),
+                'description' => __("Description du champ", 'docalist-biblio'),
             ),
             'table' => array(
-                'repeatable' => true,
-                'label' => __('Tables', 'docalist-biblio'),
-                'description' => __('Table(s) d\'autorité associée(s) au champ (une seule en général, 2 pour organisation : countries et roles)', 'docalist-biblio'),
+                'label' => __('Table', 'docalist-biblio'),
+                'description' => __('Table d\'autorité associée au champ.', 'docalist-biblio'),
+            ),
+            'table2' => array(
+                'label' => __('Table2', 'docalist-biblio'),
+                'description' => __('Seconde table d\'autorité associée.', 'docalist-biblio'),
             ),
             'format' => array(
                 'label' => __('Format d\'affichage', 'docalist-biblio'),
@@ -59,5 +65,103 @@ class FieldSettings extends AbstractEntity {
             )
         );
         // @formatter:on
+    }
+
+    /**
+     *
+     * @return Fragment
+     */
+    public function editForm() {
+        static $lastGroup = 0;
+
+        $name = $this->name;
+        switch($name) {
+            case 'group':
+                $id = $name . ++$lastGroup;
+                break;
+            case '{group-number}':
+                $id = $name;
+                break;
+            default:
+                $id = $name;
+                break;
+        }
+
+        // Champs communs
+        $form = new Fragment($id);
+        $form->hidden('name')
+             ->attribute('class', 'name');
+        $form->input('label')
+             ->attribute('id', $id . '-label')
+             ->attribute('class', 'label regular-text');
+        $form->textarea('description')
+             ->attribute('id', $id . '-description')
+             ->attribute('class', 'description large-text')
+             ->attribute('rows', 2);
+
+        switch ($name) {
+            case 'genre':
+                $form->select('table')->options($this->tables('genres'));
+                break;
+            case 'media':
+                $form->select('table')->options($this->tables('medias'));
+                break;
+            case 'author':
+                $form->select('table')->options($this->tables('roles'));
+                break;
+            case 'organisation':
+                $form->select('table')
+                     ->options($this->tables('countries'))
+                     ->label(__('Table des pays', 'docalist-biblio'));
+                $form->select('table2')
+                     ->options($this->tables('roles'))
+                     ->label(__('Table des rôles', 'docalist-biblio'));
+                break;
+            case 'othertitle':
+                $form->select('table')->options($this->tables('titles'));
+                break;
+            case 'translation':
+            case 'language':
+            case 'abstract':
+                $form->select('table')->options($this->tables('languages'));
+                break;
+            case 'editor':
+                $form->select('table')->options($this->tables('countries'));
+                break;
+//             case'edition': // todo
+//             case'degree': // todo
+//             case'topic': // todo
+            case 'note':
+                $form->select('table')->options($this->tables('notes'));
+                break;
+            case 'link':
+                $form->select('table')->options($this->tables('links'));
+                break;
+            case 'relations': // TOD : enlever le S
+                $form->select('table')->options($this->tables('relations'));
+                break;
+
+            // Si c'est un groupe, ajoute un bouton "supprimer ce groupe"
+            case 'group':
+            case'{group-number}':
+                $form->button(__('Supprimer ce groupe', 'docalist-biblio'))
+                     ->attribute('class', 'delete-group button right');
+                break;
+
+        }
+
+        return $form;
+    }
+
+    protected function tables($type) {
+        /* @var $tableManager TableManager */
+        $tableManager = apply_filters('docalist_get_table_manager', null);
+
+        /* @var $tableInfo TableInfo */
+        foreach($tableManager->info(null, $type) as $name => $tableInfo) {
+            $tables[$name] = sprintf('%s (%s)', $tableInfo->label, $name);
+        }
+
+        return $tables;
     }
 }
