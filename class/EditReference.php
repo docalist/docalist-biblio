@@ -249,6 +249,13 @@ class EditReference {
 
         // Insère tous les assets dans la page
         Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
+
+        wp_enqueue_style(
+            'docalist-biblio-edit-css',
+            plugins_url('docalist-biblio/assets/edit-reference.css'),
+            array(),
+            '20131107'
+        );
     }
 
     /**
