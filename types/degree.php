@@ -43,25 +43,25 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => ['genres-degree']], // mémoire, thèse, écrit de certification
-        ['name' => 'media', 'table' => ['medias']], // papier, internet, cd, dvd
+        ['name' => 'genre', 'table' => 'genres-degree'], // mémoire, thèse, écrit de certification
+        ['name' => 'media', 'table' => 'medias'], // papier, internet, cd, dvd
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'degree'],
-        ['name' => 'othertitle', 'table' => ['titles']],
-        // ['name' => 'translation', 'table' => ['languages']],
+        ['name' => 'othertitle', 'table' => 'titles'],
+        // ['name' => 'translation', 'table' => 'languages'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'], // / dir
-        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']], // libellé : organisme de soutenance
+        ['name' => 'author', 'table' => 'roles-author', 'format' => 'fmt1'], // / dir
+        ['name' => 'organisation', 'table' => 'countries', 'table2' => 'roles-organisation'], // libellé : organisme de soutenance
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date'],
-        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'language', 'table' => 'languages'],
         ['name' => 'volume'], // n° de tome
         ['name' => 'pagination'],
         ['name' => 'format'],
@@ -77,14 +77,14 @@ return [
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
-        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-        ['name' => 'abstract', 'table' => ['languages']],
-        ['name' => 'note', 'table' => ['notes']],
+        ['name' => 'topic'],
+        ['name' => 'abstract', 'table' => 'languages'],
+        ['name' => 'note', 'table' => 'notes'],
 
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
-        ['name' => 'link', 'table' => ['links']],
-        ['name' => 'relations', 'table' => ['relations']],
+        ['name' => 'link', 'table' => 'links'],
+        ['name' => 'relations', 'table' => 'relations'],
 
         // Ref / Owner / Creation / Lastupdate
         ['name' => 'group', 'label' => 'Informations de gestion'],

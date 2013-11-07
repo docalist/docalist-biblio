@@ -39,19 +39,19 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => ['genres-website']],
-        // ['name' => 'media', 'table' => ['medias']],
+        ['name' => 'genre', 'table' => 'genres-website'],
+        // ['name' => 'media', 'table' => 'medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
-        ['name' => 'othertitle', 'table' => ['titles']],
-        ['name' => 'translation', 'table' => ['languages']],
+        ['name' => 'othertitle', 'table' => 'titles'],
+        ['name' => 'translation', 'table' => 'languages'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'author', 'table' => ['roles-author'], 'format' => 'fmt1'],
-        ['name' => 'organisation', 'table' => ['countries', 'roles-organisation']],
+        ['name' => 'author', 'table' => 'roles-author', 'format' => 'fmt1'],
+        ['name' => 'organisation', 'table' => 'countries', 'table2' => 'roles-organisation'],
 
         // Journal, Issn, Volume, Issue
         ['name' => 'group', 'label' => 'Journal / Périodique'],
@@ -63,14 +63,14 @@ return [
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date'],
-        ['name' => 'language', 'table' => ['languages']],
+        ['name' => 'language', 'table' => 'languages'],
         ['name' => 'pagination'],
         ['name' => 'format'],
         ['name' => 'doi'],
 
         // Editor / Collection / Edition / Isbn
         ['name' => 'group', 'label' => 'Informations éditeur'],
-        ['name' => 'editor', 'table' => ['countries']],
+        ['name' => 'editor', 'table' => 'countries'],
         ['name' => 'collection'],
         ['name' => 'edition'],
         ['name' => 'isbn'],
@@ -82,14 +82,14 @@ return [
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
-        ['name' => 'topic', 'table' => ['prisme', 'names', 'geo', 'free']],
-        ['name' => 'abstract', 'table' => ['languages']],
-        ['name' => 'note', 'table' => ['notes']],
+        ['name' => 'topic'],
+        ['name' => 'abstract', 'table' => 'languages'],
+        ['name' => 'note', 'table' => 'notes'],
 
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
-        ['name' => 'link', 'table' => ['links']],
-        ['name' => 'relations', 'table' => ['relations']],
+        ['name' => 'link', 'table' => 'links'],
+        ['name' => 'relations', 'table' => 'relations'],
 
         // Ref / Owner / Creation / Lastupdate
         ['name' => 'group', 'label' => 'Informations de gestion'],
