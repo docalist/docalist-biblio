@@ -40,7 +40,6 @@ use Docalist\Biblio\TypeSettings;
         <tr>
             <th><?= __('Type', 'docalist-biblio') ?></th>
             <th><?= __('Description', 'docalist-biblio') ?></th>
-            <th><?= __('Champs', 'docalist-biblio') ?></th>
         </tr>
     </thead>
 
@@ -82,14 +81,13 @@ use Docalist\Biblio\TypeSettings;
         </td>
 
         <td><?= $type->description ?></td>
-        <td><?= count($type->fields) ?></td>
     </tr>
     <?php
     } // end foreach
 
     if ($nb === 0) : ?>
         <tr>
-            <td colspan="3">
+            <td colspan="2">
                 <em><?= __('Aucun type de notices dans cette base.', 'docalist-biblio') ?></em>
             </td>
         </tr>
