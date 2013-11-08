@@ -412,6 +412,13 @@ class Database extends PostTypeRepository {
 
     protected function synchronizePost(WP_Post & $post, EntityInterface $entity) {
         parent::synchronizePost($post, $entity);
+
+        if (empty($entity->ref)) {
+            $entity->ref = $this->sequenceIncrement('ref');
+        } else {
+            $this->sequenceSetIfGreater('ref', $entity->ref);
+        }
+
         $post->post_name = $entity->ref;
         $post->post_title = $entity->title;
     }
