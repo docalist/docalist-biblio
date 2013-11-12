@@ -44,7 +44,7 @@ use Docalist\Forms\Form;
         //$form->input('name')->attribute('class', 'regular-text');
         $form->input('label')->attribute('class', 'regular-text');
         $form->textarea('description')->attribute('rows', '2')->attribute('class', 'large-text');
-        $form->submit(__('Enregistrer les modifications', 'docalist-search'));
+        $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
 
         $form->bind($type)->render('wordpress');
     ?>
