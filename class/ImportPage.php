@@ -51,7 +51,7 @@ class ImportPage extends AdminPage {
         $uploadDir = $uploads['basedir'];
         $uploadUrl = $uploads['baseurl'];
 
-        $path = $uploadDir . '/prisme/130912/base-prisme-2013-09-12.TXT';
+        $path = $uploadDir . '/prisme/131010/base-prisme-2013-10-10.TXT';
         $class= 'Docalist\Biblio\Import\Prisme';
 
         if (! $confirm) {
