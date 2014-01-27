@@ -23,7 +23,7 @@ use Exception;
 /**
  * Plugin de gestion de notices bibliographiques.
  */
-class Plugin extends AbstractPlugin {
+class Plugin {
 
     /**
      * La configuration du plugin.
@@ -46,17 +46,19 @@ class Plugin extends AbstractPlugin {
      */
     protected $taxonomies;
 
-    public function register() {
-        // Charge la configuration du plugin
-        $this->settings = new Settings('docalist-biblio');
+    public function __construct() {
+        add_filter('init', function() {
+            // Charge la configuration du plugin
+            $this->settings = new Settings('docalist-biblio');
 
-        // Crée les bases de données définies par l'utilisateur
-        $this->databases = array();
-        foreach ($this->settings->databases as $settings) {
-            /* @var $settings DatabaseSettings */
-            $database = new Database($settings);
-            $this->databases[$database->postType()] = $database;
-        }
+            // Crée les bases de données définies par l'utilisateur
+            $this->databases = array();
+            foreach ($this->settings->databases as $settings) {
+                /* @var $settings DatabaseSettings */
+                $database = new Database($settings);
+                $this->databases[$database->postType()] = $database;
+            }
+        });
 
         // Enregistre les types de référence pré-définis
         add_filter('docalist_biblio_get_types', function(array $types) {
@@ -143,7 +145,7 @@ class Plugin extends AbstractPlugin {
             // Récupère le type du post en cours
             $type = $post->post_type;
 
-            // Vérifie que c'est une notices
+            // Vérifie que c'est une notice
             if (! isset($this->databases[$type])) {
                 return $content;
             }
