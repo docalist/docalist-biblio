@@ -155,7 +155,7 @@ class FieldSettings extends AbstractEntity {
 
     protected function tables($type) {
         /* @var $tableManager TableManager */
-        $tableManager = apply_filters('docalist_get_table_manager', null);
+        $tableManager = docalist('table-manager');
 
         /* @var $tableInfo TableInfo */
         foreach($tableManager->info(null, $type) as $name => $tableInfo) {

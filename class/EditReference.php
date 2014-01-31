@@ -601,7 +601,7 @@ class EditReference {
     protected function tableOptions($table, $fields = 'code,label') {
         empty($table) && $table = 'countries';
         /* @var $tableManager TableManager */
-        $tableManager = apply_filters('docalist_get_table_manager', null);
+        $tableManager = docalist('table-manager');
         return $tableManager->get($table)->search($fields);
     }
 }
