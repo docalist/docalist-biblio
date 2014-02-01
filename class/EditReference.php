@@ -145,6 +145,11 @@ class EditReference {
      * Affiche l'écran "choix du type de notice à créer".
      */
     protected function create(){
+        // S'il n'y a qu'un seul type de notices, inutile de demander à l'utilisateur
+        if (empty($_REQUEST['ref_type']) && count($this->database->settings()->types) === 1) {
+            $_REQUEST['ref_type'] = $this->database->settings()->types[0]->name;
+        }
+
         // Si le type de ref a déjà été indiqué, laisse wp faire son job
         if (isset($_REQUEST['ref_type'])) {
             return $this->setPageTitle($_REQUEST['ref_type'], true);
