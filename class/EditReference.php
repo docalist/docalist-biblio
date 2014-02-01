@@ -27,6 +27,7 @@ use Docalist\Forms\Select;
 //use Docalist\Forms\Hidden;
 
 use Docalist\Table\TableManager;
+use Docalist\Http\ViewResponse;
 
 /**
  * La page "création/modification d'une notice" d'une base documentaire.
@@ -156,54 +157,14 @@ class EditReference {
 
         // Affiche la page "Choix du type de notice à créer"
         require_once('./admin-header.php');
-        $this->chooseType();
+        $view = new ViewResponse('docalist-biblio:reference/choose-type', [
+            'database' => $this->database,
+        ]);
+        $view->sendContent();
         include('./admin-footer.php');
 
         // Empêche wp d'afficher le formulaire edit-form standard
         die();
-    }
-
-    /**
-     * Permet à l'utilisateur de choisir le type de référence à créer.
-     *
-     * Liste tous les types enregistrés pour la base, génère des liens qui
-     * permettent à l'utilisateur de choisir et rappelle la page
-     * wp-admin/post-new.php en passant l'argument ref_type en paramètre.
-     *
-     * @throws Exception
-     */
-    protected function chooseType() {
-        $postType = get_post_type_object($this->postType);
-
-        // Début de page
-        echo '<div class="wrap">';
-
-        // Icone et titre de la page
-        screen_icon();
-        $title = $this->database->settings()->label . ' - ' . $postType->labels->add_new_item;
-        printf('<h2>%s</h2>', $title);
-
-        // Texte d'intro
-        $msg = __('Choisissez le type de notice à créer :', 'docalist-biblio');
-        printf('<p>%s</p>', $msg);
-
-        // Table widefat avec la liste des types disponibles
-        echo '<table class="widefat">';
-        foreach($this->database->settings()->types as $i => $type) {
-            $class = $i % 2 ? 'alternate' : '';
-            $link = add_query_arg('ref_type', $type->name);
-            printf('<tr class="%s"><td class="row-title"><a href="%s">%s</a></td><td class="desc">%s</td></tr>', $class, $link, $type->label, $type->description);
-        }
-
-        if (!isset($i)) {
-            $msg = __('Aucun type de notices dans cette base.', 'docalist-biblio');
-            printf('<tr><td class="desc" colspan="2">%s</td></tr>', $msg);
-        }
-
-        echo '</table>';
-
-        // Fin de page
-        echo '</div>';
     }
 
     protected function edit($id) {
