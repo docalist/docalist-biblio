@@ -28,6 +28,8 @@ use Docalist\Forms\Select;
 
 use Docalist\Table\TableManager;
 use Docalist\Http\ViewResponse;
+use Docalist\Forms\TableLookup;
+use Docalist\Forms\Assets;
 
 /**
  * La page "création/modification d'une notice" d'une base documentaire.
@@ -188,7 +190,7 @@ class EditReference {
         // Détermine la grille de saisie à utiliser
         isset($_REQUEST['ref_type']) && $this->reference->type = $_REQUEST['ref_type'];
 
-        $assets = Themes::assets('wordpress');
+        $assets = new Assets();
         foreach($this->metaboxes($this->reference->type) as $id => $form) {
             $title = $form->label() ?: $id;
 
@@ -212,7 +214,7 @@ class EditReference {
             $form->bind($this->reference);
             $assets->add($form->assets());
         }
-
+        $assets->add(Themes::assets('wordpress'));
         // Insère tous les assets dans la page
         Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
 
@@ -295,7 +297,9 @@ class EditReference {
                 break;
             }
         }
-
+        if (is_null($fields)) {
+            die("Impossible de trouver le type $type");
+        }
         $metaboxes = array();
         $box = new Fragment();
         foreach($fields as $field) {
@@ -340,42 +344,31 @@ class EditReference {
                 break;
 
             case 'genre':
-                $table = $def->table;
-                $field = new Select($name);
-                $field->options($this->tableOptions($table));
+                $field = new TableLookup($name, $def->table);
+                $field->multiple(true);
                 break;
 
             case 'media':
-                $table = $def->table;
-                $field = new Select($name);
-                $field->options($this->tableOptions($table));
+                $field = new TableLookup($name, $def->table);
+                $field->multiple(true);
                 break;
 
             case 'author':
-                $roles = $def->table;
-
                 $field = new Table($name);
-                $field->input('name')->addClass('name');
-                $field->input('firstname')->addClass('firstname');
-                $field->select('role')
-                      ->options($this->tableOptions($roles))
-                      ->addClass('role');
-
+                $field->input('name')->addClass('author-name');
+                $field->input('firstname')->addClass('author-firstname');
+                $field->TableLookup('role', $def->table)
+                      ->addClass('author-role');
                 break;
 
             case 'organisation':
-                $countries = $def->table;
-                $roles = $def->table2;
-
                 $field = new Table($name);
-                $field->input('name')->addClass('name');
-                $field->input('city')->addClass('city');
-                $field->select('country')
-                      ->options($this->tableOptions($countries))
-                      ->addClass('country');
-                $field->select('role')
-                      ->options($this->tableOptions($roles))
-                      ->addClass('role');
+                $field->input('name')->addClass('organisation-name');
+                $field->input('city')->addClass('organisation-city');
+                $field->TableLookup('country', $def->table)
+                      ->addClass('organisation-country');
+                $field->TableLookup('role', $def->table2)
+                      ->addClass('organisation-role');
                 break;
 
             case 'title':
@@ -384,23 +377,17 @@ class EditReference {
                 break;
 
             case 'othertitle':
-                $titles = $def->table;
-
                 $field = new Table($name);
-                $field->select('type')
-                      ->options($this->tableOptions($titles))
-                      ->addClass('type');
-                $field->input('title')->addClass('title');
+                $field->TableLookup('type', $def->table)
+                      ->addClass('othertitle-type');
+                $field->input('title')->addClass('othertitle-title');
                 break;
 
             case 'translation':
-                $languages = $def->table;
-
                 $field = new Table($name);
-                $field->select('language')
-                      ->options($this->tableOptions($languages))
-                      ->addClass('language');
-                $field->input('title')->addClass('title');
+                $field->TableLookup('language', $def->table)
+                      ->addClass('translation-language');
+                $field->input('title')->addClass('translation-title');
                 break;
 
             case 'date':
@@ -425,10 +412,8 @@ class EditReference {
                 break;
 
             case 'language':
-                $languages = $def->table;
-
-                $field = new Select($name);
-                $field->options($this->tableOptions($languages));
+                $field = new TableLookup($name, $def->table);
+                $field->multiple(true);
                 break;
 
             case 'pagination':
@@ -444,81 +429,67 @@ class EditReference {
                 break;
 
             case 'editor':
-                $countries = $def->table;
-
                 $field = new Table($name);
-                $field->input('name')->addClass('name');
-                $field->input('city')->addClass('city');
-                $field->select('country')
-                      ->options($this->tableOptions($countries))
-                      ->addClass('country');
+                $field->input('name')->addClass('editor-name');
+                $field->input('city')->addClass('editor-city');
+                $field->TableLookup('country', $def->table)
+                      ->addClass('editor-country');
                 break;
 
             case 'edition':
                 $field = new Table($name);
-                $field->input('type')->addClass('type');
-                $field->input('value')->addClass('value');
+                $field->input('type')->addClass('edition-type');
+                $field->input('value')->addClass('edition-value');
                 break;
 
             case 'collection':
                 $field = new Table($name);
-                $field->input('name')->addClass('name');
-                $field->input('number')->addClass('number');
+                $field->input('name')->addClass('collection-name');
+                $field->input('number')->addClass('collection-number');
                 break;
 
             case 'event':
                 $field = new Table($name);
-                $field->input('title')->addClass('title');
-                $field->input('date')->addClass('date');
-                $field->input('place')->addClass('place');
-                $field->input('number')->addClass('number');
+                $field->input('title')->addClass('event-title');
+                $field->input('date')->addClass('event-date');
+                $field->input('place')->addClass('event-place');
+                $field->input('number')->addClass('event-number');
                 break;
 
             case 'degree':
                 $field = new Table($name);
-                $field->input('title')->addClass('title');
-                $field->input('level')->addClass('level');
+                $field->input('title')->addClass('degree-title');
+                $field->input('level')->addClass('degree-level');
                 break;
 
             case 'abstract':
-                $languages = $def->table;
-
                 $field = new Table($name);
-                $field->select('language')
-                      ->options($this->tableOptions($languages))
-                      ->addClass('language');
-                $field->textarea('content')->addClass('content');
+                $field->TableLookup('language', $def->table)
+                      ->addClass('abstract-language');
+                $field->textarea('content')->addClass('abstract-content');
                 break;
 
             case 'topic':
-                // $table = $def->table; // TODO mettre la bonne table
                 $field = new Table($name);
-                $field->select('type')
-                    //->options($def->table->toArray())
-                      ->addClass('type');
-                $field->input('term')->addClass('term');
+                $field->TableLookup('type', $def->table)
+                      ->addClass('topic-type');
+                $field->input('term')->addClass('topic-term');
                 break;
 
             case 'note':
-                $notes = $def->table;
-
                 $field = new Table($name);
-                $field->select('type')
-                      ->options($this->tableOptions($notes))
-                      ->addClass('type');
-                $field->textarea('content')->addClass('content');
+                $field->TableLookup('type', $def->table)
+                      ->addClass('note-type');
+                $field->textarea('content')->addClass('note-content');
                 break;
 
             case 'link':
-                $links = $def->table;
-
                 $field = new Table($name);
                 $field->input('url')->addClass('url');
-                $field->select('type')
-                      ->options($this->tableOptions($links))
-                      ->addClass('type');
-                $field->input('label')->addClass('label');
-                $field->input('date')->addClass('date');
+                $field->TableLookup('type', $def->table)
+                      ->addClass('link-type');
+                $field->input('label')->addClass('link-label');
+                $field->input('date')->addClass('link-date');
                 break;
 
             case 'doi':
@@ -526,13 +497,10 @@ class EditReference {
                 break;
 
             case 'relations':
-                $relations = $def->table;
-
                 $field = new Table($name);
-                $field->select('type')
-                      ->options($this->tableOptions($relations))
-                      ->addClass('type');
-                $field->input('ref')->addClass('ref');
+                $field->TableLookup('type', $def->table)
+                      ->addClass('relations-type');
+                $field->input('ref')->addClass('relations-ref');
                 break;
 
             case 'owner':
@@ -541,14 +509,14 @@ class EditReference {
 
             case 'creation':
                 $field = new Table($name);
-                $field->input('date')->addClass('date');
-                $field->input('by')->addClass('by');
+                $field->input('date')->addClass('creation-date');
+                $field->input('by')->addClass('creation-by');
                 break;
 
             case 'lastupdate':
                 $field = new Table($name);
-                $field->input('date')->addClass('date');
-                $field->input('by')->addClass('by');
+                $field->input('date')->addClass('lastupdate-date');
+                $field->input('by')->addClass('lastupdate-by');
                 break;
 
             case 'status':
