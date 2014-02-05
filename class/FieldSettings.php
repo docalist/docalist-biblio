@@ -131,6 +131,9 @@ class FieldSettings extends AbstractEntity {
 //             case'edition': // todo
 //             case'degree': // todo
 //             case'topic': // todo
+            case 'topic':
+                $form->select('table')->options($this->tables('topics'));
+                break;
             case 'note':
                 $form->select('table')->options($this->tables('notes'));
                 break;
