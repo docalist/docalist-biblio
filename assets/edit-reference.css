@@ -17,38 +17,39 @@
     width: 100%;
 }
 
-.othertitle th.type     { width: 20%; }
-.othertitle th.title    { width: 80%; }
+.field-table th.othertitle-type     { width: 20%; }
+.field-table th.othertitle-title    { width: 80%; }
 
-.translation th.type    { width: 20%; }
-.translation th.title   { width: 80%; }
+.field-table th.translation-type    { width: 20%; }
+.field-table th.translation-title   { width: 80%; }
 
-.author th.name         { width: 50%; }
-.author th.firstname    { width: 40%; }
-.author th.role         { width: 10%; }
+.field-table th.author-name         { width: 40%; }
+.field-table th.author-firstname    { width: 40%; }
+.field-table th.author-role         { width: 20%; }
 
-.organisation th.name   { width: 50%; }
-.organisation th.city   { width: 20%; }
-.organisation th.country{ width: 20%; }
-.organisation th.role   { width: 10%; }
+.field-table th.organisation-name   { width: 40%; }
+.field-table th.organisation-city   { width: 20%; }
+.field-table th.organisation-country{ width: 20%; }
+.field-table th.organisation-role   { width: 20%; }
 
-.topic th.type          { width: 20%; }
-.topic th.term          { width: 80%; }
+.field-table th.topic-type          { width: 20%; }
+.field-table th.topic-term          { width: 80%; }
 
-.topic td .term         { width: 24%; }
+.field-table td .topic-term         { width: 24%; }
 
-.abstract th.language   { width: 20%; }
-.abstract th.content    { width: 80%; }
 
-.note th.type           { width: 20%; }
-.note th.content        { width: 80%; }
+.field-table th.abstract-language   { width: 20%; }
+.field-table th.abstract-content    { width: 80%; }
 
-.link th.url            { width: 50%; }
-.link th.type           { width: 20%; }
-.link th.label          { width: 20%; }
-.link th.date           { width: 10%; }
+.field-table th.note-type           { width: 20%; }
+.field-table th.note-content        { width: 80%; }
 
-.relations th.type      { width: 20%; }
-.relations th.ref       { width: 80%; }
+.field-table th.link-url            { width: 50%; }
+.field-table th.link-type           { width: 20%; }
+.field-table th.link-label          { width: 20%; }
+.field-table th.link-date           { width: 10%; }
 
-.relations td .ref      { width: 10%; }
+.field-table th.relations-type      { width: 20%; }
+.field-table th.relations-ref       { width: 80%; }
+
+.field-table td .relations-ref      { width: 10%; }
