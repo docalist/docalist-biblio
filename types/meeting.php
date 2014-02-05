@@ -136,7 +136,7 @@ return [
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
-        ['name' => 'topic'],
+        ['name' => 'topic', 'table' => 'topics'],
         ['name' => 'abstract', 'table' => 'languages'],
         ['name' => 'note', 'table' => 'notes'],
 
