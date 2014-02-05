@@ -17,10 +17,6 @@
     width: 100%;
 }
 
-select.genre, 
-select.media, 
-select.language         { width: 20%; }
-
 .othertitle th.type     { width: 20%; }
 .othertitle th.title    { width: 80%; }
 
