@@ -289,6 +289,14 @@ class Plugin {
         ]));
 
         $tableManager->register(new TableInfo([
+            'name' => 'topics',
+            'path' => $dir . 'topics.php',
+            'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
+            'type' => 'topics',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
             'name' => 'notes',
             'path' => $dir . 'notes.txt',
             'label' => __("Types de notes", 'docalist-biblio'),
