@@ -14,7 +14,6 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\AbstractPlugin;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
 use Docalist\Biblio\Entity\Reference;
@@ -39,17 +38,14 @@ class Plugin {
      */
     protected $databases;
 
-    /**
-     * Les taxonomies créées par ce plugin
-     *
-     * @var Taxonomies
-     */
-    protected $taxonomies;
-
     public function __construct() {
+        // Charge les fichiers de traduction du plugin
+        load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
+
+        // Charge la configuration du plugin
+        $this->settings = new Settings('docalist-biblio');
+
         add_filter('init', function() {
-            // Charge la configuration du plugin
-            $this->settings = new Settings('docalist-biblio');
 
             // Crée les bases de données définies par l'utilisateur
             $this->databases = array();
