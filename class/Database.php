@@ -346,8 +346,13 @@ class Database extends PostTypeRepository {
             // Indexe tous les posts de ce lot
             foreach($posts as $post) {
                 $data = json_decode($post->post_excerpt, true);
-                if (is_null($data)) {echo "data empty<br />";}
-                $indexer->index($type, $post->ID, $this->map($data));
+                if (is_null($data)) {
+                    $msg = __('Erreur lors du décodage des données JSON du post ID=%d.', 'docalist-biblio');
+                    $msg = sprintf($msg, $post->ID);
+                    printf('<p style="color: red; font-weight: bold">%s</p>', $msg);
+                } else {
+                    $indexer->index($type, $post->ID, $this->map($data));
+                }
             }
 
             // Passe au lot suivant
