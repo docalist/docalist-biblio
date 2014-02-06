@@ -16,9 +16,8 @@ namespace Docalist\Biblio;
 
 use Docalist\Data\Repository\PostTypeRepository;
 use Docalist\Data\Entity\EntityInterface;
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Search\Indexer;
 use WP_Post;
-use Exception;
 
 /**
  * Une base de données documentaire.
@@ -331,7 +330,11 @@ class Database extends PostTypeRepository {
                 WHERE post_type = %s AND post_status = 'publish'
                 LIMIT %d OFFSET %d"; // @todo ORDER BY ID ASC ?
 
-        // Temps qu'on gagne, on joue
+        // Récupère l'indexeur
+        /* @var $indexer Indexer */
+        $indexer = docalist('docalist-search-indexer');
+
+        // Tant qu'on gagne, on joue
         for (;;) {
             // Génère (et prepare) la requête pour ce lot
             $query = $wpdb->prepare($sql, $type, $limit, $offset);
@@ -348,8 +351,7 @@ class Database extends PostTypeRepository {
             foreach($posts as $post) {
                 $data = json_decode($post->post_excerpt, true);
                 if (is_null($data)) {echo "data empty<br />";}
-                do_action('docalist_search_index', $type, $post->ID, $this->map($data)); // this map(data)
-                //die();
+                $indexer->index($type, $post->ID, $this->map($data));
             }
 
             // Passe au lot suivant
@@ -392,7 +394,7 @@ class Database extends PostTypeRepository {
 //            echo "Query exécutée avec offset=", $args['offset'], ', result=', count($posts), '<br />';
             foreach($posts as $id) {
                 $reference = $this->load($id);
-                do_action('docalist_search_index', $type, $id, $this->map($reference));
+                $indexer->index($type, $id, $this->map($reference));
             }
             $args['offset'] += count($posts);
 
