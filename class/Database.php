@@ -162,7 +162,7 @@ class Database extends PostTypeRepository {
         });
 
         // Reindexation
-        add_action("docalist_search_reindex_{$type}", function($indexer){
+        add_action("docalist_search_reindex_{$type}", function(Indexer $indexer){
             $this->reindex($indexer);
         });
     }
@@ -304,9 +304,9 @@ class Database extends PostTypeRepository {
     /**
      * Réindexe toutes les notices de la base dans Docalist Search.
      *
-     * @return array
+     * @param Indexer $indexer L'indexeur docalist-search à utiliser.
      */
-    protected function reindex() {
+    protected function reindex(Indexer $indexer) {
         // Pour des raisons de rapidité, on travaille directement avec les
         // données brutes plutôt qu'avec les entités Reference : les entités
         // sont très pratiques, mais quand on réindexe des milliers de ref et
@@ -329,10 +329,6 @@ class Database extends PostTypeRepository {
         $sql = "SELECT ID, post_excerpt FROM $wpdb->posts
                 WHERE post_type = %s AND post_status = 'publish'
                 LIMIT %d OFFSET %d"; // @todo ORDER BY ID ASC ?
-
-        // Récupère l'indexeur
-        /* @var $indexer Indexer */
-        $indexer = docalist('docalist-search-indexer');
 
         // Tant qu'on gagne, on joue
         for (;;) {
@@ -357,7 +353,7 @@ class Database extends PostTypeRepository {
             // Passe au lot suivant
             $offset += count($posts);
 
-            // La ligne (commentée) suivante ets pratique pour les tests
+            // La ligne (commentée) suivante est pratique pour les tests
 //             if ($offset >= 3000) break;
         }
         return;
