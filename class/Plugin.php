@@ -184,6 +184,24 @@ class Plugin {
         //return;
         $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tables'  . DIRECTORY_SEPARATOR;
 
+        // Etiquettes de rôles
+        $tableManager->register(new TableInfo([
+            'name' => 'marc21-relators-fr',
+            'path' => $dir . 'relators/marc21-relators_fr.txt',
+            'label' => __("Etiquettes de rôles marc21 en français", 'docalist-biblio'),
+            'type' => 'thesaurus',
+            'user' => false,
+        ]));
+
+        $tableManager->register(new TableInfo([
+            'name' => 'marc21-relators-en',
+            'path' => $dir . 'relators/marc21-relators_en.txt',
+            'label' => __("Etiquettes de rôles marc21 en anglais", 'docalist-biblio'),
+            'type' => 'thesaurus',
+            'user' => false,
+        ]));
+
+        // Anciennes tables
         $tableManager->register(new TableInfo([
             'name' => 'roles-author',
             'path' => $dir . 'roles-author.txt',
