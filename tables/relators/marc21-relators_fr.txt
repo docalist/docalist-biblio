@@ -13,7 +13,7 @@
 # ------------------------------------------------------------------------------
 #
 # ------------------------------------------------------------------------------
-# marc21-relators_fr.txt.txt
+# marc21-relators_fr.txt
 #
 # Ce fichier a été généré automatiquement à partir des données disponibles sur
 # la page http://www.lac-bac.gc.ca/marc/040010-220-f.html
