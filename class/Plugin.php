@@ -186,18 +186,20 @@ class Plugin {
 
         // Etiquettes de rôles
         $tableManager->register(new TableInfo([
-            'name' => 'marc21-relators-fr',
+            'name' => 'marc21-relators_fr',
             'path' => $dir . 'relators/marc21-relators_fr.txt',
             'label' => __("Etiquettes de rôles marc21 en français", 'docalist-biblio'),
-            'type' => 'thesaurus',
+            'format' => 'thesaurus',
+            'type' => 'roles',
             'user' => false,
         ]));
 
         $tableManager->register(new TableInfo([
-            'name' => 'marc21-relators-en',
+            'name' => 'marc21-relators_en',
             'path' => $dir . 'relators/marc21-relators_en.txt',
             'label' => __("Etiquettes de rôles marc21 en anglais", 'docalist-biblio'),
-            'type' => 'thesaurus',
+            'format' => 'thesaurus',
+            'type' => 'roles',
             'user' => false,
         ]));
 
