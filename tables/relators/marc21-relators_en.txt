@@ -13,7 +13,7 @@
 # ------------------------------------------------------------------------------
 #
 # ------------------------------------------------------------------------------
-# relators.txt
+# marc21-relators_en.txt
 #
 # Ce fichier a été généré automatiquement à partir des données RDF disponibles
 # à l'adresse http://id.loc.gov/vocabulary/relators
