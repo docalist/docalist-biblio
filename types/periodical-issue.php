@@ -47,7 +47,7 @@ return [
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'topics'],
-        ['name' => 'abstract', 'table' => 'languages'],
+        ['name' => 'abstract', 'table' => 'ISO-639-2_alpha3_EU_fr'],
         ['name' => 'note', 'table' => 'notes'],
 
         // Liens et relations

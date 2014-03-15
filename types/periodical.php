@@ -69,30 +69,30 @@ return [
         ['name' => 'title'],
         ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
         ['name' => 'othertitle', 'table' => 'titles'], // oui avec table
-        // ['name' => 'translation', 'table' => 'languages'],
+        // ['name' => 'translation', 'table' => 'ISO-639-2_alpha3_EU_fr'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'author', 'table' => 'roles-author', 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
-        ['name' => 'organisation', 'table' => 'countries', 'table2' => 'roles-organisation'], // exemple : asso auteur d'une revue
+        ['name' => 'author', 'table' => 'marc21-relators_fr', 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
+        ['name' => 'organisation', 'table' => 'ISO-3166-1_alpha2_fr', 'table2' => 'roles-organisation'], // exemple : asso auteur d'une revue
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date'],
-        ['name' => 'language', 'table' => 'languages'],
+        ['name' => 'language', 'table' => 'ISO-639-2_alpha3_EU_fr'],
         ['name' => 'pagination'], // nombre moyen de pages par numéro
         ['name' => 'format'], // taille, couleur,
         // ['name' => 'doi'],
 
         // Editor / Collection / Edition / Isbn
         ['name' => 'group', 'label' => 'Informations éditeur'],
-        ['name' => 'editor', 'table' => 'countries'],
+        ['name' => 'editor', 'table' => 'ISO-3166-1_alpha2_fr'],
         ['name' => 'collection'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'topics'],
-        ['name' => 'abstract', 'table' => 'languages'],
+        ['name' => 'abstract', 'table' => 'ISO-639-2_alpha3_EU_fr'],
         ['name' => 'note', 'table' => 'notes'],
 
         // Liens et relations

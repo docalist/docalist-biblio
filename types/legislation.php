@@ -44,8 +44,8 @@ return [
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'author', 'table' => 'roles-author', 'format' => 'fmt1'],
-        ['name' => 'organisation', 'table' => 'countries', 'table2' => 'roles-organisation'],
+        ['name' => 'author', 'table' => 'marc21-relators_fr', 'format' => 'fmt1'],
+        ['name' => 'organisation', 'table' => 'ISO-3166-1_alpha2_fr', 'table2' => 'roles-organisation'],
 
         // Journal, Issn, Volume, Issue
         ['name' => 'group', 'label' => 'Journal / Périodique'],
@@ -57,7 +57,7 @@ return [
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date'],
-        ['name' => 'language', 'table' => 'languages'], // fre par défaut
+        ['name' => 'language', 'table' => 'ISO-639-2_alpha3_EU_fr'], // fre par défaut
         ['name' => 'pagination'],
         ['name' => 'format'],
 
@@ -66,7 +66,7 @@ return [
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'topics'],
-        ['name' => 'abstract', 'table' => 'languages'],
+        ['name' => 'abstract', 'table' => 'ISO-639-2_alpha3_EU_fr'],
         ['name' => 'note', 'table' => 'notes'],
 
         // Liens et relations
