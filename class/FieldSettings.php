@@ -162,7 +162,8 @@ class FieldSettings extends AbstractEntity {
 
         /* @var $tableInfo TableInfo */
         foreach($tableManager->info(null, $type) as $name => $tableInfo) {
-            $tables[$name] = sprintf('%s (%s)', $tableInfo->label, $name);
+            $key = $tableInfo->format . ':' . $name;
+            $tables[$key] = sprintf('%s (%s)', $tableInfo->label, $name);
         }
 
         return $tables;
