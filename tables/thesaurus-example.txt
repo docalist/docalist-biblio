@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------------------
+# This file is part of a Docalist plugin.
+#
+# Copyright (C) 2012-2014 Daniel Ménard
+#
+# For copyright and license information, please view the
+# LICENSE.txt file that was distributed with this source code.
+#
+# @package     Docalist
+# @subpackage  Tables
+# @author      Daniel Ménard <daniel.menard@laposte.net>
+# @version     SVN: $Id$
+# ------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------
+# thesaurus-example.txt
+#
+# Exemple de table au format thesaurus utilisé pour documenter la signification
+# de chacune des colonnes.
+#
+# Historique : 
+# - 17/03/2014 Version initiale
+# ------------------------------------------------------------------------------
+code;label;USE;MT;BT;RT;description;SN;HN
+;Signification des colonnes :;;;;;;;
+code;code du terme s'il s'agit d'un descripteur (pas de code pour les non-descripteurs);;;;;;;
+label;libellé du terme, qu'il s'agisse d'un descripteur ou d'un non descripteur;;;;;;;
+USE;pour un non-descripteur, code du descripteur à utiliser (EM en français);;;;;;;
+;La relation inverse, UF (Used For, EP en français) est calculée par inférence :;;;;;;;
+;Les EP d'un terme X sont tous les descripteurs qui ont USE=X.;;;;;;;
+MT;Micro Thesaurus : code du micro-thesaurus auquel appartient le descripteur;;;;;;;
+BT;Broader Term : pour un descripteur, code du descripteur parent (TG en français);;;;;;;
+;La relation inverse, NT (Narrower Terms, TS en français) est calculée par inférence :;;;;;;;
+;Les TS d'un terme X sont tous les descripteurs qui ont BT=X.;;;;;;;
+RT;Related Term : pour un descripteur, code du ou des descripteur lié (relation 'voir aussi', TA en français);;;;;;;
+Description;Definition : pour un descripteur, définition du terme (description);;;;;;;
+SN;Scope Note : pour un descripteur, champ d'application du terme (NA en français);;;;;;;
+HN;History Note : historique du terme (date de création, modifications apportées, etc.);;;;;;;

@@ -188,7 +188,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'marc21-relators_fr',
             'path' => $dir . 'relators/marc21-relators_fr.txt',
-            'label' => __("Etiquettes de rôles marc21 en français", 'docalist-biblio'),
+            'label' => __('Etiquettes de rôles marc21 en français', 'docalist-biblio'),
             'format' => 'thesaurus',
             'type' => 'roles',
             'user' => false,
@@ -197,7 +197,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'marc21-relators_en',
             'path' => $dir . 'relators/marc21-relators_en.txt',
-            'label' => __("Etiquettes de rôles marc21 en anglais", 'docalist-biblio'),
+            'label' => __('Etiquettes de rôles marc21 en anglais', 'docalist-biblio'),
             'format' => 'thesaurus',
             'type' => 'roles',
             'user' => false,
@@ -209,6 +209,16 @@ class Plugin {
             'label' => __('Table de conversion des codes de fonction Unimarc en relators code Marc21.', 'docalist-core'),
             'format' => 'conversion',
             'type' => 'roles',
+            'user' => false,
+        ]));
+
+        // Exemple de thesaurus
+        $tableManager->register(new TableInfo([
+            'name' => 'thesaurus-example',
+            'path' => $dir . 'thesaurus-example.txt',
+            'label' => __('Exemple de table thesaurus', 'docalist-biblio'),
+            'format' => 'thesaurus',
+            'type' => 'thesaurus',
             'user' => false,
         ]));
 
