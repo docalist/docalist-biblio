@@ -203,6 +203,15 @@ class Plugin {
             'user' => false,
         ]));
 
+        $tableManager->register(new TableInfo([
+            'name' => 'relators_unimarc-to-marc21',
+            'path' => $dir . 'relators/relators_unimarc-to-marc21.txt',
+            'label' => __('Table de conversion des codes de fonction Unimarc en relators code Marc21.', 'docalist-core'),
+            'format' => 'conversion',
+            'type' => 'roles',
+            'user' => false,
+        ]));
+
         // Anciennes tables
         $tableManager->register(new TableInfo([
             'name' => 'genres-article',
