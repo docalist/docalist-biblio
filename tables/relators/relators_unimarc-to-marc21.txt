@@ -1,0 +1,142 @@
+# ------------------------------------------------------------------------------
+# This file is part of the "Docalist Biblio" package.
+#
+# Copyright (C) 2012-2014 Daniel Ménard
+#
+# For copyright and license information, please view the
+# LICENSE.txt file that was distributed with this source code.
+#
+# @package     Docalist
+# @subpackage  Biblio
+# @author      Daniel Ménard <daniel.menard@laposte.net>
+# @version     SVN: $Id$
+# ------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------
+# relators_unimarc-to-marc21.txt
+#
+# Table de conversion des codes de fonction Unimarc en relators code Marc21.
+# 
+# Source : 
+# - Library Of Congress, UNIMARC to MARC 21 Conversion Specifications,
+#   Version 3.0 (August 2001)
+# - Table 2 :
+#   http://www.loc.gov/marc/unimarctomarc21_tables.pdf
+#
+# Remarque : 
+# - Le document utilisé comme source est ancien, la table est probablement 
+#   incomplète.
+#
+# Historique :
+# - 15/03/2014 Version initiale.
+# ------------------------------------------------------------------------------
+src;dst;description
+005;act;actor
+010;adp;adapter
+020;ann;annotator
+030;arr;arranger
+040;art;artist
+050;asg;assignee
+060;asn;associated name
+065;auc;auctioneer
+070;aut;author
+072;aqt;author in quotations or text abstract
+075;aft;author of afterword, colophon, etc.
+080;aui;author of introd
+090;aus;author of screenplay
+100;ant;bibl. antecedent
+110;bnd;binder
+120;bdd;binding designer
+130;bkd;book designer
+140;bjd;bkjacket designer
+150;bpd;bkplate designer
+160;bsl;bookseller
+170;cll;calligrapher
+180;ctg;cartographer
+190;cns;censor
+200;chr;choreographer
+205;clb;collaborator
+210;cmm;commentator
+212;cwt;commentator for written text
+220;com;compiler
+230;cmp;composer
+240;cmt;compositor
+245;ccp;conceptor
+250;cnd;conductor
+255;csp;consultant to a project
+260;cph;copyright holder
+270;crr;corrector
+273;cur;curator
+275;dnc;dancer
+280;dte;dedicatee
+290;dto;dedicator
+295;dgg;degree grantor
+300;drt;director
+305;dis;dissertant
+310;dst;distributor
+320;dnr;donor
+330;dub;dubious author
+340;edt;editor
+350;egr;engraver
+360;etr;etcher
+365;exp;expert
+370;flm;film editor
+380;frg;forger
+390;fmo;former owner
+400;fnd;funder
+410;grt;graphic technician
+420;hnr;honoree
+430;ilu;illuminator
+440;ill;illustrator
+450;ins;inscriber
+460;ive;interviewee
+470;ivr;interviewer
+480;lbt;librettist
+490;lse;licensee
+500;lso;licensor
+510;ltg;lithographer
+520;lyr;lyricist
+530;mte;metal engraver
+540;mon;monitor/contractor
+545;mus;musician
+550;nrt;narrator
+555;opn;opponent
+557;orm;organizer of meeting
+560;org;originator
+570;oth;other
+580;ppm;papermaker
+582;pta;patent applicant
+584;inv;inventor
+587;pth;patent holder
+590;prf;performer
+595;res;research
+600;pht;photographer
+610;prt;printer
+620;pop;printer of plates
+630;pro;producer
+635;prg;programmer
+640;pfr;proofreader
+650;pbl;publisher
+651;pbd;publishing director
+660;rcp;recipient
+670;rce;recording engineer
+673;rth;research team head
+675;rev;reviewer
+677;rtm;research team member
+680;rbr;rubricator
+690;sce;scenarist
+695;sad;scientific advisor
+700;scr;scribe
+705;scl;sulptor
+710;sec;secretary
+720;sgn;signer
+721;sng;singer
+723;spn;sponsor
+725;stn;standards body
+727;ths;thesis advisor
+730;trl;translator
+740;tyd;type designer
+750;tyg;typographer
+755;voc;vocalist
+760;wde;wood engraver
+770;wam;writer of accompanying material
