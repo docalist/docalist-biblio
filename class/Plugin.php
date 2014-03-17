@@ -205,33 +205,10 @@ class Plugin {
 
         // Anciennes tables
         $tableManager->register(new TableInfo([
-            'name' => 'roles-author',
-            'path' => $dir . 'roles-author.txt',
-            'label' => __('Etiquettes de rôles pour les auteurs', 'docalist-biblio'),
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'roles-organisation',
-            'path' => $dir . 'roles-organisation.txt',
-            'label' => __('Etiquettes de rôles pour les organismes', 'docalist-biblio'),
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'roles-editor',
-            'path' => $dir . 'roles-editor.txt',
-            'label' => __('Etiquettes de rôles pour les éditeurs', 'docalist-biblio'),
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
             'name' => 'genres-article',
             'path' => $dir . 'genres-article.txt',
             'label' => __("Table des genres pour les références de type Article", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -240,6 +217,7 @@ class Plugin {
             'name' => 'genres-book',
             'path' => $dir . 'genres-book.txt',
             'label' => __("Table des genres pour les références de type Book", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -248,6 +226,7 @@ class Plugin {
             'name' => 'genres-degree',
             'path' => $dir . 'genres-degree.txt',
             'label' => __("Table des genres pour les références de type Degree", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -256,6 +235,7 @@ class Plugin {
             'name' => 'genres-legislation',
             'path' => $dir . 'genres-legislation.txt',
             'label' => __("Table des genres pour les références de type Legislation", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -264,6 +244,7 @@ class Plugin {
             'name' => 'genres-meeting',
             'path' => $dir . 'genres-meeting.txt',
             'label' => __("Table des genres pour les références de type Meeting", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -272,6 +253,7 @@ class Plugin {
             'name' => 'genres-periodical',
             'path' => $dir . 'genres-periodical.txt',
             'label' => __("Table des genres pour les références de type Periodical", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -280,6 +262,7 @@ class Plugin {
             'name' => 'genres-report',
             'path' => $dir . 'genres-report.txt',
             'label' => __("Table des genres pour les références de type Report", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -288,6 +271,7 @@ class Plugin {
             'name' => 'genres-website',
             'path' => $dir . 'genres-website.txt',
             'label' => __("Table des genres pour les références de type WebSite", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'genres',
             'user' => false,
         ]));
@@ -296,6 +280,7 @@ class Plugin {
             'name' => 'medias',
             'path' => $dir . 'medias.txt',
             'label' => __("Supports de documents", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'medias',
             'user' => false,
         ]));
@@ -304,6 +289,7 @@ class Plugin {
             'name' => 'titles',
             'path' => $dir . 'titles.txt',
             'label' => __("Types de titres", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'titles',
             'user' => false,
         ]));
@@ -312,6 +298,7 @@ class Plugin {
             'name' => 'topics',
             'path' => $dir . 'topics.php',
             'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
+            'format' => '???',
             'type' => 'topics',
             'user' => false,
         ]));
@@ -320,6 +307,7 @@ class Plugin {
             'name' => 'notes',
             'path' => $dir . 'notes.txt',
             'label' => __("Types de notes", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'notes',
             'user' => false,
         ]));
@@ -328,6 +316,7 @@ class Plugin {
             'name' => 'links',
             'path' => $dir . 'links.txt',
             'label' => __("Types de liens", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'links',
             'user' => false,
         ]));
@@ -336,6 +325,7 @@ class Plugin {
             'name' => 'relations',
             'path' => $dir . 'relations.txt',
             'label' => __("Types de relations", 'docalist-biblio'),
+            'format' => 'table',
             'type' => 'relations',
             'user' => false,
         ]));
