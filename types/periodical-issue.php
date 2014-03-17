@@ -46,14 +46,14 @@ return [
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
-        ['name' => 'topic', 'table' => 'topics'],
-        ['name' => 'abstract', 'table' => 'ISO-639-2_alpha3_EU_fr'],
-        ['name' => 'note', 'table' => 'notes'],
+        ['name' => 'topic', 'table' => 'table:topics'],
+        ['name' => 'abstract', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
+        ['name' => 'note', 'table' => 'table:notes'],
 
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
-        ['name' => 'link', 'table' => 'links'],
-        ['name' => 'relations', 'table' => 'relations'],
+        ['name' => 'link', 'table' => 'table:links'],
+        ['name' => 'relations', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
         ['name' => 'group', 'label' => 'Informations de gestion'],

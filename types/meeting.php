@@ -111,39 +111,39 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'genres-meeting'], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
-        ['name' => 'media', 'table' => 'medias'],
+        ['name' => 'genre', 'table' => 'table:genres-meeting'], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
+        ['name' => 'media', 'table' => 'table:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'event'],
-        // ['name' => 'othertitle', 'table' => 'titles'], // sous-titre du congrès ?
-        ['name' => 'translation', 'table' => 'ISO-639-2_alpha3_EU_fr'],
+        // ['name' => 'othertitle', 'table' => 'table:titles'], // sous-titre du congrès ?
+        ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'organisation', 'table' => 'ISO-3166-1_alpha2_fr', 'table2' => 'roles-organisation'],
-        ['name' => 'author', 'table' => 'marc21-relators_fr', 'format' => 'fmt1'],
+        ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
+        ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date'],
-        ['name' => 'language', 'table' => 'ISO-639-2_alpha3_EU_fr'],
+        ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'pagination'],
         ['name' => 'format'],
         // ['name' => 'doi'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
-        ['name' => 'topic', 'table' => 'topics'],
-        ['name' => 'abstract', 'table' => 'ISO-639-2_alpha3_EU_fr'],
-        ['name' => 'note', 'table' => 'notes'],
+        ['name' => 'topic', 'table' => 'table:topics'],
+        ['name' => 'abstract', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
+        ['name' => 'note', 'table' => 'table:notes'],
 
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
-        ['name' => 'link', 'table' => 'links'],
-        ['name' => 'relations', 'table' => 'relations'],
+        ['name' => 'link', 'table' => 'table:links'],
+        ['name' => 'relations', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
         ['name' => 'group', 'label' => 'Informations de gestion'],
