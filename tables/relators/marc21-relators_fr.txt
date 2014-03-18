@@ -19,6 +19,11 @@
 # la page http://www.lac-bac.gc.ca/marc/040010-220-f.html
 #
 # Date de génération : 14/03/2014 17:30:45
+# Historique :
+# - 2014-03-18 : Ajout des codes win et wpr qui figurent dans la version en 
+#                anglais, traduction des libellés et des définitions.
+# - 2014-03-18 : Correction des codes ctb (contributeur) et clb (collaborateur).
+#                Le code clb est maintenant deprecated (use ctb).
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 act;Acteur;;;;;"Terme utilisé pour désigner toute personne qui joue dans une présentation musicale ou dramatique.";;
@@ -72,8 +77,8 @@ chr;Chorégraphe;;;;;"Terme utilisé pour désigner toute personne ou tout organ
 plt;Clicheur;;;;;;;
 cli;Client;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui reçoit des services d'une autre personne ou collectivité.";;
 ;Coauteur;aut;;;;;;
-clb;Collaborateur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui participe de manière limitée à l'élaboration de l'œuvre d'une autre personne ou d'un autre organisme en ajoutant un complément comme par exemple des annexes, des notes.";;
-ctb;Collaborateur;ctb;;;;;;
+ctb;Contributeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui participe de manière limitée à l'élaboration de l'œuvre d'une autre personne ou d'un autre organisme en ajoutant un complément comme par exemple des annexes, des notes.";;
+;Collaborateur;ctb;;;;;;
 col;Collectionneur;;;;;"Terme utilisé pour désigner toute personne qui a réuni du matériel de sources diverses et qui l'a organisé, décrit et catalogué comme une collection. Le collectionneur n'est ni le créateur du matériel, ni la personne à qui les manuscrits de la collection étaient peut-être destinés.";;
 spn;Commanditaire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui émet un contrat ou sous les auspices duquel une œuvre a été rédigée, imprimée, publiée, etc.";;
 cmm;Commentateur;;;;;"Terme utilisé pour désigner toute personne qui fait l'interprétation, l'analyse ou une discussion du contenu d'un enregistrement, d'un film cinématographique ou d'un autre support audio-visuel.";;
@@ -286,3 +291,10 @@ tyg;Typographe;;;;;"Terme utilisé pour désigner toute personne qui choisit le 
 vdg;Vidéaste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable d'une production vidéographique d'une production de spectacles à l'opposé d'un film commercial. Le vidéoaste peut être un cameraman ou peut superviser un ou plusieurs cameramen. Ne pas confondre avec cinématographe.";;
 voc;Vocaliste;;;;;"Terme utilisé pour désigner toute personne qui chante dans une comédie musicale ou un spectacle.";;
 wdc;Xylographe;;;;;"Terme utilisé pour désigner toute personne qui réalise des estampes en gravant une image en relief sur un bloc de bois de bout.";;
+#
+# Codes ajouités manuellement (figurent dans la version anglaise mais pas sur marc21.ca).
+#
+win;"Rédacteur de l'introduction";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a contribué au document en fournissant une introduction au travail original";;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
+wpr;"Rédacteur de la préface";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a contribué au document en fournissant une préface au travail original";;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
