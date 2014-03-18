@@ -19,6 +19,9 @@ use Docalist\AdminPage;
 use Docalist\Data\Schema\Schema;
 use Docalist\Data\Schema\Field;
 use Docalist\Utils;
+use Docalist\Http\ViewResponse;
+use Docalist\Http\CallbackResponse;
+
 /**
  * Page "Importer" d'une base
  */
@@ -44,54 +47,120 @@ class ImportPage extends AdminPage {
     }
 
     /**
-     * Import de fichier
+     * Importe un ou plusieurs fichiers dans la base.
+     *
+     * Ce module utilise le gestionnaire de médias de WordPress. La page
+     * affichée permet à l'utilisateur de choisir un fichier existant depuis
+     * la bibliothèque de médias ou de télécharger un nouveau fichier.
+     *
+     * L'utilisateur peut ajouter plusieurs fichiers à charger. Il indique pour
+     * chaque fichier le convertisseur à utiliser et lance l'import.
+     *
+     * @param array $ids Tableau contenant les ID (dans la bibliothèque de
+     * médias de WordPress) des fichiers à importer dans la base.
+     *
+     * @param array $formats Tableau indiquant, pour chaque fichier, le nom de
+     * code du convertisseur à utiliser.
+     *
+     * @return ViewResponse|CallBackResponse
      */
-    public function actionImport($confirm = false) {
-        $uploads = wp_upload_dir();
-        $uploadDir = $uploads['basedir'];
-        $uploadUrl = $uploads['baseurl'];
-
-        $path = $uploadDir . '/prisme/131218/base-prisme-2013-12-18.TXT';
-        $class= 'Docalist\Biblio\Import\Prisme';
-
-        if (! $confirm) {
-            $msg = 'Le fichier <code>%s</code> va être importé dans la base <b>%s</b>.';
-            $msg = sprintf($msg, realpath($path), $this->database->label());
-            return $this->confirm($msg, "Lancer l'import");
+    public function actionImport(array $ids = null, array $formats = null) {
+        // Récupère la liste des importeurs disponibles
+        // Le filtre retourne un tableau de la forme
+        // Nom de code de l'importeur => libellé de l'importeur
+        $importers = apply_filters('docalist_biblio_get_importers', [], $this->database);
+        if (empty($importers)) {
+            return $this->view('docalist-core:error', [
+                'h2' => __('Importer un fichier', 'docalist-biblio'),
+                'h3' => __("Aucun importeur disponible", 'docalist-biblio'),
+                'message' => sprintf(__("Aucun format d'import n'est disponible.", 'docalist-biblio')),
+            ]);
         }
 
-        $records = new $class($path, true);
+        // Permet à l'utilisateur d'uploader et de choisir les fichiers à charger
+        if (empty($ids)) {
+            return $this->view('docalist-biblio:import/choose', [
+                'database' => $this->database,
+                'settings' => $this->database->settings(),
+                'converters' => $importers,
+            ]);
+        }
 
-        $time = microtime(true);
-        set_time_limit(3600);
-        ignore_user_abort(true);
-        while(ob_get_level()) ob_end_flush();
-        echo 'Temps écoulé (sec) ; Nb de notices chargées ; memory_get_usage() ; memory_get_usage(true) ; memory_get_peak_usage() ; memory_get_peak_usage(true)', '<br />';
-        $nb = 0;
-        foreach($records as $record) {
-            ++$nb;
-
-            // Appelles wp_cache_init toutes les reinitcache notices
-//             if (0 === $nb % $reinitCache) {
-//                 wp_cache_init();
-//             }
-
-            // Toutes les 500 notices, stats sur le temps et la mémoire utilisée
-            if (0 === $nb % 500) {
-                echo round(microtime(true)-$time,2), ' ; ', $nb, ' ; ', memory_get_usage(), ' ; ', memory_get_usage(true), ' ; ', memory_get_peak_usage(), ' ; ', memory_get_peak_usage(true), '<br />';
-                flush();
+        // Vérifie les fichiers indiqués
+        $files = [];
+        foreach($ids as $index => $id) {
+            // Récupère le path du fichier attaché
+            $path = get_attached_file($id);
+            if (empty($path) || ! file_exists($path)) {
+                return $this->view('docalist-core:error', [
+                    'h2' => __('Importer un fichier', 'docalist-biblio'),
+                    'h3' => __("Fichier non trouvé", 'docalist-biblio'),
+                    'message' => sprintf(__("Le fichier %s n'existe pas.", 'docalist-biblio'), $id),
+                ]);
             }
-            $record = (array) $record;
-            $reference = new Reference($record);
-            $this->database->store($reference);
 
-//           if ($nb >= 1000) break;
+            // Vérifie le format indiqué
+            if (empty($formats[$index]) || !isset($importers[$formats[$index]])) {
+                return $this->view('docalist-core:error', [
+                    'h2' => __('Importer un fichier', 'docalist-biblio'),
+                    'h3' => __("Convertisseur incorrect", 'docalist-biblio'),
+                    'message' => sprintf(__("Le convertisseur indiqué pour le fichier %s n'est pas valide.", 'docalist-biblio'), $id),
+                ]);
+            }
+
+            $files[$path] = $formats[$index];
         }
-        echo '<br />';
-        echo "<p>Temps total : ", round(microtime(true)-$time,2), ' secondes</p>';
-        echo "<p>Notices chargées : $nb</p>";
-        echo '</div>'; // .wrap
 
+        // On retourne une réponse de type "callback" qui lance l'import
+        // lorsqu'elle est générée (import_start, error, progress, done)
+        $response = new CallbackResponse(function() use($files) {
+            // Permet au script de s'exécuter longtemps
+            ignore_user_abort(true);
+            set_time_limit(3600);
+
+            // Supprime la bufferisation pour voir le suivi en temps réel
+            while(ob_get_level()) ob_end_flush();
+
+            // Pour suivre le déroulement de l'import, on affiche une vue qui
+            // installe différents filtres sur les événements déclenchés
+            // pendant l'import.
+            $this->view('docalist-biblio:import/import')->sendContent();
+
+            // Début de l'import
+            do_action('docalist_biblio_before_import', $files, $this->database);
+
+            // Importe tous les fichiers dans l'ordre indiqué
+            foreach($files as $file => $importer) {
+                // Début de l'import du fichier
+                do_action('docalist_biblio_import_start', $file);
+
+                // Détermine l'action à invoquer pour cet importeur
+                $tag = "docalist_biblio_import_{$importer}";
+
+                // Vérifie qu'il y a bien un callback derrière
+                if (! has_action($tag)) {
+                    $msg = __("L'importeur %s n'est pas installé correctement, impossible d'importer le fichier.", 'docalist-biblio');
+                    do_action('docalist_biblio_import_error', sprintf($msg, $importer));
+                }
+
+                // Lance l'importeur
+                else {
+                    do_action($tag, $file, $this->database);
+                }
+
+                // Fin de l'import du fichier
+                do_action('docalist_biblio_import_done', $file);
+            }
+
+            // Fin de l'import
+            do_action('docalist_biblio_after_import', $files, $this->database);
+        });
+
+        // Indique que notre réponse doit s'afficher dans le back-office wp
+        $response->adminPage(true);
+
+        // Terminé
+        return $response;
     }
 
     public function actionDeleteAll($confirm = false) {
