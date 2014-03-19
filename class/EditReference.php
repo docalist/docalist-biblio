@@ -207,7 +207,7 @@ class EditReference {
                 },
                 $this->postType,    // posttype
                 'normal',           // contexte
-                'default'           // priorité
+                'high'              // priorité
             );
             // @formatter:on
 
