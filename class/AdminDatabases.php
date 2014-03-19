@@ -158,6 +158,9 @@ class AdminDatabases extends AdminPage {
         $error = '';
         if ($this->isPost()) {
             $oldSlug = $database->slug;
+
+            // TODO: supprimer sequences si le nom a changé ?
+            // ou plutôt : renommer ?
             try {
                 $_POST = wp_unslash($_POST);
                 $database->name = $_POST['name'];
@@ -209,7 +212,7 @@ class AdminDatabases extends AdminPage {
         // Supprime la base
         unset($this->settings->databases[$dbindex]);
         $this->settings->save();
-
+//TODO : supprimer séquences
         // Met à jour les rewrite rules
         return $this->redirect($this->url('RewriteRules'), 303);
     }
