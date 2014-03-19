@@ -75,7 +75,7 @@ class Database extends PostTypeRepository {
                 'with_front' => false,
             ),
             'capability_type' => 'post',
-            'supports' => false, //array('excerpt'),
+            'supports' => ['author'], //array('excerpt'),
             'has_archive' => true,
         ));
         // @formatter:on
