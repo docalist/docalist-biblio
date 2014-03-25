@@ -317,7 +317,7 @@ class Plugin {
             'name' => 'topics',
             'path' => $dir . 'topics.php',
             'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
-            'format' => '???',
+            'format' => 'topics',
             'type' => 'topics',
             'user' => false,
         ]));
