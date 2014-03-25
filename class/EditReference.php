@@ -479,7 +479,7 @@ class EditReference {
                 break;
 
             case 'topic':
-                $this->checkTables($def, 'topics:topics');
+                $this->checkTables($def, 'table:topics');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('topic-type');
