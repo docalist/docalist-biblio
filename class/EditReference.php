@@ -344,16 +344,19 @@ class EditReference {
                 break;
 
             case 'genre':
+                $this->checkTables($def, 'table:genres-articles');
                 $field = new TableLookup($name, $def->table);
                 $field->multiple(true);
                 break;
 
             case 'media':
+                $this->checkTables($def, 'table:medias');
                 $field = new TableLookup($name, $def->table);
                 $field->multiple(true);
                 break;
 
             case 'author':
+                $this->checkTables($def, 'thesaurus:marc21-relators_fr');
                 $field = new Table($name);
                 $field->input('name')->addClass('author-name');
                 $field->input('firstname')->addClass('author-firstname');
@@ -362,6 +365,7 @@ class EditReference {
                 break;
 
             case 'organisation':
+                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr', 'thesaurus:marc21-relators_fr');
                 $field = new Table($name);
                 $field->input('name')->addClass('organisation-name');
                 $field->input('city')->addClass('organisation-city');
@@ -377,6 +381,7 @@ class EditReference {
                 break;
 
             case 'othertitle':
+                $this->checkTables($def, 'table:titles');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('othertitle-type');
@@ -384,6 +389,7 @@ class EditReference {
                 break;
 
             case 'translation':
+                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
                 $field = new Table($name);
                 $field->TableLookup('language', $def->table)
                       ->addClass('translation-language');
@@ -412,6 +418,7 @@ class EditReference {
                 break;
 
             case 'language':
+                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
                 $field = new TableLookup($name, $def->table);
                 $field->multiple(true);
                 break;
@@ -429,6 +436,7 @@ class EditReference {
                 break;
 
             case 'editor':
+                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr');
                 $field = new Table($name);
                 $field->input('name')->addClass('editor-name');
                 $field->input('city')->addClass('editor-city');
@@ -463,6 +471,7 @@ class EditReference {
                 break;
 
             case 'abstract':
+                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
                 $field = new Table($name);
                 $field->TableLookup('language', $def->table)
                       ->addClass('abstract-language');
@@ -470,6 +479,7 @@ class EditReference {
                 break;
 
             case 'topic':
+                $this->checkTables($def, 'topics:topics');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('topic-type');
@@ -477,6 +487,7 @@ class EditReference {
                 break;
 
             case 'note':
+                $this->checkTables($def, 'table:notes');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('note-type');
@@ -484,6 +495,7 @@ class EditReference {
                 break;
 
             case 'link':
+                $this->checkTables($def, 'table:links');
                 $field = new Table($name);
                 $field->input('url')->addClass('url');
                 $field->TableLookup('type', $def->table)
@@ -497,6 +509,7 @@ class EditReference {
                 break;
 
             case 'relations':
+                $this->checkTables($def, 'table:relations');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('relations-type');
@@ -532,10 +545,54 @@ class EditReference {
         return $field;
     }
 
-    protected function tableOptions($table, $fields = 'code,label') {
-        empty($table) && $table = 'countries';
-        /* @var $tableManager TableManager */
-        $tableManager = docalist('table-manager');
-        return $tableManager->get($table)->search($fields);
+    /**
+     * Vérifie que les tables indiquées dans la définition d'un champ sont
+     * correctes et qu'elles existent.
+     *
+     * Si ce n'est pas le cas, la définition du champ est temporairement
+     * modifiée pour utiliser la table par défaut indiquée en paramètre et
+     * une erreur "admin notice" est générée.
+     *
+     * @param FieldSettings $def La définition du champ à vérifier.
+     * @param string $default Le nom de la première table par défaut.
+     * @param string $default2 Le nom de laseconde table par défaut (si le champ
+     * utilise deux tables, par exemple organization).
+     */
+    protected function checkTables(FieldSettings $def, $default, $default2 = null) {
+        foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
+            if (empty($def->$table)) {
+                continue;
+            }
+
+            // Vérifie que la table indiquée existe
+            if (preg_match('~([a-z]+):([a-zA-Z0-9_-]+)~', $def->$table, $match)) {
+                if (docalist('table-manager')->info($match[2])) {
+                    continue;
+                }
+            }
+
+            // Table incorrecte, utilise la table par défaut
+            $def->$table = $default;
+
+            // Affiche une admin notice
+            $msg = __("La table <code>%s</code> indiquée pour le champ <code>%s</code> n'est pas valide.", 'docalist-biblio');
+            $msg = sprintf($msg, $def->$table, $def->name);
+            $msg .= '<br />';
+            $msg .= __('Vous devez corriger la grille de saisie', 'docalist-biblio');
+            add_action('admin_notices', function () use ($msg) {
+                printf('<div class="error"><p>%s</p></div>', $msg);
+            });
+        }
     }
+
+    /*
+     * N'est plus utilisée mais peut reservir si on voulait générer un select
+     * contenant toutes les entrées d'une table.
+     */
+//     protected function tableOptions($table, $fields = 'code,label') {
+//         empty($table) && $table = 'countries';
+//         /* @var $tableManager TableManager */
+//         $tableManager = docalist('table-manager');
+//         return $tableManager->get($table)->search($fields);
+//     }
 }
