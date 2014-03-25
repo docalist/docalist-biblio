@@ -31,7 +31,7 @@
  */
 
 return [
-    ['code', 'type', 'source', 'label'],
+    ['code', 'label', 'description', 'source'],
 
-    ['free', 'index', 'topic.free', __('Indexation libre', 'docalist-biblio')],
+    ['free', __('Indexation libre', 'docalist-biblio'), __('Candidats descripteurs', 'docalist-biblio'), 'index:topic.free'],
 ];
