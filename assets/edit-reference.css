@@ -35,7 +35,7 @@
 .field-table th.topic-type          { width: 20%; }
 .field-table th.topic-term          { width: 80%; }
 
-.field-table td .topic-term         { width: 24%; }
+/* .field-table td .topic-term         { width: 24%; } */
 
 
 .field-table th.abstract-language   { width: 20%; }

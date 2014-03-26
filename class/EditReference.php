@@ -222,7 +222,7 @@ class EditReference {
             'docalist-biblio-edit-css',
             plugins_url('docalist-biblio/assets/edit-reference.css'),
             array(),
-            '20131107'
+            '20140326'
         );
     }
 
@@ -483,7 +483,11 @@ class EditReference {
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('topic-type');
-                $field->input('term')->addClass('topic-term');
+              //$field->input('term')->addClass('topic-term');
+                $table = $this->database->settings()->slug === 'infolegis' ? 'thesaurus:domaines-test' : 'thesaurus:thesaurus-prisme-2013';
+                $field->TableLookup('term', $table)
+                      ->multiple(true)
+                      ->addClass('topic-term');
                 break;
 
             case 'note':
