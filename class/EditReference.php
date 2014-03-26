@@ -484,7 +484,17 @@ class EditReference {
                 $field->TableLookup('type', $def->table)
                       ->addClass('topic-type');
               //$field->input('term')->addClass('topic-term');
-                $table = $this->database->settings()->slug === 'infolegis' ? 'thesaurus:domaines-test' : 'thesaurus:thesaurus-prisme-2013';
+
+                switch ($this->database->settings()->slug) {
+                    case 'infolegis':
+                        $table = 'thesaurus:domaines-test';
+                        break;
+                    case 'annuairesites':
+                        $table = 'thesaurus:prisme-web-content';
+                        break;
+                    default:
+                        $table = 'thesaurus:thesaurus-prisme-2013';
+                }
                 $field->TableLookup('term', $table)
                       ->multiple(true)
                       ->addClass('topic-term');
