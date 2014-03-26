@@ -560,7 +560,7 @@ class EditReference {
      */
     protected function checkTables(FieldSettings $def, $default, $default2 = null) {
         foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
-            if (empty($def->$table)) {
+            if ($table === 'table2' && empty($def->$table)) {
                 continue;
             }
 
@@ -571,17 +571,17 @@ class EditReference {
                 }
             }
 
-            // Table incorrecte, utilise la table par défaut
-            $def->$table = $default;
-
-            // Affiche une admin notice
+            // Table incorrecte, affiche une admin notice
             $msg = __("La table <code>%s</code> indiquée pour le champ <code>%s</code> n'est pas valide.", 'docalist-biblio');
-            $msg = sprintf($msg, $def->$table, $def->name);
+            $msg = sprintf($msg, $def->$table ?: ' ', $def->name);
             $msg .= '<br />';
             $msg .= __('Vous devez corriger la grille de saisie', 'docalist-biblio');
             add_action('admin_notices', function () use ($msg) {
                 printf('<div class="error"><p>%s</p></div>', $msg);
             });
+
+            // Et utilise la table par défaut
+            $def->$table = $default;
         }
     }
 
