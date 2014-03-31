@@ -1,137 +1,195 @@
 # ------------------------------------------------------------------------------
 # Table des supports de documents
 #
-# Inspiré de Onix liste 7
+# Correspond à la liste 150 de Onix for Books 
+# avec en plus la liste  7S de Onix for Serials 
 #
-# 2013-11-02 Version initiale
+#
+# 2013-11-02 Version initiale au format table, basée sur list 7 de Onix Books.
+# 2014-03-31 Révision complète. 
+#            Passage à la liste 150 de Onix Books (rev 24) 
+#            + liste 7S de Onix Serials (rev 6)
+#            Mise au format thesaurus 
 # ------------------------------------------------------------------------------
-code;label;description
+code;label;USE;MT;BT;RT;description;SN;HN
+#
+# 00;Non défini;;;;;;;
+#
 # ------------------------------------------------------------------------------
 # A - Audio
 # ------------------------------------------------------------------------------
-AB;Cassette audio;Cassette audio analogique.
-AC;CD audio;Disque audio compact (red book ou SACD).
-AD;DAT;Cassette audio numérique.
-AE;Disque audio;Disque audio (hors CD).
-AF;Bande audio;Bande magnétique en bobine pour enregistrement audio.
-AG;Minidisc; Disque magnéto optique (Sony, 1992).
-AH;CD extra;CD combinant audio et données (CD-Plus, Enhanced-CD, 'blue book', 'yellow/red book').
-AI;DVD audio;DVD contenant uniquement de l'audio.
-AJ;Fichier audio téléchargeable;Fichier audio disponible en ligne sur internet.
-AK;Lecteur audio pré-enregistré;Exemple : playaway.
-AL;Audio sur carte SD pré-enregistrée;Exemple : Audiofy.
-AA;Autre format audio;
-#AZ;autre audio
+AA;Audio;;;;;Enregistrement audio – sans informations détaillées.;;
+AB;Cassette audio;;;AA;;Cassette audio (analogique).;;
+AC;CD audio;;;AA;;CD audio, dans n’importe quel format d’enregistrement : utiliser <ProductFormDetail> pour spécifier le format, si nécessaire.;;
+AD;DAT;;;AA;;Cassette DAT (Digital Audio Tape).;;
+AE;Disque audio;;;AA;;Disque audio (à l’exclusion des CD).;;
+AF;Bande audio;;;AA;;Bande audio (à enroulement).;;
+AG;MiniDisc;;;AA;;Format Sony MiniDisc.;;
+AH;CD-Extra;;;AA;;CD audio avec contenu partiel sur CDROM.;;
+AI;DVD audio;;;AA;;;;
+AJ;Fichier audio téléchargeable;;;AA;;Enregistrement audio téléchargeable en ligne.;;
+AK;Lecteur audio numérique préenregistré;;;AA;;Par exemple, livre audio « Playaway » et lecteur : utiliser le codage <ProductFormDetail> pour spécifier le format d’enregistrement, si nécessaire.;;
+AL;Carte SD préenregistrée;;;AA;;Par exemple, livre audio Audiofy.;;
+AZ;Autre format audio;;;AA;;Autre format audio non spécifié par les codes AB à AL.;;
 # ------------------------------------------------------------------------------
 # B - Book : livres
 # ------------------------------------------------------------------------------
-BB;Livre relié;Livre relié avec une couverture rigide ou semi-rigide.
-BC;Livre broché;Livre encollé avec une couverture souple (exemple : livre de poche).
-BG;Livre précieux;Livre relié avec une couverture luxueuse (cuir par exemple).
-BE;Reliure à spirale;Ensemble de feuilles reliées avec une reliure à spirale ou un peigne.
-BL;Reliure à réglette;Ensemble de feuilles reliées avec une réglette en plastique.
-BF;Brochure;Ensemble de feuilles agraphées ensemble.
-BD;Feuillets mobiles;Ensemble de feuilles destinées à un classeur.
-BH;Livre carton;Livre pour enfant sur pages cartonnées.
-BI;Livre en tissu;Livre pour enfant en tissu.
-BJ;Livre de bain;Livre pour enfant adapté au bain.
-BK;Livre d'activité;Livre pour enfant (à trous, à toucher, à volets, à tirettes, etc.)
-BP;Livre en mousse;Livre en mousse pour les enfants.
-BM;Très grand livre;Livre de grande taille pour l'enseignement (UK essentiellement).
-BN;Fascicule;Chacune des parties détachées d’un ouvrage publié par livraisons. Chaque partie a son propre ISBN.
-BO;Leporello;Livre qui se déplie : livre accordéon, livre frise.
-BA;Autre type de livre;
-#BZ;Autre type de livre
+BA;Livre;;;;;Livre – sans spécification de détail.;;
+BB;Livre relié;;;BA;;Livre relié ou livre cartonné.;;
+BC;Livre broché / livre de poche broché;;;BA;;Livre broché ou autre livre de poche.;;
+BD;Feuillets mobiles;;;BA;;Livre à feuillets mobiles;;
+BE;Reliure spiralée;;;BA;;Livre à reliure spirale, peigne ou anneau.;;
+BF;Brochure;;;BA;;"Brochure ou opuscule agrafé ; en allemand, « geheftet ».";;
+BG;Reliure cuir;;;BA;;;;
+BH;Livre en carton;;;BA;;Livre pour enfant entièrement imprimé sur carton.;;
+BI;Livre en tissu;;;BA;;Livre pour enfant entièrement imprimé sur tissu.;;
+BJ;Livre bain;;;BA;;Livre pour enfant entièrement imprimé sur un matériau imperméable.;;
+BK;Livre fantaisie;;;BA;;"Livre dont l’originalité consiste totalement ou partiellement en un format qui ne peut être décrit par aucun autre code disponible – privilégier toujours un code de format « conventionnel » ; un ou plusieurs codes du <ProductFormDetail>, extraits par exemple du groupe B2nn, doivent être utilisés chaque fois que possible pour fournir une description supplémentaire.";;
+BL;Reliure à réglette;;;BA;;Livre à reliure à réglette.;;
+BM;Grand format;;;BA;;"Très grand format destiné à l’enseignement, etc.; ce format et cette terminologie peuvent être spécifiques au Royaume-Uni ; requis comme différenciateur de niveau supérieur.";;
+BN;Fascicule;;;BA;;Fascicule publié avec son propre numéro ISBN et destiné à être réuni et relié dans un seul et même livre.;;
+BO;Livre ou graphique dépliant;;;BA;;Livre ou graphique en accordéon, conçu pour être plié au format de poche ou au format de page normal : à utiliser pour le format allemand « Leporello ».;;
+;Leporello;BO;;;;;;
+BP;Livre en mousse;;;BA;;Livre pour enfant dont la couverture et les pages sont en mousse.;;
+BZ;Autre format de livre;;;BA;;Autre format de livre ou de reliure non spécifié par les codes BB à BP.;;
 # ------------------------------------------------------------------------------
 # C - Cartographie (cartes)
 # ------------------------------------------------------------------------------
-CB;Carte pliée;Carte géographique pliée.
-CC;Carte à plat;Carte géographique à plat.
-CD;Carte roulée;Carte géographique roulée.
-CE;Planisphère;Planisphère, globe, mappemonde.
-CA;Autre support cartographique;
-#CZ;Autre type de carte;
+CA;Carte;;;;;Carte – sans informations détaillées.;;
+CB;Carte pliée;;;CA;;;;
+CC;Carte à plat;;;CA;;;;
+CD;Carte roulée;;;CA;;Voir liste de code 80 pour « roulée sous tube ».;;
+CE;Globe;;;CA;;Globe ou planisphère.;;
+CZ;Autre carte;;;CA;;Autre format cartographique non spécifié par les codes CB à CE.;;
 # ------------------------------------------------------------------------------
 # D - Digital : Supports numériques
 # ------------------------------------------------------------------------------
-DB;CD-ROM;CD de données.
-DC;CD-I;CD interactive ("green book").   
-#DD;DVD DEPRECATED – use VI for DVD video, AI for DVD audio, DI for DVD-ROM   
-DE;Cartouche de jeu;Cartouche de jeu pour console.
-DF;Disquette;Disquette pour ordinateur, souple (8" ou 5"¼) ou rigide (3" ou 3"½).
-DG;Texte numérique;Livre électronique qui peut être téléchargé.   
-DH;Ressource en ligne;Une ressource électronique consultable sur internet.   
-DI;DVD-ROM;Un DVD contenant des données (voir aussi "DVD audio" et "DVD Vidéo")   
-DJ;Carte SD;Carte mémoire de type "Secure Digital Memory Card" (SD)   
-DK;Carte Compact Flash;Carte mémoire de type "Compact Flash Memory Card" (CF)   
-DL;Carte Memory Stick;Carte mémoire de type "Memory Stick"
-DM;Clé USB;
-DN;CD ou DVD double face;CD ou DVD avec une face contenant des données (ROM) et une face contenant de l'audio ou de la vidéo.   
-#DO;Digital product license key Digital product license delivered through the retail supply chain as a physical “key”, typically a card or booklet containing a code enabling the purchaser to download or activate the associated product. 21  
-DA;Autre support numérique;
-#DZ;Other digital   Other digital or multimedia not specified by DB to DN.
+DA;Contenu numérique (sur support physique);;;;;Contenu numérique fourni sur un support physique (sans informations détaillées).;;
+DB;CD-ROM;;;DA;;;;
+DC;CD-I;;;DA;;CD interactif.;;
+DE;Cartouche de jeu;;;DA;;;;
+DF;Disquette;;;DA;;;;
+DI;DVD-ROM;;;DA;;;;
+DJ;Carte mémoire SD (Secure Digital);;;DA;;;;
+DK;Carte mémoire flash compact;;;DA;;;;
+DL;Carte mémoire MS (Memory Stick);;;DA;;;;
+DM;Clé USB;;;DA;;;;
+DN;CD/DVD double face;;;DA;;Disque double face, une face audio CD/CD-ROM, une autre face DVD.;;
+DZ;Autre support numérique;;;DA;;Autre support de contenu numérique ou multimédia non spécifié par les codes DB à DN.;;
+# ------------------------------------------------------------------------------
+# E - Electronique : Documents numériques
+# ------------------------------------------------------------------------------
+EA;Contenu numérique (fourni par voie électronique);;;;;Contenu numérique fourni électroniquement (méthode de livraison non spécifiée).;;
+EB;Contenu numérique à télécharger ou en ligne;;;EA;;Contenu numérique accessible par téléchargement ou consultable en ligne.;;
+EC;Contenu numérique en ligne;;;EA;;Contenu numérique uniquement accessible en ligne.;;
+ED;Contenu numérique à télécharger;;;EA;;Contenu numérique accessible en téléchargement uniquement.;;
 # ------------------------------------------------------------------------------
 # F - Films et transparents
 # ------------------------------------------------------------------------------
-# FB  Film    Continuous film or filmstrip: DEPRECATED – use FE or FF.    2   
-FC;Diapositives;Film inversible montrant une photographie, inséré dans un cadre plastique ou en carton et destiné à être projeté ou regardé par transparence.   
-FD;Transparents pour rétroprojecteur;   
-FE;Film pour images fixes;Images fixes stockées sur une pellicule, affichées une par une.   
-FF;Film;Images animées   
-FA;Autre support projetté;
-#FZ  Other film or transparency format   Other film or transparency format not specified by FB to FF.    0
+FA;Film ou transparent;;;;;Film ou support transparent – sans informations détaillées.;;
+FC;Diapositives;;;FA;;Diapositives photo montées pour la projection.;;
+FD;Transparents OHP;;;FA;;Transparents pour rétroprojecteur.;;
+FE;Film fixe;;;FA;;;;
+FF;Film;;;FA;;Film continu, par opposition à film fixe.;;
+FZ;Autre format de film ou de transparent;;;FA;;Autre format de film ou de support transparent non spécifié par les codes FB à FF.;;
+# ------------------------------------------------------------------------------
+# J - Journaux et périodiques
+# ------------------------------------------------------------------------------
+JA;Périodique;;;;;;;
+JB;Périodique imprimé;;;;;;;
+JC;Périodique en version numérique (sur CD);;;;;Périodique distribué en version électronique sur CD-ROM ou autre support physique.;;
+JD;Périodique en version numérique (en ligne);;;;;;;
+# ------------------------------------------------------------------------------
+# L - Licences
+# ------------------------------------------------------------------------------
+LA;Licence de produit numérique;;;;;Licence de produit numérique (moyen de livraison non codé).;;
+LB;Clé de licence de produit numérique;;;LA;;Licence de produit numérique fournie par la chaîne d’approvisionnement sous forme de « clé » physique, généralement une cart ou un livret contenant un code permettant à l'acheteur de télécharger le produit associé.;;
+LC;Code licence de produit numérique;;;LA;;Licence de produit numérique délivrée par courrier électronique ou autre méthode de distribution électronique, et fournissant généralement un code permettant à l’acquéreur de mettre à niveau ou de prolonger la licence fournie avec le produit associé.;;
 # ------------------------------------------------------------------------------
 # M - Micro-formes
 # ------------------------------------------------------------------------------
-MB;Microfiche;   
-MC;Microfilm;   
-MA;Autre micro-forme;   
-#MZ;Other microform Other microform not specified by MB or MC.  0
+MA;Microforme;;;;;Microforme – sans informations détaillées.;;
+MB;Microfiche;;;MA;;;;
+MC;Microfilm;;;MA;;Microfilm en rouleau.;;
+MZ;Autre microforme;;;MA;;Autre microforme non spécifiée par les codes MB ou MC.;;
 # ------------------------------------------------------------------------------
 # P - Print : imprimés divers
 # ------------------------------------------------------------------------------
-#PB;Carnet d'adresses;
-#PC;Calendrier;
-PD;Fiches;
-#PE;Copie maître;
-#PF;Agenda;
-#PG;Frise pour enfants;
-PH;Kit;
-PI;Partition de musique;
-PJ;Cartes postales;
-PK;Affiche;
-#PL;Livre souvenir;
-#PM;Portfolio;
-PN;Poster;Reproduction grande taille d'une image ou d'une photographie. 
-PO;Poster éducatif;Poster d'information ou de formation (diagrammes, tableaux...)
-PP;Autocollants;
-PQ;Planche;
-#PR;Bloc-note;
-#PS;Organiseur;
-#PT;Favoris;
-PA;Autre support imprimé;
-#PZ;Autre article imprimé" textEN="Other printed item" />
+PA;Imprimés divers;;;;;Matériels imprimés divers – sans informations détaillées.;;
+PB;Carnet d’adresses;;;PA;;Possibilité d’utiliser les codes du <ProductFormDetail> P201 à P204 pour spécifier la reliure.;;
+PC;Calendrier;;;PA;;;;
+PD;Fiches;;;PA;;Fiches, fiches question-réponse (pour l’enseignement ou la lecture, par exemple).;;
+PE;Copie de l’original;;;PA;;Copie de l’original, feuilles à photocopier.;;
+PF;Agenda;;;PA;;Possibilité d’utiliser les codes du <ProductFormDetail> P201 à P204 pour spécifier la reliure.;;
+PG;Frise;;;PA;;Feuille étroite en forme de bande utilisée principalement pour les livres destinés à l’enseignement ou aux enfants (alphabet, chiffres, personnages illustrés, par exemple). Généralement conçue pour une présentation horizontale.;;
+PH;Kit;;;PA;;Composants à assembler après achat.;;
+PI;Partition musicale;;;PA;;;;
+PJ;Livre ou ensemble de cartes-postales;;;PA;;;;
+PK;Affiche;;;PA;XF;Affiche pour vente au détail – voir aussi XF.;;
+PL;Livre souvenir;;;PA;;Livre souvenir (« livre anniversaire », par exemple) : possibilité d’utiliser les codes du <ProductFormDetail> P201 à P204 pour spécifier la reliure.;;
+PM;Portfolio ou classeur;;;PA;;Portfolio ou classeur (contenant des feuilles volantes, etc.) : il est préférable de coder le contenu et de considérer le « portfolio » comme emballage (liste 80) – en cas d’impossibilité, le produit dans sa totalité peut être codé comme « portfolio ».;;
+PN;Images ou photos;;;PA;;;;
+PO;Carte murale;;;PA;;;;
+PP;Autocollants;;;PA;;;;
+PQ;Planche (lámina);;;PA;;Feuille de format livre (par opposition au format affiche), généralement en couleur ou en impression haute qualité.;;
+PR;Carnet / cahier blanc;;;PA;;Livre dont toutes les pages sont blanches et qui seront remplies par son acquéreur : possibilité d’utiliser les codes du <ProductFormDetail> P201 à P204 pour spécifier la reliure.;;
+PS;Organiseur;;;PA;;Possibilité d’utiliser les codes du <ProductFormDetail> P201 à P204 pour spécifier la reliure.;;
+PT;Marque-page;;;PA;;;;
+PZ;Autre élément imprimé;;;PA;;Autre élément imprimé non spécifié par les codes PB à PT.;;
+# ------------------------------------------------------------------------------
+# S - Sets : ensembles, documents composites
+# ------------------------------------------------------------------------------
+SA;Produit proposé à la vente en plusieurs articles;;;;;Présentation non spécifiée : le format des éléments du produit doit être fourni dans <ProductPart>.;;
+SB;Produit proposé à la vente en plusieurs articles, sous coffret;;;SA;;Le format des éléments du produit doit être fourni dans <ProductPart>.;;
+SC;Produit proposé à la vente en plusieurs articles, sous étui;;;SA;;Le format des éléments du produit doit être fourni dans <ProductPart>.;;
+SD;"Produit proposé à la vente en plusieurs articles ; sous film plastique";;;SA;XL;Le format des éléments du produit doit être fourni dans <ProductPart>. Utiliser le code XL pour un emballage sous film plastique destiné au commerce, et où les éléments contenus seront vendus séparément.;;
+SE;Produit proposé à la vente en plusieurs articles, en vrac;;;SA;;Le format des éléments du produit doit être fourni dans <ProductPart>.;;
+SF;Produit proposé à la vente en plusieurs articles, composant(s) contenus;;;SA;;Produit à plusieurs articles dont les composants sont fournis sous forme d’éléments contenus du composant principal : par exemple, un livre avec un CD emballé sous jaquette à l’intérieur du dos de la couverture. Le format des éléments du produit doit être fourni dans <ProductPart>.;;
 # ------------------------------------------------------------------------------
 # V - Vidéo
 # ------------------------------------------------------------------------------
-#VB;Vidéo VHS/PAL;DEPRECATED 
-#VC;Vidéo VHS/NSTC;DEPRECATED 
-#VD;Vidéo Betamax/PAL;DEPRECATED 
-#VE;Vidéo Betamax/NSTC;DEPRECATED 
-VF;Vidéodisque;Exemple : Laserdisc.
-#VG;Vidéo VHS/SECAM;DEPRECATED 
-#VH;Vidéo Betamax/SECAM;DEPRECATED 
-VJ;VHS;
-VK;Betamax;
-VL;VCD;Video CD
-VM;SVCD;Super Video CD
-VI;DVD Vidéo;
-VN;DVD HD;DVD Haute définition de Toshiba.
-VO;Blu-ray;DVD Haute définition de Sony.
-VP;UMD Video;Sony Universal Media disc
-VA;Autre support vidéo;
-#VZ;Autre format vidéo;
+VA;Vidéo;;;;;Vidéo – sans informations détaillées.;;
+VF;Disque vidéo;;;VA;;Disque laser, par exemple.;;
+VI;DVD vidéo;;;VA;;DVD vidéo : spécifier le standard TV dans la Liste 78.;;
+VJ;Vidéo VHS;;;VA;;Cassette vidéo VHS : spécifier le standard TV dans la Liste 78.;;
+VK;Vidéo Betamax;;;VA;;Cassette vidéo Betamax : spécifier le standard TV dans la Liste 78.;;
+VL;VCD;;;VA;;CD vidéo.;;
+VM;SVCD;;;VA;;Super CD vidéo.;;
+VN;HD DVD;;;VA;;DVD haute définition, format HD DVD Toshiba.;;
+VO;Blu-ray;;;VA;;DVD haute définition, format Blu-ray Sony.;;
+VP;Vidéo UMD;;;VA;;Format UMD (Universal Media Disc) Sony.;;
+VQ;CBHD;;;VA;;China Blue High-Definition, dérivé chinois de HD DVD;;
+VZ;Autre format vidéo;;;VA;;Autre format vidéo non spécifié par les codes VB à VQ.;;
 # ------------------------------------------------------------------------------
-# autres types onix
+# W - ? Collections numériques
 # ------------------------------------------------------------------------------
-# WW -> ZZ : non repris
+WA;Collection de livres numériques;;;;;Livres numériques en format standard propriétaire ou ouvert. ;;
+WB;Collection mixte de livres et de périodiques en versions numériques;;;WA;;Un ensemble composé de livres numériques et de périodiques diffusés sur support électronique ou accessibles en ligne.;;
+# ------------------------------------------------------------------------------
+# X - Matériel destiné aux détaillants et aux revendeurs
+# ------------------------------------------------------------------------------
+XA;Matériel destiné aux détaillants;;;;;Matériel réservé aux détaillants (sans informations détaillées);;
+XB;Gondole – vide;;;XA;;;;
+XC;Gondole – garnie;;;XA;;Présentoir de sol avec contenu.;;
+XD;Présentoir de comptoir – vide;;;XA;;;;
+XE;Présentoir de comptoir – garni;;;XA;;Présentoir de comptoir avec contenu.;;
+XF;Affiche promotionnelle;;;XA;PK;Affiche promotionnelle réservée à l’affichage, et non à la vente – voir aussi PK.;;
+XG;Bandeau d’étagère;;;XA;;;;
+XH;Elément de vitrine;;;XA;;Élément promotionnel pour affichage en vitrine.;;
+XI;Banderole;;;XA;;;;
+XJ;Tourniquet;;;XA;;;;
+XK;Maquette géante;;;XA;;Fac-similé de livre agrandi pour présentation promotionnelle.;;
+XL;Pack libraire;;;XA;;Pack quantité avec son propre code produit et vendu au détaillant uniquement : les articles qu’il contient sont destinés à la vente individuelle – voir aussi WX. Pour les produits ou les lots de produits emballés sous plastique en vue d’une vente au détail, utiliser le code <ProductForm> du contenu, plus le code 21 de la liste 80.;;
+XZ;Autre matériel de point de vente;;;XA;;Autre matériel de point de vente non spécifié par les codes XB à XL.;;
+# ------------------------------------------------------------------------------
+# Z - Autres
+# ------------------------------------------------------------------------------
+ZA;Articles divers;;;;;Produits divers – sans informations détaillées.;;
+ZB;Poupée;;;ZA;;;;
+ZC;Peluche;;;ZA;;Jouet souple ou en peluche.;;
+ZD;Jouet;;;ZA;;;;
+ZE;Jeu;;;ZA;DE;Jeu de plateau ou autre (sauf jeu informatique : voir DE).;;
+ZF;T-shirt;;;ZA;;;;
+ZG;Lecteur de livre numérique;;;ZA;;Appareil dédié à la lecture de livre numérique, généralement équipé d’un écran noir et blanc.;;
+ZH;Tablette numérique;;;ZA;;Tablette avec les fonctions génériques d’un ordinateur, généralement équipée d’un écran couleur.;;
+ZZ;Autre produit;;;ZA;;Autre produit non spécifié par les codes ZB à ZF.;;
