@@ -222,6 +222,16 @@ class Plugin {
             'user' => false,
         ]));
 
+        // Supports
+        $tableManager->register(new TableInfo([
+            'name' => 'medias',
+            'path' => $dir . 'medias.txt',
+            'label' => __("Supports de documents", 'docalist-biblio'),
+            'format' => 'thesaurus',
+            'type' => 'medias',
+            'user' => false,
+        ]));
+
         // Anciennes tables
         $tableManager->register(new TableInfo([
             'name' => 'genres-article',
@@ -292,15 +302,6 @@ class Plugin {
             'label' => __("Table des genres pour les références de type WebSite", 'docalist-biblio'),
             'format' => 'table',
             'type' => 'genres',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'medias',
-            'path' => $dir . 'medias.txt',
-            'label' => __("Supports de documents", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'medias',
             'user' => false,
         ]));
 
