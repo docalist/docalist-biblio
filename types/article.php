@@ -44,7 +44,7 @@ return [
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'table:genres-article'], // interview, reportage, enquête
-        ['name' => 'media', 'table' => 'table:medias'],
+        ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],

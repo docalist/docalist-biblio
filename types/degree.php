@@ -44,7 +44,7 @@ return [
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'table:genres-degree'], // mémoire, thèse, écrit de certification
-        ['name' => 'media', 'table' => 'table:medias'], // papier, internet, cd, dvd
+        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, internet, cd, dvd
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],

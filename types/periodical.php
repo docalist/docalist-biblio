@@ -62,7 +62,7 @@ return [
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'table:genres-periodical'],
-        ['name' => 'media', 'table' => 'table:medias'], // papier, web, archives sur dvd
+        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, web, archives sur dvd
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],

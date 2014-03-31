@@ -38,7 +38,7 @@ return [
 
         // Type, Genre, Media
         // ['name' => 'group', 'label' => 'Nature du document'],
-        // ['name' => 'media', 'table' => 'table:medias'],
+        // ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],

@@ -47,7 +47,7 @@ return [
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'table:genres-report'], // rapport officiel, rapport moral, étude, rapport financier, fin de contrat...
-        ['name' => 'media', 'table' => 'table:medias'], // papier, web
+        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, web
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
