@@ -70,7 +70,6 @@ class EditReference {
     public function __construct(Database $database) {
         $this->database = $database;
         $this->postType = $database->postType();
-        $this->id = 'edit-' . $this->postType;
 
         add_action('load-post.php', function() {
             if (! $this->isMyPostType()) {
@@ -174,6 +173,44 @@ class EditReference {
         die();
     }
 
+    protected function addDebugMetabox() {
+        // @formatter:off
+        add_meta_box(
+            'dclref-debug',                        // id metabox
+            'Informations de debug de la notice',  // titre
+            function() {                // Callback
+                global $post;
+
+                $data = $post->to_array();
+                unset($data['post_excerpt']);
+                $data = array_filter($data);
+
+                echo "<h4>Propriétés du post WordPress :</h4><pre>";
+                echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo "</pre>";
+
+                $data = $this->reference->toArray();
+                echo "<h4>Contenu de la notice :</h4><pre>";
+                echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo "</pre>";
+            },
+            $this->postType,    // posttype
+            'normal',           // contexte
+            'high'              // priorité
+        );
+        // @formatter:on
+
+        // Debug toujours cachée, il faut aller dans options pour l'afficher
+        add_filter('hidden_meta_boxes', function(array $hidden, $screen) {
+            // @see https://trepmal.com/2011/03/31/change-which-meta-boxes-are-shown-or-hidden-by-default/
+            if ($screen->id === $this->postType) {
+                $hidden[] = 'dclref-debug';
+            }
+
+            return $hidden;
+        }, 10, 2);
+    }
+
     protected function edit($id) {
         // Supprime la metabox "Identifiant"
         remove_meta_box('slugdiv', $this->postType, 'normal');
@@ -190,6 +227,10 @@ class EditReference {
         // Détermine la grille de saisie à utiliser
         isset($_REQUEST['ref_type']) && $this->reference->type = $_REQUEST['ref_type'];
 
+        // Crée une metabox "debug" pour afficher le contenu brut du post
+        $this->addDebugMetabox();
+
+        // Metabox normales pour la saisie
         $assets = new Assets();
         foreach($this->metaboxes($this->reference->type) as $id => $form) {
             $title = $form->label() ?: $id;
