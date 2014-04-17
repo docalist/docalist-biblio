@@ -41,8 +41,8 @@ use Docalist\Biblio\Database;
  *
  * - docalist_biblio_after_import : fin de l'import des fichiers choisis.
  *
- * @param array $files Un tableau contenant la liste des fichiers à importer
- * sous la forme $path => $importer.
+ * Remarque : cette vue ne prend aucun paramètre, ils sont passés directement
+ * aux callbacks des filtres installés.
  */
 ?>
 
@@ -68,22 +68,35 @@ use Docalist\Biblio\Database;
  *
  * @param Database $database La base de données destination
  */
-add_action('docalist_biblio_before_import', function(array $files, Database $database) { ?>
+add_action('docalist_biblio_before_import', function(array $files, Database $database, array $options) { ?>
+    <?php
+        if ($options['simulate']) {
+            $h2 = __("Simulation de l'import de fichiers", 'docalist-biblio');
+            $desc = __(
+                "Vous avez lancé une simulation d'import de fichiers dans la base <strong>%s</strong>.",
+                 'docalist-biblio'
+             );
+        } else {
+            $h2 = __("Import de fichiers", 'docalist-biblio');
+            $desc = __(
+                'Vous avez lancé un import de fichiers dans la base <strong>%s</strong>.',
+                 'docalist-biblio'
+             );
+        }
+    ?>
     <div class="wrap">
         <?= screen_icon() ?>
-        <h2><?= __("Import de fichiers", 'docalist-biblio') ?></h2>
+        <h2><?= $h2 ?></h2>
 
         <p class="description"><?php
             //@formatter:off
             printf(
-                __(
-                    'Vous avez lancé un import de fichiers dans la base
-                    <strong>%s</strong>.<br />
-                    La page affichera des informations supplémentaires au fur
-                    et à mesure de l\'avancement. Veuillez patienter.',
-                    'docalist-biblio'
-                ),
+                $desc,
                 $database->settings()->label
+            );
+            echo '<br />';
+            _e('La page affichera des informations supplémentaires au fur
+                et à mesure de l\'avancement. Veuillez patienter.', 'docalist-biblio'
             );
             // @formatter:on
             ?>
@@ -91,7 +104,7 @@ add_action('docalist_biblio_before_import', function(array $files, Database $dat
 
         <?php
         flush();
-}, 10, 2); ?>
+}, 10, 3); ?>
 
 <?php
 /**
@@ -101,8 +114,16 @@ add_action('docalist_biblio_before_import', function(array $files, Database $dat
  *
  * @param string $file le path du fichier qui va être importé.
  */
-add_action('docalist_biblio_import_start', function($file) { ?>
-    <h3><?= sprintf(__('Import du fichier %s', 'docalist-biblio'), basename($file)) ?></h3>
+add_action('docalist_biblio_import_start', function($file, $options) { ?>
+    <?php
+        if ($options['simulate']) {
+            $h3 = __('Test du fichier %s', 'docalist-biblio');
+        } else {
+            $h3 = __('Import du fichier %s', 'docalist-biblio');
+        }
+    ?>
+
+    <h3><?= sprintf($h3, basename($file)) ?></h3>
     <ul class="ul-square">
     <?php
     flush();
@@ -141,11 +162,11 @@ add_action('docalist_biblio_import_error', function($error) {
  *
  * @param string $file le path du fichier qui a été importé.
  */
-add_action('docalist_biblio_import_done', function($file) { ?>
+add_action('docalist_biblio_import_done', function($file, $options) { ?>
     </ul>
     <?php
     flush();
-}, 1, 3);
+}, 10, 2);
 ?>
 
 <?php
@@ -157,14 +178,21 @@ add_action('docalist_biblio_import_done', function($file) { ?>
  *
  * @param Database $database La base de données destination
  */
-add_action('docalist_biblio_after_import', function(array $files, Database $database) { ?>
+add_action('docalist_biblio_after_import', function(array $files, Database $database, array $options) { ?>
         <h3><?= __('Terminé !', 'docalist-biblio') ?></h3>
     </div>
     <?php
-    $msg = _n(
-        'L\'import est terminé : le fichier %2$s a été importé dans %3$s.',
-        'L\'import est terminé : %d fichiers importés dans %3$s (%2$s).',
-        count($files), 'docalist-biblio');
+    if ($options['simulate']) {
+        $msg = _n(
+            'La simulation d\'import est terminée : le fichier %2$s a été testé.',
+            'La simulation d\'import est terminée : %d fichiers ont été testés (%2$s).',
+            count($files), 'docalist-biblio');
+    } else {
+        $msg = _n(
+            'L\'import est terminé : le fichier %2$s a été importé dans %3$s.',
+            'L\'import est terminé : %d fichiers ont été importés dans %3$s (%2$s).',
+            count($files), 'docalist-biblio');
+    }
 
     printf($msg,
         count($files),
@@ -173,5 +201,5 @@ add_action('docalist_biblio_after_import', function(array $files, Database $data
     );
 
     flush();
-}, 10, 2);
+}, 10, 3);
 ?>
