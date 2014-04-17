@@ -62,9 +62,11 @@ class ImportPage extends AdminPage {
      * @param array $formats Tableau indiquant, pour chaque fichier, le nom de
      * code du convertisseur à utiliser.
      *
+     * @param array $options Un tableau d'options
+     *
      * @return ViewResponse|CallBackResponse
      */
-    public function actionImport(array $ids = null, array $formats = null) {
+    public function actionImport(array $ids = null, array $formats = null, array $options = []) {
         // Récupère la liste des importeurs disponibles
         // Le filtre retourne un tableau de la forme
         // Nom de code de l'importeur => libellé de l'importeur
@@ -111,9 +113,12 @@ class ImportPage extends AdminPage {
             $files[$path] = $formats[$index];
         }
 
+        // Vérifie les options
+        $options['simulate'] = isset($options['simulate']);
+
         // On retourne une réponse de type "callback" qui lance l'import
         // lorsqu'elle est générée (import_start, error, progress, done)
-        $response = new CallbackResponse(function() use($files) {
+        $response = new CallbackResponse(function() use($files, $options) {
             // Permet au script de s'exécuter longtemps
             ignore_user_abort(true);
             set_time_limit(3600);
@@ -127,12 +132,12 @@ class ImportPage extends AdminPage {
             $this->view('docalist-biblio:import/import')->sendContent();
 
             // Début de l'import
-            do_action('docalist_biblio_before_import', $files, $this->database);
+            do_action('docalist_biblio_before_import', $files, $this->database, $options);
 
             // Importe tous les fichiers dans l'ordre indiqué
             foreach($files as $file => $importer) {
                 // Début de l'import du fichier
-                do_action('docalist_biblio_import_start', $file);
+                do_action('docalist_biblio_import_start', $file, $options);
 
                 // Détermine l'action à invoquer pour cet importeur
                 $tag = "docalist_biblio_import_{$importer}";
@@ -145,15 +150,15 @@ class ImportPage extends AdminPage {
 
                 // Lance l'importeur
                 else {
-                    do_action($tag, $file, $this->database);
+                    do_action($tag, $file, $this->database, $options);
                 }
 
                 // Fin de l'import du fichier
-                do_action('docalist_biblio_import_done', $file);
+                do_action('docalist_biblio_import_done', $file, $options);
             }
 
             // Fin de l'import
-            do_action('docalist_biblio_after_import', $files, $this->database);
+            do_action('docalist_biblio_after_import', $files, $this->database, $options);
         });
 
         // Indique que notre réponse doit s'afficher dans le back-office wp
