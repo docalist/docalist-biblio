@@ -1,10 +1,15 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
+ *
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 
 /**
@@ -106,4 +111,15 @@
         $(this).parents('li').hide('slow', function() {$(this).remove();});
     });
     
+    // Permet de trier les fichiers à importer dans l'ordre que l'on veut
+    $('#file-list').sortable({ 
+        axis: "y",
+        containment: "parent",
+        handle: '.file-icon',
+        cursor: "move",
+        helper: 'clone',
+        placeholder: 'sortable-placeholder',
+        forcePlaceholderSize: true,
+        opacity: 0.65            
+    });
 }(jQuery));

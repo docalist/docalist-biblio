@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -19,7 +19,7 @@ use Docalist\Biblio\DatabaseSettings;
 use Docalist\Forms\Form;
 
 /**
- * Import de fichier dans une base
+ * Import de fichier dans une base : choix des fichiers.
  *
  * @param Database $database Base de données en cours.
  * @param DatabaseSettings $settings Paramètres de la base de données en cours.
@@ -31,45 +31,56 @@ use Docalist\Forms\Form;
     <h2><?= sprintf(__('Import %s', 'docalist-biblio'), $settings->label) ?></h2>
 
     <p class="description">
-        <?= __("Choisissez le ou les fichiers que vous souhaitez charger, indiquez le format de chacun des fichiers puis cliquez sur le bouton lancer l'import.", 'docalist-biblio') ?>
+        <?= __("Ajoutez les fichiers à importer, choisissez l'ordre en déplaçant l'icone, indiquez le format de chacun des fichiers puis cliquez sur le bouton lancer l'import.", 'docalist-biblio') ?>
     </p>
 
     <form action="" method="post">
+        <h3 class="title"><?=__('Liste des fichiers à importer', 'docalist-biblio') ?></h3>
+
         <ul id="file-list">
             <!-- Template utilisé pour afficher le(s) fichier(s) choisi(s) -->
             <script type="text/html" id="file-template">
-                <li class="file">
+                <li class="file postbox"><?php // postbox : pour avoir le cadre, la couleur, ... ?>
                     <img class="file-icon" src="{icon}" title="Type {mime}, id {id}">
                     <div class="file-info">
-                        <h3>{filename} <span class="file-date">({dateFormatted})</span></h3>
+                        <h4>{filename} <span class="file-date">({dateFormatted})</span>
+                            - <a class="remove-file" href="#"><?=__('Retirer ce fichier', 'docalist-biblio') ?></a>
+                        </h4>
                         <p class="file-description">
-                            <b>{caption}</b><br />
-                            {description}
+                            <i>{caption} {description}</i><br />
                         </p>
                         <label>
                             <?=__('Format : ', 'docalist-biblio') ?>
                             <select name="formats[]">
                                 <option value=""><?=__('Indiquez le format', 'docalist-biblio')?></option>
                                 <?php foreach($converters as $name => $label): ?>
-                                <option value="<?=esc_attr($name)?>"><?=esc_html($label)?></option>
+                                <option value="<?=esc_attr($name)?>" selected="selected"><?=esc_html($label)?></option>
                                 <?php endforeach; ?>
                             </select>
                         </label>
-                        <p>
-                            <a class="remove-file" href="#"><?=__('Retirer ce fichier', 'docalist-biblio') ?></a>
-                        </p>
                     </div>
                     <input type="hidden" name="ids[]" value="{id}" />
                 </li>
             </script>
         </ul>
 
-        <div class="buttons">
-            <button type="button"
-                class="add-file button button-secondary">
-                <?=__('Ajouter un fichier...', 'docalist-biblio') ?>
-            </button>
+        <button type="button"
+            class="add-file button button-secondary">
+            <?=__('Ajouter un fichier...', 'docalist-biblio') ?>
+        </button>
 
+        <h3 class="title"><?=__('Options', 'docalist-biblio') ?></h3>
+
+        <ul>
+            <li>
+                <label>
+                    <input type="checkbox" name="options[simulate]" value="1" checked="checked" />
+                    <?=__("Simuler l'import (ne pas créer de notices)", 'docalist-biblio') ?>
+                </label>
+            </li>
+        </ul>
+
+        <div class="submit buttons">
             <button type="submit"
                 class="run-import button button-primary"
                 disabled="disabled">
@@ -81,9 +92,7 @@ use Docalist\Forms\Form;
 
 <style>
 .file {
-    border: 1px solid #eee;
-    padding: 0.5em;
-    margin-bottom: 0.5em;
+    padding: 1em;
 }
 
 .file-icon,.file-info {
@@ -92,7 +101,11 @@ use Docalist\Forms\Form;
     margin-right: 1em;
 }
 
-.file-info h3 {
+.file-icon {
+    cursor: move;
+}
+
+.file-info h4 {
     margin: 0;
 }
 
@@ -103,10 +116,6 @@ use Docalist\Forms\Form;
 
 .file-description {
     margin: 0;
-}
-
-.add-file, .remove-file {
-    text-decoration: none;
 }
 
 /* Réduit un peu la taille de la boite pour que le titre reste visible */
@@ -122,9 +131,9 @@ use Docalist\Forms\Form;
 wp_enqueue_media();
 
 wp_enqueue_script(
-    'docalist-biblio-import',
-    plugins_url('docalist-biblio/views/import/choose.js?140318'),
-    array(),
-    '20131219',
+    'docalist-biblio-import-choose',
+    plugins_url('docalist-biblio/views/import/choose.js'),
+    ['jquery-ui-sortable'],
+    20140417,
     true
 );
