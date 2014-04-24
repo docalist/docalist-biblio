@@ -45,7 +45,7 @@ class Plugin {
         // Charge la configuration du plugin
         $this->settings = new Settings('docalist-biblio');
 
-        add_filter('init', function() {
+        add_action('init', function() {
 
             // Crée les bases de données définies par l'utilisateur
             $this->databases = array();
