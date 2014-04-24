@@ -153,7 +153,22 @@ class EditReference {
 
         // Si le type de ref a déjà été indiqué, laisse wp faire son job
         if (isset($_REQUEST['ref_type'])) {
-            return $this->setPageTitle($_REQUEST['ref_type'], true);
+            // On va laisser WordPress continuer sont process
+            // Il va créer un "auto-draft" puis afficher le formulaire edit-form-advanced
+
+            // Injecte les valeurs par défaut dans le draft qui va être créé
+            add_filter('wp_insert_post_data', function(array $data) {
+                $data['post_title'] = 'Notice sans titre';
+                $data['post_excerpt'] = json_encode(['type' => $_REQUEST['ref_type']]);
+
+                return $data;
+            }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
+
+            // Adapte le titre de l'écran de saisie
+            $this->setPageTitle($_REQUEST['ref_type'], true);
+
+            // Laisse wp afficher le formulaire
+            return;
         }
 
         // Indique à WP l'option de menu en cours
