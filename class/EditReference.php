@@ -71,17 +71,6 @@ class EditReference {
         $this->database = $database;
         $this->postType = $database->postType();
 
-        add_action('load-post.php', function() {
-            if (! $this->isMyPostType()) {
-                return;
-            }
-
-            if (isset($_GET['action']) && $_GET['action'] === 'edit') {
-                $this->reference = $this->database->load($_GET['post']);
-                $this->setPageTitle($this->reference->type, false);
-            }
-        });
-
         add_action('load-post-new.php', function() {
             $this->isMyPostType() && $this->create();
         });
@@ -90,11 +79,9 @@ class EditReference {
             $this->edit($post->ID);
         });
 
-        add_action('post_updated', function($id, WP_Post $post, WP_Post $previous) {
-            if ($post->post_type === $this->postType) {
-                $this->save($post->ID);
-            }
-        }, 10, 3);
+        add_action('post_updated', function($id) {
+            $this->isMyPostType() && $this->save($id);
+        });
     }
 
     /**
@@ -152,7 +139,7 @@ class EditReference {
             $_REQUEST['ref_type'] = $this->database->settings()->types[0]->name;
         }
 
-        // Si le type de ref a déjà été indiqué, laisse wp faire son job
+        // On connaît le type de notice à créer
         if (isset($_REQUEST['ref_type'])) {
             // On va laisser WordPress continuer sont process
             // Il va créer un "auto-draft" puis afficher le formulaire edit-form-advanced
@@ -171,6 +158,8 @@ class EditReference {
             // Laisse wp afficher le formulaire
             return;
         }
+
+        // On ne sait pas quel type de notice créer. Demande à l'utilisateur.
 
         // Indique à WP l'option de menu en cours
         // cf. wp-admin/post-new.php, lignes 28 et suivantes
@@ -228,20 +217,18 @@ class EditReference {
     }
 
     protected function edit($id) {
+        // Charge la notice à éditer
+        $this->reference = $this->database->load($id);
+
+        // Adapte le titre de l'écran de saisie
+        $this->setPageTitle($this->reference->type, false);
+
         // Supprime la metabox "Identifiant"
         remove_meta_box('slugdiv', $this->postType, 'normal');
 
         add_action('edit_form_after_title', function() {
             $this->createNonce();
         });
-
-        // Charge la notice à éditer
-        if (! isset($this->reference)) {
-            $this->reference = $this->database->load($id);
-        }
-
-        // Détermine la grille de saisie à utiliser
-        isset($_REQUEST['ref_type']) && $this->reference->type = $_REQUEST['ref_type'];
 
         // Crée une metabox "debug" pour afficher le contenu brut du post
         $this->addDebugMetabox();
