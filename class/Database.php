@@ -14,6 +14,7 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Biblio\Entity\Reference;
 use Docalist\Data\Repository\PostTypeRepository;
 use Docalist\Data\Entity\EntityInterface;
 use Docalist\Search\Indexer;
@@ -413,17 +414,48 @@ class Database extends PostTypeRepository {
         return $this->settings->label;
     }
 
-    protected function synchronizePost(WP_Post & $post, EntityInterface $entity) {
-        parent::synchronizePost($post, $entity);
+    public function synchronize(WP_Post $post, EntityInterface $entity, $save = false) {
+        parent::synchronize($post, $entity, $save);
 
-        if (empty($entity->ref)) {
-            $entity->ref = $this->sequenceIncrement('ref');
-        } else {
-            $this->sequenceSetIfGreater('ref', $entity->ref);
+        /* @var $entity Reference */
+
+        // Liste des champs virtuels de la notice et chalo wp correspondant
+        static $map = [
+            'ref'        => 'post_name',
+            'title'      => 'post_title',
+            'status'     => 'post_status',
+         // 'userdid'    => 'post_author',
+            'creation'   => 'post_date',
+            'lastupdate' => 'post_modified',
+         // 'parent'     => 'post_parent',
+         // 'post_type'  => 'déjà fait par PostTypeRepository::synchronize()'
+        ];
+
+        // Sauvegarde d'une notice
+        if ($save) {
+            // Alloue un numéro de ref à la notice / met à jour notre séquence
+            if (empty($entity->ref)) {
+                $entity->ref = $this->sequenceIncrement('ref');
+            } else {
+                $this->sequenceSetIfGreater('ref', $entity->ref);
+            }
+
+            // Recopie les champs virtuels de la notice dans le post wordpress
+            foreach($map as $src => $dst) {
+                if (isset($entity->$src)) {
+                    $post->$dst = $entity->$src;
+                    unset($entity->$src);
+                }
+            }
         }
 
-        $post->post_name = $entity->ref;
-        $post->post_title = $entity->title;
+        // Chargement d'une notice
+        else {
+            // Initialise les champs virtuels de la notice à partir du post wordpress
+            foreach($map as $src => $dst) {
+                $entity->$src = $post->$dst;
+            }
+        }
     }
 
     /**
