@@ -118,6 +118,11 @@ class EditReference {
      * false s'il s'agit d'une mise à jour.
      */
     protected function setPageTitle($type, $creation = false) {
+        // Variable globale wordpress utilisée pour le titre de la page
+        // Définie dans post-new.php (entres autres) et affichée dans
+        // edit-form-advanced...
+        global $title;
+
         // Détermine le libellé du type
         foreach($this->database->settings()->types as $item){
             if ($item->name === $type) {
@@ -125,21 +130,17 @@ class EditReference {
                 break;
             }
         };
-        // TODO : indexer les types par nom pour permettre una ccès direct au label
+        // TODO : indexer les types par nom pour permettre un accès direct au label
 
         $base = $this->database->settings()->label;
 
         if ($creation) {
-            $op = __('création', 'docalist-biblio');
-            $label = 'add_new_item';
+            $title = __("Base %s : créer une notice (%s)", 'docalist-biblio');
         } else {
-            $op = __('édition', 'docalist-biblio');
-            $label = 'edit_item';
+            $title = __("Base %s : modifier une notice (%s)", 'docalist-biblio');
         }
 
-        $title = sprintf('%s - %s : %s', $base, $type, $op);
-
-        get_post_type_object($this->postType)->labels->$label = $title;
+        $title = sprintf($title, $base, lcfirst($type));
     }
 
     /**
