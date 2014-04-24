@@ -50,6 +50,15 @@ class Database extends PostTypeRepository {
 
         // Déclare nos facettes
         $this->docalistSearchFacets();
+
+        // Comme on stocke les données dans post_excerpt, on doit garantir qu'il n'est jamais modifié (autosave, heartbeat, etc.)
+        add_filter('wp_insert_post_data', function(array $data) {
+            if ($data['post_type'] === $this->postType) {
+                unset($data['post_excerpt']);
+            }
+            return $data;
+        }, 999); // EditReference a également un filtre wp_insert_post_data avec ne priorité supérieure. Les priorités doivent rester synchro.
+
     }
 
     /**
