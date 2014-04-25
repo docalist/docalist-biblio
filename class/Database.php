@@ -76,6 +76,20 @@ class Database extends PostTypeRepository {
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
      */
     private function registerPostType() {
+        $supports = [
+         // 'title', // les notices utilisent le champ post_title natif de wp
+         // 'editor',
+            'author',
+            'thumbnail',
+         // 'excerpt',
+            'revisions',
+            'trackbacks',
+         // 'custom-fields',
+            'comments',
+         // 'page-attributes',
+         // 'post-formats'
+        ];
+
         // @formatter:off
         register_post_type($this->postType(), array(
             'labels' => $this->postTypelabels(),
@@ -84,8 +98,9 @@ class Database extends PostTypeRepository {
                 'slug' => $this->settings->slug,
                 'with_front' => false,
             ),
+            'hierarchical' => true,
             'capability_type' => 'post',
-            'supports' => ['author'], //array('excerpt'),
+            'supports' => $supports,
             'has_archive' => true,
             'show_in_nav_menus' => false,
         ));
