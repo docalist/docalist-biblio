@@ -18,6 +18,7 @@ use Docalist\Biblio\Entity\Reference;
 use Docalist\Forms\Themes;
 use Docalist\Utils;
 use WP_Post;
+use WP_Screen;
 use Exception;
 
 use Docalist\Forms\Fragment;
@@ -71,17 +72,28 @@ class EditReference {
         $this->database = $database;
         $this->postType = $database->postType();
 
+        // Demande à l'utilisateur le type de la notice à créer
         add_action('load-post-new.php', function() {
             $this->isMyPostType() && $this->create();
         });
 
+        // Ajoute les metaboxes quand on crée ou qu'on édite une notice
         add_action('add_meta_boxes_' . $this->postType, function(WP_Post $post) {
             $this->edit($post->ID);
         });
 
+        // Enregistre les metaboxes quand la notice est sauvegardée
         add_action('post_updated', function($id) {
             $this->isMyPostType() && $this->save($id);
         });
+
+        // Définit les metaboxes qui sont cachées par défaut
+        add_filter('default_hidden_meta_boxes', function(array $hidden, WP_Screen $screen) {
+            if ($screen->id === $this->postType) {
+                $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
+            }
+            return $hidden;
+        }, 10, 2);
     }
 
     /**
@@ -181,7 +193,7 @@ class EditReference {
     protected function addDebugMetabox() {
         // @formatter:off
         add_meta_box(
-            'dclref-debug',                        // id metabox
+            'dclrefdebug',                         // id metabox
             'Informations de debug de la notice',  // titre
             function() {                // Callback
                 global $post;
@@ -204,16 +216,6 @@ class EditReference {
             'high'              // priorité
         );
         // @formatter:on
-
-        // Debug toujours cachée, il faut aller dans options pour l'afficher
-        add_filter('hidden_meta_boxes', function(array $hidden, $screen) {
-            // @see https://trepmal.com/2011/03/31/change-which-meta-boxes-are-shown-or-hidden-by-default/
-            if ($screen->id === $this->postType) {
-                $hidden[] = 'dclref-debug';
-            }
-
-            return $hidden;
-        }, 10, 2);
     }
 
     protected function edit($id) {
