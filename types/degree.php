@@ -84,7 +84,7 @@ return [
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
         ['name' => 'link', 'table' => 'table:links'],
-        ['name' => 'relations', 'table' => 'table:relations'],
+        ['name' => 'relation', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
         ['name' => 'group', 'label' => 'Informations de gestion'],
