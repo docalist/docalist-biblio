@@ -447,12 +447,12 @@ class Database extends PostTypeRepository {
         // Liste des champs virtuels de la notice et chalo wp correspondant
         static $map = [
             'ref'        => 'post_name',
+            'parent'     => 'post_parent',
             'title'      => 'post_title',
             'status'     => 'post_status',
-         // 'userdid'    => 'post_author',
+         // 'userid'     => 'post_author',
             'creation'   => 'post_date',
             'lastupdate' => 'post_modified',
-         // 'parent'     => 'post_parent',
          // 'post_type'  => 'déjà fait par PostTypeRepository::synchronize()'
         ];
 
