@@ -47,21 +47,46 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property Docalist\Biblio\Entity\Reference\Note[] $note
  * @property Docalist\Biblio\Entity\Reference\Link[] $link
  * @property string $doi
- * @property Docalist\Biblio\Entity\Reference\Relation[] $relations
+ * @property Docalist\Biblio\Entity\Reference\Relation[] $relation
  * @property string[] $owner
- * @property Docalist\Biblio\Entity\Reference\DateBy $creation
- * @property Docalist\Biblio\Entity\Reference\DateBy $lastupdate
- * @property string[] $status
+ * @property string $creation
+ * @property string $lastupdate
+ * @property string $status
+ * @property string $imported
+ * @property Entity[] $errors
  */
 class Reference extends AbstractEntity {
     protected function loadSchema() {
         // @formatter:off
         return array(
-            'ref' => array(
+            'ref' => array(         // Alias de post_name
                 'type' => 'long',
                 'label' => __('Numéro de référence', 'docalist-biblio'),
                 'description' => __('Numéro unique identifiant la notice', 'docalist-biblio'),
             ),
+            'parent' => array(      // Alias de post_parent
+                'type' => 'long',
+                'label' => __('Notice parent', 'docalist-biblio'),
+                'description' => __('Numéro de la référence parent', 'docalist-biblio'),
+            ),
+            'title' => array(       // Alias de post_title
+                'label' => __('Titre', 'docalist-biblio'),
+                'description' => __('Titre original du document catalogué', 'docalist-biblio'),
+            ),
+            'status' => array(      // Alias de post_status
+                'label' => __('Statut', 'docalist-biblio'),
+                'description' => __('Statut de la notice.', 'docalist-biblio'),
+            ),
+            'creation' => array(    // Alias de post_date
+                'label' => __('Création', 'docalist-biblio'),
+                'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
+            ),
+            'lastupdate' => array(  // Alias de post_modified
+                'label' => __('Dernière modification', 'docalist-biblio'),
+                'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
+            ),
+
+
             'type' => array(
                 'label' => __('Type de notice', 'docalist-biblio'),
                 'description' => __('Code unique décrivant la forme du document catalogué', 'docalist-biblio'),
@@ -85,10 +110,6 @@ class Reference extends AbstractEntity {
                 'type' => 'Docalist\Biblio\Entity\Reference\Organisation*',
                 'label' => __('Organismes', 'docalist-biblio'),
 //                 'description' => __('Liste des auteurs moraux : organismes, collectivités auteurs, commanditaires, etc.', 'docalist-biblio'),
-            ),
-            'title' => array(
-                'label' => __('Titre', 'docalist-biblio'),
-                'description' => __('Titre original du document catalogué', 'docalist-biblio'),
             ),
             'othertitle' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\OtherTitle*',
@@ -188,7 +209,7 @@ class Reference extends AbstractEntity {
                 'label' => __('DOI', 'docalist-biblio'),
                 'description' => __('Digital Object Identifier : identifiant unique de la ressource électronique.', 'docalist-biblio'),
             ),
-            'relations' => array(// TODO : au singulier
+            'relation' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Relation*',
                 'label' => __("Relations avec d'autres notices", 'docalist-biblio'),
 //                 'description' => __("Relations entre la notice cataloguée et d'autres notices de la même base.", 'docalist-biblio'),
@@ -198,22 +219,6 @@ class Reference extends AbstractEntity {
                 'label' => __('Producteur de la notice', 'docalist-biblio'),
                 'description' => __('Personne ou organisme producteur de la notice.', 'docalist-biblio'),
             ),
-            'creation' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\DateBy',
-                'label' => __('Création de la notice', 'docalist-biblio'),
-//                 'description' => __('Date de création de la notice et agent.', 'docalist-biblio'),
-            ),
-            'lastupdate' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\DateBy',
-                'label' => __('Mise à jour de la notice', 'docalist-biblio'),
-//                 'description' => __('Date de dernière mise à jour de la notice et agent.', 'docalist-biblio'),
-            ),
-            'status' => array(
-                'type' => 'string*',
-                'label' => __('Statut', 'docalist-biblio'),
-                'description' => __('Mots-clés décrivant le statut actuel de la notice.', 'docalist-biblio'),
-            ),
-//            'statusdate', On conserve ?
 
             // Les champs qui suivent ne font pas partie du format docalist
 
@@ -225,7 +230,6 @@ class Reference extends AbstractEntity {
                 'label' => __('Erreurs()', 'docalist-biblio'),
                 'fields' => array('code', 'value', 'message'),
             ),
-            'todo',
         );
         // @formatter:on
     }
