@@ -568,7 +568,7 @@ class EditReference {
                 $field = new Input($name);
                 break;
 
-            case 'relations':
+            case 'relation':
                 $this->checkTables($def, 'table:relations');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
