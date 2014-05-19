@@ -460,9 +460,9 @@ class Database extends PostTypeRepository {
         if ($save) {
             // Alloue un numéro de ref à la notice / met à jour notre séquence
             if (empty($entity->ref)) {
-                $entity->ref = $this->sequenceIncrement('ref');
+                $entity->ref = docalist('sequences')->increment($this->postType, 'ref');
             } else {
-                $this->sequenceSetIfGreater('ref', $entity->ref);
+                docalist('sequences')->setIfGreater($this->postType, 'ref', $entity->ref);
             }
 
             // Recopie les champs virtuels de la notice dans le post wordpress
