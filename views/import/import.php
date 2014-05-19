@@ -45,6 +45,8 @@ use Docalist\Biblio\Database;
  * aux callbacks des filtres installés.
  */
 
+$startTime = microtime(true);
+
 /**
  * before_import : début de l'import.
  *
@@ -165,7 +167,7 @@ add_action('docalist_biblio_import_done', function($file, $options) { ?>
  *
  * @param Database $database La base de données destination
  */
-add_action('docalist_biblio_after_import', function(array $files, Database $database, array $options) { ?>
+add_action('docalist_biblio_after_import', function(array $files, Database $database, array $options) use ($startTime) { ?>
         <h3><?= __('Terminé !', 'docalist-biblio') ?></h3>
     </div>
     <?php
@@ -181,11 +183,14 @@ add_action('docalist_biblio_after_import', function(array $files, Database $data
             count($files), 'docalist-biblio');
     }
 
-    printf($msg,
+    printf("<p>$msg</p>",
         count($files),
         implode(', ', array_map('basename', array_keys($files))),
         $database->settings()->label
     );
+
+    $msg = __('Temps écoulé : %.2f secondes.', 'docalist-biblio');
+    printf("<p>$msg</p>", (microtime(true) - $startTime));
 
     flush();
 }, 10, 3);
