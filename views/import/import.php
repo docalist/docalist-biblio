@@ -44,20 +44,7 @@ use Docalist\Biblio\Database;
  * Remarque : cette vue ne prend aucun paramètre, ils sont passés directement
  * aux callbacks des filtres installés.
  */
-?>
 
-<?php
-    // Nombre de documents indexés pour un type donné.
-    // Initialisé à zéro dans before_reindex_type, incrémenté et utilisé
-    // dans before_flush.
-    $total;
-
-    // Timestamp contenant l'heure de début d'un flush
-    // Initialisé par before_flush, utilisé dans after_flush
-    $flushTime;
-?>
-
-<?php
 /**
  * before_import : début de l'import.
  *
