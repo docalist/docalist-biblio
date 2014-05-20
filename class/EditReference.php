@@ -77,15 +77,18 @@ class EditReference {
             $this->isMyPostType() && $this->create();
         });
 
-        // Ajoute les metaboxes quand on crée ou qu'on édite une notice
+        // Ajoute les metaboxes dans le formulaire de saisie
         add_action('add_meta_boxes_' . $this->postType, function(WP_Post $post) {
             $this->edit($post->ID);
         });
 
-        // Enregistre les metaboxes quand la notice est sauvegardée
-        add_action('post_updated', function($id) {
-            $this->isMyPostType() && $this->save($id);
-        });
+        // Enregistre les données transmises lorsque wordpress sauve le post
+        global $pagenow;
+        if ($pagenow === 'post.php' && $this->isMyPostType() && isset($_POST['action']) && $_POST['action'] === 'editpost') {
+            add_filter('wp_insert_post_data', function(array $data, array $postarr) {
+                return $this->save($data, $postarr);
+            }, 10, 2);
+        }
 
         // Définit les metaboxes qui sont cachées par défaut
         add_filter('default_hidden_meta_boxes', function(array $hidden, WP_Screen $screen) {
@@ -154,12 +157,18 @@ class EditReference {
         // On connaît le type de notice à créer
         if (isset($_REQUEST['ref_type'])) {
             // On va laisser WordPress continuer sont process
-            // Il va créer un "auto-draft" puis afficher le formulaire edit-form-advanced
+            // Il va créer un "auto-draft" et appeller wp_insert_post().
+            // Juste avant l'insertion, il appelle le filtre wp_insert_post_data
+            // avec les données initiales du post. C'est ce filtre qu'on intercepte
+            // pour initialiser la notice.
+            // Wordpress va ensuite enregistrer nos données puis afficher le
+            // formulaire edit-form-advanced
 
             // Injecte les valeurs par défaut dans le draft qui va être créé
             add_filter('wp_insert_post_data', function(array $data) {
-                $data['post_title'] = 'Notice sans titre';
-                $data['post_excerpt'] = json_encode(['type' => $_REQUEST['ref_type']]);
+                $ref = new Reference();
+                $ref->type = $_REQUEST['ref_type'];
+                $data = $this->database->entityToPost($ref);
 
                 return $data;
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
@@ -277,35 +286,47 @@ class EditReference {
      *
      * @param int $id ID de la notice à enregistrer.
      */
-    protected function save($id) {
+    protected function save($data, $postarr) {
+        /*
+         * Cette méthode est appellée par wp_insert_post() quand wordpress
+         * s'apprête à enregistrer le post modifié dans la base.
+         * Wordpress nous passe dans $data les nouvelles données du post.
+         * A partir de ces données, on construit une référence (postToEntity)
+         * On binde cette référence avec les données transmises dans $_POST
+         * On met ensuite à jour $data à partir de la référence en appellant
+         * entityToPost.
+         * On retourne à wp le résultat obtenu.
+         */
+
         // Vérifie le nonce
         if (! $this->checkNonce()) {
             return;
         }
 
-        // Récupère les données transmises dans $_POST
-        $record = wp_unslash($_POST);
+        // Crée une référence à partir des données du post
+        $data = wp_unslash($data);
+        $ref = new Reference($this->database->postToEntity($data));
 
-        // Charge la notice à mettre à jour
-        $this->reference = $this->database->load($id);
-        if (! isset($record['type'])) {
-            throw new Exception('Pas de type de notice dans $_POST');
-        }
-        $type = $record['type'];
+        // Récupère le type de référence
+        $type = $ref->type;
 
-        // Met à jour la notice
+        // Binde la référence avec les données transmises dans $_POST
         $record = wp_unslash($_POST);
         foreach($this->metaboxes($type) as $id => $metabox) {
             $metabox->bind($record);
-            foreach($metabox->data() as $key => $data) {
-                $this->reference->$key = $data;
+            foreach($metabox->data() as $key => $value) {
+                $ref->$key = $value;
             }
         }
 
-        // Enregistre la notice modifiée
-        $this->database->store($this->reference);
-    }
+        // Récupère les données de la référence obtenue
+        $data = $this->database->entityToPost($ref);
 
+        // Retourne le résultat à Wordpress
+        $data = wp_slash($data);
+
+        return $data;
+    }
 
     /**
      * Génère un nonce WordPress lorsque l'écran d'édition du post type
@@ -344,7 +365,15 @@ class EditReference {
             }
         }
         if (is_null($fields)) {
-            die("Impossible de trouver le type $type");
+            echo __METHOD__, "<br />";
+            echo "Impossible de trouver le type $type";
+//            var_dump($this->database->settings()->types);
+            foreach($this->database->settings()->types as $t) {
+                var_dump($t->name);
+            }
+            echo '<pre>';
+            debug_print_backtrace();
+            die();
         }
         $metaboxes = array();
         $box = new Fragment();
