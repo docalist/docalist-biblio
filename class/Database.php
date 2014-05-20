@@ -24,6 +24,31 @@ use WP_Post;
  * Une base de données documentaire.
  */
 class Database extends PostTypeRepository {
+    protected static $fieldMap = [
+     // 'post_author'           => '',
+        'post_date'             => 'creation',
+     // 'post_date_gmt'         => '',
+     // 'post_content'          => '',
+        'post_title'            => 'title',
+     // 'post_excerpt'          => '',
+        'post_status'           => 'status',
+     // 'comment_status'        => '',
+     // 'ping_status'           => '',
+     // 'post_password'         => '',
+        'post_name'             => 'ref',
+     // 'to_ping'               => '',
+     // 'pinged'                => '',
+        'post_modified'         => 'lastupdate',
+     // 'post_modified_gmt'     => '',
+     // 'post_content_filtered' => '',
+        'post_parent'           => 'parent',
+     // 'guid'                  => '',
+     // 'menu_order'            => '',
+     // 'post_type'             => '',
+     // 'post_mime_type'        => 'type',
+     // 'comment_count'         => '',
+    ];
+
     /**
      *
      * @var DatabaseSettings
@@ -52,13 +77,14 @@ class Database extends PostTypeRepository {
         $this->docalistSearchFacets();
 
         // Comme on stocke les données dans post_excerpt, on doit garantir qu'il n'est jamais modifié (autosave, heartbeat, etc.)
-        add_filter('wp_insert_post_data', function(array $data) {
-            if ($data['post_type'] === $this->postType) {
-                unset($data['post_excerpt']);
-            }
-            return $data;
-        }, 999); // EditReference a également un filtre wp_insert_post_data avec ne priorité supérieure. Les priorités doivent rester synchro.
-
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            add_filter('wp_insert_post_data', function(array $data) {
+                if ($data['post_type'] === $this->postType) {
+                    unset($data['post_excerpt']);
+                }
+                return $data;
+            }, 999); // EditReference a également un filtre wp_insert_post_data avec ne priorité supérieure. Les priorités doivent rester synchro.
+        }
     }
 
     /**
@@ -98,7 +124,7 @@ class Database extends PostTypeRepository {
                 'slug' => $this->settings->slug,
                 'with_front' => false,
             ),
-            'hierarchical' => true,
+            'hierarchical' => false, // wp inutilisable si on met à true (cache de la hiérarchie ?)
             'capability_type' => 'post',
             'supports' => $supports,
             'has_archive' => true,
@@ -439,48 +465,19 @@ class Database extends PostTypeRepository {
         return $this->settings->label;
     }
 
-    public function synchronize(WP_Post $post, EntityInterface $entity, $save = false) {
-        parent::synchronize($post, $entity, $save);
-
-        /* @var $entity Reference */
-
-        // Liste des champs virtuels de la notice et chalo wp correspondant
-        static $map = [
-            'ref'        => 'post_name',
-            'parent'     => 'post_parent',
-            'title'      => 'post_title',
-            'status'     => 'post_status',
-         // 'userid'     => 'post_author',
-            'creation'   => 'post_date',
-            'lastupdate' => 'post_modified',
-         // 'post_type'  => 'déjà fait par PostTypeRepository::synchronize()'
-        ];
-
-        // Sauvegarde d'une notice
-        if ($save) {
-            // Alloue un numéro de ref à la notice / met à jour notre séquence
-            if (empty($entity->ref)) {
-                $entity->ref = docalist('sequences')->increment($this->postType, 'ref');
-            } else {
-                docalist('sequences')->setIfGreater($this->postType, 'ref', $entity->ref);
-            }
-
-            // Recopie les champs virtuels de la notice dans le post wordpress
-            foreach($map as $src => $dst) {
-                if (isset($entity->$src)) {
-                    $post->$dst = $entity->$src;
-                    unset($entity->$src);
-                }
-            }
+    public function entityToPost(EntityInterface $entity) {
+        // Alloue un numéro de ref à la notice
+        if (empty($entity->ref)) {
+            $entity->ref = docalist('sequences')->increment($this->postType, 'ref');
+        } else {
+            docalist('sequences')->setIfGreater($this->postType, 'ref', $entity->ref);
         }
 
-        // Chargement d'une notice
-        else {
-            // Initialise les champs virtuels de la notice à partir du post wordpress
-            foreach($map as $src => $dst) {
-                $entity->$src = $post->$dst;
-            }
-        }
+        $post = parent::entityToPost($entity);
+
+        $post['post_mime_type'] = 'dclref/' . $entity->type;
+
+        return $post;
     }
 
     /**
