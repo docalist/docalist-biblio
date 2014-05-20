@@ -25,7 +25,6 @@ use Docalist\Forms\Fragment;
 use Docalist\Forms\Table;
 use Docalist\Forms\Input;
 use Docalist\Forms\Select;
-//use Docalist\Forms\Hidden;
 
 use Docalist\Table\TableManager;
 use Docalist\Http\ViewResponse;
@@ -33,7 +32,7 @@ use Docalist\Forms\TableLookup;
 use Docalist\Forms\Assets;
 
 /**
- * La page "création/modification d'une notice" d'une base documentaire.
+ * Gère la page "création/modification d'une notice" d'une base documentaire.
  */
 class EditReference {
     /**
@@ -199,6 +198,9 @@ class EditReference {
         die();
     }
 
+    /**
+     * Ajoute une metabox de débogage qui affiche le contenu brut du post.
+     */
     protected function addDebugMetabox() {
         // @formatter:off
         add_meta_box(
@@ -227,6 +229,12 @@ class EditReference {
         // @formatter:on
     }
 
+    /**
+     * Paramètre le formulaire de saisie et ajoute les metaboxes correspondant
+     * au type de la notice en cours.
+     *
+     * @param int $id ID du post à éditer.
+     */
     protected function edit($id) {
         // Charge la notice à éditer
         $this->reference = $this->database->load($id);
@@ -284,7 +292,10 @@ class EditReference {
     /**
      * Enregistre la notice.
      *
-     * @param int $id ID de la notice à enregistrer.
+     * @param array $data Les données du post wordpress (wp_slashées).
+     * @param array $postarr Les données transmises dans $_POST.
+     *
+     * @return array Les données à enregistrer dans le post.
      */
     protected function save($data, $postarr) {
         /*
