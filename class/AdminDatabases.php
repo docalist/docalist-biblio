@@ -54,6 +54,20 @@ class AdminDatabases extends AdminPage {
             __('Bases documentaires', 'docalist-biblio')    // libellé menu
         );
         // @formatter:on
+
+        // Ajoute un lien "Réglages" dans la page des plugins
+        $filter = 'plugin_action_links_docalist-biblio/docalist-biblio.php';
+        add_filter($filter, function ($actions) {
+            $action = sprintf(
+                '<a href="%s" title="%s">%s</a>',
+                esc_attr($this->url()),
+                $this->menuTitle(),
+                __('Réglages', 'docalist-biblio')
+            );
+            array_unshift($actions, $action);
+
+            return $actions;
+        });
     }
 
     /**
