@@ -78,7 +78,7 @@ class ListReferences{
 
         add_action("manage_{$this->postType}_posts_custom_column", function($column, $post_id) {
             /* @var $ref Reference */
-/*
+
     // Version 1 avec les entités
             static $ref = null;
 
@@ -97,12 +97,12 @@ class ListReferences{
 
                 case 'type' :
                     echo $ref->type;
-                    echo ' : ', get_post_field('post_mime_type', $post_id);
+//                    echo ' : ', get_post_field('post_mime_type', $post_id);
                     break;
             }
 
             return;
-*/
+/*
 
     // Version 2 lecture direct de post_excerpt
             static $last, $ref;
@@ -117,6 +117,7 @@ class ListReferences{
                 $ref = json_decode($post->post_excerpt, true);
             }
             echo isset($ref[$column]) ? $ref[$column] : '';
+*/
         }, 10, 2 );
     }
 
