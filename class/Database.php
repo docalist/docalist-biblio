@@ -18,7 +18,6 @@ use Docalist\Biblio\Entity\Reference;
 use Docalist\Data\Repository\PostTypeRepository;
 use Docalist\Data\Entity\EntityInterface;
 use Docalist\Search\Indexer;
-use WP_Post;
 
 /**
  * Une base de données documentaire.
@@ -85,6 +84,23 @@ class Database extends PostTypeRepository {
                 return $data;
             }, 999); // EditReference a également un filtre wp_insert_post_data avec ne priorité supérieure. Les priorités doivent rester synchro.
         }
+
+        // Crée la page "Liste des références"
+        add_action('admin_init', function () {
+            /*
+                Remarque : on utilise admin_init car admin_menu n'est pas
+                appellé pour une requête ajax. Dans ce cas, quand on fait un
+                "quick edit" les colonnes custom ne sont pas affichées car
+                ListReferences n'a pas été créée.
+            */
+            new ListReferences($this);
+        });
+
+        // Crée les pages "Formulaire de saisie" et "Gestion de la base"
+        add_action('admin_menu', function () {
+            new EditReference($this);
+            new ImportPage($this);
+        });
     }
 
     /**

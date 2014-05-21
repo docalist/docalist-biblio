@@ -118,18 +118,9 @@ class Plugin {
         // Enregistre les tables prédéfinies
         add_action('docalist_register_tables', array($this, 'registerTables'));
 
-        // Back office
+        // Crée la page Réglages » Docalist-Biblio
         add_action('admin_menu', function () {
-            // Page "Gestion des bases"
             new AdminDatabases($this->settings);
-
-            // Bases de données
-            foreach($this->databases as $database) {
-                new ListReferences($database);
-                new EditReference($database);
-
-                new ImportPage($database);
-            }
         });
 
         // Nos filtres
@@ -151,7 +142,6 @@ class Plugin {
 
             return $excerpt;
         }, 11);
-
     }
 
     /**
