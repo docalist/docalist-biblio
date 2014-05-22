@@ -165,11 +165,29 @@ class EditReference {
 
             // Injecte les valeurs par défaut dans le draft qui va être créé
             add_filter('wp_insert_post_data', function(array $data) {
+                // On conserve toutes les valeurs par défaut de wp pour le post
+                // On se contente de stocker le type de la notice créée et de
+                // vider le titre par défaut "brouillon auto".
+                $data['post_excerpt'] = json_encode(['type' => $_REQUEST['ref_type']]);
+                $data['post_title'] = '';
+
+                return $data;
+
+                /*
+                  Ancienne version en appellant entityToPost (ne marche pas) :
+                  - post_status est forcément à publish, on ne peut pas créer
+                    de brouillon, la notice est publiée dès sa création. Il
+                    faut garder le statut "auto-draft" fourni par wordpress.
+                  - On alloue un numéro de ref, alors que le brouillon ne sera
+                    pas forcément enregistré
+                  - Les champs post_xxx_gmt doivent rester à 0
+
                 $ref = new Reference();
                 $ref->type = $_REQUEST['ref_type'];
                 $data = $this->database->entityToPost($ref);
 
                 return $data;
+                */
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
 
             // Adapte le titre de l'écran de saisie
