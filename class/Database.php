@@ -33,7 +33,7 @@ class Database extends PostTypeRepository {
         'post_status'           => 'status',
      // 'comment_status'        => '',
      // 'ping_status'           => '',
-     // 'post_password'         => '',
+        'post_password'         => 'password',
         'post_name'             => 'ref',
      // 'to_ping'               => '',
      // 'pinged'                => '',

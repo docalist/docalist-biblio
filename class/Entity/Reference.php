@@ -85,6 +85,10 @@ class Reference extends AbstractEntity {
                 'label' => __('Dernière modification', 'docalist-biblio'),
                 'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
             ),
+            'password' => array(  // Alias de post_password
+                'label' => __('Mot de passe', 'docalist-biblio'),
+                'description' => __('Mot de passe de la notice.', 'docalist-biblio'),
+            ),
 
 
             'type' => array(
