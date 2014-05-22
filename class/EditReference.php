@@ -327,6 +327,11 @@ class EditReference {
          * On retourne à wp le résultat obtenu.
          */
 
+        // Si wordpress nous a appellé pour une révision, on ne change rien
+        if ($data['post_type'] !== $this->postType) {
+            return $data;
+        }
+
         // Vérifie le nonce
         if (! $this->checkNonce()) {
             return;
