@@ -126,6 +126,12 @@ class ImportPage extends AdminPage {
             // Supprime la bufferisation pour voir le suivi en temps réel
             while(ob_get_level()) ob_end_flush();
 
+//             Susceptible d'être plus rapide avec une base innodb, à tester.
+//             global $wpdb;
+//             $wpdb->query('SET autocommit=0');
+//             wp_suspend_cache_addition(true);
+//             wp_suspend_cache_invalidation(true);
+
             // Pour suivre le déroulement de l'import, on affiche une vue qui
             // installe différents filtres sur les événements déclenchés
             // pendant l'import.
