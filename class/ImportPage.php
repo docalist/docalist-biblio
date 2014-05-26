@@ -181,6 +181,11 @@ class ImportPage extends AdminPage {
             $count = wp_count_posts($this->database->postType()); // nb par statut
             $count = array_sum((array)$count); // total
 
+            if ($count === 0) {
+                $msg = __("La base est vide, il n'y a rien à supprimer.", 'docalist-search');
+                return $this->error($msg, $title);
+            }
+
             $msg = __('Vous allez supprimer définitivement <b>%d notices</b>.', 'docalist-search');
             $msg = sprintf($msg, $count);
             $msg.= ' ';
