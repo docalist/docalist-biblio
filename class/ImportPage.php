@@ -176,7 +176,20 @@ class ImportPage extends AdminPage {
 
     public function actionDeleteAll($confirm = false) {
         if (! $confirm) {
-            return $this->confirm('Toutes les notices vont être supprimées.');
+            $title = __('Vider la base', 'docalist-search');
+
+            $count = wp_count_posts($this->database->postType()); // nb par statut
+            $count = array_sum((array)$count); // total
+
+            $msg = __('Vous allez supprimer définitivement <b>%d notices</b>.', 'docalist-search');
+            $msg = sprintf($msg, $count);
+            $msg.= ' ';
+            $msg.= __('Toutes les données liées à ces notices seront également supprimées (révisions, sauvegardes automatiques, meta données) .', 'docalist-search');
+            $msg.= '<br />';
+            $msg.= '<br />';
+            $msg.= __("La suppression est définitive. Voulez-vous continuer ?", 'docalist-search');
+
+            return $this->confirm($msg, $title);
         }
 
         echo __('<p>Suppression en cours...</p>', 'docalist-search');
