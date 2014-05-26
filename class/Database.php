@@ -76,9 +76,13 @@ class Database extends PostTypeRepository {
         $this->docalistSearchFacets();
 
         // Comme on stocke les données dans post_excerpt, on doit garantir qu'il n'est jamais modifié (autosave, heartbeat, etc.)
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        global $pagenow, $action;
+        if ($pagenow === 'admin-ajax.php' && $action='heartbeat') {
             add_filter('wp_insert_post_data', function(array $data) {
-                if ($data['post_type'] === $this->postType) {
+                if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE
+                    && isset($_POST['data']['wp_autosave']['post_type'])
+                    && $_POST['data']['wp_autosave']['post_type'] === $this->postType) {
+
                     unset($data['post_excerpt']);
                 }
                 return $data;
@@ -135,7 +139,12 @@ class Database extends PostTypeRepository {
         // @formatter:off
         register_post_type($this->postType(), array(
             'labels' => $this->postTypelabels(),
-            'public' => true,
+            'public' => false, // f remarque ci-dessous
+            'show_ui'              => true,
+            'show_in_menu'         => true,
+            'show_in_nav_menus'    => true,
+            'show_in_admin_bar'    => true,
+
             'rewrite' => array(
                 'slug' => $this->settings->slug,
                 'with_front' => false,
@@ -145,8 +154,16 @@ class Database extends PostTypeRepository {
             'supports' => $supports,
             'has_archive' => true,
             'show_in_nav_menus' => false,
+            'delete_with_user' => false,
         ));
         // @formatter:on
+
+        /*
+         * remarque :
+         * on met public à false pour enmpêcher wp de générer un "permalink sample"
+         * (cf edit-form-advanced, lignes 450 et suivantes).
+         * du coup on met tous les autres show_xx à true
+         */
     }
 
     /**
