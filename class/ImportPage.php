@@ -189,7 +189,7 @@ class ImportPage extends AdminPage {
             $msg = __('Vous allez supprimer définitivement <b>%d notices</b>.', 'docalist-search');
             $msg = sprintf($msg, $count);
             $msg.= ' ';
-            $msg.= __('Toutes les données liées à ces notices seront également supprimées (révisions, sauvegardes automatiques, meta données) .', 'docalist-search');
+            $msg.= __('Toutes les données liées à ces notices seront également supprimées (révisions, commentaires, sauvegardes automatiques, meta données) .', 'docalist-search');
             $msg.= '<br />';
             $msg.= '<br />';
             $msg.= __("La suppression est définitive. Voulez-vous continuer ?", 'docalist-search');
