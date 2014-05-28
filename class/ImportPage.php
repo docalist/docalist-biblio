@@ -178,8 +178,7 @@ class ImportPage extends AdminPage {
         if (! $confirm) {
             $title = __('Vider la base', 'docalist-search');
 
-            $count = wp_count_posts($this->database->postType()); // nb par statut
-            $count = array_sum((array)$count); // total
+            $count = $this->database->count();
 
             if ($count === 0) {
                 $msg = __("La base est vide, il n'y a rien à supprimer.", 'docalist-search');
@@ -197,13 +196,31 @@ class ImportPage extends AdminPage {
             return $this->confirm($msg, $title);
         }
 
-        echo __('<p>Suppression en cours...</p>', 'docalist-search');
+        // On retourne une réponse de type "callback" qui lance la suppression
+        // lorsqu'elle est générée.
+        $response = new CallbackResponse(function() {
+            // Permet au script de s'exécuter longtemps
+            ignore_user_abort(true);
+            set_time_limit(3600);
 
-        $count = $this->database->deleteAll();
+            // Supprime la bufferisation pour voir le suivi en temps réel
+            while(ob_get_level()) ob_end_flush();
 
-        $msg = __('<p>%d notice(s) supprimée(s).</p>', 'docalist-search');
+            // Pour suivre le déroulement, on affiche une vue qui installe
+            // différents filtres sur les événements déclenchés pendant la
+            // suppression.
+            $this->view('docalist-biblio:delete-all/delete-all')->sendContent();
 
-        printf($msg, $count);
+            // Lance la suppression
+            $count = $this->database->deleteAll();
+
+        });
+
+        // Indique que notre réponse doit s'afficher dans le back-office wp
+        $response->adminPage(true);
+
+        // Terminé
+        return $response;
     }
 
     /**
