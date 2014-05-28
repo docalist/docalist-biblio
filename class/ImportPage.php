@@ -176,24 +176,10 @@ class ImportPage extends AdminPage {
 
     public function actionDeleteAll($confirm = false) {
         if (! $confirm) {
-            $title = __('Vider la base', 'docalist-search');
-
-            $count = $this->database->count();
-
-            if ($count === 0) {
-                $msg = __("La base est vide, il n'y a rien à supprimer.", 'docalist-search');
-                return $this->error($msg, $title);
-            }
-
-            $msg = __('Vous allez supprimer définitivement <b>%d notices</b>.', 'docalist-search');
-            $msg = sprintf($msg, $count);
-            $msg.= ' ';
-            $msg.= __('Toutes les données liées à ces notices seront également supprimées (révisions, commentaires, sauvegardes automatiques, meta données) .', 'docalist-search');
-            $msg.= '<br />';
-            $msg.= '<br />';
-            $msg.= __("La suppression est définitive. Voulez-vous continuer ?", 'docalist-search');
-
-            return $this->confirm($msg, $title);
+            return $this->view(
+                'docalist-biblio:delete-all/confirm',
+                [ 'database' => $this->database ]
+            );
         }
 
         // On retourne une réponse de type "callback" qui lance la suppression
