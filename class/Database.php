@@ -336,7 +336,7 @@ class Database extends PostTypeRepository {
         $this->concat($ref, 'collection', 'name');
         $this->concat($ref, 'event', 'title', 'date', 'place', 'number');
         $this->concat($ref, 'degree', 'level', 'title');
-        $this->concat($ref, 'abstract', 'content');
+        $this->concat($ref, 'note', 'content');
         if (isset($ref['topic'])) {
             $terms = array();
             foreach($ref['topic'] as $topic) {
@@ -344,7 +344,6 @@ class Database extends PostTypeRepository {
             }
             $ref['topic'] = $terms;
         }
-        unset($ref['note']);
         $this->concat($ref, 'link', 'url');
 
         unset($ref['statusdate']);
