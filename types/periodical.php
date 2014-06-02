@@ -92,8 +92,7 @@ return [
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'table:topics'],
-        ['name' => 'abstract', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
-        ['name' => 'note', 'table' => 'table:notes'],
+        ['name' => 'content', 'table' => 'table:content'],
 
         // Liens et relations
         ['name' => 'group', 'label' => 'Liens et relations'],
