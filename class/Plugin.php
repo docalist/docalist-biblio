@@ -314,11 +314,11 @@ class Plugin {
         ]));
 
         $tableManager->register(new TableInfo([
-            'name' => 'notes',
-            'path' => $dir . 'notes.txt',
-            'label' => __("Types de notes", 'docalist-biblio'),
+            'name' => 'content',
+            'path' => $dir . 'content.txt',
+            'label' => __("Contenu", 'docalist-biblio'),
             'format' => 'table',
-            'type' => 'notes',
+            'type' => 'content',
             'user' => false,
         ]));
 
