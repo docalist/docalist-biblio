@@ -17,13 +17,13 @@ namespace Docalist\Biblio\Entity\Reference;
 use Docalist\Data\Entity\AbstractEntity;
 
 /**
- * Note.
+ * Content.
  *
  * @property string $type
  * @property string $content
  *
  */
-class Note extends AbstractEntity {
+class Content extends AbstractEntity {
 
     protected function loadSchema() {
         // @formatter:off
@@ -34,7 +34,7 @@ class Note extends AbstractEntity {
             ),
             'content' => array(
                 'label' => __('Contenu', 'docalist-biblio'),
-                'description' => __('Notes, remarques et informations complémentaires.', 'docalist-biblio'),
+                'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
             ),
         );
         // @formatter:on
