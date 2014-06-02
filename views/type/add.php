@@ -34,28 +34,37 @@ $back = $this->url('TypesList', $dbindex);
     <h2><?= sprintf(__('%s : ajouter un type de notice', 'docalist-biblio'), $database->label) ?></h2>
 
     <p class="description">
-        <?= __('Choisissez le type de notice à ajouter dans la base :', 'docalist-biblio') ?>
+        <?= __('Sélectionnez les types de notice à ajouter dans la base :', 'docalist-biblio') ?>
     </p>
 
-    <ul class="ul-disc">
-        <?php
-        foreach($types as $type) :
-            /* @var $type TypeSettings */
+    <form method="POST" action="<?=$this->url('TypeAdd', $dbindex) ?>">
+        <ul class="ul-disc">
+            <?php
+            foreach($types as $type) :
+                /* @var $type TypeSettings */
 
-            $add = $this->url('TypeAdd', $dbindex, $type->name);
-            ?>
-            <li>
-                <h3>
-                    <a href="<?= esc_url($add) ?>"><?= $type->label ?></a> (<?= $type->name ?>)
-                </h3>
-                <p class="description"><?= $type->description ?></p>
-            </li>
-        <?php endforeach ?>
-    </ul>
+                $add = $this->url('TypeAdd', $dbindex, $type->name);
+                ?>
+                <li>
+                    <h3>
+                        <label>
+                            <input type="checkbox" name="name[]" value="<?= $type->name ?>" />
+                            <?= $type->label ?> (<?= $type->name ?>)
+                        </label>
+                    </h3>
+                    <p class="description"><?= $type->description ?></p>
+                </li>
+            <?php endforeach ?>
+        </ul>
 
-    <p>
-        <a href="<?= esc_url($back) ?>" class="button">
-            <?= __('Annuler', 'docalist-biblio') ?>
-        </a>
-    </p>
+        <p>
+            <button type="submit" class="button-primary ">
+                <?= __('Ajouter les types sélectionnés', 'docalist-biblio') ?>
+            </button>
+
+            <a href="<?= esc_url($back) ?>" class="button">
+                <?= __('Annuler', 'docalist-biblio') ?>
+            </a>
+        </p>
+    </form>
 </div>
