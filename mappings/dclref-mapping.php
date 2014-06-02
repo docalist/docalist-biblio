@@ -365,7 +365,7 @@ return [
             ]
         ],
 
-        'abstract' => [
+        'content' => [
             'type' => 'string',
             'include_in_all' => true,
             'analyzer' => 'dclref-default-fr' // stemming sur les résumés
@@ -393,15 +393,6 @@ return [
                 ]
             ]
         ],
-
-        // Note : non indexé (copyright, note interne, accès, etc.)
-/*
-        'note' => [
-            'type' => 'string',
-            'include_in_all' => true,
-            'analyzer' => 'dclref-default-fr' // stemming sur les résumés
-        ],
-*/
 
         // link : que l'url, searchable, pas dans _all
         'link' => [
