@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Table "Types de notes"
+# Table "Contenu du document"
 #
 # sources : listes onix/pubmed
 #
@@ -8,6 +8,13 @@
 # 2013-10-04 Version initiale
 # ------------------------------------------------------------------------------
 code;label;description
+# ------------------------------------------------------------------------------
+# Résumé
+# ------------------------------------------------------------------------------
+abstract;Résumé;Résumé du document.
+back-cover;Quatrième de couverture;Résumé qui figure au dos du livre sur le quatrième de couverture.
+publisher-description;Présentation de l'éditeur;Résumé de l'ouvrage réalisé par l'éditeur.
+author-abstract;Résumé d'auteur;Résumé réalisé par l'auteur.
 # ------------------------------------------------------------------------------
 # Général
 # ------------------------------------------------------------------------------
