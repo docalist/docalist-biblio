@@ -42,9 +42,8 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property Docalist\Biblio\Entity\Reference\Collection[] $collection
  * @property Docalist\Biblio\Entity\Reference\Event $event
  * @property Docalist\Biblio\Entity\Reference\Degree $degree
- * @property Docalist\Biblio\Entity\Reference\AbstractField[] $abstract
  * @property Docalist\Biblio\Entity\Reference\Topic[] $topic
- * @property Docalist\Biblio\Entity\Reference\Note[] $note
+ * @property Docalist\Biblio\Entity\Reference\Content[] $content
  * @property Docalist\Biblio\Entity\Reference\Link[] $link
  * @property string $doi
  * @property Docalist\Biblio\Entity\Reference\Relation[] $relation
@@ -189,19 +188,14 @@ class Reference extends AbstractEntity {
                 'label' => __('Diplôme', 'docalist-biblio'),
                 'description' => __("Nom du diplôme pour les documents donnant lieu à l'attribution d'un titre universitaire ou professionnel.", 'docalist-biblio'),
             ),
-            'abstract' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\AbstractField*',
-                'label' => __('Résumés', 'docalist-biblio'),
-//                 'description' => __('Résumé du document et langue du résumé.', 'docalist-biblio'),
-            ),
             'topic' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Topic*',
                 'label' => __('Indexation', 'docalist-biblio'),
 //                 'description' => __('Liste de listes de mots-clés.', 'docalist-biblio'),
             ),
-            'note' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\Note*',
-                'label' => __('Notes', 'docalist-biblio'),
+            'content' => array(
+                'type' => 'Docalist\Biblio\Entity\Reference\Content*',
+                'label' => __('Contenu du document', 'docalist-biblio'),
 //                 'description' => __('Notes, remarques et informations supplémentaires sur le document.', 'docalist-biblio'),
             ),
             'link' => array(
