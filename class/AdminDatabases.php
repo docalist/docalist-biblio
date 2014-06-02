@@ -251,7 +251,7 @@ class AdminDatabases extends AdminPage {
      * Ajoute un type dans une base.
      *
      * @param int $dbindex Numéro de la base à supprimer.
-     * @param string $name Nom du type à ajouter
+     * @param string|array $name Nom du type à ajouter
      */
     public function actionTypeAdd($dbindex, $name = null) {
         // Vérifie que la base à modifier existe
@@ -292,23 +292,27 @@ class AdminDatabases extends AdminPage {
             ]);
         }
 
-        // Vérifie que le type choisi existe
-        if (! isset($types[$name])) {
-            $title = __('Type inexistant', 'docalist-biblio');
-            $msg = __("Le type de notice %s n'existe pas.", 'docalist-biblio');
-            wp_die(sprintf($msg, $name), $title);
+        foreach((array)$name as $name) {
+            // Vérifie que le type choisi existe
+            if (! isset($types[$name])) {
+                $title = __('Type inexistant', 'docalist-biblio');
+                $msg = __("Le type de notice %s n'existe pas.", 'docalist-biblio');
+                wp_die(sprintf($msg, $name), $title);
+            }
+
+            // Vérifie que le type indiqué ne figure pas déjà dans la base
+            if (isset($selected[$name])) {
+                $title = __("Impossible d'ajouter ce type", 'docalist-biblio');
+                $msg = __('Le type de notice %s est déjà dans la base.', 'docalist-biblio');
+                wp_die(sprintf($msg, $name), $title);
+            }
+
+            // Ajoute le type
+            $defaults = apply_filters('docalist_biblio_get_type', $name, false);
+            $database->types[] = $defaults;
+            $selected[$name] = true;
         }
 
-        // Vérifie que le type indiqué ne figure pas déjà dans la base
-        if (isset($selected[$name])) {
-            $title = __("Impossible d'ajouter ce type", 'docalist-biblio');
-            $msg = __('Le type de notice %s est déjà dans la base.', 'docalist-biblio');
-            wp_die(sprintf($msg, $name), $title);
-        }
-
-        // Ajoute le type
-        $defaults = apply_filters('docalist_biblio_get_type', $name, false);
-        $database->types[] = $defaults;
         $this->settings->save();
 
         return $this->redirect($this->url('TypesList', $dbindex), 303);
