@@ -12,8 +12,11 @@ code;label;description
 # Résumé
 # ------------------------------------------------------------------------------
 abstract;Résumé;Résumé du document.
+abstract-excerpt;Extrait du résumé;Extrait du résumé du document.
 back-cover;Quatrième de couverture;Résumé qui figure au dos du livre sur le quatrième de couverture.
-publisher-description;Présentation de l'éditeur;Résumé de l'ouvrage réalisé par l'éditeur.
+back-cover-excerpt;Extrait du 4ème de couverture;Extrait du résumé qui figure au dos du livre sur le quatrième de couverture.
+publisher-abstract;Présentation de l'éditeur;Présentation du document réalisée par l'éditeur.
+publisher-abstract-excerpt;Extrait de la présentation de l'éditeur;Extrait de la présentation du document réalisée par l'éditeur.
 author-abstract;Résumé d'auteur;Résumé réalisé par l'auteur.
 # ------------------------------------------------------------------------------
 # Général
@@ -27,7 +30,8 @@ comments;Commentaires sur le document;Visibles sur le front-office.
 # ------------------------------------------------------------------------------
 promo;Accroche promotionnelle;Une phrase de promotion du document.
 excerpt;Extrait du document;Extrait du document.
-intro;Texte d'introduction;Texte intégral de l'introduction ou de la préface.
+intro;Texte d'introduction;Texte intégral de l'introduction, de la préface ou de l'édito.
+intro-excerpt;Extrait de l'introduction;Extrait de l'introduction, de la préface ou de l'édito.
 toc;Sommaire;Sommaire ou table des matières.
 index;Index;Index des mots-clés.
 sample;Échantillon de contenu;Similaire à extrait mais présente un échantillon du document.
