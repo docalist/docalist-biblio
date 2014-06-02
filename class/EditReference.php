@@ -579,14 +579,6 @@ class EditReference {
                 $field->input('level')->addClass('degree-level');
                 break;
 
-            case 'abstract':
-                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
-                $field = new Table($name);
-                $field->TableLookup('language', $def->table)
-                      ->addClass('abstract-language');
-                $field->textarea('content')->addClass('abstract-content');
-                break;
-
             case 'topic':
                 $this->checkTables($def, 'table:topics');
                 $field = new Table($name);
@@ -609,8 +601,8 @@ class EditReference {
                       ->addClass('topic-term');
                 break;
 
-            case 'note':
-                $this->checkTables($def, 'table:notes');
+            case 'content':
+                $this->checkTables($def, 'table:content');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('note-type');
