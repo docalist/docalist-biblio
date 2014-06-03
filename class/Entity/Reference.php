@@ -127,7 +127,7 @@ class Reference extends AbstractEntity {
             'date' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Date*',
                 'label' => __('Date', 'docalist-biblio'),
-                'description' => __("Dates du document.", 'docalist-biblio'),
+                'description' => __("Dates du document au format <code>AAAAMMJJ</code>, éventuellement complété (2009→2009<b>0101</b>). La première date saisie sera utilisée pour le tri.", 'docalist-biblio'),
             ),
             'journal'=> array(
                 'label' => __('Périodique', 'docalist-biblio'),

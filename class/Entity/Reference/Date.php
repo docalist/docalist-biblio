@@ -33,7 +33,6 @@ class Date extends AbstractEntity {
             ),
             'date' => array(
                 'label' => __('Date', 'docalist-biblio'),
-                'description' => __('Format <code>AAAAMMJJ</code>. Complétez les dates incomplètes (exemple : 2009→2009<b>0101</b>).', 'docalist-biblio'),
             ),
         );
         // @formatter:on
