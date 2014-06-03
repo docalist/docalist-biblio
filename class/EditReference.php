@@ -506,7 +506,11 @@ class EditReference {
                 break;
 
             case 'date':
-                $field = new Input($name);
+                $this->checkTables($def, 'table:dates');
+                $field = new Table($name);
+                $field->TableLookup('type', $def->table)
+                      ->addClass('date-type');
+                $field->input('date')->addClass('date-date');
                 break;
 
             case 'journal':
