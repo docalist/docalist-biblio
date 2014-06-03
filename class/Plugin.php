@@ -222,6 +222,16 @@ class Plugin {
             'user' => false,
         ]));
 
+        // Dates
+        $tableManager->register(new TableInfo([
+            'name' => 'dates',
+            'path' => $dir . 'dates.txt',
+            'label' => __("Types de dates", 'docalist-biblio'),
+            'format' => 'table',
+            'type' => 'dates',
+            'user' => false,
+        ]));
+
         // Anciennes tables
         $tableManager->register(new TableInfo([
             'name' => 'genres-article',
