@@ -39,7 +39,7 @@ return [
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
-        ['name' => 'date'],
+        ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
         ['name' => 'pagination'], // nb de p/ de ce n°
         ['name' => 'format'], // matériel d'accompagnement

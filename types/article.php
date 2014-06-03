@@ -63,7 +63,7 @@ return [
         ['name' => 'issn'],
         ['name' => 'volume'],
         ['name' => 'issue'],
-        ['name' => 'date'], // injecté à partir de l'issue
+        ['name' => 'date', 'table' => 'table:dates'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],

@@ -78,7 +78,7 @@ return [
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
-        ['name' => 'date'],
+        ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'pagination'], // nombre moyen de pages par numéro
         ['name' => 'format'], // taille, couleur,

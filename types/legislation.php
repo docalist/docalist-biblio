@@ -56,7 +56,7 @@ return [
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
-        ['name' => 'date'],
+        ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'], // fre par défaut
         ['name' => 'pagination'],
         ['name' => 'format'],
