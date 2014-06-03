@@ -28,7 +28,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property string $title
  * @property Docalist\Biblio\Entity\Reference\OtherTitle[] $othertitle
  * @property Docalist\Biblio\Entity\Reference\Translation[] $translation
- * @property string $date
+ * @property Docalist\Biblio\Entity\Reference\Date[] $date
  * @property string $journal
  * @property string $issn
  * @property string $volume
@@ -125,8 +125,9 @@ class Reference extends AbstractEntity {
 //                 'description' => __('Traduction en une ou plusieurs langue du titre original qui figure dans Titre.', 'docalist-biblio'),
             ),
             'date' => array(
+                'type' => 'Docalist\Biblio\Entity\Reference\Date*',
                 'label' => __('Date', 'docalist-biblio'),
-                'description' => __("Date d'édition ou de diffusion du document AAAA[MM[JJ]].", 'docalist-biblio'),
+                'description' => __("Dates du document.", 'docalist-biblio'),
             ),
             'journal'=> array(
                 'label' => __('Périodique', 'docalist-biblio'),
