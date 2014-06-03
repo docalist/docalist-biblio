@@ -1,0 +1,57 @@
+# ------------------------------------------------------------------------------
+# Table "Types de dates"
+#
+# 2014-06-03 Version initiale constituée en faisant un mix des tables onix
+# suivantes :
+# - Onix List 67  : Code Rôle de date sur un marché (incluse dans les autres)
+# - Onix List 155 : dates de contenus
+# - Onix List 163 : Code Rôle de date de publication 
+# - Onix List 166 : Code Rôle de date d'approvisionnement
+# - Onix List 173 : Code Rôle de date de prix (incluse dans les autres)
+# - Onix List 177 : Code Rôle de date de contributeur (serials : list 75)
+# - Onix Serials List 104 : Journal issue role  JournalIssueRoleCode
+# - Onix Serials List 134 : Reviewed resource date role
+# Champs Onix
+# - Date de début (startDate)
+# - Date de fin (endDate)
+# - Date attendue de livraison (expectedDate)
+# - Date de remise en vente (reissueDate)
+# ------------------------------------------------------------------------------
+code;label;description
+# Entrées Onix :
+publication;Date de publication;Date effective de publication.
+embargo;Date d'embargo;Date de fin d'embargo si le document ne peut pas être diffusé avant une date donnée.
+copyright;Date du copyright;Date du copyright pour un document protégé.
+recording;Date d'enregistrement;Date à laquelle le document a été enregistré (spectacle, émission de TV ou de radio, colloque...)
+broadcast;Date de diffusion;Date de diffusion d'une émission de TV ou de radio.
+creation;Date de création;Date de création, pour une œuvre artistique par exemple.
+event;Date de l'évènement ou de la représentation;Date à laquelle l'évènement ou la représentation a eu lieu.
+market;Date de commercialisation;Pour les produits physiques.
+announcement;Date d'annonce publique;Date à laquelle la ressource a été annoncée publiquement.
+first-publication;Date de première publication;Date à laquelle l'œuvre incorporée à un produit a été publiée pour la première fois.
+original;Date de publication dans la langue d'origine;Date de première publication du document dans sa langue d'origine (utiliser seulement quand différent du code first-publication). 
+last-reprint;Date de dernière réimpression;Date à laquelle un produit a été réimprimé pour la dernière fois. 
+next-reprint;Date de la prochaine réimpression;Date à laquelle un produit sera réimprimé.
+out-of-print;Date de passage en épuisé;Date à laquelle un produit a été (ou sera) déclaré épuisé ou en arrêt de commercialisation.
+start;Date de début;Date de début (date à partir de laquelle une ressource peut être référencée ou utilisée, date de début d'un évènement...) 
+end;Date de fin;Date de fin (date jusqu'à laquelle une ressource peut être référencée ou utilisée, date de fin d'un évènement...) 
+update;Date de dernière mise à jour;Date à laquelle une ressource a été modifiée ou mise à jour pour la dernière fois. 
+print;Date de la version imprimée;Date de publication de la version imprimée pour un document disponible en version numérique. 
+last-reissue;Date de la dernière réédition;Date à laquelle un produit a été réédité pour la dernière fois. 
+next-reissue;Date de la prochaine réédition;Date à laquelle un produit sera réédité. 
+expected-availability;Date de disponibilité prévisionnelle;Date à laquelle le document sera livrable ou date à laquelle un produit numérique devrait être diffusé.
+available-again;Date de disponibilité après retrait temporaire;Date à laquelle un produit devrait être à nouveau disponible (par exemple, après correction de problèmes qualitatifs ou techniques). 
+reservation-deadline;Date limite de réservation;Date limite jusqu'à laquelle une commande peut être passée. 
+download-start;Date de début de téléchargement;Date à partir de laquelle une ressource est disponible en téléchargement. 
+download-end;Date de fin de téléchargement;Date jusqu'à laquelle une ressource est disponible en téléchargement.
+issues-start;Date de parution du premier numéro;Par exemple pour un périodique, date du premier numéro paru.
+issues-until;Date de parution du dernier numéro;Par exemple pour un périodique, date du dernier numéro paru.
+issues-end;Date de fin de parution;Par exemple pour un périodique, date à laquelle la revue a cessé de paraître (date du dernier numéro).
+birth;Date de naissance;Date de naissance d'une personne. 
+death;Date de décès;Date de décès d'une personne.
+#
+# Entrées Onix non reprises :
+# 10 Date d'annonce commerciale Date à laquelle un nouveau produit peut être annoncé aux professionnels uniquement. // trade (list 163)
+# 18 Dernière date pour les retours Dernière date où les retours seront acceptés, généralement pour un produit soldé ou épuisé. 
+# 23 Date d'embargo des critiques Date à partir de laquelle les critiques d'un produit peuvent être publiées, dans les journaux ou les revues, ou en ligne, par exemple. Information donnée au secteur du livre à titre d'information uniquement : il n'est pas prévu que les journaux et les magazines soient les destinataires de métadonnées ONIX. 
+# 24 A partir du… jusqu'au;Combinaison de la date « A partir du » et de la date « Jusqu'au » pour définir une période (les deux dates sont incluses).
