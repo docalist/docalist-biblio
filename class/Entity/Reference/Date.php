@@ -31,7 +31,7 @@ class Date extends AbstractEntity {
                 'label' => __('Type de date', 'docalist-biblio'),
 //                 'description' => __('Date', 'docalist-biblio'),
             ),
-            'value' => array(
+            'date' => array(
                 'label' => __('Date', 'docalist-biblio'),
                 'description' => __('Format <code>AAAAMMJJ</code>. Complétez les dates incomplètes (exemple : 2009→2009<b>0101</b>).', 'docalist-biblio'),
             ),
