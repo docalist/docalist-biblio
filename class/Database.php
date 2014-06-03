@@ -139,7 +139,7 @@ class Database extends PostTypeRepository {
         // @formatter:off
         register_post_type($this->postType(), array(
             'labels' => $this->postTypelabels(),
-            'public' => false, // f remarque ci-dessous
+            'public' => true, // cf. remarque ci-dessous
             'show_ui'              => true,
             'show_in_menu'         => true,
             'show_in_nav_menus'    => true,
@@ -160,9 +160,11 @@ class Database extends PostTypeRepository {
 
         /*
          * remarque :
-         * on met public à false pour enmpêcher wp de générer un "permalink sample"
+         * on met public à false pour empêcher wp de générer un "permalink sample"
          * (cf edit-form-advanced, lignes 450 et suivantes).
          * du coup on met tous les autres show_xx à true
+         * Update : en fait c'est génant de mettre à false car dans ce cas, on
+         * n'a plus les liens "afficher la notice" quand on est dans le back-office.
          */
     }
 
