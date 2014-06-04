@@ -40,6 +40,10 @@ class Editor extends AbstractEntity {
                 'label' => __('Pays', 'docalist-biblio'),
                 'description' => __("Pays du siège social de l'éditeur", 'docalist-biblio'),
             ),
+            'role' => array(
+                'label' => __('Rôle', 'docalist-biblio'),
+                'description' => __('Fonction', 'docalist-biblio'),
+            )
         );
         // @formatter:on
     }
