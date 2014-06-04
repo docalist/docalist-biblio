@@ -64,6 +64,7 @@ return [
         ['name' => 'volume'],
         ['name' => 'issue'],
         ['name' => 'date', 'table' => 'table:dates'],
+        ['name' => 'edition'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],

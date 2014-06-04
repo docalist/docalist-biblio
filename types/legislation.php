@@ -53,6 +53,7 @@ return [
         ['name' => 'issn'],
         ['name' => 'volume'],
         ['name' => 'issue'],
+        ['name' => 'edition'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
