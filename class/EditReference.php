@@ -549,12 +549,14 @@ class EditReference {
                 break;
 
             case 'editor':
-                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr');
+                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr', 'thesaurus:marc21-relators_fr');
                 $field = new Table($name);
                 $field->input('name')->addClass('editor-name');
                 $field->input('city')->addClass('editor-city');
                 $field->TableLookup('country', $def->table)
                       ->addClass('editor-country');
+                $field->TableLookup('role', $def->table2)
+                      ->addClass('editor-role');
                 break;
 
             case 'edition':
