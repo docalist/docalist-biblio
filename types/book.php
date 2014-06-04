@@ -67,7 +67,7 @@ return [
 
         // Editor / Collection / Edition / Isbn
         ['name' => 'group', 'label' => 'Informations éditeur'],
-        ['name' => 'editor', 'table' => 'table:ISO-3166-1_alpha2_fr'], // ajouter sous champ role
+        ['name' => 'editor', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
         ['name' => 'collection'],
         ['name' => 'edition'],
         ['name' => 'isbn'],
