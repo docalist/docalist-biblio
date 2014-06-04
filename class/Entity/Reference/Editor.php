@@ -34,11 +34,11 @@ class Editor extends AbstractEntity {
             ),
             'city' => array(
                 'label' => __('Ville', 'docalist-biblio'),
-                'description' => __("Ville du siège social de l'éditeur", 'docalist-biblio'),
+                'description' => __("Ville de l'éditeur", 'docalist-biblio'),
             ),
             'country' => array(
                 'label' => __('Pays', 'docalist-biblio'),
-                'description' => __("Pays du siège social de l'éditeur", 'docalist-biblio'),
+                'description' => __("Pays d'édition", 'docalist-biblio'),
             ),
             'role' => array(
                 'label' => __('Rôle', 'docalist-biblio'),
