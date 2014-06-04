@@ -27,10 +27,14 @@
 .field-table th.author-firstname    { width: 40%; }
 .field-table th.author-role         { width: 20%; }
 
-.field-table th.organisation-name   { width: 40%; }
-.field-table th.organisation-city   { width: 20%; }
-.field-table th.organisation-country{ width: 20%; }
-.field-table th.organisation-role   { width: 20%; }
+.field-table th.organisation-name,
+.field-table th.editor-name         { width: 40%; }
+.field-table th.organisation-city,
+.field-table th.editor-city         { width: 20%; }
+.field-table th.organisation-country,
+.field-table th.editor-country      { width: 20%; }
+.field-table th.organisation-role,
+.field-table th.editor-role         { width: 20%; }
 
 .field-table th.topic-type          { width: 20%; }
 .field-table th.topic-term          { width: 80%; }
