@@ -166,10 +166,10 @@ abstract class AbstractExporter {
      * charset().
      *
      * @return string Par défaut, retourne la chaine
-     * "Content-Type: text/plain; charset=utf-8"
+     * "text/plain; charset=utf-8"
      */
     public final function contentType() {
-        return sprintf('Content-Type: %s; charset=%s', $this->mimeType(), $this->charset());
+        return sprintf('%s; charset=%s', $this->mimeType(), $this->charset());
     }
 
     /**
@@ -180,7 +180,7 @@ abstract class AbstractExporter {
      * filename() et extension().
      *
      * @return string Par défaut, retourne la chaine
-     * "Content-disposition: inline; filename=export.txt"
+     * "inline; filename=export.txt"
      */
     public final function contentDisposition() {
         $disposition = $this->inline() ? 'inline' : 'attachment';
@@ -189,7 +189,7 @@ abstract class AbstractExporter {
         $fallback = sanitize_title($filename) . $extension;
         $filename.= $extension;
 
-        $header = sprintf('Content-Disposition: %s; filename="%s"', $disposition, $fallback);
+        $header = sprintf('%s; filename="%s"', $disposition, $fallback);
 
         if ($filename !== $fallback) {
             $header .= sprintf("; filename*=utf-8''%s", rawurlencode($filename));
