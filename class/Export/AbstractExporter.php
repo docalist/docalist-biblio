@@ -110,4 +110,91 @@ abstract class AbstractExporter {
      * notices à exporter.
      */
     abstract public function export(ReferenceIterator $references);
+
+    /**
+     * Retourne le type MIME du fichier généré.
+     *
+     * @return string Retourne la chaine "text/plain" par défaut.
+     */
+    public function mimeType() {
+        return 'text/plain';
+    }
+
+    /**
+     * Retourne le jeu de caractères du fichier généré.
+     *
+     * @return string Retourne la chaine "utf-8" par défaut.
+     */
+    public function charset() {
+        return 'utf-8';
+    }
+
+    /**
+     * Indique si le fichier généré en envoyé en ligne ou sous forme de fichier
+     * attaché.
+     *
+     * @return boolean Retourne true par défaut.
+     */
+    public function inline() {
+        return true;
+    }
+
+    /**
+     * Retourne le nom du fichier exporté (sans la partie extension qui est
+     * propre à chaque format).
+     *
+     * @return string Retourne la chaine "export" par défaut.
+     */
+    public function filename() {
+        return __('export', 'docalist-biblio');
+    }
+
+    /**
+     * Retourne l'extension du fichier généré (sans point).
+     *
+     * @return string "utf-8" par défaut.
+     */
+    public function extension() {
+        return 'txt';
+    }
+
+    /**
+     * Retourne l'entête "content-type" de la réponse http générée lors de
+     * l'export.
+     *
+     * L'entête est généré en combinant le résultat des méthodes mimeType() et
+     * charset().
+     *
+     * @return string Par défaut, retourne la chaine
+     * "Content-Type: text/plain; charset=utf-8"
+     */
+    public final function contentType() {
+        return sprintf('Content-Type: %s; charset=%s', $this->mimeType(), $this->charset());
+    }
+
+    /**
+     * Retourne l'entête "content-disposition" de la réponse http générée lors
+     * de l'export.
+     *
+     * L'entête est généré en combinant le résultat des méthodes inline(),
+     * filename() et extension().
+     *
+     * @return string Par défaut, retourne la chaine
+     * "Content-disposition: inline; filename=export.txt"
+     */
+    public final function contentDisposition() {
+        $disposition = $this->inline() ? 'inline' : 'attachment';
+        $extension = '.' . $this->extension();
+        $filename = $this->filename();
+        $fallback = sanitize_title($filename) . $extension;
+        $filename.= $extension;
+
+        $header = sprintf('Content-Disposition: %s; filename="%s"', $disposition, $fallback);
+
+        if ($filename !== $fallback) {
+            $header .= sprintf("; filename*=utf-8''%s", rawurlencode($filename));
+        }
+
+        return $header;
+    }
 }
