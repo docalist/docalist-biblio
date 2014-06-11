@@ -20,6 +20,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * Organisme.
  *
  * @property string $name
+ * @property string $acronym
  * @property string $city
  * @property string $country
  * @property string $role
@@ -32,6 +33,10 @@ class Organisation extends AbstractEntity {
             'name' => array(
                 'label' => __('Nom', 'docalist-biblio'),
                 'description' => __("Nom de l'organisme", 'docalist-biblio'),
+            ),
+            'acronym' => array(
+                'label' => __('Sigle', 'docalist-biblio'),
+                'description' => __("Sigle ou acronyme", 'docalist-biblio'),
             ),
             'city' => array(
                 'label' => __('Ville', 'docalist-biblio'),
@@ -51,6 +56,11 @@ class Organisation extends AbstractEntity {
 
     public function __toString() {
         $result = $this->name;
+
+        if ($this->acronym) {
+            $result .= ' - ';
+            $result .= $this->acronym;
+        }
 
         if ($this->city || $this->country) {
             $result .= ' (';

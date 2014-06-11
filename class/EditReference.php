@@ -303,7 +303,7 @@ class EditReference {
             'docalist-biblio-edit-css',
             plugins_url('docalist-biblio/assets/edit-reference.css'),
             array(),
-            '20140604'
+            '20140611'
         );
     }
 
@@ -477,6 +477,7 @@ class EditReference {
                 $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr', 'thesaurus:marc21-relators_fr');
                 $field = new Table($name);
                 $field->input('name')->addClass('organisation-name');
+                $field->input('acronym')->addClass('organisation-acronym');
                 $field->input('city')->addClass('organisation-city');
                 $field->TableLookup('country', $def->table)
                       ->addClass('organisation-country');

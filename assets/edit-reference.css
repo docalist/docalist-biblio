@@ -17,43 +17,45 @@
     width: 100%;
 }
 
-.field-table th.othertitle-type     { width: 20%; }
-.field-table th.othertitle-title    { width: 80%; }
+.field-table th.othertitle-type         { width: 20%; }
+.field-table th.othertitle-title        { width: 80%; }
 
-.field-table th.translation-type    { width: 20%; }
-.field-table th.translation-title   { width: 80%; }
+.field-table th.translation-type        { width: 20%; }
+.field-table th.translation-title       { width: 80%; }
 
-.field-table th.author-name         { width: 40%; }
-.field-table th.author-firstname    { width: 40%; }
-.field-table th.author-role         { width: 20%; }
+.field-table th.author-name             { width: 40%; }
+.field-table th.author-firstname        { width: 40%; }
+.field-table th.author-role             { width: 20%; }
 
-.field-table th.organisation-name,
-.field-table th.editor-name         { width: 40%; }
-.field-table th.organisation-city,
-.field-table th.editor-city         { width: 20%; }
-.field-table th.organisation-country,
-.field-table th.editor-country      { width: 20%; }
-.field-table th.organisation-role,
-.field-table th.editor-role         { width: 20%; }
+.field-table th.organisation-name       { width: 30%; }
+.field-table th.organisation-acronym    { width: 10%; }
+.field-table th.organisation-city       { width: 20%; }
+.field-table th.organisation-country    { width: 20%; }
+.field-table th.organisation-role       { width: 20%; }
 
-.field-table th.topic-type          { width: 20%; }
-.field-table th.topic-term          { width: 80%; }
+.field-table th.editor-name             { width: 40%; }
+.field-table th.editor-city             { width: 20%; }
+.field-table th.editor-country          { width: 20%; }
+.field-table th.editor-role             { width: 20%; }
 
-/* .field-table td .topic-term         { width: 24%; } */
+.field-table th.topic-type              { width: 20%; }
+.field-table th.topic-term              { width: 80%; }
+
+/* .field-table td .topic-term          { width: 24%; } */
 
 
-.field-table th.abstract-language   { width: 20%; }
-.field-table th.abstract-content    { width: 80%; }
+.field-table th.abstract-language       { width: 20%; }
+.field-table th.abstract-content        { width: 80%; }
 
-.field-table th.note-type           { width: 20%; }
-.field-table th.note-content        { width: 80%; }
+.field-table th.note-type               { width: 20%; }
+.field-table th.note-content            { width: 80%; }
 
-.field-table th.link-url            { width: 50%; }
-.field-table th.link-type           { width: 20%; }
-.field-table th.link-label          { width: 20%; }
-.field-table th.link-date           { width: 10%; }
+.field-table th.link-url                { width: 50%; }
+.field-table th.link-type               { width: 20%; }
+.field-table th.link-label              { width: 20%; }
+.field-table th.link-date               { width: 10%; }
 
-.field-table th.relations-type      { width: 20%; }
-.field-table th.relations-ref       { width: 80%; }
+.field-table th.relations-type          { width: 20%; }
+.field-table th.relations-ref           { width: 80%; }
 
-.field-table td .relations-ref      { width: 10%; }
+.field-table td .relations-ref          { width: 10%; }
