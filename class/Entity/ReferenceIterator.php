@@ -95,7 +95,17 @@ class ReferenceIterator implements Iterator {
      */
     protected function loadPage($page) {
         $this->request->page($page);
+        var_dump($this->request->execute()); die();
         $this->hits = $this->request->execute()->hits();
         $this->current = 0;
+    }
+
+    /**
+     * Retourne la requête docalist-search en cours.
+     *
+     * @return SearchRequest
+     */
+    public function searchRequest() {
+        return $this->searchRequest();
     }
 }
