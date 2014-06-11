@@ -21,6 +21,9 @@ use Docalist\Data\Schema\Field;
 use Docalist\Utils;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
+use Docalist\Search\SearchRequest;
+use Docalist\Biblio\Export\AbstractExporter;
+use Docalist\Biblio\Entity\ReferenceIterator;
 
 /**
  * Page "Importer" d'une base
@@ -300,5 +303,111 @@ class ImportPage extends AdminPage {
             $subfields = $field->fields();
             $subfields && $this->doc($subfields, $level + 1, $maxlevel);
         }
+    }
+
+    /**
+     * Exporte un lot de notices.
+     *
+     * @param array $queryArgs Paramètres de la requête Docalist Search à
+     * exécuter.
+     * @param string $exporter Nom du format d'export à utiliser
+     */
+    public function actionExport($exporter = null) {
+        // Essaie de construire une requête avec les arguments en cours
+        $args = $_REQUEST;
+        unset($args['page']); // nom de la page admin / numéro de page de résultats
+        unset($args['m']); // nom de l'action
+        unset($args['post_type']); // type
+        unset($args['exporter']); // exporter
+        $request = new SearchRequest($args);
+
+        // Si la requête est vide, demande à l'utilisateur de saisir une équation
+        if (0 === count($request->search())) {
+            return $this->view('docalist-biblio:export/choose-refs', [
+                'database' => $this->database,
+                'exporter' => $exporter,
+            ]);
+        }
+
+        // Ajoute le filtre type dans la requête
+        $type = $this->database->postType();
+        if (! in_array($type, (array) $request->filter('_type'))) {
+            $request->filter('_type', $type);
+        }
+
+        // Exécute la requête
+        $request->size(1);
+        $results = $request->execute('count');
+
+        // Si on a zéro réponses, corrige l'équation de recherche
+        if (0 === $results->total()) {
+            return $this->view('docalist-biblio:export/choose-refs', [
+                'database' => $this->database,
+                'exporter' => $exporter,
+                'error'    => __("Aucun notice ne correspond aux critères de recherche indiqués.", 'docalist-biblio')
+            ]);
+        }
+
+        // Récupère la liste des exporteurs disponibles
+        $exporters = apply_filters('docalist_biblio_get_exporters', [], $this->database);
+        if (empty($exporters)) {
+            return $this->view('docalist-core:error', [
+                'h2' => __('Exporter des notices', 'docalist-biblio'),
+                'h3' => __("Aucun format d'export disponible", 'docalist-biblio'),
+                'message' => sprintf(__("Aucun format d'export n'est disponible.", 'docalist-biblio')),
+            ]);
+        }
+
+        // Permet à l'utilisateur de choisir le format d'export
+        if (empty($exporter)) {
+            return $this->view('docalist-biblio:export/choose-exporter', [
+                'database' => $this->database,
+                'exporters' => $exporters,
+                'args' => $args,
+            ]);
+        }
+
+        // Vérifie que le format d'export indiqué existe
+        if (!isset($exporters[$exporter])) {
+            return $this->view('docalist-core:error', [
+                'h2' => __('Exporter des notices', 'docalist-biblio'),
+                'h3' => __("Format d'export incorrect", 'docalist-biblio'),
+                'message' => sprintf(__("Le format d'export indiqué (%s) n'est pas valide.", 'docalist-biblio'), $exporter),
+            ]);
+        }
+
+        // Vérifie que l'exporter a indiqué un nom de classe
+        if (!isset($exporters[$exporter]['classname'])) {
+            return $this->view('docalist-core:error', [
+                'h2' => __('Exporter des notices', 'docalist-biblio'),
+                'h3' => __("Format d'export incorrect", 'docalist-biblio'),
+                'message' => sprintf(__("Aucune classe indiquée dans l'exporteur %s.", 'docalist-biblio'), $exporter),
+            ]);
+        }
+
+        // Crée l'exporteur
+        $exporter = $exporters[$exporter];
+        $classname = $exporter['classname'];
+        $settings = isset($exporter['settings']) ? $exporter['settings'] : [];
+        /* @var $exporter AbstractExporter */
+        $exporter = new $classname($settings);
+
+        // Crée l'itérateur
+        $iterator = new ReferenceIterator($request, true);
+
+        // On retourne une réponse de type "callback" qui lance l'export
+        $response = new CallbackResponse(function() use($exporter, $iterator) {
+            // Permet au script de s'exécuter longtemps
+            set_time_limit(3600);
+
+            // Exporte les notices
+            $exporter->export($iterator);
+        });
+
+        $response->headers->set('Content-Type', $exporter->contentType());
+        $response->headers->set('Content-disposition', $exporter->contentDisposition());
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
+        return $response;
     }
 }
