@@ -15,13 +15,14 @@
 namespace Docalist\Biblio\Entity;
 
 use Docalist\Search\SearchRequest;
-use Iterator;
+use Docalist\Search\SearchResults;
+use Iterator, Countable;
 
 /**
  * Un itérateur de références (pour l'export).
  *
  */
-class ReferenceIterator implements Iterator {
+class ReferenceIterator implements Iterator, Countable {
 
     /**
      * La requête en cours.
@@ -29,6 +30,13 @@ class ReferenceIterator implements Iterator {
      * @var SearchRequest
      */
     protected $request;
+
+    /**
+     * Les résultats en cours.
+     *
+     * @var SearchResults
+     */
+    protected $results;
 
     /**
      * Les hits de la page actuelle.
@@ -63,6 +71,7 @@ class ReferenceIterator implements Iterator {
     public function __construct(SearchRequest $request, $raw = false) {
         $this->request = $request;
         $this->raw = $raw;
+        $this->rewind();
     }
 
     public function rewind() {
@@ -95,8 +104,8 @@ class ReferenceIterator implements Iterator {
      */
     protected function loadPage($page) {
         $this->request->page($page);
-        var_dump($this->request->execute()); die();
-        $this->hits = $this->request->execute()->hits();
+        $this->results = $this->request->execute();
+        $this->hits = $this->results->hits();
         $this->current = 0;
     }
 
@@ -106,6 +115,15 @@ class ReferenceIterator implements Iterator {
      * @return SearchRequest
      */
     public function searchRequest() {
-        return $this->searchRequest();
+        return $this->request;
+    }
+
+    /**
+     * Retourne le nombre de notices dans l'itérateur.
+     *
+     * @return int
+     */
+    public function count() {
+        return $this->results->total();
     }
 }
