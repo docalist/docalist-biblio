@@ -31,11 +31,9 @@ class Json extends AbstractExporter {
 
     public function export(ReferenceIterator $references) {
         $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
-        $this->get('pretty') && $options .= JSON_PRETTY_PRINT;
+        $this->get('pretty') && $options |= JSON_PRETTY_PRINT;
 
-        /* @var $ref Reference */
-        foreach($references as $key => $ref) {
-            $data = $ref->toArray();
+        foreach($references as $key => $data) {
             echo json_encode($data, $options);
         }
     }
