@@ -71,7 +71,6 @@ class ReferenceIterator implements Iterator, Countable {
     public function __construct(SearchRequest $request, $raw = false) {
         $this->request = $request;
         $this->raw = $raw;
-        $this->rewind();
     }
 
     public function rewind() {
@@ -124,6 +123,7 @@ class ReferenceIterator implements Iterator, Countable {
      * @return int
      */
     public function count() {
+        is_null($this->results) && $this->rewind();
         return $this->results->total();
     }
 }
