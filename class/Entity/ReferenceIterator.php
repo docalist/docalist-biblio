@@ -45,12 +45,24 @@ class ReferenceIterator implements Iterator {
     protected $current;
 
     /**
+     * Indique si l'itérateur retourne des objets Reference (true) ou les
+     * données brutes (false).
+     *
+     * @var boolean
+     */
+    protected $raw;
+
+    /**
      * Construit l'itérateur.
      *
      * @param SearchRequest $request
+     * @param boolean $raw Par défaut (true), l'itérateur retourne des objets
+     * Reference. Si raw est à false, l'itérateur retournera un tableau
+     * contenant les données brutes.
      */
-    public function __construct(SearchRequest $request) {
+    public function __construct(SearchRequest $request, $raw = false) {
         $this->request = $request;
+        $this->raw = $raw;
     }
 
     public function rewind() {
@@ -62,7 +74,7 @@ class ReferenceIterator implements Iterator {
     }
 
     public function current() {
-        return docalist('docalist-biblio')->getReference($this->key());
+        return docalist('docalist-biblio')->getReference($this->key(), $this->raw);
     }
 
     public function key() {
