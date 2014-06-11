@@ -7,11 +7,11 @@ code;label;USE;MT;BT;RT;description;SN;HS
 # ------------------------------------------------------------------------------
 # Bibliographie etc.
 # ------------------------------------------------------------------------------
-bibliography;bibliogr.;;;;filmography¤discography¤webography;"Le document comporte une liste organisée de références sur le sujet.";;
-discography;discogr.;;;;bibliography¤filmography¤webography;"Le document comporte une liste d'œuvres musicales.";;
-filmography;filmogr.;;;;bibliography¤discography¤webography;"Le document comporte une liste de références de films sur le sujet.";;
-webography;webogr.;;;;bibliography¤filmography¤discography;"Le document comporte une liste de sites ou de pages web sur le sujet.";;
-;vidéogr.;filmography;;;;;;
+bibliography;bibliographie;;;;filmography¤discography¤webography;"Le document comporte une liste organisée de références sur le sujet.";;
+discography;discographie;;;;bibliography¤filmography¤webography;"Le document comporte une liste d'œuvres musicales.";;
+filmography;filmographie;;;;bibliography¤discography¤webography;"Le document comporte une liste de références de films sur le sujet.";;
+webography;webographie;;;;bibliography¤filmography¤discography;"Le document comporte une liste de sites ou de pages web sur le sujet.";;
+;vidéographie;filmography;;;;;;
 chronology;chronologie;;;;;"Le document fournit une liste organisée d'événements datés.";;
 # ------------------------------------------------------------------------------
 # Matériel d'accompagnement
@@ -25,12 +25,12 @@ vhs;vhs;;;;cdrom¤dvd;"Le document inclut une cassette vidéo VHS.";;
 # ------------------------------------------------------------------------------
 color;couleur;;;;b&w;"Le document est en couleur (en totalité ou dans une proportion importante).";;
 b&w;n&b;;;;color;"Le document est en noir et blanc (en totalité ou dans une proportion importante).";;
-french-version;vf;;;;original-version;"Le document est la version française d'un document en langue étrangère.";;
-original-version;vo;;;;french-version;"Le document est en langue étrangère.";;
+french-version;VF;;;;original-version;"Le document est la version française d'un document en langue étrangère.";;
+original-version;VO;;;;french-version;"Le document est en langue étrangère.";;
 # ------------------------------------------------------------------------------
 # Glossaire, index et cie
 # ------------------------------------------------------------------------------
-glossary;gloss.;;;;lexicon¤index;"Le document comporte une liste détaillée de termes propres au domaine accompagnés d'une définition assez complète.";;
+glossary;glossaire;;;;lexicon¤index;"Le document comporte une liste détaillée de termes propres au domaine accompagnés d'une définition assez complète.";;
 lexicon;lexique;;;;glossary¤index;"Le document comporte une liste quasi exhaustive des mots du domaine accompagnés d'une brève définition.";;
 index;index;;;;glossary¤lexicon;"Le document comporte une liste de termes significatifs accompagnés de renvois vers les parties du document où ils sont utilisés.";;
 ;mots-clés;glossary;;;;;;
@@ -39,18 +39,18 @@ index;index;;;;glossary¤lexicon;"Le document comporte une liste de termes signi
 # ------------------------------------------------------------------------------
 schemas;schémas;;;;;"Le document comporte des schémas, des plans, etc.";;
 ;plan;schemas;;;;;;
-tables;tabl.;;;;;"Le document comporte un nombre important de tables et de tableaux.";;
+tables;tables;;;;;"Le document comporte un nombre important de tables et de tableaux.";;
 secam;secam;;;;;"La vidéo ou le film sont encodés au format SECAM.";;
 addresses;adresses;;;;;"Le document contient une liste d'adresses ou de coordonnées.";;
-appendices;ann.;;;;;"Le document comporte une ou plusieurs annexes.";;
-maps;cartogr.;;;;;"Le document comporte des cartes, des plans ou des informations cartographiques.";;
+appendices;annexes;;;;;"Le document comporte une ou plusieurs annexes.";;
+maps;cartographie;;;;;"Le document comporte des cartes, des plans ou des informations cartographiques.";;
 drawings;dessins;;;;;"Le document comporte de nombreuses figures (représentations faites à la main d'objets, de plantes, d'animaux, de symboles, etc.)";;
 focus;dossier;;;;;"Le document comporte un dossier spécial qui regroupe plusieurs articles sur le sujet.";;
-figures;fig.;;;;;"Le document comporte de nombreuses figures (représentations instrumentées d'objets, de plantes, d'animaux, de symboles, etc.)";;
-graphics;graph.;;;;;"Le document comporte de graphiques représentant les données (lignes, histogrammes, camemberts, etc.)";;
-illustrations;ill.;;;;;"Le document comporte des illustrations diverses (dessins, figures, etc. qui ne sont pas indispensables à la compréhension du document).";;
+figures;figures;;;;;"Le document comporte de nombreuses figures (représentations instrumentées d'objets, de plantes, d'animaux, de symboles, etc.)";;
+graphics;graphiques;;;;;"Le document comporte de graphiques représentant les données (lignes, histogrammes, camemberts, etc.)";;
+illustrations;illustrations;;;;;"Le document comporte des illustrations diverses (dessins, figures, etc. qui ne sont pas indispensables à la compréhension du document).";;
 notes;notes;;;;;"Le document comporte un nombre important de notes en bas de page ou de fin de document.";;
-photos;photo.;;;;;"Le document comporte un nombre important de photographies.";;
+photos;photographies;;;;;"Le document comporte un nombre important de photographies.";;
 # ------------------------------------------------------------------------------
 # Résumés
 # ------------------------------------------------------------------------------
