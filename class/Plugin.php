@@ -124,7 +124,7 @@ class Plugin {
         });
 
         // Nos filtres
-        add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 1);
+        add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 2);
 
         add_filter('get_the_excerpt', function($content) {
             global $post;
@@ -142,6 +142,43 @@ class Plugin {
 
             return $excerpt;
         }, 11);
+
+        // Liste des exporteurs définis dans ce plugin
+        add_filter('docalist_biblio_get_exporters', function(array $exporters, Database $database) {
+            $exporters['docalist-biblio-json'] = [
+                'label' => 'Docalist - JSON',
+                'description' => 'Notices en format natif Docalist, fichier au format JSON.',
+                'classname' => 'Docalist\Biblio\Export\Json',
+            ];
+
+            $exporters['docalist-biblio-json-pretty'] = [
+                'label' => 'Docalist - JSON (formatté)',
+                'description' => 'Notices en format natif Docalist, fichier au format JSON (indenté et formatté).',
+                'classname' => 'Docalist\Biblio\Export\Json',
+                'settings' => [
+                    'pretty' => true,
+                ],
+            ];
+
+            $exporters['docalist-biblio-xml'] = [
+                'label' => 'Docalist - XML',
+                'description' => 'Notices en format natif Docalist, fichier au format XML.',
+                'classname' => 'Docalist\Biblio\Export\Xml',
+            ];
+
+            $exporters['docalist-biblio-xml-pretty'] = [
+                'label' => 'Docalist - XML (formatté)',
+                'description' => 'Notices en format natif Docalist, fichier au format XML (indenté et formatté).',
+                'classname' => 'Docalist\Biblio\Export\Xml',
+                'settings' => [
+                    'indent' => 4,
+                ],
+            ];
+
+            return $exporters;
+        }, 10, 2);
+
+
     }
 
     /**
@@ -149,12 +186,15 @@ class Plugin {
      *
      * Implémentation du filtre 'docalist_biblio_get_reference'.
      *
-     * @param string $id
+     * @param string $id POST_ID de la référence à charger.
+     * @param boolean $raw Par défaut, retourne un objet Reference. En passant
+     * raw=true, on obtient un tableau contenant les donnnées brutes.
+     *
      * @return Reference
      *
      * @throws Exception
      */
-    public function getReference($id = null) {
+    public function getReference($id = null, $raw = false) {
         is_null($id) && $id = get_the_ID();
         $type = get_post_type($id);
 
@@ -162,7 +202,7 @@ class Plugin {
             throw new Exception("Ce n'est pas une Reference"); // @todo
         }
 
-        return $this->databases[$type]->load($id);
+        return $this->databases[$type]->load($id, $raw ? false : null);
     }
 
     /**
