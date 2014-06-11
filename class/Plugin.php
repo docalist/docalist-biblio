@@ -262,6 +262,16 @@ class Plugin {
             'user' => false,
         ]));
 
+        // Format (étiquettes de collation)
+        $tableManager->register(new TableInfo([
+            'name' => 'format',
+            'path' => $dir . 'format.txt',
+            'label' => __("Etiquettes de format", 'docalist-biblio'),
+            'format' => 'thesaurus',
+            'type' => 'format',
+            'user' => false,
+        ]));
+
         // Dates
         $tableManager->register(new TableInfo([
             'name' => 'dates',

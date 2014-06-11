@@ -1,0 +1,86 @@
+# ------------------------------------------------------------------------------
+# Table "Format du document" (étiquettes de collation)
+#
+# 2014-06-11 Version initiale (cf. daniel-menard/prisme#106).
+# ------------------------------------------------------------------------------
+code;label;USE;MT;BT;RT;description;SN;HS
+# ------------------------------------------------------------------------------
+# Bibliographie etc.
+# ------------------------------------------------------------------------------
+bibliography;bibliogr.;;;;filmography¤discography¤webography;"Le document comporte une liste organisée de références sur le sujet.";;
+discography;discogr.;;;;bibliography¤filmography¤webography;"Le document comporte une liste d'œuvres musicales.";;
+filmography;filmogr.;;;;bibliography¤discography¤webography;"Le document comporte une liste de références de films sur le sujet.";;
+webography;webogr.;;;;bibliography¤filmography¤discography;"Le document comporte une liste de sites ou de pages web sur le sujet.";;
+;vidéogr.;filmography;;;;;;
+chronology;chronologie;;;;;"Le document fournit une liste organisée d'événements datés.";;
+# ------------------------------------------------------------------------------
+# Matériel d'accompagnement
+# ------------------------------------------------------------------------------
+cdrom;cdrom;;;;dvd¤vhs;"Le document inclut un CD-ROM.";;
+;cédérom;cdrom;;;;;;
+dvd;dvd;;;;cdrom¤vhs;"Le document inclut un DVD.";;
+vhs;vhs;;;;cdrom¤dvd;"Le document inclut une cassette vidéo VHS.";;
+# ------------------------------------------------------------------------------
+# Couleur, langue
+# ------------------------------------------------------------------------------
+color;couleur;;;;b&w;"Le document est en couleur (en totalité ou dans une proportion importante).";;
+b&w;n&b;;;;color;"Le document est en noir et blanc (en totalité ou dans une proportion importante).";;
+french-version;vf;;;;original-version;"Le document est la version française d'un document en langue étrangère.";;
+original-version;vo;;;;french-version;"Le document est en langue étrangère.";;
+# ------------------------------------------------------------------------------
+# Glossaire, index et cie
+# ------------------------------------------------------------------------------
+glossary;gloss.;;;;lexicon¤index;"Le document comporte une liste détaillée de termes propres au domaine accompagnés d'une définition assez complète.";;
+lexicon;lexique;;;;glossary¤index;"Le document comporte une liste quasi exhaustive des mots du domaine accompagnés d'une brève définition.";;
+index;index;;;;glossary¤lexicon;"Le document comporte une liste de termes significatifs accompagnés de renvois vers les parties du document où ils sont utilisés.";;
+;mots-clés;glossary;;;;;;
+# ------------------------------------------------------------------------------
+# Contenu du document
+# ------------------------------------------------------------------------------
+schemas;schémas;;;;;"Le document comporte des schémas, des plans, etc.";;
+;plan;schemas;;;;;;
+tables;tabl.;;;;;"Le document comporte un nombre important de tables et de tableaux.";;
+secam;secam;;;;;"La vidéo ou le film sont encodés au format SECAM.";;
+addresses;adresses;;;;;"Le document contient une liste d'adresses ou de coordonnées.";;
+appendices;ann.;;;;;"Le document comporte une ou plusieurs annexes.";;
+maps;cartogr.;;;;;"Le document comporte des cartes, des plans ou des informations cartographiques.";;
+drawings;dessins;;;;;"Le document comporte de nombreuses figures (représentations faites à la main d'objets, de plantes, d'animaux, de symboles, etc.)";;
+focus;dossier;;;;;"Le document comporte un dossier spécial qui regroupe plusieurs articles sur le sujet.";;
+figures;fig.;;;;;"Le document comporte de nombreuses figures (représentations instrumentées d'objets, de plantes, d'animaux, de symboles, etc.)";;
+graphics;graph.;;;;;"Le document comporte de graphiques représentant les données (lignes, histogrammes, camemberts, etc.)";;
+illustrations;ill.;;;;;"Le document comporte des illustrations diverses (dessins, figures, etc. qui ne sont pas indispensables à la compréhension du document).";;
+notes;notes;;;;;"Le document comporte un nombre important de notes en bas de page ou de fin de document.";;
+photos;photo.;;;;;"Le document comporte un nombre important de photographies.";;
+# ------------------------------------------------------------------------------
+# Résumés
+# ------------------------------------------------------------------------------
+abstract;résumé;;;;;"Le document comporte un résumé dont la langue n'est pas connue.";"Utiliser de préférence les étiquettes résumé qui indiquent la langue (""résumé en français"", ""résumé en anglais"", etc.)";
+abstract-fra;"résumé en français";;;abstract;;"Le document comporte un résumé en français.";;
+abstract-eng;"résumé en anglais";;;abstract;;"Le document comporte un résumé en anglais";;
+abstract-spa;"résumé en espagnol";;;abstract;;"Le document comporte un résumé en espagnol.";;
+abstract-ger;"résumé en allemand";;;abstract;;"Le document comporte un résumé en allemand.";;
+abstract-ita;"résumé en italien";;;abstract;;"Le document comporte un résumé en italien.";;
+abstract-rus;"résumé en russe";;;abstract;;"Le document comporte un résumé en russe.";;
+abstract-ara;"résumé en arabe";;;abstract;;"Le document comporte un résumé en arabe.";;
+# ------------------------------------------------------------------------------
+# Formats de fichiers
+# ------------------------------------------------------------------------------
+pdf;"document PDF";;;;;"Document électronique en format PDF.";;
+html;"page HTML";;;;;"Document électronique en format HTML.";;
+xml;"fichier XML";;;;;"Document électronique en format XML.";;
+doc;"document Word 97-2003";;;;;"Document électronique en format Microsoft Word 97/2000/XP/2003.";;
+docx;"document Word 2007 et plus";;;;;"Document électronique en format Microsoft Word 2007 ou ultérieur.";;
+rtf;"document RTF";;;;;"Document électronique en format RTF (Rich Text Format).";;
+odt;"texte OpenDocument.";;;;;"Document électronique en format Open Document Text (Oasis, Open Office, Libre Office, etc.)";;
+odp;"présentation OpenDocument";;;;;"Présentation électronique au format Open Document Presentation (Oasis, Open Office, Libre Office, etc.)";;
+ppt;"présentation PowerPoint";;;;;"Présentation électronique au format Microsoft PowerPoint.";;
+zip;"archive ZIP";;;;;"Archive compressée au format ZIP";;
+jpeg;"image JPEG";;;;;"Photo ou image au format JPEG.";;
+png;"image PNG";;;;;"Photo ou image au format PNG.";;
+mp3;"audio au format MP3";;;;;"Document audio au format MP3.";;
+wma;"audio WMA";;;;;"Document audio au format WMA.";;
+mpeg;"vidéo MPEG";;;;;"Vidéo au format MPEG.";;
+mp4;"vidéo MP4";;;;;"Vidéo au format MP4.";;
+quicktime;"vidéo QuickTime";;;;;"Vidéo au format QuickTime (QT).";;
+wmv;"vidéo WMV";;;;;"Vidéo au format Windows Media Player.";;
+avi;"vidéo AVI";;;;;"Vidéo au format AVI.";;
