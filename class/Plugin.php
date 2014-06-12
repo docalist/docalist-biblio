@@ -262,6 +262,16 @@ class Plugin {
             'user' => false,
         ]));
 
+        // Extent (types de pagination)
+        $tableManager->register(new TableInfo([
+            'name' => 'extent',
+            'path' => $dir . 'extent.txt',
+            'label' => __("Types de pagination", 'docalist-biblio'),
+            'format' => 'table',
+            'type' => 'extent',
+            'user' => false,
+        ]));
+
         // Format (étiquettes de collation)
         $tableManager->register(new TableInfo([
             'name' => 'format',
