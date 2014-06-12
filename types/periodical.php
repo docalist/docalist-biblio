@@ -81,7 +81,7 @@ return [
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'pagination'], // nombre moyen de pages par numéro
-        ['name' => 'format'], // taille, couleur,
+        ['name' => 'format', 'table' => 'thesaurus:format'], // taille, couleur,
         // ['name' => 'doi'],
 
         // Editor / Collection / Edition / Isbn

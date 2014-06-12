@@ -43,7 +43,7 @@ return [
         ['name' => 'edition'],
         ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
         ['name' => 'pagination'], // nb de p/ de ce n°
-        ['name' => 'format'], // matériel d'accompagnement
+        ['name' => 'format', 'table' => 'thesaurus:format'], // matériel d'accompagnement
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],

@@ -63,7 +63,7 @@ return [
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'pagination'],
-        ['name' => 'format'],
+        ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'doi'],
 
         // Editor / Collection / Edition / Isbn

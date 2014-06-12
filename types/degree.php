@@ -64,7 +64,7 @@ return [
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'volume'], // n° de tome
         ['name' => 'pagination'],
-        ['name' => 'format'],
+        ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'doi'],
 
         // Event / Degree

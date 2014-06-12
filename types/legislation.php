@@ -60,7 +60,7 @@ return [
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'], // fre par défaut
         ['name' => 'pagination'],
-        ['name' => 'format'],
+        ['name' => 'format', 'table' => 'thesaurus:format'],
 
         // numéro de texte officiel
 
