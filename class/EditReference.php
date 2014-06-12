@@ -542,7 +542,9 @@ class EditReference {
                 break;
 
             case 'format':
-                $field = new Input($name);
+                $this->checkTables($def, 'thesaurus:format');
+                $field = new TableLookup($name, $def->table);
+                $field->multiple(true);
                 break;
 
             case 'isbn':
