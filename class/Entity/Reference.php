@@ -34,7 +34,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property string $volume
  * @property string $issue
  * @property string[] $language
- * @property string[] $pagination
+ * @property Docalist\Biblio\Entity\Reference\Extent[] $extent
  * @property string $format
  * @property string $isbn
  * @property Docalist\Biblio\Entity\Reference\Editor[] $editor
@@ -150,10 +150,10 @@ class Reference extends AbstractEntity {
                 'label' => __('Langues', 'docalist-biblio'),
                 'description' => __("Langues des textes qui figurent dans le document.", 'docalist-biblio'),
             ),
-            'pagination' => array(
-                'type' => 'string', // @todo mettre en multivalué
-                'label' => __('Pagination', 'docalist-biblio'),
-                'description' => __("Pour un ouvrage : nombre de pages (180p.), pour un article : numéro de page (10) ou pages de début et de fin (10-15).", 'docalist-biblio'),
+            'extent' => array(
+                'type' => 'Docalist\Biblio\Entity\Reference\Extent*',
+                'label' => __('Etendue', 'docalist-biblio'),
+                'description' => __("Pagination, nombre de pages, durée, etc.", 'docalist-biblio'),
             ),
             'format' => array(
                 'type' => 'string',
