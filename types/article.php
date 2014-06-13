@@ -69,7 +69,7 @@ return [
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
-        ['name' => 'pagination'],
+        ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'doi'],
 

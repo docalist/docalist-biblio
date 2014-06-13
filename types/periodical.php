@@ -80,7 +80,7 @@ return [
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
-        ['name' => 'pagination'], // nombre moyen de pages par numéro
+        ['name' => 'extent', 'table' => 'table:extent'], // nombre moyen de pages par numéro
         ['name' => 'format', 'table' => 'thesaurus:format'], // taille, couleur,
         // ['name' => 'doi'],
 

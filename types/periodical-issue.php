@@ -42,7 +42,7 @@ return [
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'edition'],
         ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
-        ['name' => 'pagination'], // nb de p/ de ce n°
+        ['name' => 'extent', 'table' => 'table:extent'], // nb de p/ de ce n°
         ['name' => 'format', 'table' => 'thesaurus:format'], // matériel d'accompagnement
 
         // Topic / Abstract / Note
