@@ -537,8 +537,12 @@ class EditReference {
                 $field->multiple(true);
                 break;
 
-            case 'pagination':
-                $field = new Input($name);
+            case 'extent':
+                $this->checkTables($def, 'table:extent');
+                $field = new Table($name);
+                $field->TableLookup('type', $def->table)
+                      ->addClass('extent-type');
+                $field->input('value')->addClass('extent-value');
                 break;
 
             case 'format':
