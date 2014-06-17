@@ -38,7 +38,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property string $format
  * @property string $isbn
  * @property Docalist\Biblio\Entity\Reference\Editor[] $editor
- * @property Docalist\Biblio\Entity\Reference\Edition[] $edition
+ * @property string[] $edition
  * @property Docalist\Biblio\Entity\Reference\Collection[] $collection
  * @property Docalist\Biblio\Entity\Reference\Event $event
  * @property Docalist\Biblio\Entity\Reference\Degree $degree
@@ -170,9 +170,9 @@ class Reference extends AbstractEntity {
                 'description' => __("Société ou organisme délégué par l'auteur pour assurer la diffusion du document.", 'docalist-biblio'),
             ),
             'edition' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\Edition*',
+                'type' => 'string*',
                 'label' => __("Mentions d'édition", 'docalist-biblio'),
-                'description' => __("Mentions d'édition et numéros divers qui ne font pas l'objet d'un champ spécifique.", 'docalist-biblio'),
+                'description' => __("Nouvelle édition, périodicité, etc.", 'docalist-biblio'),
             ),
             'collection' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Collection*',
