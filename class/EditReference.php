@@ -567,9 +567,7 @@ class EditReference {
                 break;
 
             case 'edition':
-                $field = new Table($name);
-                $field->input('type')->addClass('edition-type');
-                $field->input('value')->addClass('edition-value');
+                $field = new Input($name);
                 break;
 
             case 'collection':
