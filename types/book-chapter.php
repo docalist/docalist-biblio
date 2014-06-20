@@ -73,10 +73,9 @@ return [
         // ['name' => 'edition'],
         // ['name' => 'isbn'],
 
-        // Event / Degree
+        // Event
         // ['name' => 'group', 'label' => 'Congrès et diplômes'],
         // ['name' => 'event'],
-        // ['name' => 'degree'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],

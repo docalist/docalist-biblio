@@ -49,7 +49,6 @@ return [
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
-        ['name' => 'degree'],
         ['name' => 'othertitle', 'table' => 'table:titles'],
         // ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
@@ -67,8 +66,8 @@ return [
         ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'doi'],
 
-        // Event / Degree
-        ['name' => 'group', 'label' => 'Congrès et diplômes'],
+        // Event
+//         ['name' => 'group', 'label' => 'Congrès et diplômes'],
         // ['name' => 'event'], // date de soutenance
 
         // numéro de thèse
