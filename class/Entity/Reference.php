@@ -41,7 +41,6 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property string[] $edition
  * @property Docalist\Biblio\Entity\Reference\Collection[] $collection
  * @property Docalist\Biblio\Entity\Reference\Event $event
- * @property Docalist\Biblio\Entity\Reference\Degree $degree
  * @property Docalist\Biblio\Entity\Reference\Topic[] $topic
  * @property Docalist\Biblio\Entity\Reference\Content[] $content
  * @property Docalist\Biblio\Entity\Reference\Link[] $link
@@ -183,11 +182,6 @@ class Reference extends AbstractEntity {
                 'type' => 'Docalist\Biblio\Entity\Reference\Event',
                 'label' => __("Evènement", 'docalist-biblio'),
                 'description' => __('Evènement (congrès, colloque, manifestation, soutenance de thèse, etc.) qui a donné lieu au document', 'docalist-biblio'),
-            ),
-            'degree' => array(
-                'type' => 'Docalist\Biblio\Entity\Reference\Degree',
-                'label' => __('Diplôme', 'docalist-biblio'),
-                'description' => __("Nom du diplôme pour les documents donnant lieu à l'attribution d'un titre universitaire ou professionnel.", 'docalist-biblio'),
             ),
             'topic' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Topic*',
