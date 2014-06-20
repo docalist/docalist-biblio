@@ -584,12 +584,6 @@ class EditReference {
                 $field->input('number')->addClass('event-number');
                 break;
 
-            case 'degree':
-                $field = new Table($name);
-                $field->input('title')->addClass('degree-title');
-                $field->input('level')->addClass('degree-level');
-                break;
-
             case 'topic':
                 $this->checkTables($def, 'table:topics');
                 $field = new Table($name);
