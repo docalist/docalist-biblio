@@ -25,7 +25,7 @@ serial-no;vol;%sème série;n° série;Numéro de la série
 # ------------------------------------------------------------------------------
 # divers
 # ------------------------------------------------------------------------------
-disc-number;;disque %s;disque n°;Numéro du disque (n° du CD-ROM, n° du DVD, etc.)
+disc-no;;disque %s;disque n°;Numéro du disque (n° du CD-ROM, n° du DVD, etc.)
 other-no;;%s;Autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
 # ------------------------------------------------------------------------------
 # Numéros et identifiants relevant d'un standard ou faisant l'objet d'une norme
