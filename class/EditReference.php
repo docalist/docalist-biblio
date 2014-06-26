@@ -495,7 +495,7 @@ class EditReference {
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('othertitle-type');
-                $field->input('title')->addClass('othertitle-title');
+                $field->input('value')->addClass('othertitle-value');
                 break;
 
             case 'translation':
@@ -511,7 +511,7 @@ class EditReference {
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('date-type');
-                $field->input('date')->addClass('date-date');
+                $field->input('value')->addClass('date-value');
                 break;
 
             case 'journal':
@@ -524,7 +524,7 @@ class EditReference {
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
                       ->addClass('number-type');
-                $field->input('number')->addClass('number-number');
+                $field->input('value')->addClass('number-value');
                 break;
 
             case 'issn':
@@ -618,8 +618,8 @@ class EditReference {
                 $this->checkTables($def, 'table:content');
                 $field = new Table($name);
                 $field->TableLookup('type', $def->table)
-                      ->addClass('note-type');
-                $field->textarea('content')->addClass('note-content');
+                      ->addClass('content-type');
+                $field->textarea('value')->addClass('content-value');
                 break;
 
             case 'link':
@@ -645,22 +645,6 @@ class EditReference {
                 break;
 
             case 'owner':
-                $field = new Input($name);
-                break;
-
-            case 'creation':
-                $field = new Table($name);
-                $field->input('date')->addClass('creation-date');
-                $field->input('by')->addClass('creation-by');
-                break;
-
-            case 'lastupdate':
-                $field = new Table($name);
-                $field->input('date')->addClass('lastupdate-date');
-                $field->input('by')->addClass('lastupdate-by');
-                break;
-
-            case 'status':
                 $field = new Input($name);
                 break;
 
