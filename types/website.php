@@ -56,6 +56,7 @@ return [
         // Journal, Issn, Volume, Issue
         ['name' => 'group', 'label' => 'Journal / Périodique'],
         ['name' => 'journal'],
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'issn'],
         ['name' => 'volume'],
         ['name' => 'issue'],

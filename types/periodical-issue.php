@@ -41,6 +41,7 @@ return [
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'edition'],
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
         ['name' => 'extent', 'table' => 'table:extent'], // nb de p/ de ce n°
         ['name' => 'format', 'table' => 'thesaurus:format'], // matériel d'accompagnement

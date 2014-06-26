@@ -60,6 +60,7 @@ return [
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'volume'], // n° de tome
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],

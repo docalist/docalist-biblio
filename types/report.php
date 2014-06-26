@@ -66,6 +66,7 @@ return [
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'doi'],
 
         // Topic / Abstract / Note

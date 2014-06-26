@@ -68,6 +68,7 @@ return [
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'othertitle', 'table' => 'table:titles'], // oui avec table
         // ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
