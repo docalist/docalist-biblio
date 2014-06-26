@@ -519,6 +519,14 @@ class EditReference {
                 $field->addClass('large-text');
                 break;
 
+            case 'number':
+                $this->checkTables($def, 'table:numbers');
+                $field = new Table($name);
+                $field->TableLookup('type', $def->table)
+                      ->addClass('number-type');
+                $field->input('number')->addClass('number-number');
+                break;
+
             case 'issn':
                 $field = new Input($name);
                 break;
