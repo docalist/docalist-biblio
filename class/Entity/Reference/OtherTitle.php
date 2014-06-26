@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -20,7 +20,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * Autre titre.
  *
  * @property string $type
- * @property string $title
+ * @property string $value
  */
 class OtherTitle extends AbstractEntity {
 
@@ -30,7 +30,7 @@ class OtherTitle extends AbstractEntity {
             'type' => array(
                 'label' => __('Type de titre', 'docalist-biblio'),
             ),
-            'title' => array(
+            'value' => array(
                 'label' => __('Autre titre', 'docalist-biblio'),
             ),
         );

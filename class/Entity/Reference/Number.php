@@ -31,7 +31,7 @@ class Number extends AbstractEntity {
                 'label' => __('Type', 'docalist-biblio'),
                 'description' => __('Type de numéro', 'docalist-biblio'),
             ),
-            'number' => array(
+            'value' => array(
                 'label' => __('Numéro', 'docalist-biblio'),
                 'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
             ),

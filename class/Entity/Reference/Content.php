@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -20,8 +20,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * Content.
  *
  * @property string $type
- * @property string $content
- *
+ * @property string $value
  */
 class Content extends AbstractEntity {
 
@@ -32,7 +31,7 @@ class Content extends AbstractEntity {
                 'label' => __('Type', 'docalist-biblio'),
 //                 'description' => __('Nature de la note', 'docalist-biblio'),
             ),
-            'content' => array(
+            'value' => array(
                 'label' => __('Contenu', 'docalist-biblio'),
                 'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
             ),

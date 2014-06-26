@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -17,7 +17,7 @@ namespace Docalist\Biblio\Entity\Reference;
 use Docalist\Data\Entity\AbstractEntity;
 
 /**
- * Une liste de mots-clés.
+ * Une liste de mots-clés d'un certain type.
  *
  * @property string $type
  * @property string[] $terms

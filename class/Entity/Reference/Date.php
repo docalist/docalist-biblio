@@ -20,7 +20,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * Date.
  *
  * @property string $type
- * @property string $date
+ * @property string $value
  */
 class Date extends AbstractEntity {
 
@@ -31,7 +31,7 @@ class Date extends AbstractEntity {
                 'label' => __('Type de date', 'docalist-biblio'),
 //                 'description' => __('Date', 'docalist-biblio'),
             ),
-            'date' => array(
+            'value' => array(
                 'label' => __('Date', 'docalist-biblio'),
             ),
         );

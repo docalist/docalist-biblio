@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -22,6 +22,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property string $name
  * @property string $city
  * @property string $country
+ * @property string $role
  */
 class Editor extends AbstractEntity {
 
