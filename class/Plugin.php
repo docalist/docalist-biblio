@@ -262,6 +262,16 @@ class Plugin {
             'user' => false,
         ]));
 
+        // Numbers (types de numéros)
+        $tableManager->register(new TableInfo([
+            'name' => 'numbers',
+            'path' => $dir . 'numbers.txt',
+            'label' => __("Types de numéros", 'docalist-biblio'),
+            'format' => 'table',
+            'type' => 'numbers',
+            'user' => false,
+        ]));
+
         // Extent (types de pagination)
         $tableManager->register(new TableInfo([
             'name' => 'extent',
