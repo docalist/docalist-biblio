@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------------------
+# Table "Numbers" (types de numéros)
+#
+# 2014-06-25 Version initiale (cf. daniel-menard/prisme#82).
+# La colonne type, optionnelle, sert à regrouper les entrées par famille.
+# La colonne format, obligatoire, détermine le masque d'affichage.
+# ------------------------------------------------------------------------------
+code;type;format;label;description
+# ------------------------------------------------------------------------------
+# Numéros de fascicule, de supplément...
+# ------------------------------------------------------------------------------
+issue-no;issue;n°%s;Fascicule n°;Numéro de fascicule du périodique (n° xxx, fasc. xxx, etc.)
+supplement;issue;suppl.;Supplément;Supplément non numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
+supplement-no;issue;suppl. n°%s;Supplément n°;Numéro d'un supplément numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
+supplement-to;issue;suppl. au n°%s;Supplément au n°;Supplément à un fascicule numéroté (tiré à part)
+special-issue;issue;hors-série;Hors-série;Hors-série ou numéro spécial non numéroté.
+special-issue-no;issue;hors-série n°%s;Hors-série n°;Numéro d'un hors-série ou d'un numéro spécial.
+# ------------------------------------------------------------------------------
+# Numéros de volume, de tome, etc.
+# ------------------------------------------------------------------------------
+volume-no;vol;vol. %s;volume n°;Numéro de volume
+part-no;vol;tome %s;tome n°;Numéro de tome
+year-no;vol;%sème année;n° année;Numéro d'année
+serial-no;vol;%sème série;n° série;Numéro de la série
+# ------------------------------------------------------------------------------
+# divers
+# ------------------------------------------------------------------------------
+disc-number;;disque %s;disque n°;Numéro du disque (n° du CD-ROM, n° du DVD, etc.)
+other-no;;%s;Autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
+# ------------------------------------------------------------------------------
+# Numéros et identifiants relevant d'un standard ou faisant l'objet d'une norme
+# ------------------------------------------------------------------------------
+doi;std;doi:%s;DOI;Digital Object Identifier (identifiant d'un document numérique). Exemple : 10.4000/cybergeo.23737
+isbn;std;ISBN %s;ISBN;International Standard Book Number (identifiant du livre) composé de 13 chiffres (10 pour les ouvrages anciens). Exemple : 978-1-2345-6789-7
+issn;std;ISSN %s;ISSN;International Standard Serial Number (identifiant du périodique). EXemple : 1234-567X.
+isrn;std;IRSN %s;ISRN;International standard technical report number (identifiant du rapport). Exemple : I3S/RR-2013-05-FRA 
+ismn;std;ISMN %s;ISMN;International Standard Music Number (identifiant de la partition). Exemple : 979-0-2600-0043-8
+isan;std;ISAN %s;ISAN;International Standard Audiovisual Number (identifiant d'une œuvre audiovisuelle). Exemple : 0000-0001-8947-0000-8-0000-0000-D
+isrc;std;ISRC %s;ISRC;International Standard Recording Code (identifiant pour un enregistrement musical, sonore ou audiovisuel). Exemple : FR-AB5-07-12345
+istc;std;ISTC %s;ISTC;International Standard Text Code (code normalisé pour une œuvre textuelle). Exemple : A02-2009-000004BE-A
+ean;std;EAN %s;EAN;International Article Number (numéro de produit, code barres). Exemple : 9782123456803
+coden;std;CODEN;CODEN %s;Code à 6 caractères identifiant un titre de publication périodique ou non-périodique. Exemples : TEREAU, 66HYAL, USXXDP, etc.
