@@ -132,6 +132,11 @@ class Reference extends AbstractEntity {
                 'label' => __('Périodique', 'docalist-biblio'),
                 'description' => __('Nom du journal (revue, magazine, périodique, etc.) dans lequel a été publié le document.', 'docalist-biblio'),
             ),
+            'number' => array(
+                'type' => 'Docalist\Biblio\Entity\Reference\Number*',
+                'label' => __('Numéros', 'docalist-biblio'),
+                'description' => __('Numéros du document (ISSN, ISBN, volume, fascicule, ...)', 'docalist-biblio'),
+            ),
             'issn' => array(
                 'label' => __('ISSN', 'docalist-biblio'),
                 'description' => __('International Standard Serial Number (identifiant du périodique) au format 1234-567X.', 'docalist-biblio'),
