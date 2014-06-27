@@ -9,31 +9,41 @@
 # A réfléchir : On ne peut faire des liens que vers des notices du même type ?
 #
 # 2013-10-05 Version initiale
+# 2014-06-27 Mise à jour (daniel-menard/prisme#110)
 # ------------------------------------------------------------------------------
 code;label;reverse;description
 #
-R00;Voir aussi;R00;Tout type de relation "voir aussi" : document similaire, sur le même sujet, etc.
+see;Voir aussi;see;Tout type de relation "voir aussi" : document similaire, sur le même sujet, etc.
 #
-R10;Fait suite à;R11;Nom de l'ancien titre d'une oeuvre lorsque celle-ci a changé de nom (un titre de revue par exemple). La date d'édition indique depuis quand cette oeuvre porte ce nom.
-R11;Devient;R10;Nom du nouveau titre d'une oeuvre lorsque celle-ci a changé de nom (un titre de revue par exemple). La date d'édition de la notice liée indique depuis quand cette oeuvre porte ce nouveau nom.
+continued-by;Devient;continues;Nom du nouveau titre d'une oeuvre lorsque celle-ci a changé de nom (un titre de revue par exemple). La date d'édition de la notice liée indique depuis quand cette oeuvre porte ce nouveau nom.
+continues;Fait suite à;continued-by;Nom de l'ancien titre d'une oeuvre lorsque celle-ci a changé de nom (un titre de revue par exemple). La date d'édition indique depuis quand cette oeuvre porte ce nom.
 #
-R20;Nouvelle édition de;R21;Permet de faire un lien entre une notice et une notice décrivant une version antérieure de la même oeuvre.
-R21;Ancienne édition de;R20;Permet de faire un lien vers une édition plus récente de la même oeuvre.
+new-edition-of;Nouvelle édition de;old-edition-of;Permet de faire un lien entre une notice et une notice décrivant une version antérieure de la même oeuvre.
+old-edition-of;Ancienne édition de;new-edition-of;Permet de faire un lien vers une édition plus récente de la même oeuvre.
 #
-R30;Commentaire sur;R31;Permet de faire un lien vers l'oeuvre qui est commenté ou critiqué dans le document catalogué.
-R31;Commentaire dans;R30;Permet d'associer à une oeuvre les différents documents qui parlent de cette oeuvre. 
+replaces;Remplace;replaced-by;Permet d'indiquer que le document catalogué remplace un autre document.
+replaced-by;Remplacé par;replaces;Permet d'indiquer que le document catalogué est obsolète
 #
-R40;Erratum sur;R41;Permet d'indiquer que le document catalogué apporte des corrections sur une oeuvre antérieure.
-R41;Erratum dans;R40;Permet d'associer à une oeuvre des corrections publiées ultérieurement. 
+comment-on;Commentaire sur;comment-in;Permet de faire un lien vers le document qui est commenté ou critiqué dans le document catalogué.
+comment-in;Commentaire dans;comment-on;Permet d'associer à un document les différents documents qui parlent de cette oeuvre. 
 #
-R50;Corrigé et republié dans;R51;Permet d'indiquer que le document catalogué a fait l'objet d'une nouvelle édition revue et corrigée.
-R51;Version corrigée et republiée de;R50;Permet d'indiquer que le document catalogué est une nouvelle édition revue et corrigée du document lié.
+erratum-for;Erratum sur;erratum-in;Permet d'indiquer que le document catalogué apporte des corrections sur une oeuvre antérieure.
+erratum-in;Erratum dans;erratum-for;Permet d'associer à une oeuvre des corrections publiées ultérieurement. 
 #
-R60;Père ou mère de;R61;Permet d'indiquer qu'une personne a un lien de parentalité avec la personne liée.
-R61;Fils ou fille de;R60;Permet d'indiquer qu'une personne a un lien de filliation avec la personne liée.
+updated-in;Version mise à jour dans;updates;Permet d'indiquer que le document catalogué a fait l'objet d'une mise à jour, d'une édition corrigée, etc.
+updates;Version mise à jour de;updated-in;Permet d'indiquer que le document catalogué est une mise à jour ou une édition corrigée du document lié.
 #
-R70;Est une traduction de;R71;Permet d'indiquer l'oeuvre originale dont ce document est une traduction.
-R71;Version traduite dans;R70;Permet de lister les traductions existantes de cette oeuvre.
+includes;Inclus;is-part-of;Permet d'indiquer que le document catalogué inclus un autre document.
+is-part-of;Fait partie de;includes;Permet d'indiquer que le document catalogué fait également partie d'un autre document.
+#
+parent-of;Père ou mère de;child-of;Permet d'indiquer qu'une personne a un lien de parentalité avec la personne liée.
+child-of;Fils ou fille de;parent-of;Permet d'indiquer qu'une personne a un lien de filliation avec la personne liée.
+#
+translation-of;Est une traduction de;translation-in;Permet d'indiquer l'oeuvre originale dont ce document est une traduction.
+translation-in;Version traduite dans;translation-of;Permet de lister les traductions existantes de cette oeuvre.
+#
+electronic-version-of;Version électronique de;print-version-of;Permet d'indiquer que le document catalogué est la version électronique d'un document équivalent disponible en version papier.
+print-version-of;Version papier de;electronic-version-of;Permet d'indiquer que le document catalogué est une version imprimée d'un document équivalent disponible en version électronique.
 #
 #todo;Liste à compléter;Pour les lois : abroge, remplace... Article : même version publiée dans un autre pério, etc.
 #todo2;Faire des listes par type;Eclater la table en fonction des types.
