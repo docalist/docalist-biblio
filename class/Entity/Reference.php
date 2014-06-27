@@ -31,13 +31,9 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property Docalist\Biblio\Entity\Reference\Date[] $date
  * @property string $journal
  * @property Docalist\Biblio\Entity\Reference\Number[] $number
- * @property string $issn
- * @property string $volume
- * @property string $issue
  * @property string[] $language
  * @property Docalist\Biblio\Entity\Reference\Extent[] $extent
  * @property string $format
- * @property string $isbn
  * @property Docalist\Biblio\Entity\Reference\Editor[] $editor
  * @property string[] $edition
  * @property Docalist\Biblio\Entity\Reference\Collection[] $collection
@@ -45,7 +41,6 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property Docalist\Biblio\Entity\Reference\Topic[] $topic
  * @property Docalist\Biblio\Entity\Reference\Content[] $content
  * @property Docalist\Biblio\Entity\Reference\Link[] $link
- * @property string $doi
  * @property Docalist\Biblio\Entity\Reference\Relation[] $relation
  * @property string[] $owner
  * @property string $creation
@@ -138,18 +133,6 @@ class Reference extends AbstractEntity {
                 'label' => __('Numéros', 'docalist-biblio'),
                 'description' => __('Numéros du document (ISSN, ISBN, volume, fascicule, ...)', 'docalist-biblio'),
             ),
-            'issn' => array(
-                'label' => __('ISSN', 'docalist-biblio'),
-                'description' => __('International Standard Serial Number (identifiant du périodique) au format 1234-567X.', 'docalist-biblio'),
-            ),
-            'volume' => array(
-                'label' => __('Volume', 'docalist-biblio'),
-                'description' => __("Numéro de volume du périodique ou numéro de tome de l'ouvrage.", 'docalist-biblio'),
-            ),
-            'issue' => array(
-                'label' => __('Fascicule', 'docalist-biblio'),
-                'description' => __("Numéro du périodique de la revue dans lequel l'article a été publié.", 'docalist-biblio'),
-            ),
             'language' => array(
                 'type' => 'string*',
                 'label' => __('Langues', 'docalist-biblio'),
@@ -164,10 +147,6 @@ class Reference extends AbstractEntity {
                 'type' => 'string',
                 'label' => __('Format', 'docalist-biblio'),
                 'description' => __('Caractéristiques matérielles du document : étiquettes de collation (tabl, ann, fig...), références bibliographiques, etc.', 'docalist-biblio'),
-            ),
-            'isbn' => array(
-                'label' => __('ISBN', 'docalist-biblio'),
-                'description' => __('International Standard Book Number (identifiant du livre) composé de 13 chiffres (10 pour des ouvrages anciens).', 'docalist-biblio'),
             ),
             'editor' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Editor*',
@@ -203,10 +182,6 @@ class Reference extends AbstractEntity {
                 'type' => 'Docalist\Biblio\Entity\Reference\Link*',
                 'label' => __('Liens internet', 'docalist-biblio'),
 //                 'description' => __("Liste de liens relatifs au document.", 'docalist-biblio'),
-            ),
-            'doi' => array(
-                'label' => __('DOI', 'docalist-biblio'),
-                'description' => __('Digital Object Identifier : identifiant unique de la ressource électronique.', 'docalist-biblio'),
             ),
             'relation' => array(
                 'type' => 'Docalist\Biblio\Entity\Reference\Relation*',
