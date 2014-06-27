@@ -7,9 +7,9 @@ code;label;description
 L01;Proposition de loi;
 L02;Projet de loi;
 L03;Loi;Loi ordinaire portant des règles de droit.
-L02;Décision du président;Acte pris par le Président de la République, en cas d’interruption du fonctionnement régulier des pouvoirs publics.
-L03;Directive européenne;Directive européenne (applicable ou non transposée).
-L04;Réglement communautaire;Réglement communautaire applicable dans le droit des états membres.
+L04;Décision du président;Acte pris par le Président de la République, en cas d’interruption du fonctionnement régulier des pouvoirs publics.
+L05;Directive européenne;Directive européenne (applicable ou non transposée).
+L06;Réglement communautaire;Réglement communautaire applicable dans le droit des états membres.
 #Bloc réglementaire
 R01;Ordonnance;art 38 de la constitution.
 D01;Décret;Décret usuel signé par le Premier Ministre.
