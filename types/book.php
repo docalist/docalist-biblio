@@ -61,17 +61,14 @@ return [
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'volume'], // n° de tome
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
-        ['name' => 'doi'],
 
-        // Editor / Collection / Edition / Isbn
+        // Editor / Collection / Edition
         ['name' => 'group', 'label' => 'Informations éditeur'],
         ['name' => 'editor', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
         ['name' => 'collection'],
         ['name' => 'edition'],
-        ['name' => 'isbn'],
 
         // Event
         ['name' => 'group', 'label' => 'Congrès et diplômes'],
@@ -92,8 +89,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

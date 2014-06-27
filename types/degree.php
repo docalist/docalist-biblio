@@ -43,8 +43,8 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'table:genres-degree'], // mémoire, thèse, écrit de certification
-        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, internet, cd, dvd
+        ['name' => 'genre', 'table' => 'table:genres-degree'],
+        ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
@@ -54,26 +54,16 @@ return [
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'], // / dir
-        ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'], // libellé : organisme de soutenance
+        ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'],
+        ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'volume'], // n° de tome
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
-        ['name' => 'doi'],
-
-        // Event
-//         ['name' => 'group', 'label' => 'Congrès et diplômes'],
-        // ['name' => 'event'], // date de soutenance
-
-        // numéro de thèse
-        // numéro de promotion
-        // nom de promotion
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -90,8 +80,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

@@ -33,18 +33,15 @@ return [
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Numéro de périodique'],
-        ['name' => 'volume'],
-        ['name' => 'issue'],
+        ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'title'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'edition'],
-        ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'isbn'],// Un issue peut avoir un isbn = un fascicule
-        ['name' => 'extent', 'table' => 'table:extent'], // nb de p/ de ce n°
-        ['name' => 'format', 'table' => 'thesaurus:format'], // matériel d'accompagnement
+        ['name' => 'extent', 'table' => 'table:extent'],
+        ['name' => 'format', 'table' => 'thesaurus:format'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -61,8 +58,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

@@ -62,15 +62,13 @@ return [
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'table:genres-periodical'],
-        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, web, archives sur dvd
+        ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
-        ['name' => 'issn'], // issn en ligne ? repétable ? double issn ?
         ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'othertitle', 'table' => 'table:titles'], // oui avec table
-        // ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
+        ['name' => 'othertitle', 'table' => 'table:titles'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
@@ -83,9 +81,8 @@ return [
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'extent', 'table' => 'table:extent'], // nombre moyen de pages par numéro
         ['name' => 'format', 'table' => 'thesaurus:format'], // taille, couleur,
-        // ['name' => 'doi'],
 
-        // Editor / Collection / Edition / Isbn
+        // Editor / Collection
         ['name' => 'group', 'label' => 'Informations éditeur'],
         ['name' => 'editor', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
         ['name' => 'collection'],
@@ -105,8 +102,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

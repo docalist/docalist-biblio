@@ -46,18 +46,17 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'table:genres-report'], // rapport officiel, rapport moral, étude, rapport financier, fin de contrat...
-        ['name' => 'media', 'table' => 'thesaurus:medias'], // papier, web
+        ['name' => 'genre', 'table' => 'table:genres-report'],
+        ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
-        // ['name' => 'othertitle', 'table' => 'table:titles'], // pas de othertitle pour un rapport
         ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
         // Author, Organisation
         ['name' => 'group', 'label' => 'Auteurs'],
-        ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'], // /com
+        ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
         ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'],
 
         // Date / Language / Pagination / Format
@@ -67,7 +66,6 @@ return [
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'doi'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -84,8 +82,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

@@ -47,23 +47,18 @@ return [
         ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'],
         ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
 
-        // Journal, Issn, Volume, Issue
+        // Journal, Number, Edition
         ['name' => 'group', 'label' => 'Journal / Périodique'],
         ['name' => 'journal'],
         ['name' => 'number', 'table' => 'table:numbers'],
-        ['name' => 'issn'],
-        ['name' => 'volume'],
-        ['name' => 'issue'],
         ['name' => 'edition'],
 
         // Date / Language / Pagination / Format
         ['name' => 'group', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
-        ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'], // fre par défaut
+        ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
-
-        // numéro de texte officiel
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -80,8 +75,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on

@@ -111,14 +111,13 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'table:genres-meeting'], // types de congrès : congrès, colloque, conférence, salon, séminaire, assemblée générale
+        ['name' => 'genre', 'table' => 'table:genres-meeting'],
         ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
         ['name' => 'group', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'event'],
-        // ['name' => 'othertitle', 'table' => 'table:titles'], // sous-titre du congrès ?
         ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
         // Author, Organisation
@@ -133,7 +132,6 @@ return [
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
         ['name' => 'number', 'table' => 'table:numbers'],
-        // ['name' => 'doi'],
 
         // Topic / Abstract / Note
         ['name' => 'group', 'label' => 'Indexation et résumé'],
@@ -150,8 +148,6 @@ return [
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
-//         ['name' => 'creation'],
-//         ['name' => 'lastupdate'],
     ]
 ];
 // @formatter:on
