@@ -527,18 +527,6 @@ class EditReference {
                 $field->input('value')->addClass('number-value');
                 break;
 
-            case 'issn':
-                $field = new Input($name);
-                break;
-
-            case 'volume':
-                $field = new Input($name);
-                break;
-
-            case 'issue':
-                $field = new Input($name);
-                break;
-
             case 'language':
                 $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
                 $field = new TableLookup($name, $def->table);
@@ -557,10 +545,6 @@ class EditReference {
                 $this->checkTables($def, 'thesaurus:format');
                 $field = new TableLookup($name, $def->table);
                 $field->multiple(true);
-                break;
-
-            case 'isbn':
-                $field = new Input($name);
                 break;
 
             case 'editor':
@@ -630,10 +614,6 @@ class EditReference {
                       ->addClass('link-type');
                 $field->input('label')->addClass('link-label');
                 $field->input('date')->addClass('link-date');
-                break;
-
-            case 'doi':
-                $field = new Input($name);
                 break;
 
             case 'relation':
