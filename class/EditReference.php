@@ -303,7 +303,7 @@ class EditReference {
             'docalist-biblio-edit-css',
             plugins_url('docalist-biblio/assets/edit-reference.css'),
             array(),
-            '20140611'
+            '20140627'
         );
     }
 

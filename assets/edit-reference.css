@@ -18,7 +18,7 @@
 }
 
 .field-table th.othertitle-type         { width: 20%; }
-.field-table th.othertitle-title        { width: 80%; }
+.field-table th.othertitle-value        { width: 80%; }
 
 .field-table th.translation-type        { width: 20%; }
 .field-table th.translation-title       { width: 80%; }
@@ -44,11 +44,8 @@
 /* .field-table td .topic-term          { width: 24%; } */
 
 
-.field-table th.abstract-language       { width: 20%; }
-.field-table th.abstract-content        { width: 80%; }
-
-.field-table th.note-type               { width: 20%; }
-.field-table th.note-content            { width: 80%; }
+.field-table th.content-type            { width: 20%; }
+.field-table th.content-value           { width: 80%; }
 
 .field-table th.link-url                { width: 50%; }
 .field-table th.link-type               { width: 20%; }
