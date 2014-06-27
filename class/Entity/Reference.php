@@ -30,6 +30,7 @@ use Docalist\Data\Entity\AbstractEntity;
  * @property Docalist\Biblio\Entity\Reference\Translation[] $translation
  * @property Docalist\Biblio\Entity\Reference\Date[] $date
  * @property string $journal
+ * @property Docalist\Biblio\Entity\Reference\Number[] $number
  * @property string $issn
  * @property string $volume
  * @property string $issue
