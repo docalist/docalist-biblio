@@ -1,0 +1,167 @@
+# ------------------------------------------------------------------------------
+# Table des genres de documents.
+#
+# 2014-07-17 Version initiale au format table.
+#            Basée sur les tables qu'on avait avant (tables spécifiques par
+#            type) et sur les valeurs trouvées dans les abses Prisme/Afertes.
+#            cf. https://github.com/daniel-menard/prisme/issues/93
+# ------------------------------------------------------------------------------
+code;label;USE;MT;BT;RT;description;SN;HN
+#
+# ------------------------------------------------------------------------------
+# Forme du document, façon dont il est construit, diffusé, etc.
+# ------------------------------------------------------------------------------
+bibliography;Bibliographie;;;;;Liste structurée de références d'ouvrages ou d'autres documents sur un ou plusieurs sujets donnés.;article,book;
+documentary-record;Dossier documentaire;;;;;Produit documentaire constitué d'un ensemble de documents de sources diverses, choisis et réunis sur une question donnée, et organisé de façon à faciliter l'accès à l'information rassemblée.;article,book;
+directory;Annuaire;;;;;Recueil annuel contenant des renseignements statistiques, des notices biographiques, etc., sur l'année précédente, ou des indications sur l'état du personnel, les membres d'une société, etc.;book;
+dictionary;Dictionnaire;;;;;Ouvrage didactique constitué par un ensemble d'articles dont l'entrée constitue un mot, indépendants les uns des autres et rangés dans un ordre déterminé, le plus souvent alphabétique.;book;
+focus;Dossier;;;;;Ensemble de documents se rapportant à un même sujet, à une même affaire, à un même événement, etc.;book;
+reading-guide;Fiche de lecture;;;;;Analyse critique, linéaire ou thématique, permettant de connaître les concepts traités dans un écrit, les thèses développées, les résultats obtenus, les méthodes utilisées, etc. La fiche de lecture doit permettre de se passer de la lecture de l'œuvre tout en donnant envie de lire le texte traité.;book;
+guide;Guide;;;;;Document écrit (livre, brochure, ou document informatique) qui regroupe un ensemble d'informations concernant un thème particulier (guide touristique, guide d'achats, guide télé, etc.).;book,video;
+children-literature;Littérature jeunesse;;;;children-book¤children-picture-book;Secteur de l'édition, parfois régi par des lois spécifiques, spécialisé dans les publications destinées aux enfants et adolescents.;book;
+children-book;Livre pour enfants;;;;children-literature;Livre destiné aux enfants et aux adolescents.;book;
+children-picture-book;Album jeunesse;;;;children-literature;Album destiné aux enfants et aux adolescent dans lequel l'image a une place prépondérante par rapport au texte.;book;
+art-book;Livre d'art;;;;;Catégorie de livres où les illustrations à caractère artistique tiennent une place prépondérante par rapport au texte.;book;
+clip;Clip;;;;;Œuvre multimédia, audiovisuelle la plupart du temps et souvent courte, réalisée à partir d'un morceau de musique ou d'une chanson.;video;
+show;Spectacle;;;;;Divertissement offert à un public.;video;
+radio-broadcats;Émission de radio;;;;;Production radiophonique, diffusée en direct ou en différé, qui est identifiée par un titre. ;video;
+#
+#book : supprimé, c'est un type, pas un genre
+#book;Livre;;;;art-book¤children-book;Ensemble de pages reliées entre elles et contenant des signes destinés à être lus.;book;
+#
+# ------------------------------------------------------------------------------
+# Genres littéraires
+# ------------------------------------------------------------------------------
+novel;Roman;;;;story¤short-story;Récit en prose d'une certaine longueur, dont l'intérêt est dans la narration d'aventures, l'étude de mœurs ou de caractères, l'analyse de sentiments, etc.;book;
+story;Récit;;;;short-story¤novel;Narration orale ou écrite d'un événement.;book;
+short-story;Nouvelle;;;;story¤novel;Genre littéraire basé sur un récit de fiction court en prose, centré sur un seul événement et dont la chute est souvent surprenante.;book;
+essay;Essai;;;;;Œuvre  littéraire, éventuellement polémique ou partisane, explorant un domaine donné selon le point de vue personnel, voire subjectif, de son auteur. L'essai est intitulé ainsi, soit par modestie, soit parce que l'auteur ne se propose pas d'approfondir la matière de son traité.;book;
+theatre;Théâtre;;;;;Spectacle dans lequel des comédiens/acteurs, mis dans les circonstances et les situations créées par un texte et la vision d'un metteur en scène/réalisateur, incarnent des personnages pour un regard extérieur (le public), dans un temps et un espace limités.;book,video;
+poetry;Poésie;;;;;Art d'évoquer et de suggérer les sensations, les impressions, les émotions les plus vives par l'union intense des sons, des rythmes, des harmonies, en particulier par les vers.;book;
+comics;Bande dessinée;;;;;Mode de narration utilisant une succession d'images dessinées, incluant, à l'intérieur de bulles, les paroles, sentiments ou pensées des protagonistes.;book;
+tale;Conte;;;;fiction;Récit, en général assez court, de faits imaginaires.;book;
+interview;Interview;;;;;Entretien avec quelqu'un, pour l'interroger sur ses actes, ses idées, ses projets, afin d'en publier ou diffuser le contenu.;article;
+reporting;Reportage;;;;;Ensemble des informations écrites, enregistrées, photographiées ou filmées, recueillies par un journaliste sur le lieu même d'un événement.;article,video;
+testimonial;Témoignage;;;;;Récit d'un événement fait par une personne consistant à rapporter ce qu'elle a vu ou entendu et ce qu'elle sait.;article,book;
+biography;Biographie;;;;;Récit écrit ou oral de la vie d'une personne;article,book;
+debate;Débat;;;;;Discussion ou ensemble de discussions sur un sujet, précis ou de fond, à laquelle prennent part des individus ayant des avis, idées, réflexions, opinions plus ou moins divergents.;video;
+documentary;Documentaire;;;;;Film, généralement de court ou moyen métrage, à caractère informatif ou didactique, présentant des documents authentiques sur un secteur de la vie ou de l'activité humaine, ou sur le monde naturel.;video;
+conversation;Entretien;;;;;Conversation suivie avec une ou plusieurs personnes.;video;
+fiction;Fiction;;;;tale¤documentary-fiction;Œuvre qui relate et dépeint la vie, le contexte et les situations de personnages tirés de l'imaginaire.;video;
+documentary-fiction;Fiction documentaire;;;;fiction;Documentaire racontant une histoire fictive se passant dans un contexte historique reconstitué de manière à être le plus proche possible de la réalité.;video;
+animated movie;Film d'animation;;;;;Film produit par l'animation de dessins.;video;
+humour;Humour;;;;;Œuvre qui vise à susciter volontairement le rire ou le sourire du lecteur ou du spectateur.;video;
+# ------------------------------------------------------------------------------
+# Mémoires, thèses, diplômes, études
+# ------------------------------------------------------------------------------
+thesis;Thèse;;;;professional-practices¤mémoire;Ensemble des travaux présentés, sous forme d'ouvrage, en vue de l'obtention du grade de docteur.;degree,book;
+mémoire;Mémoire;;;;professional-practices¤thesis;Document, habituellement court et incisif, permettant d'exposer une opinion, un fait, une recherche concernant un sujet donné en s'appuyant logiquement sur une analyse pour en arriver à une recommandation ou une conclusion.;degree;
+professional-practices;Dossier de pratiques professionnelles;;;;mémoire¤thesis;Analyse d'expériences professionnelles, récentes ou en cours, présentées par leurs auteurs pour un groupe de personnes exerçant la même profession.;degree;
+technical-course;Stage technique;;;;;Période de formation, d'apprentissage ou de perfectionnement qui dure quelques jours à plusieurs mois effectué dans un lieu approprié à l'acquisition des techniques propres à un domaine ou un métier donné.;video;
+study;Étude;;;;scientific-study;Œuvre littéraire ou scientifique étudiant un sujet donné.;book;
+scientific-study;Étude scientifique;;;;;Étude relevant d'une démarche rationnelle, organisée et rigoureuse destinée à produire et à développer les connaissances scientifiques.;Report;
+# ------------------------------------------------------------------------------
+# Législation et documents juridiques
+# ------------------------------------------------------------------------------
+judgement;Arrêt;;;;adjudication;Décision (jugement) publiée par une cour supérieure d'un système judiciaire.;legislation;
+order;Arrêté;;;;interministerial-order¤ministerial-order¤prefectoral-order;Décision exécutoire à portée générale ou individuelle émanant d'un ou plusieurs ministres (arrêté ministériel ou interministériel) ou d'autres autorités administratives (préfet, maire...);legislation;
+interministerial-order;Arrêté interministériel;;;;order¤ministerial-order¤prefectoral-order;Arrêté émanant de plusieurs ministres.;legislation;
+ministerial-order;Arrêté ministériel;;;;order¤interministerial-order¤prefectoral-order;Arrêté émanant d'un ministre.;legislation;
+prefectoral-order;Arrêté préfectoral;;;;order¤interministerial-order¤ministerial-order;Arrêté émanant d'un préfet.;legislation;
+amendment;Avenant;;;;;Clause additionnelle, ou convention additionnelle apportant des modifications à un contrat antérieurement conclu et toujours en cours.;legislation;
+opinion;Avis;;;;deliberation;Résultat des délibérations et des consultations facultatives ou obligatoires demandées à des organes divers (commission, haut conseil, etc.).;legislation;
+charter;Charte;;;;;Acte juridique signé par plusieurs acteurs pour définir un objectif et parfois des moyens communs.;legislation;
+circular;Circulaire;;;;;Texte destiné aux membres d'une administration, d'une entreprise ou d'un service.;legislation;
+agreement;Convention;;;;;Accord de volonté se traduisant par un contrat conclu entre des organismes ou des personnes pour créer, modifier, éteindre, ou transférer des obligations.;legislation;
+adjudication;Décision de justice;;;;judgement;Acte rendu par un ou plusieurs juges après la saisine d'une autorité habilitée à trancher un litige (tribunal) ou à rendre un avis sur le sujet pour lequel elle est sollicitée.;legislation;
+presidential-order;Décision du président;;;;;Acte pris par le Président de la République, en cas d'interruption du fonctionnement régulier des pouvoirs publics.;legislation;
+statement;Déclaration;;;;;Déclaration des droits de l'homme, …;legislation;
+decree;Décret;;;;prime-minister-decree¤presidential-decree¤statutory-order;Décret usuel signé par le Premier Ministre.;legislation;
+prime-minister-decree;Décret en Conseil d’État;;;;decree¤presidential-decree¤statutory-order;Décret signé par le Premier Ministre sur avis conforme du Conseil d’État;legislation;
+presidential-decree;Décret Présidentiel;;;;decree¤prime-minister-decree¤statutory-order;Décret signé par le Président de la République en conseil des ministres.;legislation;
+statutory-order;Décret-loi;;;;decree¤prime-minister-decree¤presidential-decree;Acte de gouvernement pris en vertu d'une habilitation législative dans un domaine relevant normalement de la compétence de la loi.;legislation;
+deliberation;Délibération;;;;opinion;Confrontation de points de vue visant à trancher un problème ou un choix difficile par l'adoption d'un jugement ou d'une décision réfléchie.;legislation;
+directive;Directive;;;;european-directive;Acte administratif par lequel le titulaire d'une compétence discrétionnaire fixe par avance la manière dont il va l'utiliser et la ligne de conduite à suivre.;legislation;
+european-directive;Directive européenne;;;;directive;Acte normatif pris par les institutions de l'Union européenne indiquant aux états membres les objectifs à atteindre et les délais accordés.;legislation;
+investigation;Instruction;;;;;Mesure adressée par un chef de service à ses subordonnés afin qu'elle soit suivie d'une exécution.;legislation;
+jurisprudence;Jurisprudence;;;;;Ensemble des décisions judiciaires et administratives, qui constitue une source du droit.;legislation;
+letter;Lettre;;;;;Écrit adressé à quelqu'un pour lui communiquer quelque chose.;legislation;
+cabinet-letter;Lettre cabinet;;;;;Lettre diplomatique échangée entre souverains et Chefs d'État de même rang.;legislation;
+circular-letter;Lettre circulaire;;;;;Lettre adressée à plusieurs destinataires en même temps.;legislation;
+act;Loi;;;;;Loi ordinaire portant des règles de droit.;legislation;
+organic-law;Loi organique;;;;;Loi relative à l'organisation des pouvoirs.;legislation;
+memorandum;Note de service;;;;;Information ou recommandation communiquée par un organe dirigeant à des personnes placées sous son autorité.;legislation;
+information-note;Note d'information;;;;;Information ou instruction donnée par l'employeur aux salariés, pouvant valoir règlement intérieur.;legislation;
+ordinance;Ordonnance;;;;;Mesure prise par le gouvernement puis ratifiée par le parlement dans des matières relevant normalement du domaine de la loi (assimilée à un règlement, entre en vigueur dès publication).;legislation;
+fundamentals;Principes fondamentaux;;;;;Principes de valeur constitutionnelle dégagés par le Conseil constitutionnel français et par le Conseil d'État.;legislation;
+governement-bill;Projet de loi;;;;parliamentary-bill;Texte de loi proposé par le gouvernement (par opposition à une proposition de loi qui émane d'un parlementaire).;legislation;
+parliamentary-bill;Proposition de loi;;;;governement-bill;Texte de loi proposé par une personne ou un groupe habilité à faire une telle proposition : parlementaire, sénateur, député (par opposition à un projet de loi qui émane du gouvernement).;legislation;
+regulation;Règlement ;;;;;Terme générique en droit pour désigner les actes d'un gouvernement  et les décisions d'un exécutif. Les ordonnances, les règlements en Conseil d'État, les décrets, les arrêtés et les circulaires sont des règlements.;legislation;
+autonomous-regulation;Règlement autonome;;;;community-regulation;Les règlements autonomes sont des règlements pris sur le fondement de l'article 37 de la Constitution de 1958;legislation;
+;Règlement communautaire;;;;autonomous-regulation;Règlement communautaire applicable dans le droit des états membres.;legislation;
+international-treaty;Traité international;international-agreement;;;;;legislation;
+international-agreement;Accord international;;;;;Contrat conclu entre plusieurs sujets dotés d'une personnalité morale de droit international (états le plus souvent mais aussi certaines organisations internationales).;legislation;
+legal-record;Dossier de droit;;;;;Étude portant sur les aspects législatifs d'un sujet donné.;video;
+# ------------------------------------------------------------------------------
+# Congrès, colloques, réunions, etc.
+# ------------------------------------------------------------------------------
+general-meeting;Assemblée générale;;;;;Rassemblement de l'ensemble des membres d'une organisation afin qu'ils rencontrent les dirigeants ou les membres du conseil d'administration.;meeting;
+colloquium;Colloque;;;;convention¤congress¤seminar;Conférence de spécialistes (scientifiques).;meeting,book,video;
+convention;Conférence;;;;colloquium¤congress¤seminar;Confrontation d'idées (scientifiques ou médicales, philosophiques, politique...) sur un sujet jugé d'importance par les participants.;meeting,book,video;
+congress;Congrès;;;;colloquium¤convention¤seminar;Réunion solennelle ou assemblée de personnes compétentes pour débattre d'une question.;meeting;
+exhibition;Exposition;;;;exhibition-catalogue¤trade;Présentation au public d'un ensemble d’œuvres sélectionnées;meeting;
+exhibition-catalogue;Catalogue d'exposition;;;;exhibition;Liste des œuvres et des objets exposés dans une exposition d'art. Il peut s'agir d'une simple liste sous forme de prospectus ou au contraire d'un livre luxueux sur papier glacé.;book;
+research;Recherche;;;;;Activités intellectuelles et travaux ayant pour objet la découverte, l'invention, la progression des connaissances nouvelles ou la conception que l'on a de cette activité.;meeting;
+trade;Salon;;;;exhibition;Une exposition rassemblant des spécialistes d'un même secteur en vue de développer une activité.;meeting;
+seminar;Séminaire;;;;colloquium¤convention¤congress;Une réunion en petit groupe, généralement dans un but d'enseignement.;meeting;
+study-day;Journée d'étude;;;;;Réunion, colloque, débat, etc., qui se déroule dans le cadre d'une discipline sur une ou plusieurs journées.;book,meeting,video;
+proceedings;Actes;;;;conference-lecture;Recueil des communications faites lors d'un congrès scientifique et publiées avant ou suite à ce congrès.;article;
+conference-lecture;Communication;;;;proceedings;Exposé, écrit ou oral, fait à un groupe et en particulier à une société savante lors d'un congrès, d'un colloque ou d'une conférence.;book,video;
+# ------------------------------------------------------------------------------
+# Journaux, revues, magazines
+# ------------------------------------------------------------------------------
+newspaper;Journal;;;;official-journal;Périodique regroupant des articles sur l'actualité du jour ou d'une période donnée.;periodical;
+official-journal;Journal officiel;;;;;Périodiques officiels et administratifs (JO, BO, bottins, annuaires, etc.);periodical;
+magazine;Magazine;;;;popularization-magazine;Périodique, le plus souvent illustré, traitant de divers sujets.;periodical,video;
+popularization-magazine;Magazine de vulgarisation;;;;;Magazine utilisant une forme de diffusion pédagogique des connaissances pour mettre le savoir, et éventuellement ses limites et ses incertitudes, à la portée de tous.;periodical;
+international-newspaper;Presse internationale;;;;local-newspaper¤national-newspaper¤regionalnewspaper;Périodique diffusé dans plusieurs pays.;periodical;
+local-newspaper;Presse locale;;;;international-newspaper¤national-newspaper¤regionalnewspaper;Périodique qui traite de l'actualité locale.;periodical;
+national-newspaper;Presse nationale;;;;international-newspaper¤local-newspaper¤regionalnewspaper;Périodique qui traite de l'actualité nationale.;periodical;
+regionalnewspaper;Presse régionale;;;;international-newspaper¤local-newspaper¤national-newspaper;Périodique qui traite de l'actualité régionale.;periodical;
+journal;Revue;;;;literary-magazine¤academic-journal;Périodique spécialisé dans un domaine précis.;periodical;
+literary-magazine;Revue littéraire;;;;;Publication périodique spécifique au champ littéraire (littérature, poésie, critique littéraire, …);periodical;
+academic-journal;Revue scientifique;;;;;Publication périodique, souvent dotée d'un comité de lecture, dont l'objectif est de faire connaître des travaux de recherche originaux ou de fond, et de contribuer au débat scientifique entre spécialistes;periodical;
+# ------------------------------------------------------------------------------
+# Rapports, comptes-rendus, enquêtes, etc.
+# ------------------------------------------------------------------------------
+report;Rapport;;;;minutes¤activity-report¤official-report¤termination-report¤financial-report¤moral-report;Exposé rendant compte d'un travail fait par une personne, un comité, ou une commission.;book,meeting;
+activity-report;Rapport d'activité;;;;minutes;Rapport faisant le constat d'une situation et relatant ce qui a été fait au cours d'une période donnée.;book,meeting;
+official-report;Rapport officiel;;;;termination-report;Rapport élaboré par ou à l'initiative d'un gouvernement ou d'une instance gouvernementale.;book,report;
+termination-report;Rapport de fin de contrat;;;;report¤minutes¤activity-report¤official-report¤financial-report¤moral-report;Bilan réalisé à la fin d'un contrat établi entre des organismes ou des personnes.;Report;
+financial-report;Rapport financier;;;;report¤minutes¤activity-report¤official-report¤termination-report¤moral-report;Document comptable fournissant une information financière détaillée (recettes, dépenses, actif, passif).;Report;
+moral-report;Rapport moral;;;;report¤minutes¤activity-report¤official-report¤termination-report¤financial-report;Document synthétique présentant l'état d'une personne morale (une association, par exemple) à un moment donné : bilan des objectifs passés, difficultés rencontrées, orientations futures, partenariats, ...;Report;
+survey;Enquête;;;;survey-results;Étude d'une question faite en réunissant des témoignages et des expériences.;article,book;
+survey-results;Résultats d'enquête;;;;survey;Synthèse des éléments clés obtenus au cours d'une enquête.;Report;
+minutes;Compte rendu;;;;;Rapport fait sur un événement, une situation, un ouvrage, la séance d'une assemblée, etc.;book,meeting,video;
+working-draft;Document de travail;;;;;Type particulier de rapport technique sur un travail en cours constituant éventuellement la forme préliminaire d'un ouvrage à venir.;book;
+annals;Annales;;;;;Ouvrage qui rapporte des événements en suivant l'ordre chronologique.;book;
+# ------------------------------------------------------------------------------
+# Ce qu'on trouve sur Internet
+# ------------------------------------------------------------------------------
+web-application;Application web;;;;;Site web offrant les fonctionnalités habituellement présentes dans un logiciel.;website;
+blog;Blog;;;;;Site web, souvent personnel, présentant en ordre chronologique inverse de courts articles ou notes, généralement accompagnés de liens vers d'autres sites.;website;
+online-catalog;Catalogue en ligne;;;;;Site web proposant une compilation de données, présentées sous forme de fiches, établie pour répondre à des besoins particuliers (annuaire, base de données, liste de produits...);website;
+extranet;Extranet;;;;;Site intranet qui a été étendu pour permettre l'accès depuis ou vers certains organismes externes, mais non pour le public en général.;website;
+personal-website;Page perso;;;;;Site web rédigé, conçu, et mis en ligne par une personne en particulier.;website;
+blogging-platform;Plateforme de blogs;;;;;Site web proposant à ses utilisateurs la création automatique d'un blog et son hébergement.;website;
+web-portal;Portail d'entreprise;;;;;Site web, le plus souvent en intranet ou en extranet, donnant accès, via une interface unique, à des données de l'entreprise ainsi qu'à des ressources du système d'information de l'entreprise.;website;
+social-networking-website;Réseau social;;;;;Site web qui favorise l'interaction sociale, la création et le partage d'information entre des internautes reliés entre eux en fonction de leurs intérêts, points de vue ou besoins communs.;website;
+community-website;Site communautaire;;;;;Site web permettant à des internautes de produire des articles et d'échanger sur des centres d'intérêt communs.;website;
+brand-website;Site de marque;;;;;Site web axé autour d'une ou plusieurs marques commerciales et offrant des informations sur les produits et services proposés par une entreprise.;website;
+video-sharing-website;Site de partage de vidéos;;;;;Site web permettant à ses utilisateurs de stocker des films et des vidéos, de les diffuser et de les partager avec d'autres utilisateurs.;website;
+photo-sharing-website;Site de partage d'images;;;;;Site web permettant à ses utilisateurs de stocker des images et des photographies, de les publier et de les partager avec d'autres utilisateurs.;website;
+web-presence;Site de présence;;;;;Site web de présentation minimal (carte de visite sur internet).;website;
+event-website;Site événementiel;;;;;Site web ou mini-site créé à l'occasion d'un événement passé ou à venir.;website;
+corporate-website;Site institutionnel;;;;;Site web dont le but principal est de promouvoir l'image d'une entreprise, d'une marque ou d'une organisation auprès du grand public, des médias, des clients potentiels, des fournisseurs, des actionnaires ou de tout autre partenaire potentiel.;website;
+online-shop;Site marchand;;;;;Site web dont l'activité principale est le commerce en ligne (e-commerce).;website;
+showcase-website;Site vitrine;;;;;Site web proposant des informations sur une entreprise, les produits et les services proposés (c'est en quelque sorte une plaquette commerciale sur internet).;website;
