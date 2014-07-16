@@ -35,7 +35,7 @@ namespace Docalist\Biblio\Type;
  * Types de périodiques :
  * - revue : périodique spécialisé dans un domaine précis
  *
- * - magasine : périodique, le plus souvent illustré, traitant de divers
+ * - magazine : périodique, le plus souvent illustré, traitant de divers
  *   sujets ou parfois spécialisé
  *
  * - journal : document qui recense par ordre chronologique ou thématique un
@@ -61,7 +61,7 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'table:genres-periodical'],
+        ['name' => 'genre', 'table' => 'thesaurus:genres'],
         ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation

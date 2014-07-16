@@ -111,7 +111,7 @@ return [
 
         // Type, Genre, Media
         ['name' => 'group', 'label' => 'Nature du document'],
-        ['name' => 'genre', 'table' => 'table:genres-meeting'],
+        ['name' => 'genre', 'table' => 'thesaurus:genres'],
         ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
