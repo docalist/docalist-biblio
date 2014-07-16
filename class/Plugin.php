@@ -256,9 +256,19 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'medias',
             'path' => $dir . 'medias.txt',
-            'label' => __("Supports de documents", 'docalist-biblio'),
+            'label' => __('Supports de documents', 'docalist-biblio'),
             'format' => 'thesaurus',
             'type' => 'medias',
+            'user' => false,
+        ]));
+
+        // Genres
+        $tableManager->register(new TableInfo([
+            'name' => 'genres',
+            'path' => $dir . 'genres.txt',
+            'label' => __('Genres de documents', 'docalist-biblio'),
+            'format' => 'thesaurus',
+            'type' => 'genres',
             'user' => false,
         ]));
 
@@ -266,7 +276,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'numbers',
             'path' => $dir . 'numbers.txt',
-            'label' => __("Types de numéros", 'docalist-biblio'),
+            'label' => __('Types de numéros', 'docalist-biblio'),
             'format' => 'table',
             'type' => 'numbers',
             'user' => false,
@@ -276,7 +286,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'extent',
             'path' => $dir . 'extent.txt',
-            'label' => __("Types de pagination", 'docalist-biblio'),
+            'label' => __('Types de pagination', 'docalist-biblio'),
             'format' => 'table',
             'type' => 'extent',
             'user' => false,
@@ -286,7 +296,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'format',
             'path' => $dir . 'format.txt',
-            'label' => __("Etiquettes de format", 'docalist-biblio'),
+            'label' => __('Etiquettes de format', 'docalist-biblio'),
             'format' => 'thesaurus',
             'type' => 'format',
             'user' => false,
@@ -296,7 +306,7 @@ class Plugin {
         $tableManager->register(new TableInfo([
             'name' => 'dates',
             'path' => $dir . 'dates.txt',
-            'label' => __("Types de dates", 'docalist-biblio'),
+            'label' => __('Types de dates', 'docalist-biblio'),
             'format' => 'table',
             'type' => 'dates',
             'user' => false,
