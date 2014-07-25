@@ -59,9 +59,6 @@ div.dbdesc{
         $delete = esc_url($this->url('DatabaseDelete', $dbindex));
         $listTypes = esc_url($this->url('TypesList', $dbindex));
 
-        $types = implode(', ', $database->typeNames());
-        $types === '' && $types = __('Aucun type défini pour cette base.', 'docalist-biblio');
-
         $count = wp_count_posts($database->postType())->publish;
         $listRefs = esc_url(admin_url('edit.php?post_type=' . $database->postType()));
         $nb++; ?>
