@@ -37,18 +37,18 @@ return [
     'fields' => [
 
         // Title, OtherTitle, Translation
-        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'group1', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'othertitle', 'table' => 'table:titles'],
         ['name' => 'translation', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
 
         // Author, Organisation
-        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'group2', 'label' => 'Auteurs'],
         ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'],
         ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
 
         // Date / Language / Pagination / Format
-        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'group3', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'extent', 'table' => 'table:extent'],
@@ -56,17 +56,17 @@ return [
         ['name' => 'number', 'table' => 'table:numbers'],
 
         // Topic / Abstract / Note
-        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'group4', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'table:topics'],
         ['name' => 'content', 'table' => 'table:content'],
 
         // Liens et relations
-        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'group5', 'label' => 'Liens et relations'],
         ['name' => 'link', 'table' => 'table:links'],
         ['name' => 'relation', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
-        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'group6', 'label' => 'Informations de gestion'],
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],

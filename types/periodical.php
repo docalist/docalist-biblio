@@ -60,45 +60,45 @@ return [
     'fields' => [
 
         // Type, Genre, Media
-        ['name' => 'group', 'label' => 'Nature du document'],
+        ['name' => 'group1', 'label' => 'Nature du document'],
         ['name' => 'genre', 'table' => 'thesaurus:genres'],
         ['name' => 'media', 'table' => 'thesaurus:medias'],
 
         // Title, OtherTitle, Translation
-        ['name' => 'group', 'label' => 'Titres'],
+        ['name' => 'group2', 'label' => 'Titres'],
         ['name' => 'title'],
         ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'othertitle', 'table' => 'table:titles'],
 
         // Author, Organisation
-        ['name' => 'group', 'label' => 'Auteurs'],
+        ['name' => 'group3', 'label' => 'Auteurs'],
         ['name' => 'author', 'table' => 'thesaurus:marc21-relators_fr', 'format' => 'fmt1'], // dir de pub, rédac chef, relations pub, conseil d'orientation, CS, comité de rédaction
         ['name' => 'organisation', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'], // exemple : asso auteur d'une revue
 
         // Date / Language / Pagination / Format
-        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'group4', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'language', 'table' => 'table:ISO-639-2_alpha3_EU_fr'],
         ['name' => 'extent', 'table' => 'table:extent'], // nombre moyen de pages par numéro
         ['name' => 'format', 'table' => 'thesaurus:format'], // taille, couleur,
 
         // Editor / Collection
-        ['name' => 'group', 'label' => 'Informations éditeur'],
+        ['name' => 'group5', 'label' => 'Informations éditeur'],
         ['name' => 'editor', 'table' => 'table:ISO-3166-1_alpha2_fr', 'table2' => 'thesaurus:marc21-relators_fr'],
         ['name' => 'collection'],
 
         // Topic / Abstract / Note
-        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'group6', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'table:topics'],
         ['name' => 'content', 'table' => 'table:content'],
 
         // Liens et relations
-        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'group7', 'label' => 'Liens et relations'],
         ['name' => 'link', 'table' => 'table:links'],
         ['name' => 'relation', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
-        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'group8', 'label' => 'Informations de gestion'],
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],

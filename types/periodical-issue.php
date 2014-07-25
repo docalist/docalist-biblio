@@ -32,29 +32,29 @@ return [
     'fields' => [
 
         // Title, OtherTitle, Translation
-        ['name' => 'group', 'label' => 'Numéro de périodique'],
+        ['name' => 'group1', 'label' => 'Numéro de périodique'],
         ['name' => 'number', 'table' => 'table:numbers'],
         ['name' => 'title'],
 
         // Date / Language / Pagination / Format
-        ['name' => 'group', 'label' => 'Informations bibliographiques'],
+        ['name' => 'group2', 'label' => 'Informations bibliographiques'],
         ['name' => 'date', 'table' => 'table:dates'],
         ['name' => 'edition'],
         ['name' => 'extent', 'table' => 'table:extent'],
         ['name' => 'format', 'table' => 'thesaurus:format'],
 
         // Topic / Abstract / Note
-        ['name' => 'group', 'label' => 'Indexation et résumé'],
+        ['name' => 'group3', 'label' => 'Indexation et résumé'],
         ['name' => 'topic', 'table' => 'table:topics'],
         ['name' => 'content', 'table' => 'table:content'],
 
         // Liens et relations
-        ['name' => 'group', 'label' => 'Liens et relations'],
+        ['name' => 'group4', 'label' => 'Liens et relations'],
         ['name' => 'link', 'table' => 'table:links'],
         ['name' => 'relation', 'table' => 'table:relations'],
 
         // Ref / Owner / Creation / Lastupdate
-        ['name' => 'group', 'label' => 'Informations de gestion'],
+        ['name' => 'group5', 'label' => 'Informations de gestion'],
         ['name' => 'type'],
         ['name' => 'ref'],
         ['name' => 'owner'],
