@@ -153,10 +153,9 @@ class AdminDatabases extends AdminPage {
      * Nouvelle base de données.
      */
     public function actionDatabaseAdd() {
-        $dbindex = count($this->settings->databases);
-        $this->settings->databases[$dbindex] = array();
-
-        return $this->actionDatabaseEdit($dbindex);
+        $name = ''; // n'existe pas déjà car on ne peut pas enregistrer une base avec un nom vide
+        $this->settings->databases[] = ['name' => $name];
+        return $this->actionDatabaseEdit($name);
     }
 
     /**
@@ -183,7 +182,7 @@ class AdminDatabases extends AdminPage {
                 $database->slug = $_POST['slug'];
 
                 $database->validate();
-                $this->settings->save();
+                $this->settings->refresh()->save();
 
                 // Met à jour les rewrite rules si le slug a changé
                 if ($oldSlug !== $database->slug) {
