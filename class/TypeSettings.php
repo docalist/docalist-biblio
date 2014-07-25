@@ -47,6 +47,7 @@ class TypeSettings extends AbstractEntity {
 
             'fields' => array(
                 'type' => 'Docalist\Biblio\FieldSettings*',
+                'key' => 'name',
                 'label' => __('Grille de saisie', 'docalist-biblio'),
                 'description' => __('Liste des champs et paramètres de chaque champ.', 'docalist-biblio'),
             ),
