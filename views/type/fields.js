@@ -57,10 +57,10 @@
      */
     $('.add-group').click(function() {
         var template = $('#group-template');
-        var lastGroup = parseInt(template.data('last-group'));
-        template.data('last-group', lastGroup + 1);
+        var number = $('.group').length + 1;
+        while ($('#group' + number).length) ++number;
         
-        var html = template.html().replace(/\{group-number\}/g, lastGroup);
+        var html = template.html().replace(/\{group-number\}/g, number);
         var group = $(html);
         
         last ? group.insertAfter(last) : group.appendTo($('#fields'));
