@@ -72,20 +72,7 @@ class FieldSettings extends AbstractEntity {
      * @return Fragment
      */
     public function editForm() {
-        static $lastGroup = 0;
-
-        $name = $this->name;
-        switch($name) {
-            case 'group':
-                $id = $name . ++$lastGroup;
-                break;
-            case '{group-number}':
-                $id = $name;
-                break;
-            default:
-                $id = $name;
-                break;
-        }
+        $name = $id = $this->name;
 
         // Champs communs
         $form = new Fragment($id);
@@ -99,6 +86,9 @@ class FieldSettings extends AbstractEntity {
              ->attribute('class', 'description large-text')
              ->attribute('rows', 2);
 
+        if (0 === strncmp($name, 'group', 5)) {
+            $name = 'group'; // pour que le test marche dans le switch
+        }
         switch ($name) {
             case 'genre':
                 $form->select('table')->options($this->tables('genres'));
