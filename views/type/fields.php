@@ -36,7 +36,7 @@ wp_enqueue_script(
     'docalist-biblio-type-fields',
     plugins_url('docalist-biblio/views/type/fields.js'),
     array( 'jquery-ui-sortable'),
-    '20131026',
+    '20140725',
     true
 );
 
@@ -70,23 +70,21 @@ wp_enqueue_script(
         <?php buttons() ?>
         <ul id="fields" class="metabox-holder">
             <?php
-                $lastGroup = 0;
-                foreach($type->fields as $field) makeBox($field, $lastGroup);
+                foreach($type->fields as $field) makeBox($field);
             ?>
         </ul>
         <?php buttons() ?>
     </form>
 
     <!-- Template utilisé pour créer de nouveaux groupes. -->
-    <script type="text/html" id="group-template" data-last-group="<?= ++$lastGroup ?>">
+    <script type="text/html" id="group-template">
         <?php
             $field = new FieldSettings([
-                'name' => 'group',
+                'name' => 'group{group-number}',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
             ]);
 
-            $lastGroup = '{group-number}';
-            makeBox($field, $lastGroup, false)
+            makeBox($field, false)
         ?>
     </script>
 </div>
@@ -98,11 +96,11 @@ wp_enqueue_script(
  * @param FieldSettings $field
  * @param boolean $closed
  */
-function makeBox(FieldSettings $field, & $lastGroup, $closed = true) { ?>
-    <li class="postbox <?= $closed ? 'closed' : '' ?> <?= $field->name ?>">
+function makeBox(FieldSettings $field, $closed = true) { ?>
+    <li id="<?= $field->name ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= strncmp($field->name, 'group', 5) ? $field->name : 'group' ?>">
         <div class="handlediv"></div>
         <h3><span><?= $field->label ?: $field->name ?></span></h3>
-        <div class="inside"><?php fieldForm($field, $lastGroup) ?></div>
+        <div class="inside"><?php fieldForm($field) ?></div>
     </li><?php
 }
 
@@ -116,7 +114,7 @@ function makeBox(FieldSettings $field, & $lastGroup, $closed = true) { ?>
  *
  * @param FieldSettings $field Le champ à éditer.
  */
-function fieldForm(FieldSettings $field, & $lastGroup) {
+function fieldForm(FieldSettings $field) {
     // Crée le formulaire permettant d'éditer les paramètres de ce champ
     $form = $field->editForm();
 
