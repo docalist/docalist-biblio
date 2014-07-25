@@ -291,10 +291,10 @@ class ListReferences{
 
         $cache = $wpdb->get_results($sql);
         if ($cache) {
-            $types = $this->database->settings()->typeNames();
+            $types = $this->database->settings()->types;
             foreach ($cache as $type) {
                 list($dclref, $code) = explode('/', $type->post_mime_type);
-                $label = isset($types[$code]) ? $types[$code] : $code;
+                $label = isset($types[$code]) ? $types[$code]->label : $code;
 
                 $type->type = $code;
                 $type->label = $label;

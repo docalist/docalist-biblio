@@ -107,14 +107,4 @@ class DatabaseSettings extends AbstractEntity {
     private function now() {
         return new DateTime;
     }
-
-    public function typeNames() {
-        $types = array();
-        foreach($this->types as $type) {
-            /* @var $type TypeSettings */
-            $types[$type->name] = $type->label;
-        }
-
-        return $types;
-    }
 }

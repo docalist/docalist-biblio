@@ -260,7 +260,7 @@ class AdminDatabases extends AdminPage {
         $types = apply_filters('docalist_biblio_get_types', array()); // code => defaults (array, path ou closure)
 
         // Récupère la liste des types qui existent déjà dans la base
-        $selected = $database->typeNames();
+        $selected = $database->types;
 
         // Ecran "choix du type"
         if (empty($name)) {
@@ -309,7 +309,6 @@ class AdminDatabases extends AdminPage {
             // Ajoute le type
             $defaults = apply_filters('docalist_biblio_get_type', $name, false);
             $database->types[] = $defaults;
-            $selected[$name] = true;
         }
 
         $this->settings->save();
