@@ -149,8 +149,9 @@ class EditReference {
      */
     protected function create(){
         // S'il n'y a qu'un seul type de notices, inutile de demander à l'utilisateur
-        if (empty($_REQUEST['ref_type']) && count($this->database->settings()->types) === 1) {
-            $_REQUEST['ref_type'] = $this->database->settings()->types[0]->name;
+        $types = $this->database->settings()->types;
+        if (empty($_REQUEST['ref_type']) && count($types) === 1) {
+            $_REQUEST['ref_type'] = $types->first()->name;
         }
 
         // On connaît le type de notice à créer
@@ -413,7 +414,7 @@ class EditReference {
         $box = new Fragment();
         foreach($fields as $field) {
             // Nouvelle métabox. Sauve la courante si non vide et crée une nouvelle
-            if ($field->name === 'group') {
+            if (0 === strncmp($field->name, 'group', 5)) {
                 if (count($box->fields()) !== 0) {
                     $id = $type . '-' . $box->fields()[0]->name();
                     $metaboxes[$id] = $box;
