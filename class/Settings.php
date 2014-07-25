@@ -27,6 +27,7 @@ class Settings extends AbstractSettingsEntity
         return array(
             'databases' => array(
                 'type' => 'DatabaseSettings*',
+                'key' => 'name',
                 'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
             ),
         );
