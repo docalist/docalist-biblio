@@ -26,7 +26,7 @@ class Settings extends AbstractSettingsEntity
     protected function loadSchema() {
         return array(
             'databases' => array(
-                'type' => 'DatabaseSettings*',
+                'type' => 'Docalist\Biblio\DatabaseSettings*',
                 'key' => 'name',
                 'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
             ),
