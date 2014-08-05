@@ -54,7 +54,7 @@ class DatabaseSettings extends AbstractEntity {
             ),
 
             'types' => array(
-                'type' => 'TypeSettings*',
+                'type' => 'Docalist\Biblio\TypeSettings*',
                 'key' => 'name',
                 'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
             ),
