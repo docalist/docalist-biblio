@@ -16,8 +16,7 @@ namespace Docalist\Biblio;
 
 use Docalist\Biblio\Entity\Reference;
 use Docalist\AdminPage;
-use Docalist\Data\Schema\Schema;
-use Docalist\Data\Schema\Field;
+use Docalist\Schema\Field;
 use Docalist\Utils;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
