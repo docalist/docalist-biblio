@@ -14,44 +14,45 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Paramètres d'un type de référence.
  *
  * Un type est essentiellement une liste de champs
  *
- * @property string $name Identifiant du type
- * @property string $label Libellé du type
- * @property string $description Description du type
+ * @property String $name Identifiant du type
+ * @property String $label Libellé du type
+ * @property String $description Description du type
  * @property FieldSettings[] $fields Liste des champs de ce type
  */
-class TypeSettings extends AbstractEntity {
-    protected function loadSchema() {
+class TypeSettings extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __('Nom', 'docalist-biblio'),
                 'description' => __('Doit être un type enregistré (article, book, periodical, website, etc.)', 'docalist-biblio'),
-            ),
+            ],
 
-            'label' => array(
+            'label' => [
                 'label' => __('Libellé', 'docalist-biblio'),
                 'description' => __('Libellé utilisé pour désigner ce type', 'docalist-biblio'),
-            ),
+            ],
 
-            'description' => array(
+            'description' => [
                 'label' => __('Description', 'docalist-biblio'),
                 'description' => __('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'),
-            ),
+            ],
 
-            'fields' => array(
-                'type' => 'Docalist\Biblio\FieldSettings*',
+            'fields' => [
+                'type' => 'FieldSettings*',
                 'key' => 'name',
                 'label' => __('Grille de saisie', 'docalist-biblio'),
                 'description' => __('Liste des champs et paramètres de chaque champ.', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }
