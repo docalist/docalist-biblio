@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,7 +14,9 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
+use Docalist\Type\Integer;
 use DateTime;
 use Exception;
 
@@ -23,47 +25,47 @@ use Exception;
  *
  * Une base est essentiellement une liste de types.
  *
- * @property string $name Identifiant de la base
- * @property string $label Libellé de la base
- * @property string $slug Slug de la base de données
+ * @property String $name Identifiant de la base
+ * @property String $label Libellé de la base
+ * @property String $slug Slug de la base de données
  * @property TypeSettings[] $types Types de notices gérés dans cette base
- * @property string $creation Date de création de la base
+ * @property Integer $creation Date de création de la base
  */
-class DatabaseSettings extends AbstractEntity {
-    protected function loadSchema() {
+class DatabaseSettings extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __('Nom de la base de données', 'docalist-biblio'),
                 'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
-            ),
+            ],
 
-            'slug' => array(
+            'slug' => [
                 'label' => __('Slug de la base', 'docalist-biblio'),
                 'description' => __("Votre base sera accessible à l'adresse <code>http://votre-site/<b>slug</b></code> et les références auront une url de la forme <code>http://votre-site/<b>slug</b>/ref</code>. Au moins un caractère, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
-            ),
+            ],
 
-            'label' => array(
+            'label' => [
                 'label' => __('Libellé à afficher', 'docalist-biblio'),
                 'description' => __('Libellé affiché dans les menus et dans les pages du back-office.', 'docalist-biblio'),
-            ),
+            ],
 
-            'description' => array(
+            'description' => [
                 'label' => __('Description, notes, remarques', 'docalist-biblio'),
                 'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
-            ),
+            ],
 
-            'types' => array(
-                'type' => 'Docalist\Biblio\TypeSettings*',
+            'types' => [
+                'type' => 'TypeSettings*',
                 'key' => 'name',
                 'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
-            ),
+            ],
 
-            'creation' => array(
+            'creation' => [
+                'type' => 'int',
                 'label' => __('Date/heure de création de la base', 'docalist-biblio'),
-                //'default' => array($this, 'now')
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 
@@ -77,22 +79,22 @@ class DatabaseSettings extends AbstractEntity {
      * @throws Exception
      */
     public function validate() {
-        if (!preg_match('~^[a-z-]{1,14}$~', $this->name)) {
+        if (!preg_match('~^[a-z-]{1,14}$~', $this->name())) {
             throw new Exception(__("Le nom de la base est invalide.", 'docalist-biblio'));
         }
 
-        if (! preg_match('~^[a-z-]+$~', $this->slug)) {
+        if (! preg_match('~^[a-z-]+$~', $this->slug())) {
             throw new Exception(__('Le slug de la base est incorrect.', 'docalist-biblio'));
         }
 
-        $this->label = strip_tags($this->label);
-        empty($this->label) && $this->label = $this->name;
+        $this->label = strip_tags($this->label());
+        $this->label() === '' && $this->label = $this->name;
 
         return true;
     }
 
     public function postType() {
-        return 'dclref' . $this->name;
+        return 'dclref' . $this->name();
     }
 
     /**
