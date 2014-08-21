@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,7 +14,10 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
+use Docalist\Type\Boolean;
+
 use Docalist\Forms\Fragment;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
@@ -22,48 +25,47 @@ use Docalist\Table\TableInfo;
 /**
  * Un champ d'une base.
  *
- * @property string     $name           Nom du champ
- * @property string     $label          Libellé du champ
- * @property string     $description    Description du champ
- * @property string[]   $table          Nom des tables d'autorité associées au champ
- * @property string     $format         Format d'affichage
- * @property bool       $split          Eclater le champ
+ * @property String     $name           Nom du champ
+ * @property String     $label          Libellé du champ
+ * @property String     $description    Description du champ
+ * @property String[]   $table          Nom des tables d'autorité associées au champ
+ * @property String     $format         Format d'affichage
+ * @property Boolean    $split          Eclater le champ
  */
-class FieldSettings extends AbstractEntity {
-
-    protected function loadSchema() {
+class FieldSettings extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __('Nom', 'docalist-biblio'),
                 'description' => __("Nom du champ", 'docalist-biblio'),
-            ),
-            'label' => array(
+            ],
+            'label' => [
                 'label' => __('Libellé', 'docalist-biblio'),
                 'description' => __("Libellé du champ", 'docalist-biblio'),
-            ),
-            'description' => array(
+            ],
+            'description' => [
                 'label' => __('Description', 'docalist-biblio'),
                 'description' => __("Description du champ", 'docalist-biblio'),
-            ),
-            'table' => array(
+            ],
+            'table' => [
                 'label' => __('Table', 'docalist-biblio'),
                 'description' => __('Table d\'autorité associée au champ.', 'docalist-biblio'),
-            ),
-            'table2' => array(
+            ],
+            'table2' => [
                 'label' => __('Table2', 'docalist-biblio'),
                 'description' => __('Seconde table d\'autorité associée.', 'docalist-biblio'),
-            ),
-            'format' => array(
+            ],
+            'format' => [
                 'label' => __('Format d\'affichage', 'docalist-biblio'),
                 'description' => __('Pour certains champs (ex auteur), choix du format d\'affichage', 'docalist-biblio'),
-            ),
-            'split' => array(
+            ],
+            'split' => [
                 'type' => 'bool',
                 'label' => __('Split', 'docalist-biblio'),
                 'description' => __('Pour les champs "combo" (ex. othertitle ou topics), éclater le champ en plusieurs champs ?', 'docalist-biblio'),
-            )
-        );
+            ]
+        ];
         // @formatter:on
     }
 
@@ -72,7 +74,7 @@ class FieldSettings extends AbstractEntity {
      * @return Fragment
      */
     public function editForm() {
-        $name = $id = $this->name;
+        $name = $id = $this->name();
 
         // Champs communs
         $form = new Fragment($id);
@@ -152,8 +154,8 @@ class FieldSettings extends AbstractEntity {
 
         /* @var $tableInfo TableInfo */
         foreach($tableManager->info(null, $type) as $name => $tableInfo) {
-            $key = $tableInfo->format . ':' . $name;
-            $tables[$key] = sprintf('%s (%s)', $tableInfo->label, $name);
+            $key = $tableInfo->format() . ':' . $name;
+            $tables[$key] = sprintf('%s (%s)', $tableInfo->label(), $name);
         }
 
         return $tables;
