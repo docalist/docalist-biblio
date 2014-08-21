@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,22 +14,23 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Data\Entity\AbstractSettingsEntity;
+use Docalist\Type\Settings as TypeSettings;
 
 /**
  * Config de Docalist Biblio.
  *
- * @property Docalist\Biblio\DatabaseSettings[] $databases Liste des bases.
+ * @property DatabaseSettings[] $databases Liste des bases.
  */
-class Settings extends AbstractSettingsEntity
-{
-    protected function loadSchema() {
-        return array(
-            'databases' => array(
-                'type' => 'Docalist\Biblio\DatabaseSettings*',
+class Settings extends TypeSettings {
+    protected $id = 'docalist-biblio-settings';
+
+    static protected function loadSchema() {
+        return [
+            'databases' => [
+                'type' => 'DatabaseSettings*',
                 'key' => 'name',
                 'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
     }
 }
