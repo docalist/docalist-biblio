@@ -14,50 +14,50 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Editeur
  *
- * @property string $name
- * @property string $city
- * @property string $country
- * @property string $role
+ * @property String $name
+ * @property String $city
+ * @property String $country
+ * @property String $role
  */
-class Editor extends AbstractEntity {
-
-    protected function loadSchema() {
+class Editor extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __('Nom', 'docalist-biblio'),
                 'description' => __("Nom de l'éditeur", 'docalist-biblio'),
-            ),
-            'city' => array(
+            ],
+            'city' => [
                 'label' => __('Ville', 'docalist-biblio'),
                 'description' => __("Ville de l'éditeur", 'docalist-biblio'),
-            ),
-            'country' => array(
+            ],
+            'country' => [
                 'label' => __('Pays', 'docalist-biblio'),
                 'description' => __("Pays d'édition", 'docalist-biblio'),
-            ),
-            'role' => array(
+            ],
+            'role' => [
                 'label' => __('Rôle', 'docalist-biblio'),
                 'description' => __('Fonction', 'docalist-biblio'),
-            )
-        );
+            ]
+        ];
         // @formatter:on
     }
 
     public function __toString() {
-        $result = $this->name;
+        $result = $this->name();
 
-        if ($this->city || $this->country) {
+        if (isset($this->city) || isset($this->country)) {
             $result .= ' (';
-            $this->city && $result .= $this->city;
-            if ($this->country) {
-                $this->city && $result .= ', ';
-                $result .= $this->country;
+            isset($this->city) && $result .= $this->city();
+            if (isset($this->country)) {
+                isset($this->city) && $result .= ', ';
+                $result .= $this->country();
             }
             $result .= ')';
         }

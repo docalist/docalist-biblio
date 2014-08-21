@@ -14,28 +14,28 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Collection et numéro au sein de la collection.
  *
- * @property string $name
- * @property string $number
+ * @property String $name
+ * @property String $number
  */
-class Collection extends AbstractEntity {
-
-    protected function loadSchema() {
+class Collection extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __("Nom", 'docalist-biblio'),
                 'description' => __('Nom de la collection ou de la sous-collection.', 'docalist-biblio'),
-            ),
-            'number' => array(
+            ],
+            'number' => [
                 'label' => __('Numéro', 'docalist-biblio'),
                 'description' => __('Numéro au sein de la collection ou de la sous-collection.', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

@@ -14,26 +14,26 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Une traduction du titre original du document.
  *
- * @property string $language
- * @property string $title
+ * @property String $language
+ * @property String $title
  */
-class Translation extends AbstractEntity {
-
-    protected function loadSchema() {
+class Translation extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'language' => array(
+        return [
+            'language' => [
                 'label' => __('Langue', 'docalist-biblio'),
-            ),
-            'title' => array(
+            ],
+            'title' => [
                 'label' => __('Titre traduit', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

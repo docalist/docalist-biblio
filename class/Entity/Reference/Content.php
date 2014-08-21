@@ -14,28 +14,28 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Content.
  *
- * @property string $type
- * @property string $value
+ * @property String $type
+ * @property String $value
  */
-class Content extends AbstractEntity {
-
-    protected function loadSchema() {
+class Content extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type', 'docalist-biblio'),
 //                 'description' => __('Nature de la note', 'docalist-biblio'),
-            ),
-            'value' => array(
+            ],
+            'value' => [
                 'label' => __('Contenu', 'docalist-biblio'),
                 'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

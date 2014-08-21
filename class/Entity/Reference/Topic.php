@@ -14,33 +14,33 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Une liste de mots-clés d'un certain type.
  *
- * @property string $type
- * @property string[] $terms
+ * @property String $type
+ * @property String[] $terms
  */
-class Topic extends AbstractEntity {
-
-    protected function loadSchema() {
+class Topic extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type', 'docalist-biblio'),
 //                 'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
-            ),
-            'term' => array( // @todo : au pluriel ?
+            ],
+            'term' => [ // @todo : au pluriel ?
                 'repeatable' => true,
                 'label' => __('Termes', 'docalist-biblio'),
 //                 'description' => __('Liste des mots-clés.', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 
     public function __toString() {
-        return $this->type . ' : ' . implode(', ', $this->term->toArray());
+        return $this->type() . ' : ' . implode(', ', $this->term());
     }
 }

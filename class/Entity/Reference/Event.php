@@ -14,38 +14,38 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Description d'un événement (colloque, réunion, soutenance, etc.)
  *
- * @property string $title
- * @property string $date
- * @property string $place
- * @property string $number
+ * @property String $title
+ * @property String $date
+ * @property String $place
+ * @property String $number
  */
-class Event extends AbstractEntity {
-
-    protected function loadSchema() {
+class Event extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'title' => array(
+        return [
+            'title' => [
                 'label' => __('Titre', 'docalist-biblio'),
                 'description' => __("Titre du congrès, nom de la réunion, etc.", 'docalist-biblio'),
-            ),
-            'date' => array(
+            ],
+            'date' => [
                 'label' => __('Date', 'docalist-biblio'),
                 'description' => __("Date de l'évènement.", 'docalist-biblio'),
-            ),
-            'place' => array(
+            ],
+            'place' => [
                 'label' => __('Lieu', 'docalist-biblio'),
                 'description' => __("Lieu de l'événement (ville et/ou pays).", 'docalist-biblio'),
-            ),
-            'number' => array(
+            ],
+            'number' => [
                 'label' => __('Numéro', 'docalist-biblio'),
                 'description' => __("Numéro éventuel associé à l'évènement.", 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

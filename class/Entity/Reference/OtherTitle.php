@@ -14,26 +14,26 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Autre titre.
  *
- * @property string $type
- * @property string $value
+ * @property String $type
+ * @property String $value
  */
-class OtherTitle extends AbstractEntity {
-
-    protected function loadSchema() {
+class OtherTitle extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type de titre', 'docalist-biblio'),
-            ),
-            'value' => array(
+            ],
+            'value' => [
                 'label' => __('Autre titre', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

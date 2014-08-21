@@ -14,27 +14,27 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Date.
  *
- * @property string $type
- * @property string $value
+ * @property String $type
+ * @property String $value
  */
-class Date extends AbstractEntity {
-
-    protected function loadSchema() {
+class Date extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type de date', 'docalist-biblio'),
 //                 'description' => __('Date', 'docalist-biblio'),
-            ),
-            'value' => array(
+            ],
+            'value' => [
                 'label' => __('Date', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }

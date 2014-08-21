@@ -14,29 +14,30 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
+use Docalist\Type\Integer;
 
 /**
  * Relation
  *
- * @property string $type
- * @property long[] $ref
+ * @property String $type
+ * @property Integer[] $ref
  */
-class Relation extends AbstractEntity {
-
-    protected function loadSchema() {
+class Relation extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type', 'docalist-biblio'),
                 'description' => __('Type de relation', 'docalist-biblio'),
-            ),
-            'ref' => array(
-                'type' => 'long*',
+            ],
+            'ref' => [
+                'type' => 'int*',
                 'label' => __('Notices liées', 'docalist-biblio'),
                 'description' => __('Numéro de référence des notices (Ref)', 'docalist-biblio'),
-            )
-        );
+            ]
+        ];
         // @formatter:on
     }
 }

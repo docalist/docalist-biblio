@@ -14,65 +14,65 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Organisme.
  *
- * @property string $name
- * @property string $acronym
- * @property string $city
- * @property string $country
- * @property string $role
+ * @property String $name
+ * @property String $acronym
+ * @property String $city
+ * @property String $country
+ * @property String $role
  */
-class Organisation extends AbstractEntity {
-
-    protected function loadSchema() {
+class Organisation extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'label' => __('Nom', 'docalist-biblio'),
                 'description' => __("Nom de l'organisme", 'docalist-biblio'),
-            ),
-            'acronym' => array(
+            ],
+            'acronym' => [
                 'label' => __('Sigle', 'docalist-biblio'),
                 'description' => __("Sigle ou acronyme", 'docalist-biblio'),
-            ),
-            'city' => array(
+            ],
+            'city' => [
                 'label' => __('Ville', 'docalist-biblio'),
                 'description' => __('Ville du siège social', 'docalist-biblio'),
-            ),
-            'country' => array(
+            ],
+            'country' => [
                 'label' => __('Pays', 'docalist-biblio'),
                 'description' => __('Pays du siège social', 'docalist-biblio'),
-            ),
-            'role' => array(
+            ],
+            'role' => [
                 'label' => __('Rôle', 'docalist-biblio'),
                 'description' => __('Fonction', 'docalist-biblio'),
-            )
-        );
+            ]
+        ];
         // @formatter:on
     }
 
     public function __toString() {
         $result = $this->name;
 
-        if ($this->acronym) {
+        if (isset($this->acronym)) {
             $result .= ' - ';
-            $result .= $this->acronym;
+            $result .= $this->acronym();
         }
 
-        if ($this->city || $this->country) {
+        if (isset($this->city) || isset($this->country)) {
             $result .= ' (';
-            $this->city && $result .= $this->city;
-            if ($this->country) {
-                $this->city && $result .= ', ';
-                $result .= $this->country;
+            isset($this->city) && $result .= $this->city();
+            if (isset($this->country)) {
+                isset($this->city) && $result .= ', ';
+                $result .= $this->country();
             }
             $result .= ')';
         }
 
-        $this->role && $result .= ' / ' . $this->role;
+        isset($this->role) && $result .= ' / ' . $this->role();
 
         return $result;
     }

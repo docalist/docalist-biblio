@@ -14,28 +14,28 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Data\Entity\AbstractEntity;
+use Docalist\Type\Object;
+use Docalist\Type\String;
 
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
  *
- * @property string $type
- * @property string $value
+ * @property String $type
+ * @property String $value
  */
-class Number extends AbstractEntity {
-
-    protected function loadSchema() {
+class Number extends Object {
+    static protected function loadSchema() {
         // @formatter:off
-        return array(
-            'type' => array(
+        return [
+            'type' => [
                 'label' => __('Type', 'docalist-biblio'),
                 'description' => __('Type de numéro', 'docalist-biblio'),
-            ),
-            'value' => array(
+            ],
+            'value' => [
                 'label' => __('Numéro', 'docalist-biblio'),
                 'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
-            ),
-        );
+            ],
+        ];
         // @formatter:on
     }
 }
