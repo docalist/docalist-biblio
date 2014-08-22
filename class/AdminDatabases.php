@@ -83,7 +83,7 @@ class AdminDatabases extends AdminPage {
         }
 
         $title = __('Index de base de données invalide', 'docalist-biblio');
-        $msg = __('La base %d n\'existe pas.', 'docalist-biblio');
+        $msg = __('La base <b>%s</b> n\'existe pas.', 'docalist-biblio');
         wp_die(sprintf($msg, $dbindex), $title);
     }
 
@@ -102,8 +102,11 @@ class AdminDatabases extends AdminPage {
         }
 
         $title = __('Index de type invalide', 'docalist-biblio');
-        $msg = __('Le type de notices %d n\'existe pas.', 'docalist-biblio');
-        wp_die(sprintf($msg, $typeindex), $title);
+        $msg = __(
+            'Le type de notices <b>%s</b> n\'existe pas dans la base <b>%s</b>.',
+            'docalist-biblio'
+        );
+        wp_die(sprintf($msg, $typeindex, $dbindex), $title);
     }
 
     /**
@@ -170,7 +173,7 @@ class AdminDatabases extends AdminPage {
         // Requête POST : enregistre les paramètres de la base
         $error = '';
         if ($this->isPost()) {
-            $oldSlug = $database->slug;
+            $oldSlug = $database->slug();
 
             // TODO: supprimer sequences si le nom a changé ?
             // ou plutôt : renommer ?
@@ -182,10 +185,10 @@ class AdminDatabases extends AdminPage {
                 $database->slug = $_POST['slug'];
 
                 $database->validate();
-                $this->settings->refresh()->save();
+                $this->settings->save(); // refreshKeys
 
                 // Met à jour les rewrite rules si le slug a changé
-                if ($oldSlug !== $database->slug) {
+                if ($oldSlug !== $database->slug()) {
                     return $this->redirect($this->url('RewriteRules'), 303);
                 }
 
@@ -216,8 +219,12 @@ class AdminDatabases extends AdminPage {
 
         // Demande confirmation
         if (! $confirm) {
+            $msg = __(
+                'La base de données <strong>%s (%s)</strong> va être supprimée.',
+                'docalist-biblio'
+            );
             return $this->confirm(
-                sprintf(__('La base de données <strong>%s (%s)</strong> va être supprimée.', 'docalist-biblio'), $database->label, $database->slug),
+                sprintf($msg, $database->label(), $database->slug()),
                 __('Supprimer une base', 'docalist-biblio')
             );
         }
@@ -225,7 +232,9 @@ class AdminDatabases extends AdminPage {
         // Supprime la base
         unset($this->settings->databases[$dbindex]);
         $this->settings->save();
-//TODO : supprimer séquences
+
+        //TODO : supprimer séquences
+
         // Met à jour les rewrite rules
         return $this->redirect($this->url('RewriteRules'), 303);
     }
@@ -257,7 +266,7 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Récupère la liste des types existants
-        $types = apply_filters('docalist_biblio_get_types', array()); // code => defaults (array, path ou closure)
+        $types = apply_filters('docalist_biblio_get_types', array());
 
         // Récupère la liste des types qui existent déjà dans la base
         $selected = $database->types;
@@ -357,8 +366,14 @@ class AdminDatabases extends AdminPage {
 
         // Demande confirmation
         if (! $confirm) {
+            $msg = __(
+                'Le type <b>%s</b> va être supprimé de la base <b>%s</b>.
+                Tous les paramètres de ce type (propriétés, grille de saisie...)
+                vont être perdus.',
+                'docalist-biblio'
+            );
             return $this->confirm(
-                sprintf(__('Le type <strong>%s</strong> va être supprimé de la base <strong>%s</strong>. Tous les paramètres de ce type (propriétés, grille de saisie...) vont être perdus.', 'docalist-biblio'), $type->label, $database->label),
+                sprintf($msg, $type->label(), $database->label()),
                 __('Supprimer un type', 'docalist-biblio')
             );
         }
@@ -389,6 +404,32 @@ class AdminDatabases extends AdminPage {
         }
 
         return $this->view('docalist-biblio:type/fields', [
+            'dbindex' => $dbindex,
+            'typeindex' => $typeindex,
+            'database' => $database,
+            'type' => $type,
+        ]);
+    }
+
+    /**
+     * Modifie un format d'affichage
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     */
+    public function actionTypeDisplay($dbindex, $typeindex) {
+        $database = $this->database($dbindex);
+        $type = $this->type($dbindex, $typeindex);
+
+        if ($this->isPost()) {
+            die('isPost');
+//             $type->fields = wp_unslash($_POST);
+//             $this->settings->save();
+
+//             return $this->redirect($this->url('TypesList', $dbindex), 303);
+        }
+
+        return $this->view('docalist-biblio:type/display', [
             'dbindex' => $dbindex,
             'typeindex' => $typeindex,
             'database' => $database,
