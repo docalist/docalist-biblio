@@ -308,7 +308,7 @@ class Database extends PostTypeRepository {
 
         // Signale à docalist-search que cette base est indexable
         add_filter('docalist_search_get_types', function ($types) use ($type) {
-            $types[$type] = $this->settings->label;
+            $types[$type] = $this->settings->label();
 
             return $types;
         });
@@ -576,7 +576,7 @@ class Database extends PostTypeRepository {
      * @return string
      */
     public function label() {
-        return $this->settings->label;
+        return $this->settings->label();
     }
 
     /**
