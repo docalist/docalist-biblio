@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -57,7 +57,7 @@ wp_enqueue_script(
 
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - grille de saisie "%s"', 'docalist-biblio'), $database->label, $type->label) ?></h2>
+    <h2><?= sprintf(__('%s - grille de saisie "%s"', 'docalist-biblio'), $database->label(), $type->label()) ?></h2>
 
     <p class="description">
         <?= __('L\'écran ci-dessous vous permet de personnaliser la grille de saisie.', 'docalist-biblio') ?>
@@ -97,9 +97,9 @@ wp_enqueue_script(
  * @param boolean $closed
  */
 function makeBox(FieldSettings $field, $closed = true) { ?>
-    <li id="<?= $field->name ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= strncmp($field->name, 'group', 5) ? $field->name : 'group' ?>">
+    <li id="<?= $field->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= strncmp($field->name(), 'group', 5) ? $field->name() : 'group' ?>">
         <div class="handlediv"></div>
-        <h3><span><?= $field->label ?: $field->name ?></span></h3>
+        <h3><span><?= $field->label() ?: $field->name() ?></span></h3>
         <div class="inside"><?php fieldForm($field) ?></div>
     </li><?php
 }
