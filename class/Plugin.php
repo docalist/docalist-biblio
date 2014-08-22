@@ -43,7 +43,7 @@ class Plugin {
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
 
         // Charge la configuration du plugin
-        $this->settings = new Settings('docalist-biblio');
+        $this->settings = new Settings(docalist('settings-repository'));
 
         add_action('init', function() {
 
