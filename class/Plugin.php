@@ -109,7 +109,7 @@ class Plugin {
 
             // Closure
             elseif (is_callable($defaults)) {
-                $defaults = $defaults($name);
+                $defaults = $defaults($type);
             }
 
             return $instantiate ? new TypeSettings($defaults) : $defaults;
