@@ -15,9 +15,9 @@
 namespace Docalist\Biblio;
 
 use Docalist\Biblio\Entity\Reference;
-use Docalist\Data\Repository\PostTypeRepository;
-use Docalist\Data\Entity\EntityInterface;
+use Docalist\Repository\PostTypeRepository;
 use Docalist\Search\Indexer;
+use Exception;
 
 /**
  * Une base de données documentaire.
@@ -43,7 +43,7 @@ class Database extends PostTypeRepository {
         'post_parent'           => 'parent',
      // 'guid'                  => '',
      // 'menu_order'            => '',
-     // 'post_type'             => '',
+        'post_type'             => 'posttype',
      // 'post_mime_type'        => 'type',
      // 'comment_count'         => '',
     ];
@@ -61,7 +61,7 @@ class Database extends PostTypeRepository {
      */
     public function __construct(DatabaseSettings $settings) {
         // Construit le dépôt
-        parent::__construct('Docalist\Biblio\Entity\Reference', $settings->postType());
+        parent::__construct($settings->postType(), 'Docalist\Biblio\Entity\Reference');
 
         // Stocke nos paramètres
         $this->settings = $settings;
@@ -77,7 +77,7 @@ class Database extends PostTypeRepository {
 
         // Comme on stocke les données dans post_excerpt, on doit garantir qu'il n'est jamais modifié (autosave, heartbeat, etc.)
         global $pagenow, $action;
-        if ($pagenow === 'admin-ajax.php' && $action='heartbeat') {
+        if ($pagenow === 'admin-ajax.php' && $action === 'heartbeat') {
             add_filter('wp_insert_post_data', function(array $data) {
                 if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE
                     && isset($_POST['data']['wp_autosave']['post_type'])
@@ -105,6 +105,84 @@ class Database extends PostTypeRepository {
             new EditReference($this);
             new ImportPage($this);
         });
+
+        add_filter('get_the_excerpt', function($content) {
+            global $post;
+
+            // Vérifie que c'est une de nos notices
+            if ($post->post_type !== $this->postType) {
+                return $content;
+            }
+
+            // Formatte la notice
+            return $this->render('excerpt');
+        }, 10);
+
+        add_filter('the_content', function($content) {
+            global $post;
+
+            // Vérifie que c'est une de nos notices
+            if ($post->post_type !== $this->postType) {
+                return $content;
+            }
+
+            // Formatte la notice
+            return $this->render('content');
+        });
+    }
+
+    /**
+     * Affiche une notice.
+     *
+     * @param string $format Nom du format d'affichage (correspond au nom de la
+     * vue qui sera utilisée : docalist-biblio:format/$format).
+     * @param null|int|Reference $ref La notice à formatter.
+     *
+     * @throws Exception Si Ref invalide ou erreur dans la vue
+     */
+    protected function display($format = 'content', $ref = null) {
+        // Aucune ref passée en paramètre
+        if (is_null($ref)) {
+            global $post;
+
+            $ref = $this->load($post->ID);
+        }
+
+        // On nous a passé un numéro de référence
+        elseif (is_scalar($ref)) {
+            $ref = $this->load($ref);
+        }
+
+        // On nous a passé un objet Reference
+        elseif ($ref instanceof Reference) {
+            // ok
+        }
+
+        // Erreur
+        else {
+            throw new Exception('invalid ref');
+        }
+
+        // Exécute la vue
+        $view = "docalist-biblio:format/$format";
+        docalist('views')->display($view, ['this' => $this, 'ref' => $ref]);
+    }
+
+    /**
+     * Formatte une notice.
+     *
+     * @param string $format Nom du format d'affichage (correspond au nom de la
+     * vue qui sera utilisée : docalist-biblio:format/$format).
+     * @param null|int|Reference $ref La notice à formatter.
+     *
+     * @return string La notice formattée.
+     *
+     * @throws Exception Si Ref invalide ou erreur dans la vue
+     */
+    protected function render($format = 'content', $ref = null) {
+        ob_start();
+        $this->display($format, $ref);
+        return ob_get_clean();
     }
 
     /**
@@ -138,7 +216,7 @@ class Database extends PostTypeRepository {
 
         // @formatter:off
         register_post_type($this->postType(), array(
-            'labels' => $this->postTypelabels(),
+            'labels' => $this->postTypeLabels(),
             'public' => true, // cf. remarque ci-dessous
             'show_ui'              => true,
             'show_in_menu'         => true,
@@ -146,7 +224,7 @@ class Database extends PostTypeRepository {
             'show_in_admin_bar'    => true,
 
             'rewrite' => array(
-                'slug' => $this->settings->slug,
+                'slug' => $this->settings->slug(),
                 'with_front' => false,
             ),
             'hierarchical' => false, // wp inutilisable si on met à true (cache de la hiérarchie ?)
@@ -175,8 +253,8 @@ class Database extends PostTypeRepository {
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
      */
-    private function postTypelabels() {
-        $label = $this->settings->label;
+    private function postTypeLabels() {
+        $label = $this->settings->label();
 
         // translators: une notice bibliographique unique
         $singular = __('Notice %s', 'docalist-biblio');
@@ -330,6 +408,7 @@ class Database extends PostTypeRepository {
         $this->concat($ref, 'author', 'name', 'firstname');
         $this->concat($ref, 'organisation', 'name', 'city', 'country');
         $this->concat($ref, 'othertitle', 'title');
+        $this->concat($ref, 'date', 'date');
         $this->concat($ref, 'translation', 'title');
         unset($ref['pagination']);
         unset($ref['format']);
@@ -351,7 +430,8 @@ class Database extends PostTypeRepository {
         unset($ref['statusdate']);
         unset($ref['imported']);
         unset($ref['todo']);
-
+// var_dump($ref);
+// die();
         return $ref; // @todo à affiner
     }
 
@@ -499,23 +579,35 @@ class Database extends PostTypeRepository {
         return $this->settings->label;
     }
 
-    public function entityToPost(EntityInterface $entity) {
-        // Alloue un numéro de ref à la notice
-        if (empty($entity->ref)) {
-            $entity->ref = docalist('sequences')->increment($this->postType, 'ref');
-        } else {
-            docalist('sequences')->setIfGreater($this->postType, 'ref', $entity->ref);
-        }
-
-        $post = parent::entityToPost($entity);
-
-        $post['post_mime_type'] = 'dclref/' . $entity->type;
-
-        return $post;
+    /**
+     * Rendue publique car EditReference::save() en a besoin.
+     * @see \Docalist\Repository\PostTypeRepository::encode()
+     */
+    public function encode(array $data) {
+        return parent::encode($data);
     }
 
     /**
-     * Indique à Docalist Search les facettes diposnibles pour une notice
+     * Rendue publique car EditReference::save() en a besoin.
+     * @see \Docalist\Repository\PostTypeRepository::decode()
+     */
+    public function decode($post, $id) {
+        $data = parent::decode($post, $id);
+        if (isset($data['ref']) && is_string($data['ref'])) {
+            if ($data['ref'] === '') {
+                unset($data['ref']);
+            } else {
+                $data['ref'] = (int) $data['ref'];
+                if ($data['ref'] === 0) {
+                    throw new \Exception("ref non int pour notice $id");
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Indique à Docalist Search les facettes disponibles pour une notice
      * documentaire.
      */
     protected function docalistSearchFacets() {
