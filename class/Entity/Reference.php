@@ -19,6 +19,8 @@ use Docalist\Type\String;
 use Docalist\Type\Entity;
 use Docalist\Type\Collection;
 use Docalist\Biblio\TypeSettings;
+use Docalist\Repository\Repository;
+use Docalist\Repository\PostTypeRepository;
 
 /**
  * Référence documentaire.
@@ -215,6 +217,27 @@ class Reference extends Entity {
             ],
         ];
         // @formatter:on
+    }
+
+    /**
+     * Attribue un numéro de la ref à la notice avant de l'enregistrer si elle
+     * n'en a pas déjà un.
+     */
+    public function beforeSave(Repository $repository) {
+        // Vérifie qu'on peut accéder à $repository->postType()
+        if (! $repository instanceof PostTypeRepository) {
+            throw new \Exception("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
+        }
+
+        // Met à jour la séquence si on a déjà un numéro de ref
+        if (isset($this->ref)) {
+            docalist('sequences')->setIfGreater($repository->postType(), 'ref', $this->ref());
+        }
+
+        // Sinon, alloue un numéro à la notice
+        else {
+            $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
+        }
     }
 
     /**
