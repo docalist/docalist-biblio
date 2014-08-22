@@ -52,4 +52,12 @@ class Author extends Object {
 
         return $result;
     }
+
+    /**
+     * Retourne l'auteur "et al."
+     * @return Author
+     */
+    public static function etal() {
+        return new self(['name' => 'et al.']);
+    }
 }
