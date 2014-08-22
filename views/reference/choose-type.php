@@ -26,7 +26,7 @@ use Docalist\Biblio\Database;
     <?= screen_icon() ?>
     <?php
         $title = sprintf(__('%1$s - %2$s', 'docalist-search'),
-            $database->settings()->label,
+            $database->settings()->label(),
             get_post_type_object($database->postType())->labels->add_new_item
         );
     ?>
@@ -36,20 +36,21 @@ use Docalist\Biblio\Database;
         <?= __("Choisissez le type de notice à créer.", 'docalist-biblio') ?>
     </p>
     <table class="widefat">
-        <?php foreach($database->settings()->types as $i => $type): ?>
-            <tr class="<?= $i % 2 ? 'alternate' : '' ?>">
+        <?php $nb = 0 ?>
+        <?php foreach($database->settings()->types as $type): ?>
+            <tr class="<?= ++$nb % 2 ? 'alternate' : '' ?>">
                 <td class="row-title">
-                    <a href="<?= esc_url(add_query_arg('ref_type', $type->name)) ?>">
-                        <?= $type->label ?>
+                    <a href="<?= esc_url(add_query_arg('ref_type', $type->name())) ?>">
+                        <?= $type->label() ?>
                     </a>
                 </td>
                 <td class="desc">
-                    <?= $type->description ?>
+                    <?= $type->description() ?>
                 </td>
             </tr>
         <?php endforeach ?>
 
-        <?php if (!isset($i)): ?>
+        <?php if ($nb === 0): ?>
             <tr>
                 <td class="desc" colspan="2">
                     <?= __('Aucun type disponible dans cette base.', 'docalist-biblio') ?>
