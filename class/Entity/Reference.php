@@ -347,7 +347,7 @@ class Reference extends Entity {
     }
 
     public function label($field) {
-        $label = $this->schema($field)->label();
+        $label = $this->schema->field($field)->label();
         if (is_null($this->repository) || !isset($this->type)) {
             return $label;
         }
