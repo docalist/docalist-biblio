@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -28,7 +28,7 @@ use Docalist\Biblio\TypeSettings;
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s : types de notices', 'docalist-biblio'), $database->label) ?></h2>
+    <h2><?= sprintf(__('%s : types de notices', 'docalist-biblio'), $database->label()) ?></h2>
 
     <p class="description">
         <?= __('Votre base de données contient les types de notices suivants :', 'docalist-biblio') ?>
@@ -52,13 +52,14 @@ use Docalist\Biblio\TypeSettings;
         $edit = esc_url($this->url('TypeEdit', $dbindex, $typeindex));
         $delete = esc_url($this->url('TypeDelete', $dbindex, $typeindex));
         $fields = esc_url($this->url('TypeFields', $dbindex, $typeindex));
+        $display = esc_url($this->url('TypeDisplay', $dbindex, $typeindex));
 
         $nb++;
     ?>
 
     <tr>
         <td class="column-title">
-            <strong><a href="<?= $edit ?>"><?= $type->label ?></a></strong> (<?= $type->name ?>)
+            <strong><a href="<?= $edit ?>"><?= $type->label() ?></a></strong> (<?= $type->name() ?>)
             <div class="row-actions">
                 <span class="edit">
                     <a href="<?= $edit ?>">
@@ -72,6 +73,12 @@ use Docalist\Biblio\TypeSettings;
                     </a>
                 </span>
                 |
+                <span class="display">
+                    <a href="<?= $display ?>">
+                        <?= __("Format d'affichage", 'docalist-biblio') ?>
+                    </a>
+                </span>
+                |
                 <span class="delete">
                     <a href="<?= $delete ?>">
                         <?= __('Supprimer ce type', 'docalist-biblio') ?>
@@ -80,7 +87,7 @@ use Docalist\Biblio\TypeSettings;
             </div>
         </td>
 
-        <td><?= $type->description ?></td>
+        <td><?= $type->description() ?></td>
     </tr>
     <?php
     } // end foreach
