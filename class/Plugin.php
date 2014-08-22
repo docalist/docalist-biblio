@@ -126,23 +126,6 @@ class Plugin {
         // Nos filtres
         add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 2);
 
-        add_filter('get_the_excerpt', function($content) {
-            global $post;
-
-            // Récupère le type du post en cours
-            $type = $post->post_type;
-
-            // Vérifie que c'est une notice
-            if (! isset($this->databases[$type])) {
-                return $content;
-            }
-
-            // Construit un extrait de la notice
-            $excerpt = 'un extrait de ma notice ' . $type . ' ' . $post->ID;
-
-            return $excerpt;
-        }, 11);
-
         // Liste des exporteurs définis dans ce plugin
         add_filter('docalist_biblio_get_exporters', function(array $exporters, Database $database) {
             $exporters['docalist-biblio-json'] = [
