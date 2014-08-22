@@ -13,7 +13,7 @@ original;Titre original;Titre du document dans sa langue d'origine dans le cas d
 serial;Titre de série;Titre d'un ensemble d'ouvrages dont chacun porte un titre significatif et autonome (différent de collection). Exemple : les aventures de Lucky Luke, Harry Potter.
 other;Autre titre;Titre propre d'un auteur différent
 common;Titre de l'ensemble;Lorsqu'une publication en plusieurs volumes porte un titre d'ensemble que l'on retrouve sur chacun des volumes, ce titre prend le nom de titre commun à la condition essentielle que chaque volume porte un titre non significatif (terme générique).
-acronym;Sigle ou acronym;
+acronym;Sigle ou acronyme;
 abbreviated;Titre abrégé;
 former;Titre précédent;Ancien titre si le document à changé de titre.
 alternative;Variante du titre;Par exemple si la couverture ou le dos du document fait apparaître un titre autre que celui indiqué dans la zone titre.
