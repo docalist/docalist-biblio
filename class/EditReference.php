@@ -124,24 +124,19 @@ class EditReference {
         // edit-form-advanced...
         global $title;
 
-        // Détermine le libellé du type
-        foreach($this->database->settings()->types as $item){
-            if ($item->name === $type) {
-                $type = $item->label;
-                break;
-            }
-        };
-        // TODO : indexer les types par nom pour permettre un accès direct au label
+//         if ($creation) {
+//             $title = __("Base %s : créer une notice (%s)", 'docalist-biblio');
+//         } else {
+//             $title = __("Base %s : modifier une notice (%s)", 'docalist-biblio');
+//         }
 
-        $base = $this->database->settings()->label;
+        $title = __('%s : %s', 'docalist-biblio');
 
-        if ($creation) {
-            $title = __("Base %s : créer une notice (%s)", 'docalist-biblio');
-        } else {
-            $title = __("Base %s : modifier une notice (%s)", 'docalist-biblio');
-        }
-
-        $title = sprintf($title, $base, lcfirst($type));
+        $title = sprintf(
+            $title,
+            $this->database->settings()->label(),
+            lcfirst($this->database->settings()->types[$type]->label())
+        );
     }
 
     /**
@@ -192,7 +187,8 @@ class EditReference {
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
 
             // Adapte le titre de l'écran de saisie
-            $this->setPageTitle($_REQUEST['ref_type'], true);
+            //$this->setPageTitle($_REQUEST['ref_type'], true);
+            // TODO : ne sert à rien car edit() et appellé après et change le titre
 
             // Laisse wp afficher le formulaire
             return;
@@ -236,9 +232,11 @@ class EditReference {
                 echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 echo "</pre>";
 
-                $data = $this->reference->toArray();
+                //$data = $this->reference->toArray();
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                //echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo json_encode($this->reference, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                //echo $this->reference;
                 echo "</pre>";
             },
             $this->postType,    // posttype
@@ -257,9 +255,10 @@ class EditReference {
     protected function edit($id) {
         // Charge la notice à éditer
         $this->reference = $this->database->load($id);
-
+//print($this->reference);
+//die();
         // Adapte le titre de l'écran de saisie
-        $this->setPageTitle($this->reference->type, false);
+        $this->setPageTitle($this->reference->type(), false);
 
         // Supprime la metabox "Identifiant"
         remove_meta_box('slugdiv', $this->postType, 'normal');
@@ -273,7 +272,7 @@ class EditReference {
 
         // Metabox normales pour la saisie
         $assets = new Assets();
-        foreach($this->metaboxes($this->reference->type) as $id => $form) {
+        foreach($this->metaboxes($this->reference->type()) as $id => $form) {
             $title = $form->label() ?: $id;
 
             // @formatter:off
@@ -340,25 +339,47 @@ class EditReference {
 
         // Crée une référence à partir des données du post
         $data = wp_unslash($data);
-        $ref = new Reference($this->database->postToEntity($data));
+        $ref = new Reference($this->database->decode($data, 'id??'));
 
         // Récupère le type de référence
-        $type = $ref->type;
+        $type = $ref->type();
 
         // Binde la référence avec les données transmises dans $_POST
         $record = wp_unslash($_POST);
-        foreach($this->metaboxes($type) as $id => $metabox) {
+        foreach($this->metaboxes($type) as $metabox) {
             $metabox->bind($record);
-            foreach($metabox->data() as $key => $value) {
+            $data = $this->filterEmpty($metabox->data());
+            foreach($data as $key => $value) {
                 $ref->$key = $value;
             }
         }
 
         // Récupère les données de la référence obtenue
-        $data = $this->database->entityToPost($ref);
+        $data = $this->database->encode($ref->value());
 
         // Retourne le résultat à Wordpress
         $data = wp_slash($data);
+
+        return $data;
+    }
+
+    /**
+     * Supprime les valeurs vides du tableau passé en paramètre.
+     *
+     * Récursif : si un élément est un tableau qui ne contient que des valeurs
+     * vides, il est supprimé.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function filterEmpty(array $data) {
+        foreach ($data as $key => $value) {
+            is_array($value) && $data[$key] = $this->filterEmpty($data[$key]);
+            if (empty($data[$key])){
+                unset($data[$key]);
+            }
+        }
 
         return $data;
     }
@@ -391,37 +412,20 @@ class EditReference {
         $type = strtolower($type); // TODO : prisme contient 'Article' au lieu de 'article'
 
         // Récupère la grille de saisie de ce type
-        // TODO : indexer les types par nom, on ne peut pas accéder directement aux settings d'un type
-        $fields = null;
-        foreach($this->database->settings()->types as $t) {
-            if ($t->name === $type) {
-                $fields = $t->fields;
-                break;
-            }
-        }
-        if (is_null($fields)) {
-            echo __METHOD__, "<br />";
-            echo "Impossible de trouver le type $type";
-//            var_dump($this->database->settings()->types);
-            foreach($this->database->settings()->types as $t) {
-                var_dump($t->name);
-            }
-            echo '<pre>';
-            debug_print_backtrace();
-            die();
-        }
+        /* @var $typeSettings TypeSettings */
+        $typeSettings = $this->database->settings()->types[$type];
         $metaboxes = array();
         $box = new Fragment();
-        foreach($fields as $field) {
+        foreach($typeSettings->fields as $field) { /* @var $fieldSettings FieldSettings */
             // Nouvelle métabox. Sauve la courante si non vide et crée une nouvelle
-            if (0 === strncmp($field->name, 'group', 5)) {
+            if (0 === strncmp($field->name(), 'group', 5)) {
                 if (count($box->fields()) !== 0) {
                     $id = $type . '-' . $box->fields()[0]->name();
                     $metaboxes[$id] = $box;
                 }
 
                 $box = new Fragment();
-                $box->label($field->label)->description($field->description);
+                $box->label($field->label())->description($field->description());
             } else {
                 $field = $this->createField($field);
                 // $field->label($def->label)->description($def->label);
@@ -439,7 +443,7 @@ class EditReference {
 
     }
     protected function createField(FieldSettings $def) {
-        $name = $def->name;
+        $name = $def->name();
         switch($name) {
             case 'ref':
                 $field = new Input($name);
@@ -455,13 +459,13 @@ class EditReference {
 
             case 'genre':
                 $this->checkTables($def, 'table:genres-articles');
-                $field = new TableLookup($name, $def->table);
+                $field = new TableLookup($name, $def->table());
                 $field->multiple(true);
                 break;
 
             case 'media':
                 $this->checkTables($def, 'table:medias');
-                $field = new TableLookup($name, $def->table);
+                $field = new TableLookup($name, $def->table());
                 $field->multiple(true);
                 break;
 
@@ -470,7 +474,7 @@ class EditReference {
                 $field = new Table($name);
                 $field->input('name')->addClass('author-name');
                 $field->input('firstname')->addClass('author-firstname');
-                $field->TableLookup('role', $def->table)
+                $field->TableLookup('role', $def->table())
                       ->addClass('author-role');
                 break;
 
@@ -480,9 +484,9 @@ class EditReference {
                 $field->input('name')->addClass('organisation-name');
                 $field->input('acronym')->addClass('organisation-acronym');
                 $field->input('city')->addClass('organisation-city');
-                $field->TableLookup('country', $def->table)
+                $field->TableLookup('country', $def->table())
                       ->addClass('organisation-country');
-                $field->TableLookup('role', $def->table2)
+                $field->TableLookup('role', $def->table2())
                       ->addClass('organisation-role');
                 break;
 
@@ -494,7 +498,7 @@ class EditReference {
             case 'othertitle':
                 $this->checkTables($def, 'table:titles');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('othertitle-type');
                 $field->input('value')->addClass('othertitle-value');
                 break;
@@ -502,7 +506,7 @@ class EditReference {
             case 'translation':
                 $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
                 $field = new Table($name);
-                $field->TableLookup('language', $def->table)
+                $field->TableLookup('language', $def->table())
                       ->addClass('translation-language');
                 $field->input('title')->addClass('translation-title');
                 break;
@@ -510,7 +514,7 @@ class EditReference {
             case 'date':
                 $this->checkTables($def, 'table:dates');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('date-type');
                 $field->input('value')->addClass('date-value');
                 break;
@@ -523,28 +527,28 @@ class EditReference {
             case 'number':
                 $this->checkTables($def, 'table:numbers');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('number-type');
                 $field->input('value')->addClass('number-value');
                 break;
 
             case 'language':
                 $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
-                $field = new TableLookup($name, $def->table);
+                $field = new TableLookup($name, $def->table());
                 $field->multiple(true);
                 break;
 
             case 'extent':
                 $this->checkTables($def, 'table:extent');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('extent-type');
                 $field->input('value')->addClass('extent-value');
                 break;
 
             case 'format':
                 $this->checkTables($def, 'thesaurus:format');
-                $field = new TableLookup($name, $def->table);
+                $field = new TableLookup($name, $def->table());
                 $field->multiple(true);
                 break;
 
@@ -553,9 +557,9 @@ class EditReference {
                 $field = new Table($name);
                 $field->input('name')->addClass('editor-name');
                 $field->input('city')->addClass('editor-city');
-                $field->TableLookup('country', $def->table)
+                $field->TableLookup('country', $def->table())
                       ->addClass('editor-country');
-                $field->TableLookup('role', $def->table2)
+                $field->TableLookup('role', $def->table2())
                       ->addClass('editor-role');
                 break;
 
@@ -580,7 +584,7 @@ class EditReference {
             case 'topic':
                 $this->checkTables($def, 'table:topics');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('topic-type');
               //$field->input('term')->addClass('topic-term');
 
@@ -602,7 +606,7 @@ class EditReference {
             case 'content':
                 $this->checkTables($def, 'table:content');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('content-type');
                 $field->textarea('value')->addClass('content-value');
                 break;
@@ -611,7 +615,7 @@ class EditReference {
                 $this->checkTables($def, 'table:links');
                 $field = new Table($name);
                 $field->input('url')->addClass('url');
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('link-type');
                 $field->input('label')->addClass('link-label');
                 $field->input('date')->addClass('link-date');
@@ -620,7 +624,7 @@ class EditReference {
             case 'relation':
                 $this->checkTables($def, 'table:relations');
                 $field = new Table($name);
-                $field->TableLookup('type', $def->table)
+                $field->TableLookup('type', $def->table())
                       ->addClass('relations-type');
                 $field->input('ref')->addClass('relations-ref');
                 break;
@@ -633,7 +637,7 @@ class EditReference {
                 throw new Exception("Champ inconnu : '$name'");
         }
         $field->addClass($name);
-        $field->label($def->label)->description($def->description);
+        $field->label($def->label())->description($def->description());
 
         return $field;
     }
@@ -653,12 +657,12 @@ class EditReference {
      */
     protected function checkTables(FieldSettings $def, $default, $default2 = null) {
         foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
-            if ($table === 'table2' && empty($def->$table)) {
+            if ($table === 'table2' && !isset($def->$table)) {
                 continue;
             }
 
             // Vérifie que la table indiquée existe
-            if (preg_match('~([a-z]+):([a-zA-Z0-9_-]+)~', $def->$table, $match)) {
+            if (preg_match('~([a-z]+):([a-zA-Z0-9_-]+)~', $def->$table(), $match)) {
                 if (docalist('table-manager')->info($match[2])) {
                     continue;
                 }
@@ -666,7 +670,7 @@ class EditReference {
 
             // Table incorrecte, affiche une admin notice
             $msg = __("La table <code>%s</code> indiquée pour le champ <code>%s</code> n'est pas valide.", 'docalist-biblio');
-            $msg = sprintf($msg, $def->$table ?: ' ', $def->name);
+            $msg = sprintf($msg, $def->$table() ?: ' ', $def->name());
             $msg .= '<br />';
             $msg .= __('Vous devez corriger la grille de saisie', 'docalist-biblio');
             add_action('admin_notices', function () use ($msg) {
