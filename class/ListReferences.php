@@ -55,7 +55,7 @@ class ListReferences{
      */
     protected function setupColumns() {
         add_filter("manage_edit-{$this->postType}_columns", function($columns) {
-            $result = [];
+            $t = [];
             $position = 0;
             foreach($columns as $key => $label) {
                 ++$position;
@@ -78,46 +78,33 @@ class ListReferences{
 
         add_action("manage_{$this->postType}_posts_custom_column", function($column, $post_id) {
             /* @var $ref Reference */
-
-    // Version 1 avec les entités
             static $ref = null;
 
             if ($column !== 'ref' && $column !== 'type') {
                 return;
             }
 
-            if (is_null($ref) || $ref->primarykey() !== $post_id) {
+            if (is_null($ref) || $ref->id() !== $post_id) {
                 $ref = $this->database->load($post_id);
             }
 
             switch ( $column ) {
                 case 'ref' :
-                    echo $ref->ref;
+                    echo $ref->ref();
                     break;
 
                 case 'type' :
-                    echo $ref->type;
-//                    echo ' : ', get_post_field('post_mime_type', $post_id);
+                    $types = $this->database->settings()->types;
+                    $type = $ref->type();
+                    if (isset($types[$type])) {
+                        echo $types[$type]->label();
+                    } else {
+                        $title = __("Le type %s n'existe pas dans %s.", 'docalist-core');
+                        $title = sprintf($title, $type, $this->database->settings()->label());
+                        printf('<span style="color:red;" title="%s">%s</span>', $title, $type);
+                    }
                     break;
             }
-
-            return;
-/*
-
-    // Version 2 lecture direct de post_excerpt
-            static $last, $ref;
-            global $post;
-
-            if ($column !== 'ref' && $column !== 'type') {
-                return;
-            }
-
-            if (is_null($last) || $last !== $post_id) {
-                $last = $post_id;
-                $ref = json_decode($post->post_excerpt, true);
-            }
-            echo isset($ref[$column]) ? $ref[$column] : '';
-*/
         }, 10, 2 );
     }
 
