@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -66,7 +66,7 @@ div.dbdesc{
         <tr>
             <td class="column-title">
                 <strong>
-                    <a href="<?= $edit ?>"><?= $database->label ?></a>
+                    <a href="<?= $edit ?>"><?= $database->label() ?></a>
                 </strong>
                 <div class="row-actions">
                     <span class="edit">
@@ -89,7 +89,7 @@ div.dbdesc{
                 </div>
             </td>
 
-            <td><a href="<?= $database->url() ?>"><?= $database->slug ?></a></td>
+            <td><a href="<?= $database->url() ?>"><?= $database->slug() ?></a></td>
             <td>
                 <?php if (0 === count($database->types)): ?>
                     <a href="<?= esc_url($this->url('TypeAdd', $dbindex)) ?>">
@@ -98,7 +98,7 @@ div.dbdesc{
                 <?php else: ?>
                     <?php foreach ($database->types as $typeindex => $type): /* @var $type TypeSettings */ ?>
                         <a href="<?= esc_url($this->url('TypeFields', $dbindex, $typeindex)) ?>">
-                            <?= $type->label ?>
+                            <?= $type->label() ?>
                         </a>
                         <br />
                     <?php endforeach ?>
@@ -106,7 +106,7 @@ div.dbdesc{
 
             </td>
             <td><a href="<?= $listRefs ?>"><?= $count ?></a></td>
-            <td><div class="dbdesc"><?= $database->description ?></div></td>
+            <td><div class="dbdesc"><?= $database->description() ?></div></td>
         </tr>
         <?php
     } // end foreach
