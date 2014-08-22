@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2014 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -33,7 +33,7 @@ use Docalist\Forms\Form;
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - paramètres du type "%s"', 'docalist-biblio'), $database->label, $type->name) ?></h2>
+    <h2><?= sprintf(__('%s - paramètres du type "%s"', 'docalist-biblio'), $database->label(), $type->name()) ?></h2>
 
     <p class="description">
         <?= __('Utilisez le formulaire ci-dessous pour modifier les paramètres du type :', 'docalist-biblio') ?>
