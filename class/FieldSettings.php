@@ -117,8 +117,25 @@ class FieldSettings extends Object {
             case 'abstract':
                 $form->select('table')->options($this->tables('languages'));
                 break;
+            case 'date':
+                $form->select('table')->options($this->tables('dates'));
+                break;
+            case 'number':
+                $form->select('table')->options($this->tables('numbers'));
+                break;
+            case 'extent':
+                $form->select('table')->options($this->tables('extent'));
+                break;
+            case 'format':
+                $form->select('table')->options($this->tables('format'));
+                break;
             case 'editor':
-                $form->select('table')->options($this->tables('countries'));
+                $form->select('table')
+                     ->options($this->tables('countries'))
+                     ->label(__('Table des pays', 'docalist-biblio'));
+                $form->select('table2')
+                     ->options($this->tables('roles'))
+                     ->label(__('Table des rôles', 'docalist-biblio'));
                 break;
 //             case'edition': // todo
 //             case'degree': // todo
@@ -126,13 +143,13 @@ class FieldSettings extends Object {
             case 'topic':
                 $form->select('table')->options($this->tables('topics'));
                 break;
-            case 'note':
-                $form->select('table')->options($this->tables('notes'));
+            case 'content':
+                $form->select('table')->options($this->tables('content'));
                 break;
             case 'link':
                 $form->select('table')->options($this->tables('links'));
                 break;
-            case 'relations': // TOD : enlever le S
+            case 'relation':
                 $form->select('table')->options($this->tables('relations'));
                 break;
 
@@ -153,9 +170,12 @@ class FieldSettings extends Object {
         $tableManager = docalist('table-manager');
 
         /* @var $tableInfo TableInfo */
+        $tables = [];
         foreach($tableManager->info(null, $type) as $name => $tableInfo) {
-            $key = $tableInfo->format() . ':' . $name;
-            $tables[$key] = sprintf('%s (%s)', $tableInfo->label(), $name);
+            if ($tableInfo->format() !== 'conversion') {
+                $key = $tableInfo->format() . ':' . $name;
+                $tables[$key] = sprintf('%s (%s)', $tableInfo->label(), $name);
+            }
         }
 
         return $tables;
