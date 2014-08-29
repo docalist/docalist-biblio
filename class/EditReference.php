@@ -22,14 +22,10 @@ use WP_Screen;
 use Exception;
 
 use Docalist\Forms\Fragment;
-use Docalist\Forms\Table;
-use Docalist\Forms\Input;
-use Docalist\Forms\Select;
 
-use Docalist\Table\TableManager;
 use Docalist\Http\ViewResponse;
-use Docalist\Forms\TableLookup;
 use Docalist\Forms\Assets;
+use Docalist\Schema\Field;
 
 /**
  * Gère la page "création/modification d'une notice" d'une base documentaire.
@@ -88,14 +84,6 @@ class EditReference {
                 return $this->save($data, $postarr);
             }, 10, 2);
         }
-
-        // Définit les metaboxes qui sont cachées par défaut
-        add_filter('default_hidden_meta_boxes', function(array $hidden, WP_Screen $screen) {
-            if ($screen->id === $this->postType) {
-                $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
-            }
-            return $hidden;
-        }, 10, 2);
     }
 
     /**
@@ -216,12 +204,12 @@ class EditReference {
     /**
      * Ajoute une metabox de débogage qui affiche le contenu brut du post.
      */
-    protected function addDebugMetabox() {
+    protected function addDebugMetabox(Reference $ref) {
         // @formatter:off
         add_meta_box(
             'dclrefdebug',                         // id metabox
             'Informations de debug de la notice',  // titre
-            function() {                // Callback
+            function () use ($ref) {                // Callback
                 global $post;
 
                 $data = $post->to_array();
@@ -232,11 +220,9 @@ class EditReference {
                 echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 echo "</pre>";
 
-                //$data = $this->reference->toArray();
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                //echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                echo json_encode($this->reference, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                //echo $this->reference;
+                echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                //echo $ref;
                 echo "</pre>";
             },
             $this->postType,    // posttype
@@ -254,11 +240,10 @@ class EditReference {
      */
     protected function edit($id) {
         // Charge la notice à éditer
-        $this->reference = $this->database->load($id);
-//print($this->reference);
-//die();
+        $ref = $this->database->load($id, 'edit');
+
         // Adapte le titre de l'écran de saisie
-        $this->setPageTitle($this->reference->type(), false);
+        $this->setPageTitle($ref->type(), false);
 
         // Supprime la metabox "Identifiant"
         remove_meta_box('slugdiv', $this->postType, 'normal');
@@ -268,12 +253,17 @@ class EditReference {
         });
 
         // Crée une metabox "debug" pour afficher le contenu brut du post
-        $this->addDebugMetabox();
+        $this->addDebugMetabox($ref);
 
         // Metabox normales pour la saisie
         $assets = new Assets();
-        foreach($this->metaboxes($this->reference->type()) as $id => $form) {
-            $title = $form->label() ?: $id;
+        foreach($this->metaboxes($ref) as $form) {
+            $id = $form->attribute('id');
+            $title = $form->label();
+            if (empty($title)) {
+                $type = Reference::types()[$ref->type()];
+                $title = $type::defaultSchema()->label();
+            }
 
             // @formatter:off
             add_meta_box(
@@ -292,7 +282,7 @@ class EditReference {
             );
             // @formatter:on
 
-            $form->bind($this->reference);
+            $form->bind($ref);
             $assets->add($form->assets());
         }
         $assets->add(Themes::assets('wordpress'));
@@ -305,6 +295,31 @@ class EditReference {
             array(),
             '20140627'
         );
+
+        // Définit l'état initial des metaboxes (normal, replié, masqué)
+        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
+        $collapsed = [];
+        foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
+            if ($field->type() === 'Docalist\Biblio\Entity\Reference\Group') {
+                switch($field->state()) {
+                    case 'hidden':
+                        $hidden[] = $name;
+                        break;
+                    case 'collapsed':
+                        $collapsed[] = $name;
+                        break;
+                    // default : affichage normal
+                }
+            }
+        }
+
+        add_filter('default_hidden_meta_boxes', function(array $result, WP_Screen $screen) use($hidden) {
+            return $screen->id === $this->postType ? $hidden : $result;
+        }, 10, 2);
+
+        add_filter('get_user_option_closedpostboxes_dclrefprisme', function($result) use ($collapsed) {
+            return $result === false ? $collapsed : $result;
+        });
     }
 
     /**
@@ -338,15 +353,28 @@ class EditReference {
         }
 
         // Crée une référence à partir des données du post
-        $data = wp_unslash($data);
-        $ref = new Reference($this->database->decode($data, 'id??'));
+        // $data contient les données standard d'un post wordpress (post_author,
+        // post_date, post_content, etc.)
+        // Ce qui nous intéresse, c'est post_excerpt, qui contient le type actuel
+        // de la notice.
+        $data = $this->database->decode(wp_unslash($data), $postarr['ID']);
 
-        // Récupère le type de référence
-        $type = $ref->type();
+        // Récupère le type actuel de la notice
+        if (! isset($data['type'])) {
+            throw new \Exception("Pas de type dans data");
+        }
+        $type = $data['type'];
+        $ref = Reference::create($type);
+
+//         if (! isset($postarr['ID'])) {
+//             throw new \Exception("pas d'ID");
+//         }
+//         $id = (int) $postarr['ID'];
+//         $ref = $this->database->load($id);
 
         // Binde la référence avec les données transmises dans $_POST
         $record = wp_unslash($_POST);
-        foreach($this->metaboxes($type) as $metabox) {
+        foreach($this->metaboxes($ref) as $metabox) {
             $metabox->bind($record);
             $data = $this->filterEmpty($metabox->data());
             foreach($data as $key => $value) {
@@ -354,12 +382,15 @@ class EditReference {
             }
         }
 
+        $ref->beforeSave($this->database);
+
         // Récupère les données de la référence obtenue
         $data = $this->database->encode($ref->value());
 
         // Retourne le résultat à Wordpress
         $data = wp_slash($data);
-
+// var_dump($data);
+// die('jj');
         return $data;
     }
 
@@ -408,238 +439,31 @@ class EditReference {
      * @param string $type
      * @return Fragment[] Un tableau de la forme id metabox => form fragment
      */
-    protected function metaboxes($type) {
-        $type = strtolower($type); // TODO : prisme contient 'Article' au lieu de 'article'
+    protected function metaboxes(Reference $ref) {
+        $metaboxes = [];
+        foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
+            if ($field->type() === 'Docalist\Biblio\Entity\Reference\Group') {
+                $box = new Fragment();
+                $box->label($field->label())
+                    ->description($field->description())
+                    ->attribute('id', $name);
 
-        // Récupère la grille de saisie de ce type
-        /* @var $typeSettings TypeSettings */
-        $typeSettings = $this->database->settings()->types[$type];
-        $metaboxes = array();
-        $box = new Fragment();
-        foreach($typeSettings->fields as $field) { /* @var $fieldSettings FieldSettings */
-            // Nouvelle métabox. Sauve la courante si non vide et crée une nouvelle
-            if (0 === strncmp($field->name(), 'group', 5)) {
-                if (count($box->fields()) !== 0) {
-                    $id = $type . '-' . $box->fields()[0]->name();
-                    $metaboxes[$id] = $box;
+                $metaboxes[] = $box;
+            } else {
+                if (empty($metaboxes)){
+//                     var_dump($ref->schema());
+//                     throw new \Exception('le type ne commence pas par un groupe');
+                    $box = new Fragment();
+                    $box->label('')
+                        ->attribute('id', 'defaultgroup');
+                    $metaboxes[] = $box;
                 }
 
-                $box = new Fragment();
-                $box->label($field->label())->description($field->description());
-            } else {
-                $field = $this->createField($field);
-                // $field->label($def->label)->description($def->label);
-                $box->add($field);
+                $box->add($ref->$name->editForm());
             }
         }
 
-        if (count($box->fields()) !== 0) {
-            $id = $type . '-' . $box->fields()[0]->name();
-            $metaboxes[$id] = $box;
-        }
-//         var_dump($metaboxes);
-//         die();
         return $metaboxes;
-
-    }
-    protected function createField(FieldSettings $def) {
-        $name = $def->name();
-        switch($name) {
-            case 'ref':
-                $field = new Input($name);
-                break;
-
-            case 'type':
-                $types = apply_filters('docalist_biblio_get_types', array()); // code => class
-                $types = array_keys($types);
-
-                $field = new Select($name);
-                $field->options($types);
-                break;
-
-            case 'genre':
-                $this->checkTables($def, 'table:genres-articles');
-                $field = new TableLookup($name, $def->table());
-                $field->multiple(true);
-                break;
-
-            case 'media':
-                $this->checkTables($def, 'table:medias');
-                $field = new TableLookup($name, $def->table());
-                $field->multiple(true);
-                break;
-
-            case 'author':
-                $this->checkTables($def, 'thesaurus:marc21-relators_fr');
-                $field = new Table($name);
-                $field->input('name')->addClass('author-name');
-                $field->input('firstname')->addClass('author-firstname');
-                $field->TableLookup('role', $def->table())
-                      ->addClass('author-role');
-                break;
-
-            case 'organisation':
-                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr', 'thesaurus:marc21-relators_fr');
-                $field = new Table($name);
-                $field->input('name')->addClass('organisation-name');
-                $field->input('acronym')->addClass('organisation-acronym');
-                $field->input('city')->addClass('organisation-city');
-                $field->TableLookup('country', $def->table())
-                      ->addClass('organisation-country');
-                $field->TableLookup('role', $def->table2())
-                      ->addClass('organisation-role');
-                break;
-
-            case 'title':
-                $field = new Input($name);
-                $field->addClass('large-text');//->attribute('id', 'DocTitle');
-                break;
-
-            case 'othertitle':
-                $this->checkTables($def, 'table:titles');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('othertitle-type');
-                $field->input('value')->addClass('othertitle-value');
-                break;
-
-            case 'translation':
-                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
-                $field = new Table($name);
-                $field->TableLookup('language', $def->table())
-                      ->addClass('translation-language');
-                $field->input('title')->addClass('translation-title');
-                break;
-
-            case 'date':
-                $this->checkTables($def, 'table:dates');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('date-type');
-                $field->input('value')->addClass('date-value');
-                break;
-
-            case 'journal':
-                $field = new Input($name);
-                $field->addClass('large-text');
-                break;
-
-            case 'number':
-                $this->checkTables($def, 'table:numbers');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('number-type');
-                $field->input('value')->addClass('number-value');
-                break;
-
-            case 'language':
-                $this->checkTables($def, 'table:ISO-639-2_alpha3_EU_fr');
-                $field = new TableLookup($name, $def->table());
-                $field->multiple(true);
-                break;
-
-            case 'extent':
-                $this->checkTables($def, 'table:extent');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('extent-type');
-                $field->input('value')->addClass('extent-value');
-                break;
-
-            case 'format':
-                $this->checkTables($def, 'thesaurus:format');
-                $field = new TableLookup($name, $def->table());
-                $field->multiple(true);
-                break;
-
-            case 'editor':
-                $this->checkTables($def, 'table:ISO-3166-1_alpha2_fr', 'thesaurus:marc21-relators_fr');
-                $field = new Table($name);
-                $field->input('name')->addClass('editor-name');
-                $field->input('city')->addClass('editor-city');
-                $field->TableLookup('country', $def->table())
-                      ->addClass('editor-country');
-                $field->TableLookup('role', $def->table2())
-                      ->addClass('editor-role');
-                break;
-
-            case 'edition':
-                $field = new Input($name);
-                break;
-
-            case 'collection':
-                $field = new Table($name);
-                $field->input('name')->addClass('collection-name');
-                $field->input('number')->addClass('collection-number');
-                break;
-
-            case 'event':
-                $field = new Table($name);
-                $field->input('title')->addClass('event-title');
-                $field->input('date')->addClass('event-date');
-                $field->input('place')->addClass('event-place');
-                $field->input('number')->addClass('event-number');
-                break;
-
-            case 'topic':
-                $this->checkTables($def, 'table:topics');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('topic-type');
-              //$field->input('term')->addClass('topic-term');
-
-                switch ($this->database->settings()->slug) {
-                    case 'infolegis':
-                        $table = 'thesaurus:domaines-test';
-                        break;
-                    case 'annuairesites':
-                        $table = 'thesaurus:prisme-web-content';
-                        break;
-                    default:
-                        $table = 'thesaurus:thesaurus-prisme-2013';
-                }
-                $field->TableLookup('term', $table)
-                      ->multiple(true)
-                      ->addClass('topic-term');
-                break;
-
-            case 'content':
-                $this->checkTables($def, 'table:content');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('content-type');
-                $field->textarea('value')->addClass('content-value');
-                break;
-
-            case 'link':
-                $this->checkTables($def, 'table:links');
-                $field = new Table($name);
-                $field->input('url')->addClass('url');
-                $field->TableLookup('type', $def->table())
-                      ->addClass('link-type');
-                $field->input('label')->addClass('link-label');
-                $field->input('date')->addClass('link-date');
-                break;
-
-            case 'relation':
-                $this->checkTables($def, 'table:relations');
-                $field = new Table($name);
-                $field->TableLookup('type', $def->table())
-                      ->addClass('relations-type');
-                $field->input('ref')->addClass('relations-ref');
-                break;
-
-            case 'owner':
-                $field = new Input($name);
-                break;
-
-            default:
-                throw new Exception("Champ inconnu : '$name'");
-        }
-        $field->addClass($name);
-        $field->label($def->label())->description($def->description());
-
-        return $field;
     }
 
     /**
@@ -655,32 +479,32 @@ class EditReference {
      * @param string $default2 Le nom de laseconde table par défaut (si le champ
      * utilise deux tables, par exemple organization).
      */
-    protected function checkTables(FieldSettings $def, $default, $default2 = null) {
-        foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
-            if ($table === 'table2' && !isset($def->$table)) {
-                continue;
-            }
+//     protected function checkTables(Field $def, $default, $default2 = null) {
+//         foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
+//             if ($table === 'table2' && !isset($def->$table)) {
+//                 continue;
+//             }
 
-            // Vérifie que la table indiquée existe
-            if (preg_match('~([a-z]+):([a-zA-Z0-9_-]+)~', $def->$table(), $match)) {
-                if (docalist('table-manager')->info($match[2])) {
-                    continue;
-                }
-            }
+//             // Vérifie que la table indiquée existe
+//             if (preg_match('~([a-z]+):([a-zA-Z0-9_-]+)~', $def->$table(), $match)) {
+//                 if (docalist('table-manager')->info($match[2])) {
+//                     continue;
+//                 }
+//             }
 
-            // Table incorrecte, affiche une admin notice
-            $msg = __("La table <code>%s</code> indiquée pour le champ <code>%s</code> n'est pas valide.", 'docalist-biblio');
-            $msg = sprintf($msg, $def->$table() ?: ' ', $def->name());
-            $msg .= '<br />';
-            $msg .= __('Vous devez corriger la grille de saisie', 'docalist-biblio');
-            add_action('admin_notices', function () use ($msg) {
-                printf('<div class="error"><p>%s</p></div>', $msg);
-            });
+//             // Table incorrecte, affiche une admin notice
+//             $msg = __("La table <code>%s</code> indiquée pour le champ <code>%s</code> n'est pas valide.", 'docalist-biblio');
+//             $msg = sprintf($msg, $def->$table() ?: ' ', $def->name());
+//             $msg .= '<br />';
+//             $msg .= __('Vous devez corriger la grille de saisie', 'docalist-biblio');
+//             add_action('admin_notices', function () use ($msg) {
+//                 printf('<div class="error"><p>%s</p></div>', $msg);
+//             });
 
-            // Et utilise la table par défaut
-            $def->$table = $default;
-        }
-    }
+//             // Et utilise la table par défaut
+//             $def->$table = $default;
+//         }
+//     }
 
     /*
      * N'est plus utilisée mais peut reservir si on voulait générer un select
