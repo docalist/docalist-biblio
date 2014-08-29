@@ -131,6 +131,56 @@ class Database extends PostTypeRepository {
         });
     }
 
+    public function load($id, $context = null) {
+        // Charge les données brutes de la notice
+        $data = $this->loadRaw($id);
+
+        // Récupère le type de la notice
+        if (isset($data['type'])) {
+            $type = $data['type'];
+        }
+
+        // Si la notice n'a pas de type (erreur interne), impossible d'utiliser un contexte
+        else {
+            if ($context === 'edit') {
+                add_action('admin_notices', function() {
+                    printf('<div class="error"><p>%s %s</p></div>',
+                        __('Aucun type de notice indiqué dans cette référence.', 'docalist-biblio'),
+                        __('Chargement de la grille par défaut.', 'docalist-biblio')
+                    );
+                });
+            }
+            $context = null;
+        }
+
+        // Détermine le schéma à utiliser en fonction du contexte demandé
+        if (is_null($context)) {
+            $schema = null; // reference brute sans schéma personnalisé
+        } else {
+            if ($context === 'edit') {
+                if (isset($this->settings->types[$type])) {
+                    $schema = $this->settings->types[$type];
+                } else {
+                    // erreur : on a une notice dont le type ne figure pas dans les settings de la base
+                    add_action('admin_notices', function() {
+                        $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
+                        $msg = sprintf($msg, $type);
+                        printf('<div class="error"><p>%s %s</p></div>',
+                            $msg,
+                            __('Chargement de la grille par défaut.', 'docalist-biblio')
+                        );
+                    });
+                }
+            } else {
+                throw new \Exception('TODO (implémenter les autres contextes)');
+            }
+        }
+
+        // Crée la référence avec le schéma demandé
+        $type = $this->type; // Reference
+        return new $type($data, $schema, $id);
+    }
+
     /**
      * Affiche une notice.
      *
