@@ -26,11 +26,13 @@ class Settings extends TypeSettings {
 
     static protected function loadSchema() {
         return [
-            'databases' => [
-                'type' => 'DatabaseSettings*',
-                'key' => 'name',
-                'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'databases' => [
+                    'type' => 'DatabaseSettings*',
+                    'key' => 'name',
+                    'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
+                ]
+            ]
         ];
     }
 }

@@ -35,36 +35,38 @@ class DatabaseSettings extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __('Nom de la base de données', 'docalist-biblio'),
-                'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
-            ],
+            'fields' => [
+                'name' => [
+                    'label' => __('Nom de la base de données', 'docalist-biblio'),
+                    'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
+                ],
 
-            'slug' => [
-                'label' => __('Slug de la base', 'docalist-biblio'),
-                'description' => __("Votre base sera accessible à l'adresse <code>http://votre-site/<b>slug</b></code> et les références auront une url de la forme <code>http://votre-site/<b>slug</b>/ref</code>. Au moins un caractère, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
-            ],
+                'slug' => [
+                    'label' => __('Slug de la base', 'docalist-biblio'),
+                    'description' => __("Votre base sera accessible à l'adresse <code>http://votre-site/<b>slug</b></code> et les références auront une url de la forme <code>http://votre-site/<b>slug</b>/ref</code>. Au moins un caractère, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
+                ],
 
-            'label' => [
-                'label' => __('Libellé à afficher', 'docalist-biblio'),
-                'description' => __('Libellé affiché dans les menus et dans les pages du back-office.', 'docalist-biblio'),
-            ],
+                'label' => [
+                    'label' => __('Libellé à afficher', 'docalist-biblio'),
+                    'description' => __('Libellé affiché dans les menus et dans les pages du back-office.', 'docalist-biblio'),
+                ],
 
-            'description' => [
-                'label' => __('Description, notes, remarques', 'docalist-biblio'),
-                'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
-            ],
+                'description' => [
+                    'label' => __('Description, notes, remarques', 'docalist-biblio'),
+                    'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
+                ],
 
-            'types' => [
-                'type' => 'TypeSettings*',
-                'key' => 'name',
-                'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
-            ],
+                'types' => [
+                    'type' => 'Docalist\Schema\Schema*',
+                    'key' => 'name',
+                    'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
+                ],
 
-            'creation' => [
-                'type' => 'int',
-                'label' => __('Date/heure de création de la base', 'docalist-biblio'),
-            ],
+                'creation' => [
+                    'type' => 'int',
+                    'label' => __('Date/heure de création de la base', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

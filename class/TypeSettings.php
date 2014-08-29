@@ -31,27 +31,29 @@ class TypeSettings extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __('Nom', 'docalist-biblio'),
-                'description' => __('Doit être un type enregistré (article, book, periodical, website, etc.)', 'docalist-biblio'),
-            ],
-
-            'label' => [
-                'label' => __('Libellé', 'docalist-biblio'),
-                'description' => __('Libellé utilisé pour désigner ce type', 'docalist-biblio'),
-            ],
-
-            'description' => [
-                'label' => __('Description', 'docalist-biblio'),
-                'description' => __('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'),
-            ],
-
             'fields' => [
-                'type' => 'FieldSettings*',
-                'key' => 'name',
-                'label' => __('Grille de saisie', 'docalist-biblio'),
-                'description' => __('Liste des champs et paramètres de chaque champ.', 'docalist-biblio'),
-            ],
+                'name' => [
+                    'label' => __('Nom', 'docalist-biblio'),
+                    'description' => __('Doit être un type enregistré (article, book, periodical, website, etc.)', 'docalist-biblio'),
+                ],
+
+                'label' => [
+                    'label' => __('Libellé', 'docalist-biblio'),
+                    'description' => __('Libellé utilisé pour désigner ce type', 'docalist-biblio'),
+                ],
+
+                'description' => [
+                    'label' => __('Description', 'docalist-biblio'),
+                    'description' => __('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'),
+                ],
+
+                'fields' => [
+                    'type' => 'FieldSettings*',
+                    'key' => 'name',
+                    'label' => __('Grille de saisie', 'docalist-biblio'),
+                    'description' => __('Liste des champs et paramètres de chaque champ.', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

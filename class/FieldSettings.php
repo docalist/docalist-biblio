@@ -36,34 +36,36 @@ class FieldSettings extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __('Nom', 'docalist-biblio'),
-                'description' => __("Nom du champ", 'docalist-biblio'),
-            ],
-            'label' => [
-                'label' => __('Libellé', 'docalist-biblio'),
-                'description' => __("Libellé du champ", 'docalist-biblio'),
-            ],
-            'description' => [
-                'label' => __('Description', 'docalist-biblio'),
-                'description' => __("Description du champ", 'docalist-biblio'),
-            ],
-            'table' => [
-                'label' => __('Table', 'docalist-biblio'),
-                'description' => __('Table d\'autorité associée au champ.', 'docalist-biblio'),
-            ],
-            'table2' => [
-                'label' => __('Table2', 'docalist-biblio'),
-                'description' => __('Seconde table d\'autorité associée.', 'docalist-biblio'),
-            ],
-            'format' => [
-                'label' => __('Format d\'affichage', 'docalist-biblio'),
-                'description' => __('Pour certains champs (ex auteur), choix du format d\'affichage', 'docalist-biblio'),
-            ],
-            'split' => [
-                'type' => 'bool',
-                'label' => __('Split', 'docalist-biblio'),
-                'description' => __('Pour les champs "combo" (ex. othertitle ou topics), éclater le champ en plusieurs champs ?', 'docalist-biblio'),
+            'fields' => [
+                'name' => [
+                    'label' => __('Nom', 'docalist-biblio'),
+                    'description' => __("Nom du champ", 'docalist-biblio'),
+                ],
+                'label' => [
+                    'label' => __('Libellé', 'docalist-biblio'),
+                    'description' => __("Libellé du champ", 'docalist-biblio'),
+                ],
+                'description' => [
+                    'label' => __('Description', 'docalist-biblio'),
+                    'description' => __("Description du champ", 'docalist-biblio'),
+                ],
+                'table' => [
+                    'label' => __('Table', 'docalist-biblio'),
+                    'description' => __('Table d\'autorité associée au champ.', 'docalist-biblio'),
+                ],
+                'table2' => [
+                    'label' => __('Table2', 'docalist-biblio'),
+                    'description' => __('Seconde table d\'autorité associée.', 'docalist-biblio'),
+                ],
+                'format' => [
+                    'label' => __('Format d\'affichage', 'docalist-biblio'),
+                    'description' => __('Pour certains champs (ex auteur), choix du format d\'affichage', 'docalist-biblio'),
+                ],
+                'split' => [
+                    'type' => 'bool',
+                    'label' => __('Split', 'docalist-biblio'),
+                    'description' => __('Pour les champs "combo" (ex. othertitle ou topics), éclater le champ en plusieurs champs ?', 'docalist-biblio'),
+                ]
             ]
         ];
         // @formatter:on
