@@ -42,10 +42,19 @@ use Docalist\Forms\Form;
     <?php
         $form = new Form('', 'post');
         //$form->input('name')->attribute('class', 'regular-text');
-        $form->input('label')->attribute('class', 'regular-text');
-        $form->textarea('description')->attribute('rows', '2')->attribute('class', 'large-text');
+
+        $form->input('label')
+             ->attribute('class', 'regular-text')
+             ->label(__('Libellé', 'docalist-biblio'))
+             ->description(__('Libellé utilisé pour désigner ce type', 'docalist-biblio'));
+
+        $form->textarea('description')
+             ->attribute('rows', '2')
+             ->attribute('class', 'large-text')
+             ->label(__('Description', 'docalist-biblio'))
+             ->description(__('Description de ce type de référence, texte d\'intro, etc.', 'docalist-biblio'));
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
 
-        $form->bind($type)->render('wordpress');
+        $form->bind($type->value())->render('wordpress');
     ?>
 </div>
