@@ -18,6 +18,7 @@ use Docalist\Biblio\DatabaseSettings;
 use Docalist\Biblio\TypeSettings;
 use Docalist\Biblio\FieldSettings;
 use Docalist\Forms\Fragment;
+use Docalist\Schema\Field;
 
 /**
  * Edite la grille de saisie d'un type.
@@ -68,7 +69,7 @@ wp_enqueue_script(
 
     <form action ="" method="post">
         <?php buttons() ?>
-        <ul id="fields" class="metabox-holder">
+        <ul id="fields" class="metabox-holder meta-box-sortables">
             <?php
                 foreach($type->fields as $field) makeBox($field);
             ?>
@@ -79,9 +80,12 @@ wp_enqueue_script(
     <!-- Template utilisé pour créer de nouveaux groupes. -->
     <script type="text/html" id="group-template">
         <?php
-            $field = new FieldSettings([
+            $field = new Field([
                 'name' => 'group{group-number}',
+                'type' => 'Docalist\Biblio\Entity\Reference\Group',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
+                'newgroup' => true, // utilisé par Group::editForm()
+                'state' => '', // = normal
             ]);
 
             makeBox($field, false)
@@ -91,20 +95,6 @@ wp_enqueue_script(
 
 <?php
 /**
- * Génère la boite pour un champ.
- *
- * @param FieldSettings $field
- * @param boolean $closed
- */
-function makeBox(FieldSettings $field, $closed = true) { ?>
-    <li id="<?= $field->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= strncmp($field->name(), 'group', 5) ? $field->name() : 'group' ?>">
-        <div class="handlediv"></div>
-        <h3><span><?= $field->label() ?: $field->name() ?></span></h3>
-        <div class="inside"><?php fieldForm($field) ?></div>
-    </li><?php
-}
-
-/**
  * Génère le formulaire permettant de paramètrer un champ (ou un groupe).
  *
  * Notre page est un gros formulaire, composé de chacun des "bouts de
@@ -112,24 +102,34 @@ function makeBox(FieldSettings $field, $closed = true) { ?>
  * champs sont transmis dans l'ordre de la page, ce qui fait qu'on n'a pas à
  * gérer nous-mêmes le tri des champs.
  *
- * @param FieldSettings $field Le champ à éditer.
+ * @param Field $field
+ * @param boolean $closed
  */
-function fieldForm(FieldSettings $field) {
-    // Crée le formulaire permettant d'éditer les paramètres de ce champ
-    $form = $field->editForm();
+function makeBox(Field $schema, $closed = true) { ?>
+    <?php
+        $type = $schema->collection() ?: $schema->type();
+    ?>
+    <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Entity\Reference\Group' ? 'group' : $schema->name() ?>">
+        <div class="handlediv"></div>
+        <h3><span><?= $schema->label() ?: $schema->name() ?></span></h3>
+        <div class="inside">
+            <?php
+            $field = new $type(null, $schema);
+            $form = $field->settingsForm();
 
-    // Affiche le formulaire
-    // On veut que les champs aient un nom de la forme champ[label]
-    // Pour cela, on insère le formulaire dans un fragment parent qui contient
-    // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
-    // peut pas récupérer les libellés/desc par défaut).
-    $parent = new Fragment($form->name());
-    $form->name('');
-    $parent->add($form);
-    $form->bind($field)->render('wordpress', array('indent' => true));
-}?>
+            // On veut que les champs aient un nom de la forme champ[label]
+            // Pour cela, on insère le formulaire dans un fragment parent qui contient
+            // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
+            // peut pas récupérer les libellés/desc par défaut).
+            $parent = new Fragment($form->name());
+            $form->name('');
+            $parent->add($form);
+            $form->bind($schema->toArray())->render('wordpress', array('indent' => true));
+            ?>
+        </div>
+    </li><?php
+}
 
-<?php
 /**
  * Génère les boutons "Ajouter une groupe" et "Enregistrer les modifications".
  *
