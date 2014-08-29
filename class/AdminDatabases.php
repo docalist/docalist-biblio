@@ -16,6 +16,7 @@ namespace Docalist\Biblio;
 
 use Docalist\AdminPage;
 use Exception;
+use Docalist\Biblio\Entity\Reference;
 
 /**
  * Gestion des bases de données.
@@ -266,7 +267,7 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Récupère la liste des types existants
-        $types = apply_filters('docalist_biblio_get_types', array());
+        $types = Reference::types();
 
         // Récupère la liste des types qui existent déjà dans la base
         $selected = $database->types;
@@ -275,11 +276,11 @@ class AdminDatabases extends AdminPage {
         if (empty($name)) {
 
             // Construit la liste tous les types qui ne sont pas déjà dans la base
-            foreach($types as $name => $defaults) {
+            foreach($types as $name => $class) {
                 if (isset($selected[$name])) {
                     unset($types[$name]);
                 } else {
-                    $types[$name] = apply_filters('docalist_biblio_get_type', $name);
+                    $types[$name] = $class::defaultSchema();
                 }
             }
 
@@ -316,8 +317,7 @@ class AdminDatabases extends AdminPage {
             }
 
             // Ajoute le type
-            $defaults = apply_filters('docalist_biblio_get_type', $name, false);
-            $database->types[] = $defaults;
+            $database->types[] = $types[$name]::defaultSchema();
         }
 
         $this->settings->save();
@@ -397,7 +397,8 @@ class AdminDatabases extends AdminPage {
         $type = $this->type($dbindex, $typeindex);
 
         if ($this->isPost()) {
-            $type->fields = wp_unslash($_POST);
+            $data = wp_unslash($_POST);
+            $type->merge(['fields' => $data]);
             $this->settings->save();
 
             return $this->redirect($this->url('TypesList', $dbindex), 303);
