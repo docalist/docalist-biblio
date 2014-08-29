@@ -409,4 +409,12 @@ class ImportPage extends AdminPage {
 
         return $response;
     }
+
+    public function actionShowSettings() {
+        return $this->view('docalist-core:info', [
+            'h2' => __('Settings', 'docalist-biblio'),
+//            'message' => '<pre>' . (string)$this->database->settings() . '</pre>',
+            'message' => '<pre>' . var_export($this->database->settings(),true) . '</pre>',
+        ]);
+    }
 }
