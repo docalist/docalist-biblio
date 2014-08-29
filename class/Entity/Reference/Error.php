@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Une erreur.
  *
@@ -28,9 +25,11 @@ class Error extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'code',
-            'value',
-            'message'
+            'fields' => [
+                'code',
+                'value',
+                'message'
+            ]
         ];
         // @formatter:on
     }

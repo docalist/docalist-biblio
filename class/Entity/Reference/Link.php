@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Lien internet.
  *
@@ -31,29 +28,31 @@ class Link extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type', 'docalist-biblio'),
-                'description' => __('Type de lien', 'docalist-biblio'),
-            ],
-            'url' => [
-                'label' => __('Adresse', 'docalist-biblio'),
-                'description' => __('Url complète du lien', 'docalist-biblio'),
-            ],
-            'label' => [
-                'label' => __('Libellé', 'docalist-biblio'),
-                'description' => __('Texte à afficher', 'docalist-biblio'),
-            ],
-            'date' => [
-                'label' => __('Accédé le', 'docalist-biblio'),
-                'description' => __('Date', 'docalist-biblio'),
-            ],
-            'lastcheck' => [
-                'label' => __('Lien vérifié le', 'docalist-biblio'),
-                'description' => __('Date de dernière vérification du lien', 'docalist-biblio'),
-            ],
-            'status' => [
-                'label' => __('Statut', 'docalist-biblio'),
-                'description' => __('Statut du lien lors de la dernière vérification.', 'docalist-biblio'),
+            'fields' => [
+                'type' => [
+                    'label' => __('Type', 'docalist-biblio'),
+                    'description' => __('Type de lien', 'docalist-biblio'),
+                ],
+                'url' => [
+                    'label' => __('Adresse', 'docalist-biblio'),
+                    'description' => __('Url complète du lien', 'docalist-biblio'),
+                ],
+                'label' => [
+                    'label' => __('Libellé', 'docalist-biblio'),
+                    'description' => __('Texte à afficher', 'docalist-biblio'),
+                ],
+                'date' => [
+                    'label' => __('Accédé le', 'docalist-biblio'),
+                    'description' => __('Date', 'docalist-biblio'),
+                ],
+                'lastcheck' => [
+                    'label' => __('Lien vérifié le', 'docalist-biblio'),
+                    'description' => __('Date de dernière vérification du lien', 'docalist-biblio'),
+                ],
+                'status' => [
+                    'label' => __('Statut', 'docalist-biblio'),
+                    'description' => __('Statut du lien lors de la dernière vérification.', 'docalist-biblio'),
+                ]
             ]
         ];
         // @formatter:on

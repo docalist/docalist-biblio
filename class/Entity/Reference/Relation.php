@@ -14,10 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-use Docalist\Type\Integer;
-
 /**
  * Relation
  *
@@ -28,14 +24,16 @@ class Relation extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type', 'docalist-biblio'),
-                'description' => __('Type de relation', 'docalist-biblio'),
-            ],
-            'ref' => [
-                'type' => 'int*',
-                'label' => __('Notices liées', 'docalist-biblio'),
-                'description' => __('Numéro de référence des notices (Ref)', 'docalist-biblio'),
+            'fields' => [
+                'type' => [
+                    'label' => __('Type', 'docalist-biblio'),
+                    'description' => __('Type de relation', 'docalist-biblio'),
+                ],
+                'ref' => [
+                    'type' => 'int*',
+                    'label' => __('Notices liées', 'docalist-biblio'),
+                    'description' => __('Numéro de référence des notices (Ref)', 'docalist-biblio'),
+                ]
             ]
         ];
         // @formatter:on

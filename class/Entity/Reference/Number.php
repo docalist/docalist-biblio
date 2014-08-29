@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
  *
@@ -27,14 +24,16 @@ class Number extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type', 'docalist-biblio'),
-                'description' => __('Type de numéro', 'docalist-biblio'),
-            ],
-            'value' => [
-                'label' => __('Numéro', 'docalist-biblio'),
-                'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __('Type', 'docalist-biblio'),
+                    'description' => __('Type de numéro', 'docalist-biblio'),
+                ],
+                'value' => [
+                    'label' => __('Numéro', 'docalist-biblio'),
+                    'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

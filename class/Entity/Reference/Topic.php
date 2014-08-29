@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Une liste de mots-clés d'un certain type.
  *
@@ -27,15 +24,17 @@ class Topic extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type', 'docalist-biblio'),
-//                 'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
-            ],
-            'term' => [ // @todo : au pluriel ?
-                'repeatable' => true,
-                'label' => __('Termes', 'docalist-biblio'),
-//                 'description' => __('Liste des mots-clés.', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __('Type', 'docalist-biblio'),
+    //                 'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
+                ],
+                'term' => [ // @todo : au pluriel ?
+                    'repeatable' => true,
+                    'label' => __('Termes', 'docalist-biblio'),
+    //                 'description' => __('Liste des mots-clés.', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

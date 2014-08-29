@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Une traduction du titre original du document.
  *
@@ -27,12 +24,14 @@ class Translation extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'language' => [
-                'label' => __('Langue', 'docalist-biblio'),
-            ],
-            'title' => [
-                'label' => __('Titre traduit', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'language' => [
+                    'label' => __('Langue', 'docalist-biblio'),
+                ],
+                'title' => [
+                    'label' => __('Titre traduit', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

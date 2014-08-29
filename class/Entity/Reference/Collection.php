@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Collection et numéro au sein de la collection.
  *
@@ -27,14 +24,16 @@ class Collection extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __("Nom", 'docalist-biblio'),
-                'description' => __('Nom de la collection ou de la sous-collection.', 'docalist-biblio'),
-            ],
-            'number' => [
-                'label' => __('Numéro', 'docalist-biblio'),
-                'description' => __('Numéro au sein de la collection ou de la sous-collection.', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'name' => [
+                    'label' => __("Nom", 'docalist-biblio'),
+                    'description' => __('Nom de la collection ou de la sous-collection.', 'docalist-biblio'),
+                ],
+                'number' => [
+                    'label' => __('Numéro', 'docalist-biblio'),
+                    'description' => __('Numéro au sein de la collection ou de la sous-collection.', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

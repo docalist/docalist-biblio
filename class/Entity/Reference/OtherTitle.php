@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Autre titre.
  *
@@ -27,12 +24,14 @@ class OtherTitle extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type de titre', 'docalist-biblio'),
-            ],
-            'value' => [
-                'label' => __('Autre titre', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __('Type de titre', 'docalist-biblio'),
+                ],
+                'value' => [
+                    'label' => __('Autre titre', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

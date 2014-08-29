@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Date.
  *
@@ -27,13 +24,15 @@ class Date extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type de date', 'docalist-biblio'),
-//                 'description' => __('Date', 'docalist-biblio'),
-            ],
-            'value' => [
-                'label' => __('Date', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __('Type de date', 'docalist-biblio'),
+    //                 'description' => __('Date', 'docalist-biblio'),
+                ],
+                'value' => [
+                    'label' => __('Date', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Editeur
  *
@@ -29,21 +26,23 @@ class Editor extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __('Nom', 'docalist-biblio'),
-                'description' => __("Nom de l'éditeur", 'docalist-biblio'),
-            ],
-            'city' => [
-                'label' => __('Ville', 'docalist-biblio'),
-                'description' => __("Ville de l'éditeur", 'docalist-biblio'),
-            ],
-            'country' => [
-                'label' => __('Pays', 'docalist-biblio'),
-                'description' => __("Pays d'édition", 'docalist-biblio'),
-            ],
-            'role' => [
-                'label' => __('Rôle', 'docalist-biblio'),
-                'description' => __('Fonction', 'docalist-biblio'),
+            'fields' => [
+                'name' => [
+                    'label' => __('Nom', 'docalist-biblio'),
+                    'description' => __("Nom de l'éditeur", 'docalist-biblio'),
+                ],
+                'city' => [
+                    'label' => __('Ville', 'docalist-biblio'),
+                    'description' => __("Ville de l'éditeur", 'docalist-biblio'),
+                ],
+                'country' => [
+                    'label' => __('Pays', 'docalist-biblio'),
+                    'description' => __("Pays d'édition", 'docalist-biblio'),
+                ],
+                'role' => [
+                    'label' => __('Rôle', 'docalist-biblio'),
+                    'description' => __('Fonction', 'docalist-biblio'),
+                ]
             ]
         ];
         // @formatter:on

@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Auteur personne physique.
  *
@@ -28,17 +25,19 @@ class Author extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'name' => [
-                'label' => __('Nom', 'docalist-biblio'),
-                'description' => __("Nom de la personne", 'docalist-biblio'),
-            ],
-            'firstname' => [
-                'label' => __('Prénom', 'docalist-biblio'),
-                'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
-            ],
-            'role' => [
-                'label' => __('Rôle', 'docalist-biblio'),
-                'description' => __('Fonction', 'docalist-biblio'),
+            'fields' => [
+                'name' => [
+                    'label' => __('Nom', 'docalist-biblio'),
+                    'description' => __("Nom de la personne", 'docalist-biblio'),
+                ],
+                'firstname' => [
+                    'label' => __('Prénom', 'docalist-biblio'),
+                    'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
+                ],
+                'role' => [
+                    'label' => __('Rôle', 'docalist-biblio'),
+                    'description' => __('Fonction', 'docalist-biblio'),
+                ]
             ]
         ];
         // @formatter:on

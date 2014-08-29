@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Content.
  *
@@ -27,14 +24,16 @@ class Content extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __('Type', 'docalist-biblio'),
-//                 'description' => __('Nature de la note', 'docalist-biblio'),
-            ],
-            'value' => [
-                'label' => __('Contenu', 'docalist-biblio'),
-                'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __('Type', 'docalist-biblio'),
+    //                 'description' => __('Nature de la note', 'docalist-biblio'),
+                ],
+                'value' => [
+                    'label' => __('Contenu', 'docalist-biblio'),
+                    'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }

@@ -14,9 +14,6 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
-
 /**
  * Etendue du document : pagination, nombre de pages, durée en minutes, etc.
  *
@@ -27,14 +24,16 @@ class Extent extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'type' => [
-                'label' => __("Type", 'docalist-biblio'),
-                'description' => __("Type d'étendue", 'docalist-biblio'),
-            ],
-            'value' => [
-                'label' => __('Valeur', 'docalist-biblio'),
-                'description' => __('Etendue dans le format indiqué par le type (n° de page, nb de pages, durée, etc.)', 'docalist-biblio'),
-            ],
+            'fields' => [
+                'type' => [
+                    'label' => __("Type", 'docalist-biblio'),
+                    'description' => __("Type d'étendue", 'docalist-biblio'),
+                ],
+                'value' => [
+                    'label' => __('Valeur', 'docalist-biblio'),
+                    'description' => __('Etendue dans le format indiqué par le type (n° de page, nb de pages, durée, etc.)', 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
     }
