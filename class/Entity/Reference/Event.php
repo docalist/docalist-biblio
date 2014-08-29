@@ -14,8 +14,7 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
+use Docalist\Forms\Table;
 
 /**
  * Description d'un événement (colloque, réunion, soutenance, etc.)
@@ -29,23 +28,35 @@ class Event extends Object {
     static protected function loadSchema() {
         // @formatter:off
         return [
-            'title' => [
-                'label' => __('Titre', 'docalist-biblio'),
-                'description' => __("Titre du congrès, nom de la réunion, etc.", 'docalist-biblio'),
-            ],
-            'date' => [
-                'label' => __('Date', 'docalist-biblio'),
-                'description' => __("Date de l'évènement.", 'docalist-biblio'),
-            ],
-            'place' => [
-                'label' => __('Lieu', 'docalist-biblio'),
-                'description' => __("Lieu de l'événement (ville et/ou pays).", 'docalist-biblio'),
-            ],
-            'number' => [
-                'label' => __('Numéro', 'docalist-biblio'),
-                'description' => __("Numéro éventuel associé à l'évènement.", 'docalist-biblio'),
-            ],
+            'fields' => [
+                'title' => [
+                    'label' => __('Titre', 'docalist-biblio'),
+                    'description' => __("Titre du congrès, nom de la réunion, etc.", 'docalist-biblio'),
+                ],
+                'date' => [
+                    'label' => __('Date', 'docalist-biblio'),
+                    'description' => __("Date de l'évènement.", 'docalist-biblio'),
+                ],
+                'place' => [
+                    'label' => __('Lieu', 'docalist-biblio'),
+                    'description' => __("Lieu de l'événement (ville et/ou pays).", 'docalist-biblio'),
+                ],
+                'number' => [
+                    'label' => __('Numéro', 'docalist-biblio'),
+                    'description' => __("Numéro éventuel associé à l'évènement.", 'docalist-biblio'),
+                ]
+            ]
         ];
         // @formatter:on
+    }
+
+    public function editForm() {
+        $field = new Table($this->schema->name());
+        $field->input('title')->addClass('event-title');
+        $field->input('date')->addClass('event-date');
+        $field->input('place')->addClass('event-place');
+        $field->input('number')->addClass('event-number');
+
+        return $field;
     }
 }
