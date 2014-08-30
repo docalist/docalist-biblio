@@ -60,6 +60,14 @@ class Reference extends Entity {
     static protected $types = [
         'article'           => 'Docalist\Biblio\Entity\Article',
         'book'              => 'Docalist\Biblio\Entity\Book',
+        'degree'            => 'Docalist\Biblio\Entity\Degree',
+        'book-chapter'      => 'Docalist\Biblio\Entity\BookChapter',
+        'legislation'       => 'Docalist\Biblio\Entity\Legislation',
+        'meeting'           => 'Docalist\Biblio\Entity\Meeting',
+        'periodical-issue'  => 'Docalist\Biblio\Entity\PeriodicalIssue',
+        'periodical'        => 'Docalist\Biblio\Entity\Periodical',
+        'report'            => 'Docalist\Biblio\Entity\Report',
+        'website'           => 'Docalist\Biblio\Entity\WebSite',
     ];
 
     static public function types() {
