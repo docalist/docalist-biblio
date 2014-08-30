@@ -474,7 +474,7 @@ class EditReference {
      * modifiée pour utiliser la table par défaut indiquée en paramètre et
      * une erreur "admin notice" est générée.
      *
-     * @param FieldSettings $def La définition du champ à vérifier.
+     * @param Field $def La définition du champ à vérifier.
      * @param string $default Le nom de la première table par défaut.
      * @param string $default2 Le nom de laseconde table par défaut (si le champ
      * utilise deux tables, par exemple organization).

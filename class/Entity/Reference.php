@@ -19,6 +19,7 @@ use Docalist\Biblio\TypeSettings;
 use Docalist\Repository\Repository;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
+use Docalist\Schema\Field;
 
 /**
  * Référence documentaire.
@@ -432,16 +433,14 @@ class Reference extends Entity {
             return $label;
         }
 
-        /* @var $field FieldSettings */
-        //var_dump($type->__get('fields')[$field]);
-        //$field = $type->fields[$field];
+        /* @var $field Field */
         $field = $type->__get('fields')[$field];
         if (is_null($field)) {
             return $label;
         }
 
         if ($field->label) {
-            $label = $field-> label;
+            $label = $field->label;
         }
 
         return $label;
