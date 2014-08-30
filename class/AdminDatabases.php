@@ -94,7 +94,7 @@ class AdminDatabases extends AdminPage {
      * @param int $dbindex
      * @param int $typeindex
      *
-     * @return TypeSettings
+     * @return Schema
      */
     protected function type($dbindex, $typeindex) {
         $database = $this->database($dbindex);

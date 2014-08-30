@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
-use Docalist\Biblio\TypeSettings;
+use Docalist\Schema\Schema;
 use Docalist\Forms\Fragment;
 
 /**
@@ -23,12 +23,12 @@ use Docalist\Forms\Fragment;
  *
  * @param DatabaseSettings $database La base à éditer.
  * @param int $dbindex L'index de la base.
- * @param TypeSettings $type Le type à éditer.
+ * @param Schema $type Le type à éditer.
  * @param int $typeindex L'index du type.
  */
 
 /* @var $database DatabaseSettings */
-/* @var $type TypeSettings */
+/* @var $type Schema */
 
 
 wp_enqueue_script(

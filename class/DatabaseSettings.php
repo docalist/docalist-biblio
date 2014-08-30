@@ -17,6 +17,7 @@ namespace Docalist\Biblio;
 use Docalist\Type\Object;
 use Docalist\Type\String;
 use Docalist\Type\Integer;
+use Docalist\Schema\Schema;
 use DateTime;
 use Exception;
 
@@ -28,7 +29,7 @@ use Exception;
  * @property String $name Identifiant de la base
  * @property String $label Libellé de la base
  * @property String $slug Slug de la base de données
- * @property TypeSettings[] $types Types de notices gérés dans cette base
+ * @property Schema[] $types Types de notices gérés dans cette base
  * @property Integer $creation Date de création de la base
  */
 class DatabaseSettings extends Object {

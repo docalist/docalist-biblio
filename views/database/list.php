@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
-use Docalist\Biblio\TypeSettings;
+use Docalist\Schema\Schema;
 
 /**
  * Affiche la liste des bases de données existantes.
@@ -96,7 +96,7 @@ div.dbdesc{
                         <?= __('Ajouter un type...', 'docalist-biblio') ?>
                     </a>
                 <?php else: ?>
-                    <?php foreach ($database->types as $typeindex => $type): /* @var $type TypeSettings */ ?>
+                    <?php foreach ($database->types as $typeindex => $type): /* @var $type Schema */ ?>
                         <a href="<?= esc_url($this->url('TypeFields', $dbindex, $typeindex)) ?>">
                             <?= $type->label() ?>
                         </a>

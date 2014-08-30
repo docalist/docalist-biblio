@@ -15,7 +15,6 @@
 namespace Docalist\Biblio\Entity;
 
 use Docalist\Type\Entity;
-use Docalist\Biblio\TypeSettings;
 use Docalist\Repository\Repository;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
@@ -427,7 +426,7 @@ class Reference extends Entity {
 
         $type = $this->type();
 
-        /* @var $type TypeSettings */
+        /* @var $type Schema */
         $type = $this->repository->settings()->types[$type];
         if (is_null($type)) {
             return $label;

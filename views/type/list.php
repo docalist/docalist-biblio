@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
-use Docalist\Biblio\TypeSettings;
+use Docalist\Schema\Schema;
 
 /**
  * Liste des types d'une base de données.
@@ -47,7 +47,7 @@ use Docalist\Biblio\TypeSettings;
     $addType = $this->url('TypeAdd', $dbindex);
     $nb = 0;
     foreach($database->types as $typeindex => $type) {
-        /* @var $type TypeSettings */
+        /* @var $type Schema */
 
         $edit = esc_url($this->url('TypeEdit', $dbindex, $typeindex));
         $delete = esc_url($this->url('TypeDelete', $dbindex, $typeindex));

@@ -15,14 +15,14 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
-use Docalist\Biblio\TypeSettings;
+use Docalist\Schema\Schema;
 
 /**
  * Choisit un type de notice à ajouter dans la base.
  *
  * @param DatabaseSettings $database La base à éditer.
  * @param int $dbindex L'index de la base.
- * @param TypeSettings[] $types Liste des types disponibles.
+ * @param Schema[] $types Liste des types disponibles.
  *
  */
 
@@ -39,7 +39,7 @@ $back = $this->url('TypesList', $dbindex);
 
     <form method="POST" action="<?=$this->url('TypeAdd', $dbindex) ?>">
         <ul>
-            <?php foreach($types as $type) : /* @var $type TypeSettings */ ?>
+            <?php foreach($types as $type) : /* @var $type Schema */ ?>
                 <li>
                     <h3>
                         <label>
