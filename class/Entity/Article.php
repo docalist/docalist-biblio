@@ -90,12 +90,6 @@ class Article extends Reference {
                 $fields['type'],
                 $fields['ref'],
                 $fields['owner'],
-
-                // ---------- enlever ce qui suit
-                'group9' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'CHAMPS POUR TESTS, PAS DANS LA GRILLE ARTICLE'],
-                $fields['editor'],
-                $fields['collection'],
-                $fields['event'],
             ]
         ];
         // @formatter:on
