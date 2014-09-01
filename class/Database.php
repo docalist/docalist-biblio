@@ -15,6 +15,7 @@
 namespace Docalist\Biblio;
 
 use Docalist\Biblio\Reference;
+use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Search\Indexer;
 use Exception;

@@ -12,7 +12,7 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio;
+namespace Docalist\Biblio\Settings;
 
 use Docalist\Type\Object;
 use Docalist\Type\String;

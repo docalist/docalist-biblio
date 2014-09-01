@@ -17,6 +17,9 @@ namespace Docalist\Biblio;
 use Docalist\AdminPage;
 use Exception;
 use Docalist\Biblio\Reference;
+use Docalist\Biblio\Settings\Settings;
+use Docalist\Biblio\Settings\DatabaseSettings;
+use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
 
 /**

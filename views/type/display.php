@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Views;
 
-use Docalist\Biblio\DatabaseSettings;
+use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Schema\Schema;
 use Docalist\Forms\Fragment;
 

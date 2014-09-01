@@ -12,16 +12,14 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio;
-
-use Docalist\Type\Settings as TypeSettings;
+namespace Docalist\Biblio\Settings;
 
 /**
  * Config de Docalist Biblio.
  *
  * @property DatabaseSettings[] $databases Liste des bases.
  */
-class Settings extends TypeSettings {
+class Settings extends \Docalist\Type\Settings {
     protected $id = 'docalist-biblio-settings';
 
     static protected function loadSchema() {

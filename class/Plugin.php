@@ -17,6 +17,8 @@ namespace Docalist\Biblio;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
 use Docalist\Biblio\Reference;
+use Docalist\Biblio\Settings\Settings;
+use Docalist\Biblio\Settings\DatabaseSettings;
 use Exception;
 
 /**

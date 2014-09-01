@@ -14,10 +14,10 @@
  */
 namespace Docalist\Biblio\Views;
 
-use Docalist\Biblio\DatabaseSettings;
+use Docalist\Biblio\Settings\DatabaseSettings;
+use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
 use Docalist\Forms\Form;
-use Docalist\Biblio\TypeSettings;
 
 /**
  * Edite les paramètres d'une grille.

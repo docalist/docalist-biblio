@@ -14,9 +14,9 @@
  */
 namespace Docalist\Biblio\Views;
 
-use Docalist\Biblio\DatabaseSettings;
+use Docalist\Biblio\Settings\DatabaseSettings;
+use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Forms\Form;
-use Docalist\Biblio\TypeSettings;
 
 /**
  * Edite les paramètres d'un type.

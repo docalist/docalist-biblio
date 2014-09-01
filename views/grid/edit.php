@@ -14,11 +14,11 @@
  */
 namespace Docalist\Biblio\Views;
 
-use Docalist\Biblio\DatabaseSettings;
+use Docalist\Biblio\Settings\DatabaseSettings;
+use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
-use Docalist\Forms\Fragment;
 use Docalist\Schema\Field;
-use Docalist\Biblio\TypeSettings;
+use Docalist\Forms\Fragment;
 
 /**
  * Edite une grille.
