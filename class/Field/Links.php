@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection de liens.
  */
 class Links extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Link';
 
     public function editForm() {

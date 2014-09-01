@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\TableLookup;
 
 /**
  * Une collection de genres de documents.
  */
 class Genres extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Genre';
 
     public function editForm() {

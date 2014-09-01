@@ -19,8 +19,8 @@ use Docalist\Forms\Input;
 /**
  * Type de base pour tous les champs entiers
  */
-class Integer extends \Docalist\Type\Integer {
-    use SettingsFormTrait;
+class Integer extends \Docalist\Type\Integer implements BiblioField {
+    use BiblioFieldTrait;
 
     public function editForm() {
         return new Input($this->schema->name());

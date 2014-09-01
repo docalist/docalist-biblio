@@ -20,8 +20,8 @@ use Docalist\Forms\Fragment;
 /**
  * Type de base pour tous les champs texte
  */
-class String extends \Docalist\Type\String {
-    use SettingsFormTrait;
+class String extends \Docalist\Type\String implements BiblioField {
+    use BiblioFieldTrait;
 
     public function editForm() {
         return new Input($this->schema->name());

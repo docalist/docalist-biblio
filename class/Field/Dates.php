@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection de dates.
  */
 class Dates extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Date';
 
     public function editForm() {

@@ -14,17 +14,16 @@
  */
 namespace Docalist\Biblio\Type;
 
-use Docalist\Type\Exception\InvalidTypeException;
-use Docalist\Type\Any;
 use Docalist\Forms\Fragment;
+use Docalist\Type\Exception\InvalidTypeException;
 
 /**
  * Group
  *
  * Pseudo type de champ utilisé pour gérer les groupes de champs.
  */
-class Group extends Any {
-    use SettingsFormTrait;
+class Group extends \Docalist\Type\Any implements BiblioField {
+    use BiblioFieldTrait;
 
     public function assign($value) {
         if (! is_null($value)) {

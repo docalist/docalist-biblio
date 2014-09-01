@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection d'éditeurs.
  */
 class Editors extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Editor';
 
     public function editForm() {

@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\TableLookup;
 
 /**
  * Une collection de supports de documents.
  */
 class Medias extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Media';
 
     public function editForm() {

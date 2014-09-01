@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une liste de contenus.
  */
 class Contents extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Content';
 
     public function editForm() {

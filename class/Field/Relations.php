@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection de relations.
  */
 class Relations extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Relation';
 
     public function editForm() {

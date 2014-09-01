@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection de topics d'indexation.
  */
 class Topics extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Topic';
 
     public function editForm() {

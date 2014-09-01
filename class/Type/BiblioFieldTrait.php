@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Fragment;
 
-trait SettingsFormTrait {
+trait BiblioFieldTrait {
     public function settingsForm() {
         // Champs communs
         $name = $this->schema->name();

@@ -19,8 +19,8 @@ use Docalist\Forms\Tag;
 /**
  * Type de base pour tous les champs structurés
  */
-class Object extends \Docalist\Type\Object {
-    use SettingsFormTrait;
+class Object extends \Docalist\Type\Object  implements BiblioField {
+    use BiblioFieldTrait;
 
     public function editForm() {
         return new Tag('p', 'la classe ' . get_class($this) . ' doit implémenter editForm().');

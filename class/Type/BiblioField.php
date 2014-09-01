@@ -14,15 +14,9 @@
  */
 namespace Docalist\Biblio\Type;
 
-use Docalist\Forms\Tag;
-
 /**
- * Type de base pour tous les champs répétables.
+ * Interface pour un champ de premier niveau dans une Reference.
  */
-class Repeatable extends \Docalist\Type\Collection implements BiblioField {
-    use BiblioFieldTrait;
-
-    public function editForm() {
-        return new Tag('p', 'la classe ' . get_class($this) . ' doit implémenter editForm().');
-    }
+interface BiblioField {
+    public function settingsForm();
 }

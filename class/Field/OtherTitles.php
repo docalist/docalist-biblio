@@ -15,7 +15,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 use Docalist\Forms\Fragment;
 
@@ -23,7 +22,6 @@ use Docalist\Forms\Fragment;
  * Une collection de titres.
  */
 class OtherTitles extends Repeatable {
-    use SettingsFormTrait;
     static protected $type = 'OtherTitle';
 
     public function editForm() {

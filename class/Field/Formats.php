@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\TableLookup;
 
 /**
  * Une collection d'étiquettes de collation.
  */
 class Formats extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Format';
 
     public function editForm() {

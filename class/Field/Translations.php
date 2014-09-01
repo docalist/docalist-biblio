@@ -15,15 +15,12 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Repeatable;
-use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\Table;
 
 /**
  * Une collection de traductions du titre.
  */
 class Translations extends Repeatable {
-    use SettingsFormTrait;
-
     static protected $type = 'Translation';
 
     public function editForm() {
