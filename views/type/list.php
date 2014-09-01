@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\DatabaseSettings;
 use Docalist\Schema\Schema;
+use Docalist\Biblio\TypeSettings;
 
 /**
  * Liste des types d'une base de données.
@@ -47,12 +48,11 @@ use Docalist\Schema\Schema;
     $addType = $this->url('TypeAdd', $dbindex);
     $nb = 0;
     foreach($database->types as $typeindex => $type) {
-        /* @var $type Schema */
+        /* @var $type TypeSettings */
 
         $edit = esc_url($this->url('TypeEdit', $dbindex, $typeindex));
         $delete = esc_url($this->url('TypeDelete', $dbindex, $typeindex));
-        $fields = esc_url($this->url('TypeFields', $dbindex, $typeindex));
-        $display = esc_url($this->url('TypeDisplay', $dbindex, $typeindex));
+        $listGrids = esc_url($this->url('GridList', $dbindex, $typeindex));
 
         $nb++;
     ?>
@@ -68,14 +68,8 @@ use Docalist\Schema\Schema;
                 </span>
                 |
                 <span class="fields">
-                    <a href="<?= $fields ?>">
-                        <?= __('Grille de saisie', 'docalist-biblio') ?>
-                    </a>
-                </span>
-                |
-                <span class="display">
-                    <a href="<?= $display ?>">
-                        <?= __("Format d'affichage", 'docalist-biblio') ?>
+                    <a href="<?= $listGrids ?>">
+                        <?= __('Grilles et formulaires', 'docalist-biblio') ?>
                     </a>
                 </span>
                 |
