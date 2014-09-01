@@ -8,11 +8,11 @@ class ReferenceTest extends EntityTestCase {
         $this->checkIs($ref, 'ref'          , 'int');
         $this->checkIs($ref, 'genre'        , 'string*');
         $this->checkIs($ref, 'media'        , 'string*');
-        $this->checkIs($ref, 'author'       , 'Docalist\Biblio\Entity\Reference\Author*');
-        $this->checkIs($ref, 'organisation' , 'Docalist\Biblio\Entity\Reference\Organisation*');
+        $this->checkIs($ref, 'author'       , 'Docalist\Biblio\Field\Author*');
+        $this->checkIs($ref, 'organisation' , 'Docalist\Biblio\Field\Organisation*');
         $this->checkIs($ref, 'title'        , 'string');
-        $this->checkIs($ref, 'othertitle'   , 'Docalist\Biblio\Entity\Reference\OtherTitle*');
-        $this->checkIs($ref, 'translation'  , 'Docalist\Biblio\Entity\Reference\Translation*');
+        $this->checkIs($ref, 'othertitle'   , 'Docalist\Biblio\Field\OtherTitle*');
+        $this->checkIs($ref, 'translation'  , 'Docalist\Biblio\Field\Translation*');
         $this->checkIs($ref, 'date'         , 'string');
         $this->checkIs($ref, 'journal'      , 'string');
         $this->checkIs($ref, 'issn'         , 'string');
@@ -22,20 +22,20 @@ class ReferenceTest extends EntityTestCase {
         $this->checkIs($ref, 'pagination'   , 'string');
         $this->checkIs($ref, 'format'       , 'string');
         $this->checkIs($ref, 'isbn'         , 'string');
-        $this->checkIs($ref, 'editor'       , 'Docalist\Biblio\Entity\Reference\Editor*');
-        $this->checkIs($ref, 'edition'      , 'Docalist\Biblio\Entity\Reference\Edition*');
-        $this->checkIs($ref, 'collection'   , 'Docalist\Biblio\Entity\Reference\Collection*');
-        $this->checkIs($ref, 'event'        , 'Docalist\Biblio\Entity\Reference\Event');
-        $this->checkIs($ref, 'degree'       , 'Docalist\Biblio\Entity\Reference\Degree');
-        $this->checkIs($ref, 'abstract'     , 'Docalist\Biblio\Entity\Reference\AbstractField*');
-        $this->checkIs($ref, 'topic'        , 'Docalist\Biblio\Entity\Reference\Topic*');
-        $this->checkIs($ref, 'note'         , 'Docalist\Biblio\Entity\Reference\Note*');
-        $this->checkIs($ref, 'link'         , 'Docalist\Biblio\Entity\Reference\Link*');
+        $this->checkIs($ref, 'editor'       , 'Docalist\Biblio\Field\Editor*');
+        $this->checkIs($ref, 'edition'      , 'Docalist\Biblio\Field\Edition*');
+        $this->checkIs($ref, 'collection'   , 'Docalist\Biblio\Field\Collection*');
+        $this->checkIs($ref, 'event'        , 'Docalist\Biblio\Field\Event');
+        $this->checkIs($ref, 'degree'       , 'Docalist\Biblio\Field\Degree');
+        $this->checkIs($ref, 'abstract'     , 'Docalist\Biblio\Field\AbstractField*');
+        $this->checkIs($ref, 'topic'        , 'Docalist\Biblio\Field\Topic*');
+        $this->checkIs($ref, 'note'         , 'Docalist\Biblio\Field\Note*');
+        $this->checkIs($ref, 'link'         , 'Docalist\Biblio\Field\Link*');
         $this->checkIs($ref, 'doi'          , 'string');
-        $this->checkIs($ref, 'relations'    , 'Docalist\Biblio\Entity\Reference\Relation*');
+        $this->checkIs($ref, 'relations'    , 'Docalist\Biblio\Field\Relation*');
         $this->checkIs($ref, 'owner'        , 'string*');
-        $this->checkIs($ref, 'creation'     , 'Docalist\Biblio\Entity\Reference\DateBy');
-        $this->checkIs($ref, 'lastupdate'   , 'Docalist\Biblio\Entity\Reference\DateBy');
+        $this->checkIs($ref, 'creation'     , 'Docalist\Biblio\Field\DateBy');
+        $this->checkIs($ref, 'lastupdate'   , 'Docalist\Biblio\Field\DateBy');
         $this->checkIs($ref, 'status'       , 'string*');
     }
 
