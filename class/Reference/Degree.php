@@ -12,33 +12,41 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity;
+namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
 
 /**
- * Législation.
+ * Diplôme.
  *
- * Décrit un texte législatif ou réglementaire : loi, projet de loi, proposition
- * de loi, ordonnance, décret, arrêté, circulaire, convention, décision, code
- * législatif, code réglementaire, note de service, etc.
+ * Décrit un document élaboré en vue de l'obtention d'un diplôme : thèse,
+ * mémoire, dissertation, etc.
  *
- * @see http://www.snphar.com/data/A_la_une/phar27/legislation27.pdf
+ * - Dans le milieu universitaire, une thèse est un mémoire résumant un
+ *   travail de recherche universitaire, soutenu devant un jury par un
+ *   étudiant afin d'obtenir un diplôme ou un grade universitaire.
+ *   @see http://fr.wikipedia.org/wiki/Th%C3%A8se
+ *
+ * - A thesis or dissertation is a document submitted in support of
+ *   candidature for an academic degree or professional qualification
+ *   presenting the author's research and findings
+ *   @see http://en.wikipedia.org/wiki/Thesis
  *
  * Principales caractéristiques :
- * - l'auteur est un député, un sénateur, ou le premier ministre
- * - a une date de dépôt
- * - est publié ou nom au bo, au jo, etc.
+ * - écrit en vue d'obtenir un diplôme
+ * - relié à une école, une fac, une université, etc.
+ * - a un seul auteur physique
+ * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
  */
-class Legislation extends Reference {
+class Degree extends Reference {
     static protected function loadSchema() {
         $fields = parent::loadSchema()['fields'];
 
         // @formatter:off
         return [
-            'name' => 'legislation',
-            'label' => __('Législation', 'docalist-biblio'),
-            'description' => __('Un texte législatif ou réglementaire.', 'docalist-biblio'),
+            'name' => 'degree',
+            'label' => __('Mémoire ou thèse', 'docalist-biblio'),
+            'description' => __('Un document élaboré en vue de l\'obtention d\'un diplôme.', 'docalist-biblio'),
             'fields' => [
                 // Type, Genre, Media
                 'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
@@ -48,39 +56,34 @@ class Legislation extends Reference {
                 // Title, OtherTitle, Translation
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
                 $fields['title'],
-//                 $fields['othertitle'],
-//                 $fields['translation'],
+                $fields['othertitle'],
+                // $fields['translation'],
 
                 // Author, Organisation
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
                 $fields['author'],
                 $fields['organisation'],
 
-                // Journal, Number, Date, Edition
-                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Journal / Périodique'],
-                $fields['journal'],
-                $fields['number'],
-                $fields['edition'],
-
                 // Date / Language / Pagination / Format
-                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
+                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
                 $fields['date'],
                 $fields['language'],
+                $fields['number'],
                 $fields['extent'],
                 $fields['format'],
 
                 // Topic / Abstract / Note
-                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
+                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
                 $fields['topic'],
                 $fields['content'],
 
-                // Liens et relations
-                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
+                // // Liens et relations
+                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
                 $fields['link'],
                 $fields['relation'],
 
                 // Ref / Owner / Creation / Lastupdate
-                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
+                'group9' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
                 $fields['type'],
                 $fields['ref'],
                 $fields['owner'],

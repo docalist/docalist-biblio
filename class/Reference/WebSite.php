@@ -12,7 +12,7 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity;
+namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
 

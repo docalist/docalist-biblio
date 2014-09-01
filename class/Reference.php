@@ -63,16 +63,16 @@ class Reference extends Entity {
      * @var array Un tableau de la forme type => classe du type.
      */
     static protected $types = [
-        'article'           => 'Docalist\Biblio\Entity\Article',
-        'book'              => 'Docalist\Biblio\Entity\Book',
-        'degree'            => 'Docalist\Biblio\Entity\Degree',
-        'book-chapter'      => 'Docalist\Biblio\Entity\BookChapter',
-        'legislation'       => 'Docalist\Biblio\Entity\Legislation',
-        'meeting'           => 'Docalist\Biblio\Entity\Meeting',
-        'periodical-issue'  => 'Docalist\Biblio\Entity\PeriodicalIssue',
-        'periodical'        => 'Docalist\Biblio\Entity\Periodical',
-        'report'            => 'Docalist\Biblio\Entity\Report',
-        'website'           => 'Docalist\Biblio\Entity\WebSite',
+        'article'           => 'Docalist\Biblio\Reference\Article',
+        'book'              => 'Docalist\Biblio\Reference\Book',
+        'degree'            => 'Docalist\Biblio\Reference\Degree',
+        'book-chapter'      => 'Docalist\Biblio\Reference\BookChapter',
+        'legislation'       => 'Docalist\Biblio\Reference\Legislation',
+        'meeting'           => 'Docalist\Biblio\Reference\Meeting',
+        'periodical-issue'  => 'Docalist\Biblio\Reference\PeriodicalIssue',
+        'periodical'        => 'Docalist\Biblio\Reference\Periodical',
+        'report'            => 'Docalist\Biblio\Reference\Report',
+        'website'           => 'Docalist\Biblio\Reference\WebSite',
     ];
 
     /**

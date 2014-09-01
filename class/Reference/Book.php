@@ -12,41 +12,40 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity;
+namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
 
 /**
- * Diplôme.
+ * Livre.
  *
- * Décrit un document élaboré en vue de l'obtention d'un diplôme : thèse,
- * mémoire, dissertation, etc.
+ * Décrit un livre.
  *
- * - Dans le milieu universitaire, une thèse est un mémoire résumant un
- *   travail de recherche universitaire, soutenu devant un jury par un
- *   étudiant afin d'obtenir un diplôme ou un grade universitaire.
- *   @see http://fr.wikipedia.org/wiki/Th%C3%A8se
+ * - Un livre est un document écrit formant une unité et conçu comme tel
+ *   composé de pages en papier ou en carton reliées les unes aux autres.
+ *   @see http://fr.wikipedia.org/wiki/Livre_(document)
  *
- * - A thesis or dissertation is a document submitted in support of
- *   candidature for an academic degree or professional qualification
- *   presenting the author's research and findings
- *   @see http://en.wikipedia.org/wiki/Thesis
+ * - A book is a set of written, printed, illustrated, or blank sheets, made
+ *   of ink, paper, parchment, or other materials, usually fastened together
+ *   to hinge at one side
+ *   @see http://en.wikipedia.org/wiki/Book
  *
  * Principales caractéristiques :
- * - écrit en vue d'obtenir un diplôme
- * - relié à une école, une fac, une université, etc.
- * - a un seul auteur physique
- * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
+ * - a un éditeur (un diffuseur, etc.)
+ * - a un isbn
+ * - a un ou plusieurs auteurs physiques
+ * - a un ou plusieurs auteurs moraux
+ * - pagination de type "nombre de pages"
  */
-class Degree extends Reference {
+class Book extends Reference {
     static protected function loadSchema() {
         $fields = parent::loadSchema()['fields'];
 
         // @formatter:off
         return [
-            'name' => 'degree',
-            'label' => __('Mémoire ou thèse', 'docalist-biblio'),
-            'description' => __('Un document élaboré en vue de l\'obtention d\'un diplôme.', 'docalist-biblio'),
+            'name' => 'book',
+            'label' => __('Livre', 'docalist-biblio'),
+            'description' => __('Un livre publié par un éditeur.', 'docalist-biblio'),
             'fields' => [
                 // Type, Genre, Media
                 'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
@@ -57,7 +56,7 @@ class Degree extends Reference {
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
                 $fields['title'],
                 $fields['othertitle'],
-                // $fields['translation'],
+                $fields['translation'],
 
                 // Author, Organisation
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
@@ -72,13 +71,23 @@ class Degree extends Reference {
                 $fields['extent'],
                 $fields['format'],
 
+                // Editor / Collection / Edition
+                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
+                $fields['editor'],
+                $fields['collection'],
+                $fields['edition'],
+
+                // Event
+                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Congrès et diplômes'],
+                $fields['event'],
+
                 // Topic / Abstract / Note
-                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
+                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
                 $fields['topic'],
                 $fields['content'],
 
                 // // Liens et relations
-                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
+                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
                 $fields['link'],
                 $fields['relation'],
 
