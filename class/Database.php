@@ -76,15 +76,17 @@ class Database extends PostTypeRepository {
         $this->docalistSearchFacets();
 
         // Comme on stocke les données dans post_excerpt, on doit garantir qu'il n'est jamais modifié (autosave, heartbeat, etc.)
-        global $pagenow, $action;
-        if ($pagenow === 'admin-ajax.php' && $action === 'heartbeat') {
+        global $pagenow;
+        if (
+            $pagenow === 'admin-ajax.php'
+            // && defined('DOING_AUTOSAVE') && DOING_AUTOSAVE
+            && isset($_POST['data']['wp_autosave']['post_type'])
+            && $_POST['data']['wp_autosave']['post_type'] === $this->postType
+        ) {
             add_filter('wp_insert_post_data', function(array $data) {
-                if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE
-                    && isset($_POST['data']['wp_autosave']['post_type'])
-                    && $_POST['data']['wp_autosave']['post_type'] === $this->postType) {
+                unset($data['post_excerpt']);
+                unset($data['post_name']);
 
-                    unset($data['post_excerpt']);
-                }
                 return $data;
             }, 999); // EditReference a également un filtre wp_insert_post_data avec ne priorité supérieure. Les priorités doivent rester synchro.
         }
@@ -649,16 +651,16 @@ class Database extends PostTypeRepository {
      */
     public function decode($post, $id) {
         $data = parent::decode($post, $id);
-        if (isset($data['ref']) && is_string($data['ref'])) {
-            if ($data['ref'] === '') {
-                unset($data['ref']);
-            } else {
-                $data['ref'] = (int) $data['ref'];
-                if ($data['ref'] === 0) {
-                    throw new \Exception("ref non int pour notice $id");
-                }
-            }
-        }
+//         if (isset($data['ref']) && is_string($data['ref'])) {
+//             if ($data['ref'] === '') {
+//                 unset($data['ref']);
+//             } else {
+//                 $data['ref'] = (int) $data['ref'];
+//                 if ($data['ref'] === 0) {
+//                     throw new \Exception("ref non int pour notice $id");
+//                 }
+//             }
+//         }
         return $data;
     }
 
