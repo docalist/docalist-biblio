@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Reference;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Search\Indexer;
 use Exception;
@@ -61,7 +61,7 @@ class Database extends PostTypeRepository {
      */
     public function __construct(DatabaseSettings $settings) {
         // Construit le dépôt
-        parent::__construct($settings->postType(), 'Docalist\Biblio\Entity\Reference');
+        parent::__construct($settings->postType(), 'Docalist\Biblio\Reference');
 
         // Stocke nos paramètres
         $this->settings = $settings;

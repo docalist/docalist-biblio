@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Reference;
 use Docalist\AdminPage;
 use Docalist\Schema\Field;
 use Docalist\Utils;

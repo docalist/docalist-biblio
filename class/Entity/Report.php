@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity;
 
+use Docalist\Biblio\Reference;
+
 /**
  * Un rapport.
  *

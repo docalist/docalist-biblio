@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Reference;
 use Docalist\Forms\Themes;
 use Docalist\Utils;
 use WP_Post;

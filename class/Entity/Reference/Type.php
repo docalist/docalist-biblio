@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Entity\Reference;
 
 use Docalist\Forms\Select;
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Reference;
 
 /**
  * Le type de la notice.

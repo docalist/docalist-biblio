@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Export;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Reference;
 use Docalist\Biblio\Entity\ReferenceIterator;
 
 /**
