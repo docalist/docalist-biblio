@@ -17,6 +17,7 @@ namespace Docalist\Biblio;
 use Docalist\AdminPage;
 use Exception;
 use Docalist\Biblio\Entity\Reference;
+use Docalist\Schema\Schema;
 
 /**
  * Gestion des bases de données.
@@ -317,7 +318,17 @@ class AdminDatabases extends AdminPage {
             }
 
             // Ajoute le type
-            $database->types[] = $types[$name]::defaultSchema();
+            $defaultSchema = $types[$name]::defaultSchema();
+            $database->types[] = new TypeSettings([
+                'name' => $name,
+                'label' => $defaultSchema->label(),
+                'description' => $defaultSchema->description(),
+                'grids' => [
+                    'edit' => $types[$name]::editGrid(),
+                    'content' => $types[$name]::contentGrid(),
+                    'excerpt' => $types[$name]::excerptGrid()
+                ]
+            ]);
         }
 
         $this->settings->save();
@@ -387,32 +398,6 @@ class AdminDatabases extends AdminPage {
     }
 
     /**
-     * Modifie la grille de saisie d'un type.
-     *
-     * @param int $dbindex Base à éditer
-     * @param int $typeindex Type à éditer
-     */
-    public function actionTypeFields($dbindex, $typeindex) {
-        $database = $this->database($dbindex);
-        $type = $this->type($dbindex, $typeindex);
-
-        if ($this->isPost()) {
-            $data = wp_unslash($_POST);
-            $type->merge(['fields' => $data]);
-            $this->settings->save();
-
-            return $this->redirect($this->url('TypesList', $dbindex), 303);
-        }
-
-        return $this->view('docalist-biblio:type/fields', [
-            'dbindex' => $dbindex,
-            'typeindex' => $typeindex,
-            'database' => $database,
-            'type' => $type,
-        ]);
-    }
-
-    /**
      * Modifie un format d'affichage
      *
      * @param int $dbindex Base à éditer
@@ -437,4 +422,114 @@ class AdminDatabases extends AdminPage {
             'type' => $type,
         ]);
     }
+
+    /**
+     * Liste les grilles d'un type.
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     */
+    public function actionGridList($dbindex, $typeindex) {
+        // Vérifie les paramètres
+        $database = $this->database($dbindex);
+        $type = $this->type($dbindex, $typeindex);
+
+        // Liste des grilles
+        return $this->view('docalist-biblio:grid/list', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'type' => $type,
+            'typeindex' => $typeindex,
+        ]);
+    }
+
+    /**
+     * Edite les paramètres d'une grille (label, description...)
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     * @param string $gridname Nom de la grille à éditer.
+     */
+    public function actionGridSettings($dbindex, $typeindex, $gridname) {
+        $database = $this->database($dbindex);
+        $type = $this->type($dbindex, $typeindex);
+        /* @var $grid Schema */
+        $grid = $type->grids[$gridname];
+
+        if ($this->isPost()) {
+            $_POST = wp_unslash($_POST);
+
+            $grid->merge([
+                'label' => $_POST['label'],
+                'description' => $_POST['description']
+            ]);
+
+            $this->settings->save();
+
+            return $this->redirect($this->url('GridList', $dbindex, $typeindex), 303);
+        }
+
+        return $this->view('docalist-biblio:grid/settings', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'type' => $type,
+            'typeindex' => $typeindex,
+            'grid' => $grid,
+            'gridname' => $gridname
+        ]);
+    }
+
+    /**
+     * Edite les champs d'une grille (ordre, libellés, groupes, etc.)
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     * @param string $gridname Nom de la grille à éditer.
+     */
+    public function actionGridEdit($dbindex, $typeindex, $gridname) {
+        $database = $this->database($dbindex);
+        $type = $this->type($dbindex, $typeindex);
+        /* @var $grid Schema */
+        $grid = $type->grids[$gridname];
+
+        if ($this->isPost()) {
+            $data = wp_unslash($_POST);
+            $grid->merge(['fields' => $data]);
+            $this->settings->save();
+
+            return $this->redirect($this->url('GridList', $dbindex, $typeindex), 303);
+        }
+
+        return $this->view('docalist-biblio:grid/edit', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'type' => $type,
+            'typeindex' => $typeindex,
+            'grid' => $grid,
+            'gridname' => $gridname
+        ]);
+    }
+
+    /**
+     * Duplique une grille.
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     * @param string $gridname Nom de la grille à copier.
+     */
+    public function actionGridCopy($dbindex, $typeindex, $gridname) {
+        return $this->info('Pas encore implémenté', 'Dupliquer une grille');
+    }
+
+    /**
+     * Supprime une grille
+     *
+     * @param int $dbindex Base à éditer
+     * @param int $typeindex Type à éditer
+     * @param string $gridname Nom de la grille à éditer.
+     */
+    public function actionGridDelete($dbindex, $typeindex, $gridname) {
+        return $this->info('Pas encore implémenté', 'Supprimer une grille');
+    }
+
 }
