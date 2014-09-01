@@ -84,7 +84,7 @@ wp_enqueue_script(
         <?php
             $field = new Field([
                 'name' => 'group{group-number}',
-                'type' => 'Docalist\Biblio\Entity\Reference\Group',
+                'type' => 'Docalist\Biblio\Type\Group',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
                 'newgroup' => true, // utilisé par Group::editForm()
                 'state' => '', // = normal
@@ -111,7 +111,7 @@ function makeBox(Field $schema, $closed = true) { ?>
     <?php
         $type = $schema->collection() ?: $schema->type();
     ?>
-    <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Entity\Reference\Group' ? 'group' : $schema->name() ?>">
+    <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Type\Group' ? 'group' : $schema->name() ?>">
         <div class="handlediv"></div>
         <h3><span><?= $schema->label() ?: $schema->name() ?></span></h3>
         <div class="inside">

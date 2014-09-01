@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\String;
+
 /**
  * Un support de document.
  */

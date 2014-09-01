@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\Object;
+
 /**
  * Collection et numéro au sein de la collection.
  *

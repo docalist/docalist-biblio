@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\Object;
+
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
  *

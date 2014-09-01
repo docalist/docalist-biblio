@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\Object;
+
 /**
  * Une liste de mots-clés d'un certain type.
  *

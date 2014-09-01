@@ -40,29 +40,29 @@ class PeriodicalIssue extends Reference {
             'fields' => [
 
                 // Title, OtherTitle, Translation
-                'group2' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Titres'],
+                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
                 $fields['number'],
                 $fields['title'],
 
                 // Date / Language / Pagination / Format
-                'group2' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Informations bibliographiques'],
+                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
                 $fields['date'],
                 $fields['edition'],
                 $fields['extent'],
                 $fields['format'],
 
                 // Topic / Abstract / Note
-                'group3' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Indexation et résumé'],
+                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
                 $fields['topic'],
                 $fields['content'],
 
                 // // Liens et relations
-                'group4' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Liens et relations'],
+                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
                 $fields['link'],
                 $fields['relation'],
 
                 // Ref / Owner / Creation / Lastupdate
-                'group7' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Informations de gestion'],
+                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
                 $fields['type'],
                 $fields['ref'],
                 $fields['owner'],

@@ -300,7 +300,7 @@ class EditReference {
         $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
         $collapsed = [];
         foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
-            if ($field->type() === 'Docalist\Biblio\Entity\Reference\Group') {
+            if ($field->type() === 'Docalist\Biblio\Type\Group') {
                 switch($field->state()) {
                     case 'hidden':
                         $hidden[] = $name;
@@ -442,7 +442,7 @@ class EditReference {
     protected function metaboxes(Reference $ref) {
         $metaboxes = [];
         foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
-            if ($field->type() === 'Docalist\Biblio\Entity\Reference\Group') {
+            if ($field->type() === 'Docalist\Biblio\Type\Group') {
                 $box = new Fragment();
                 $box->label($field->label())
                     ->description($field->description())

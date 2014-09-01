@@ -12,16 +12,15 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity\Reference;
+namespace Docalist\Biblio\Type;
 
-use Docalist\Type\String as BaseString;
 use Docalist\Forms\Input;
 use Docalist\Forms\Fragment;
 
 /**
  * Type de base pour tous les champs texte
  */
-class String extends BaseString {
+class String extends \Docalist\Type\String {
     use SettingsFormTrait;
 
     public function editForm() {

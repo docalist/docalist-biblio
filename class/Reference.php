@@ -23,15 +23,15 @@ use Docalist\Schema\Field;
 /**
  * Référence documentaire.
  *
- * @property Docalist\Biblio\Entity\Reference\Integer $ref
- * @property Docalist\Biblio\Entity\Reference\Integer $parent
+ * @property Docalist\Biblio\Type\Integer $ref
+ * @property Docalist\Biblio\Type\Integer $parent
  * @property Docalist\Biblio\Entity\Reference\Title $title
- * @property Docalist\Biblio\Entity\Reference\String $status
- * @property Docalist\Biblio\Entity\Reference\String $creation
- * @property Docalist\Biblio\Entity\Reference\String $lastupdate
- * @property Docalist\Biblio\Entity\Reference\String $password
- * @property Docalist\Biblio\Entity\Reference\String $posttype
- * @property Docalist\Biblio\Entity\Reference\String $type
+ * @property Docalist\Biblio\Type\String $status
+ * @property Docalist\Biblio\Type\String $creation
+ * @property Docalist\Biblio\Type\String $lastupdate
+ * @property Docalist\Biblio\Type\String $password
+ * @property Docalist\Biblio\Type\String $posttype
+ * @property Docalist\Biblio\Type\String $type
  * @property Docalist\Biblio\Entity\Reference\Genres $genre
  * @property Docalist\Biblio\Entity\Reference\Medias $media
  * @property Docalist\Biblio\Entity\Reference\Authors $author
@@ -39,7 +39,7 @@ use Docalist\Schema\Field;
  * @property Docalist\Biblio\Entity\Reference\OtherTitles $othertitle
  * @property Docalist\Biblio\Entity\Reference\Translations $translation
  * @property Docalist\Biblio\Entity\Reference\Dates $date
- * @property Docalist\Biblio\Entity\Reference\String $journal
+ * @property Docalist\Biblio\Type\String $journal
  * @property Docalist\Biblio\Entity\Reference\Numbers $number
  * @property Docalist\Biblio\Entity\Reference\Languages $language
  * @property Docalist\Biblio\Entity\Reference\Extents $extent
@@ -174,12 +174,12 @@ class Reference extends Entity {
             'description' => __('Décrit une notice documentaire.', 'docalist-biblio'),
             'fields' => [
                 'ref' => [         // Alias de post_name
-                    'type' => 'Docalist\Biblio\Entity\Reference\Integer',
+                    'type' => 'Docalist\Biblio\Type\Integer',
                     'label' => __('Numéro de référence', 'docalist-biblio'),
                     'description' => __('Numéro unique identifiant la notice', 'docalist-biblio'),
                 ],
                 'parent' => [      // Alias de post_parent
-                    'type' => 'Docalist\Biblio\Entity\Reference\Integer',
+                    'type' => 'Docalist\Biblio\Type\Integer',
                     'label' => __('Notice parent', 'docalist-biblio'),
                     'description' => __('Numéro de la référence parent', 'docalist-biblio'),
                 ],
@@ -189,27 +189,27 @@ class Reference extends Entity {
                     'description' => __('Titre original du document catalogué', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
-                    'type' => 'Docalist\Biblio\Entity\Reference\String',
+                    'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Statut', 'docalist-biblio'),
                     'description' => __('Statut de la notice.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
-                    'type' => 'Docalist\Biblio\Entity\Reference\String',
+                    'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Création', 'docalist-biblio'),
                     'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
-                    'type' => 'Docalist\Biblio\Entity\Reference\String',
+                    'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
                 ],
                 'password' => [  // Alias de post_password
-                    'type' => 'Docalist\Biblio\Entity\Reference\String',
+                    'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Mot de passe', 'docalist-biblio'),
                     'description' => __('Mot de passe de la notice.', 'docalist-biblio'),
                 ],
                 'posttype' => [  // Alias de post_type
-                    'type' => 'Docalist\Biblio\Entity\Reference\String',
+                    'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Post Type', 'docalist-biblio'),
                 ],
 

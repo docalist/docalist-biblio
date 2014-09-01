@@ -48,23 +48,23 @@ class Book extends Reference {
             'description' => __('Un livre publié par un éditeur.', 'docalist-biblio'),
             'fields' => [
                 // Type, Genre, Media
-                'group1' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Nature du document'],
+                'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
                 $fields['genre'],
                 $fields['media'],
 
                 // Title, OtherTitle, Translation
-                'group2' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Titres'],
+                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
                 $fields['title'],
                 $fields['othertitle'],
                 $fields['translation'],
 
                 // Author, Organisation
-                'group3' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Auteurs'],
+                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
                 $fields['author'],
                 $fields['organisation'],
 
                 // Date / Language / Pagination / Format
-                'group4' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Informations bibliographiques'],
+                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
                 $fields['date'],
                 $fields['language'],
                 $fields['number'],
@@ -72,27 +72,27 @@ class Book extends Reference {
                 $fields['format'],
 
                 // Editor / Collection / Edition
-                'group5' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Informations éditeur'],
+                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
                 $fields['editor'],
                 $fields['collection'],
                 $fields['edition'],
 
                 // Event
-                'group6' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Congrès et diplômes'],
+                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Congrès et diplômes'],
                 $fields['event'],
 
                 // Topic / Abstract / Note
-                'group7' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Indexation et résumé'],
+                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
                 $fields['topic'],
                 $fields['content'],
 
                 // // Liens et relations
-                'group8' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Liens et relations'],
+                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
                 $fields['link'],
                 $fields['relation'],
 
                 // Ref / Owner / Creation / Lastupdate
-                'group9' => ['type' => 'Docalist\Biblio\Entity\Reference\Group', 'label' => 'Informations de gestion'],
+                'group9' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
                 $fields['type'],
                 $fields['ref'],
                 $fields['owner'],

@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\Object;
+
 /**
  * Etendue du document : pagination, nombre de pages, durée en minutes, etc.
  *

@@ -14,6 +14,8 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\Repeatable;
+use Docalist\Biblio\Type\SettingsFormTrait;
 use Docalist\Forms\TableLookup;
 
 /**

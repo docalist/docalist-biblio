@@ -14,6 +14,7 @@
  */
 namespace Docalist\Biblio\Entity\Reference;
 
+use Docalist\Biblio\Type\String;
 use Docalist\Forms\Select;
 use Docalist\Biblio\Reference;
 

@@ -12,15 +12,14 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity\Reference;
+namespace Docalist\Biblio\Type;
 
-use Docalist\Type\Integer as BaseInteger;
 use Docalist\Forms\Input;
 
 /**
  * Type de base pour tous les champs entiers
  */
-class Integer extends BaseInteger {
+class Integer extends \Docalist\Type\Integer {
     use SettingsFormTrait;
 
     public function editForm() {

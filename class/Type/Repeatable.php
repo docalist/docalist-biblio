@@ -12,15 +12,14 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio\Entity\Reference;
+namespace Docalist\Biblio\Type;
 
-use Docalist\Type\Object as BaseObject;
 use Docalist\Forms\Tag;
 
 /**
- * Type de base pour tous les champs structurés
+ * Type de base pour tous les champs répétables.
  */
-class Object extends BaseObject {
+class Repeatable extends \Docalist\Type\Collection {
     use SettingsFormTrait;
 
     public function editForm() {

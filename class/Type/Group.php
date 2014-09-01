@@ -12,7 +12,7 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     SVN: $Id$
  */
-namespace Docalist\Biblio\Entity\Reference;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Exception\InvalidTypeException;
 use Docalist\Type\Any;
