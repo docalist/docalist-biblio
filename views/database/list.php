@@ -96,8 +96,8 @@ div.dbdesc{
                         <?= __('Ajouter un type...', 'docalist-biblio') ?>
                     </a>
                 <?php else: ?>
-                    <?php foreach ($database->types as $typeindex => $type): /* @var $type Schema */ ?>
-                        <a href="<?= esc_url($this->url('TypeFields', $dbindex, $typeindex)) ?>">
+                    <?php foreach ($database->types as $typeindex => $type): /* @var $type TypeSettings */ ?>
+                        <a href="<?= esc_url($this->url('GridList', $dbindex, $typeindex)) ?>">
                             <?= $type->label() ?>
                         </a>
                         <br />
