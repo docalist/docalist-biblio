@@ -12,8 +12,9 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio;
+namespace Docalist\Biblio\Pages;
 
+use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use Docalist\Forms\Themes;
 use Docalist\Utils;

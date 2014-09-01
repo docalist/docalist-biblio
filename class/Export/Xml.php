@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Export;
 
-use Docalist\Biblio\Entity\ReferenceIterator;
+use Docalist\Biblio\Reference\ReferenceIterator;
 use XMLWriter;
 
 /**

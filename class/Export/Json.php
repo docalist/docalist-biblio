@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Export;
 
 use Docalist\Biblio\Reference;
-use Docalist\Biblio\Entity\ReferenceIterator;
+use Docalist\Biblio\Reference\ReferenceIterator;
 
 /**
  * Un exporteur au format JSON.

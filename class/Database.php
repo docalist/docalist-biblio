@@ -17,6 +17,9 @@ namespace Docalist\Biblio;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Repository\PostTypeRepository;
+use Docalist\Biblio\Pages\ListReferences;
+use Docalist\Biblio\Pages\EditReference;
+use Docalist\Biblio\Pages\ImportPage;
 use Docalist\Search\Indexer;
 use Exception;
 

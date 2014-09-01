@@ -12,8 +12,9 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio;
+namespace Docalist\Biblio\Pages;
 
+use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use Docalist\AdminPage;
 use Docalist\Schema\Field;
@@ -22,7 +23,7 @@ use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
 use Docalist\Search\SearchRequest;
 use Docalist\Biblio\Export\AbstractExporter;
-use Docalist\Biblio\Entity\ReferenceIterator;
+use Docalist\Biblio\Reference\ReferenceIterator;
 
 /**
  * Page "Importer" d'une base

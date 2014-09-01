@@ -12,7 +12,9 @@
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  * @version     $Id$
  */
-namespace Docalist\Biblio;
+namespace Docalist\Biblio\Pages;
+
+use Docalist\Biblio\Database;
 
 /**
  * Page "Liste des notices" d'une base

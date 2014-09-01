@@ -19,6 +19,7 @@ use Docalist\Table\TableInfo;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
+use Docalist\Biblio\Pages\AdminDatabases;
 use Exception;
 
 /**
