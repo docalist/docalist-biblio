@@ -26,11 +26,13 @@ use Exception;
  *
  * Une base est essentiellement une liste de types.
  *
- * @property String $name Identifiant de la base
- * @property String $label Libellé de la base
- * @property String $slug Slug de la base de données
- * @property Schema[] $types Types de notices gérés dans cette base
- * @property Integer $creation Date de création de la base
+ * @property String $name Identifiant de la base.
+ * @property String $slug Slug de la base de données.
+ * @property String $label Libellé de la base.
+ * @property String $description Description de la base.
+ * @property TypeSettings[] $types Types de notices gérés dans cette base,
+ * indexés par nom.
+ * @property Integer $creation Date de création de la base.
  */
 class DatabaseSettings extends Object {
     static protected function loadSchema() {
@@ -58,7 +60,7 @@ class DatabaseSettings extends Object {
                 ],
 
                 'types' => [
-                    'type' => 'Docalist\Schema\Schema*',
+                    'type' => 'TypeSettings*',
                     'key' => 'name',
                     'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
                 ],
