@@ -57,6 +57,11 @@ use Docalist\Schema\Field;
  * @property Docalist\Biblio\Entity\Reference\Errors $errors
  */
 class Reference extends Entity {
+    /**
+     * La liste des types de notices prédéfinis.
+     *
+     * @var array Un tableau de la forme type => classe du type.
+     */
     static protected $types = [
         'article'           => 'Docalist\Biblio\Entity\Article',
         'book'              => 'Docalist\Biblio\Entity\Book',
@@ -70,22 +75,38 @@ class Reference extends Entity {
         'website'           => 'Docalist\Biblio\Entity\WebSite',
     ];
 
+    /**
+     * Retourne la liste des types de notices prédéfinis.
+     *
+     * @return array Un tableau de la forme type => classe du type.
+     */
     static public function types() {
         return self::$types;
     }
 
+    /**
+     * Enregistre un nouveau type de notice.
+     *
+     * Si le type existe déjà, il est écrasé, ce qui permet à un plugin de
+     * changer la classe responsable d'un type prédéfini.
+     *
+     * @param string $name Nom du type.
+     * @param string $class Nom complet de la classe du type.
+     */
     static public function registerType($name, $class) {
         self::$types[$name] = $class;
     }
 
     /**
+     * Crée une notice du type indiqué.
      *
-     * @param unknown $type
+     * @param string $type
      * @param array $value
      * @param Schema $schema
      * @param string $id
-     * @throws \Exception
+     *
      * @return Reference
+     * @throws \Exception
      */
     static public function create($type, array $value = null, Schema $schema = null, $id = null) {
         if (! isset(self::$types[$type])) {
@@ -94,9 +115,63 @@ class Reference extends Entity {
         return new self::$types[$type]($value, $schema, $id);
     }
 
+    /**
+     * Retourne la grille 'edit'.
+     *
+     * @return Schema
+     */
+    static public function editGrid() {
+        $grid = static::defaultSchema();
+        $grid->name = 'edit';
+        $grid->description = sprintf(
+            __("Grille utilisée pour la saisie et la modification d'une notice de type %s.", 'docalist-biblio'),
+            lcfirst($grid->label())
+        );
+        $grid->label = __('Formulaire de saisie', 'docalist-biblio');
+
+        return $grid;
+    }
+
+    /**
+     * Retourne la grille 'content'.
+     *
+     * @return Schema
+     */
+    static public function contentGrid() {
+        $grid = static::defaultSchema();
+        $grid->name = 'content';
+        $grid->description = sprintf(
+            __("Grille utilisée pour l'affichage détaillé d'une notice complète de type %s.", 'docalist-biblio'),
+            lcfirst($grid->label())
+        );
+        $grid->label = __('Affichage long', 'docalist-biblio');
+
+        return $grid;
+    }
+
+    /**
+     * Retourne la grille 'excerpt'.
+     *
+     * @return Schema
+     */
+    static public function excerptGrid() {
+        $grid = static::defaultSchema();
+        $grid->name = 'excerpt';
+        $grid->description = sprintf(
+            __("Grille utilisée pour l'affichage court d'une notice de type %s dans une liste de réponses.", 'docalist-biblio'),
+            lcfirst($grid->label())
+        );
+        $grid->label = __('Affichage court', 'docalist-biblio');
+
+        return $grid;
+    }
+
     static protected function loadSchema() {
         // @formatter:off
         $schema = [
+            'name' => 'reference',
+            'label' => __('Référence', 'docalist-biblio'),
+            'description' => __('Décrit une notice documentaire.', 'docalist-biblio'),
             'fields' => [
                 'ref' => [         // Alias de post_name
                     'type' => 'Docalist\Biblio\Entity\Reference\Integer',
