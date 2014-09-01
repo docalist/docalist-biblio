@@ -157,22 +157,28 @@ class Database extends PostTypeRepository {
         if (is_null($context)) {
             $schema = null; // reference brute sans schéma personnalisé
         } else {
-            if ($context === 'edit') {
-                if (isset($this->settings->types[$type])) {
-                    $schema = $this->settings->types[$type];
-                } else {
-                    // erreur : on a une notice dont le type ne figure pas dans les settings de la base
-                    add_action('admin_notices', function() {
-                        $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
-                        $msg = sprintf($msg, $type);
+            if (! isset($this->settings->types[$type])) {
+                // erreur : on a une notice dont le type ne figure pas dans les settings de la base
+                $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
+                $msg = sprintf($msg, $type);
+                if ($context === 'edit') {
+                    add_action('admin_notices', function() use ($msg) {
                         printf('<div class="error"><p>%s %s</p></div>',
                             $msg,
                             __('Chargement de la grille par défaut.', 'docalist-biblio')
                         );
                     });
+                    // shcmea = null = grille par défaut
+                } else {
+                    throw new \Exception($msg);
                 }
             } else {
-                throw new \Exception('TODO (implémenter les autres contextes)');
+                if (! isset($this->settings->types[$type]->grids[$context])) {
+                    $msg = __("La grille %s n'existe pas pour le type %s.", 'docalist-biblio');
+                    throw new \Exception(sprintf($msg, $context, $type));
+                } else {
+                    $schema = $this->settings->types[$type]->grids[$context];
+                }
             }
         }
 
