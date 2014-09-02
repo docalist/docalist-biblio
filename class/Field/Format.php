@@ -20,4 +20,5 @@ use Docalist\Biblio\Type\String;
  * Une étiquette de collation.
  */
 class Format extends String {
+    // map : champ non indexé
 }
