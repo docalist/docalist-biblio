@@ -19,6 +19,7 @@ use Docalist\Repository\Repository;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
 use Docalist\Schema\Field;
+use Docalist\Biblio\Type\BiblioField;
 
 /**
  * Référence documentaire.
@@ -39,7 +40,7 @@ use Docalist\Schema\Field;
  * @property Docalist\Biblio\Field\OtherTitles $othertitle
  * @property Docalist\Biblio\Field\Translations $translation
  * @property Docalist\Biblio\Field\Dates $date
- * @property Docalist\Biblio\Type\String $journal
+ * @property Docalist\Biblio\Field\Journal $journal
  * @property Docalist\Biblio\Field\Numbers $number
  * @property Docalist\Biblio\Field\Languages $language
  * @property Docalist\Biblio\Field\Extents $extent
@@ -518,5 +519,18 @@ class Reference extends Entity {
         }
 
         return $label;
+    }
+
+    /**
+     * Convertit la référence en document Elastic Search
+     *
+     * @return array
+     */
+    public function map() {
+        $data = [];
+        foreach($this->value as $field) { /* @var $field BiblioField */
+            $field->map($data);
+        }
+        return $data;
     }
 }
