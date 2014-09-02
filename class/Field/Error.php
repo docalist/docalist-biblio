@@ -35,4 +35,8 @@ class Error extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['error'][] = $this->code() . '¤' . $this->message();
+    }
 }
