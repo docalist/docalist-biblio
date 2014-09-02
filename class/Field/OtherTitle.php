@@ -37,4 +37,8 @@ class OtherTitle extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['othertitle'][$this->type()][] = $this->__get('value')->value();
+    }
 }
