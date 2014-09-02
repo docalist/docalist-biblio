@@ -17,6 +17,7 @@ namespace Docalist\Biblio\Type;
 use Docalist\Forms\Fragment;
 use Docalist\Forms\Tag;
 use Docalist\Table\TableManager;
+use Docalist\Table\TableInterface;
 
 trait BiblioFieldTrait {
     /**
@@ -80,5 +81,36 @@ trait BiblioFieldTrait {
      */
     public function editForm() {
         return new Tag('p', 'la classe ' . get_class($this) . ' doit implémenter editForm().');
+    }
+
+    /**
+     * Implémentation par défaut de BiblioFIeld::map().
+     *
+     * Par défaut, ne fait rien.
+     *
+     * @param array $doc
+     */
+    public function map(array & $doc) {
+
+    }
+
+    /**
+     * Ouvre la table indiquée dans le schéma.
+     *
+     * @param bool $table2 Par défaut, c'est la table indiquée dans la propriété
+     * 'table' du schéma du champ qui est ouverte. Si vous passez true, c'est la
+     * table indiquée dans la propriété 'table2' qui sera utilisée (exemple :
+     * author, editor).
+     *
+     * @return TableInterface
+     */
+    protected function openTable($table2 = false) {
+        // Détermine la table à utiliser
+        $table = $table2 ? $this->schema()->table2() : $this->schema()->table();
+
+        // Le nom de la table est de la forme "type:nom", on ne veut que le nom
+        $table = explode(':', $table)[1];
+
+        return docalist('table-manager')->get($table);
     }
 }
