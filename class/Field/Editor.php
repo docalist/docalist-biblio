@@ -65,4 +65,8 @@ class Editor extends Object {
 
         return $result;
     }
+
+    public function map(array & $doc) {
+        $doc['editor'][] = $this->name() . '¤' . $this->city() . '¤' . $this->country();
+    }
 }
