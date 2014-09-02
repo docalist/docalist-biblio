@@ -35,4 +35,15 @@ interface BiblioField {
      * @return Fragment
      */
     public function editForm();
+
+    /**
+     * Convertit et stocke les données du champ dans le document ElasticSearch
+     * passé en paramètre.
+     *
+     * Cette méthdoe est utilisé par Reference::map() pour construire le
+     * document envoyé à ELasticSearch pour indexer la notice.
+     *
+     * @param array $doc
+     */
+    public function map(array & $doc);
 }
