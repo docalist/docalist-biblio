@@ -37,4 +37,8 @@ class Translation extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['translation'][$this->language()][] = $this->title();
+    }
 }
