@@ -39,4 +39,8 @@ class Content extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['content'][$this->type()][] = $this->__get('value')->value();
+    }
 }
