@@ -44,4 +44,8 @@ class Topic extends Object {
     public function __toString() {
         return $this->type() . ' : ' . implode(', ', $this->term());
     }
+
+    public function map(array & $doc) {
+        $doc['topic'][$this->type()][] = $this->term();
+    }
 }
