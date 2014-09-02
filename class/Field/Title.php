@@ -27,4 +27,8 @@ class Title extends String {
 
         return $field;
     }
+
+    public function map(array & $doc) {
+        $doc['title'] = $this->value();
+    }
 }
