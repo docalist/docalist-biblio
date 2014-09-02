@@ -27,4 +27,8 @@ class Journal extends String {
 
         return $field;
     }
+
+    public function map(array & $doc) {
+        $doc['journal'] = $this->value();
+    }
 }
