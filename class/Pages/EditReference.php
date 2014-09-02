@@ -225,6 +225,11 @@ class EditReference {
                 echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 //echo $ref;
                 echo "</pre>";
+
+                echo "<h4>Mapping Docalist-Search</h4><pre>";
+                echo json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                //echo $ref;
+                echo "</pre>";
             },
             $this->postType,    // posttype
             'normal',           // contexte
