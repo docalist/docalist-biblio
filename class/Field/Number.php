@@ -39,4 +39,8 @@ class Number extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['number'][$this->type()][] = $this->__get('value')->value();
+    }
 }
