@@ -15,7 +15,6 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Input;
-use Docalist\Forms\Fragment;
 
 /**
  * Type de base pour tous les champs texte

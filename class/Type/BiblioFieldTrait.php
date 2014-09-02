@@ -15,10 +15,19 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Fragment;
+use Docalist\Forms\Tag;
+use Docalist\Table\TableManager;
 
 trait BiblioFieldTrait {
+    /**
+     * Implémentation de base de BiblioField::settingsForm().
+     *
+     * Retourne un formulaire qui contient les contrôles name, label et
+     * description.
+     *
+     * @return Fragment
+     */
     public function settingsForm() {
-        // Champs communs
         $name = $this->schema->name();
         $form = new Fragment($name);
         $form->hidden('name')
@@ -36,6 +45,17 @@ trait BiblioFieldTrait {
         return $form;
     }
 
+    /**
+     * Retourne toutes les tables d'un type donné.
+     * Cette méthode utilitaire sert aux champs qui utilisent ce trait pour
+     * afficher un select contenant la liste des tables possibles (par exemple
+     * la liste des tables de type "pays" pour le champ Organisation).
+     *
+     * @param string $type Le type souhaité/
+     *
+     * @return array Un tableau de la forme code => libellé utilisable dans un
+     * select.
+     */
     protected function tablesOfType($type) {
         /* @var $tableManager TableManager */
         $tableManager = docalist('table-manager');
@@ -52,4 +72,13 @@ trait BiblioFieldTrait {
         return $tables;
     }
 
+    /**
+     * Génère une erreur si un champ n'a pas implémenté la méthode
+     * BiblioField::editForm.
+     *
+     * @return Tag
+     */
+    public function editForm() {
+        return new Tag('p', 'la classe ' . get_class($this) . ' doit implémenter editForm().');
+    }
 }
