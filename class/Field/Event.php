@@ -60,4 +60,11 @@ class Event extends Object {
 
         return $field;
     }
+
+    public function map(array & $doc) {
+        isset($this->title) && $doc['event']['title'] = $this->title();
+        isset($this->date) && $doc['event']['date'] = $this->date();
+        isset($this->place) && $doc['event']['place'] = $this->place();
+        isset($this->number) && $doc['event']['number'] = $this->number();
+    }
 }
