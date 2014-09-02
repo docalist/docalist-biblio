@@ -40,4 +40,8 @@ class Relation extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['relation'][$this->type()][] = $this->ref();
+    }
 }
