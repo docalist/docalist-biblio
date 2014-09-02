@@ -61,4 +61,8 @@ class Author extends Object {
     public static function etal() {
         return new self(['name' => 'et al.']);
     }
+
+    public function map(array & $doc) {
+        $doc['author'][] = $this->name() . '¤' . $this->firstname();
+    }
 }
