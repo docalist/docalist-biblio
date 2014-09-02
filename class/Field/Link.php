@@ -59,4 +59,8 @@ class Link extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['link'][] = $this->url();
+    }
 }
