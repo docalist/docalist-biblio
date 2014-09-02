@@ -38,4 +38,17 @@ class Genres extends Repeatable {
 
         return $form;
     }
+
+    public function map(array & $doc) {
+        // Ouvre la table utilisée par ce champ pour convertir les codes en libellés
+        $table = $this->openTable();
+
+        foreach($this->value as $item) {
+            $item = $item->value();
+            $label = $table->find('label', sprintf('code="%s"', $item));
+            $label === false && $label = '';
+
+            $doc['genre'][] = $item . '¤' . $label;
+        }
+    }
 }
