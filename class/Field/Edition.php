@@ -20,4 +20,7 @@ use Docalist\Biblio\Type\String;
  * Une mention d'édition
  */
 class Edition extends String {
+    public function map(array & $doc) {
+        $doc['edition'][] = $this->value();
+    }
 }
