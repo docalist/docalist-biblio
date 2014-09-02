@@ -19,4 +19,10 @@ namespace Docalist\Biblio\Type;
  */
 class Repeatable extends \Docalist\Type\Collection implements BiblioField {
     use BiblioFieldTrait;
+
+    public function map(array & $doc) {
+        foreach($this->value as $item) { /* @var $item BiblioField */
+            $item->map($doc);
+        }
+    }
 }
