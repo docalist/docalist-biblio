@@ -77,4 +77,8 @@ class Organisation extends Object {
 
         return $result;
     }
+
+    public function map(array & $doc) {
+        $doc['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
+    }
 }
