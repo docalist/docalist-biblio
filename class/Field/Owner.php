@@ -20,4 +20,7 @@ use Docalist\Biblio\Type\String;
  * Un producteur.
  */
 class Owner extends String {
+    public function map(array & $doc) {
+        $doc['owner'][] = $this->value();
+    }
 }
