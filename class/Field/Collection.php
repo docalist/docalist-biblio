@@ -39,4 +39,8 @@ class Collection extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['collection'][] = $this->name();
+    }
 }
