@@ -39,4 +39,6 @@ class Extent extends Object {
         ];
         // @formatter:on
     }
+
+    // map : champ non indexé
 }
