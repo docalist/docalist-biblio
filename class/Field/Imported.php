@@ -20,4 +20,5 @@ use Docalist\Biblio\Type\String;
  * La source d'une notice importée.
  */
 class Imported extends String {
+    // map : champ non indexé
 }
