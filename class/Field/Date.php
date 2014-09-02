@@ -38,4 +38,8 @@ class Date extends Object {
         ];
         // @formatter:on
     }
+
+    public function map(array & $doc) {
+        $doc['date'][$this->type()][] = $this->__get('value')->value();
+    }
 }
