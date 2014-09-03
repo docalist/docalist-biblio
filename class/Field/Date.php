@@ -40,6 +40,26 @@ class Date extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['date'][$this->type()][] = $this->__get('value')->value();
+        $doc['date.' . $this->type()][] = $this->__get('value')->value();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['dynamic_templates'][] = [
+            'date.*' => [
+                'path_match' => 'date.*',
+                'mapping' => [
+                    'type' => 'date',
+                    'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
+                    'ignore_malformed' => true,
+                    'copy_to' => 'date',
+                ],
+            ]
+        ];
+
+        $mappings['properties']['date'] = [
+            'type' => 'date',
+            'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
+            'ignore_malformed' => true
+        ];
     }
 }
