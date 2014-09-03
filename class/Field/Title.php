@@ -31,4 +31,8 @@ class Title extends String {
     public function map(array & $doc) {
         $doc['title'] = $this->value();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['title'] = self::stdIndex(true);
+    }
 }
