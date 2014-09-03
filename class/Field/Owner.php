@@ -21,6 +21,10 @@ use Docalist\Biblio\Type\String;
  */
 class Owner extends String {
     public function map(array & $doc) {
-        $doc['owner'][] = $this->value();
+        $doc['owner'] = $this->value();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['owner'] = self::stdIndexAndFilter();
     }
 }
