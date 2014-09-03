@@ -47,9 +47,8 @@ class Languages extends Repeatable {
         foreach($this->value as $item) {
             $item = $item->value();
             $label = $table->find('label', sprintf('code="%s"', $item));
-            $label === false && $label = '';
 
-            $doc['language'][] = $item . '¤' . $label;
+            $doc['language'][] = $label ?: $item;
         }
     }
 }

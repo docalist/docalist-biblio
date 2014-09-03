@@ -20,4 +20,7 @@ use Docalist\Biblio\Type\String;
  * Une langue.
  */
 class Language extends String {
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['language'] = self::stdIndexAndFilter();
+    }
 }
