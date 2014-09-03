@@ -46,9 +46,8 @@ class Genres extends Repeatable {
         foreach($this->value as $item) {
             $item = $item->value();
             $label = $table->find('label', sprintf('code="%s"', $item));
-            $label === false && $label = '';
 
-            $doc['genre'][] = $item . '¤' . $label;
+            $doc['genre'][] = $label ?: $item;
         }
     }
 }
