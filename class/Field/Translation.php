@@ -39,6 +39,10 @@ class Translation extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['translation'][$this->language()][] = $this->title();
+        $doc['translation'][] = $this->title();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['translation'] = self::stdIndex(true);
     }
 }
