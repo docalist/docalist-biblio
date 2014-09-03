@@ -69,4 +69,8 @@ class Editor extends Object {
     public function map(array & $doc) {
         $doc['editor'][] = $this->name() . '¤' . $this->city() . '¤' . $this->country();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['editor'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
+    }
 }
