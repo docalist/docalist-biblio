@@ -39,6 +39,10 @@ class OtherTitle extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['othertitle'][$this->type()][] = $this->__get('value')->value();
+        $doc['othertitle'][] = $this->__get('value')->value();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['othertitle'] = self::stdIndex(true);
     }
 }
