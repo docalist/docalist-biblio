@@ -113,4 +113,82 @@ trait BiblioFieldTrait {
 
         return docalist('table-manager')->get($table);
     }
+
+    /**
+     * Implémentation par défaut de BiblioFIeld::ESmapping().
+     *
+     * Par défaut, ne fait rien.
+     *
+     * @param array $doc
+     */
+    public static function ESmapping(array & $mappings) {
+    }
+
+    /**
+     * Mapping standard pour un champ texte.
+     *
+     * @param bool $includeInAll Indique s'il faut ajouter la clause
+     * "include_in_all" au mapping (false par défaut).
+     *
+     * @param string $analyzer Nom de l'analyseur à utiliser.
+     *
+     * @return array
+     */
+    protected static function stdIndex($includeInAll = false, $analyzer = 'dclref-default-fr') {
+        $mapping =  [
+            'type' => 'string',
+            'analyzer' => $analyzer,
+        ];
+
+        if ($includeInAll) {
+            $mapping['include_in_all'] = true;
+        }
+
+        return $mapping;
+    }
+
+    /**
+     * Mapping standard champ texte + filtre.
+     *
+     * @param bool $includeInAll Indique s'il faut ajouter la clause
+     * "include_in_all" au mapping (false par défaut).
+     *
+     * @param string $analyzer Nom de l'analyseur à utiliser.
+     *
+     * @return array
+     */
+    protected static function stdIndexAndFilter($includeInAll = false, $analyzer = 'dclref-default-fr') {
+        $mapping = self::stdIndex($includeInAll, $analyzer);
+
+        $mapping['fields'] = [
+            'filter' => [
+                'type' => 'string',
+                'index' => 'not_analyzed',
+            ]
+        ];
+
+        return $mapping;
+    }
+
+    /**
+     * Mapping standard champ texte + filtre + lookup.
+     *
+     * @param bool $includeInAll Indique s'il faut ajouter la clause
+     * "include_in_all" au mapping (false par défaut).
+     *
+     * @param string $analyzer Nom de l'analyseur à utiliser.
+     *
+     * @return array
+     */
+    protected static function stdIndexFilterAndSuggest($includeInAll = false, $analyzer = 'dclref-default-fr') {
+        $mapping = self::stdIndexAndFilter($includeInAll, $analyzer);
+
+        $mapping['fields']['suggest'] = [
+            'type' => 'completion',
+            'index_analyzer' => 'suggest', // utile ?
+            'search_analyzer' => 'suggest', // utile ?
+        ];
+
+        return $mapping;
+    }
 }
