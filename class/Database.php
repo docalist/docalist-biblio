@@ -137,6 +137,9 @@ class Database extends PostTypeRepository {
         });
     }
 
+    /**
+     * @return Reference
+     */
     public function load($id, $context = null) {
         // Charge les données brutes de la notice
         $data = $this->loadRaw($id);
@@ -385,7 +388,7 @@ class Database extends PostTypeRepository {
 
         // Mappings
         add_filter("docalist_search_get_{$type}_mappings", function ($mappings) {
-            return require __DIR__ . '/../mappings/dclref-mapping.php';
+            return Reference::mappings();
         });
 
         // Reindexation
@@ -535,28 +538,16 @@ class Database extends PostTypeRepository {
      * @param Indexer $indexer L'indexeur docalist-search à utiliser.
      */
     protected function reindex(Indexer $indexer) {
-        // Pour des raisons de rapidité, on travaille directement avec les
-        // données brutes plutôt qu'avec les entités Reference : les entités
-        // sont très pratiques, mais quand on réindexe des milliers de ref et
-        // qu'il faut créer quasiment une centaine d'objets (champs, sous
-        // champs, collections, ...) par référence, pour les détruire juste
-        // après, php a un peu de mal...
-        // Pour les mêmes raisons, on n'utilise pas get_posts() mais
-        // directement wpdb.
-        // Ces deux optimisations ont permis de ramener le temps de réindexation
-        // de la base Prisme (75000 notices) de 865 secondes (14'25") à 132
-        // secondes (2'12").
-        // Même mieux : avec un bulkMaxDoc à 10000 : 61 secondes.
-
         global $wpdb;
 
         // Prépare la requête utilisée pour charger les posts par lots de $limit
         $type = $this->postType();
         $offset = 0;
         $limit = 1000;
-        $sql = "SELECT ID, post_excerpt FROM $wpdb->posts
+        $sql = "SELECT ID FROM $wpdb->posts
                 WHERE post_type = %s AND post_status = 'publish'
-                LIMIT %d OFFSET %d"; // @todo ORDER BY ID ASC ?
+                LIMIT %d OFFSET %d";
+                // ORDER BY ID DESC ?
 
         // Tant qu'on gagne, on joue
         for (;;) {
@@ -573,63 +564,16 @@ class Database extends PostTypeRepository {
 
             // Indexe tous les posts de ce lot
             foreach($posts as $post) {
-                $data = json_decode($post->post_excerpt, true);
-                if (is_null($data)) {
-                    $msg = __('Erreur lors du décodage des données JSON du post ID=%d.', 'docalist-biblio');
-                    $msg = sprintf($msg, $post->ID);
-                    printf('<p style="color: red; font-weight: bold">%s</p>', $msg);
-                } else {
-                    $indexer->index($type, $post->ID, $this->map($data));
-                }
+                $ref = $this->load($post->ID);
+                $indexer->index($type, $post->ID, $ref->map());
             }
 
             // Passe au lot suivant
             $offset += count($posts);
 
             // La ligne (commentée) suivante est pratique pour les tests
-//             if ($offset >= 3000) break;
+//          if ($offset >= 3000) break;
         }
-        return;
-
-/*
-        // Version d'origine utilisant les entités
-        // quatre à cinq fois plus lente ...
-        $type = $this->postType();
-        $offset = 0;
-        $size = 1000;
-
-        $query = new \WP_Query();
-
-        $args = array(
-            'fields' => 'ids',
-
-            'post_type' => $type,
-            // 'post_status' => 'publish',
-
-            'offset' => $offset,
-            'posts_per_page'=> $size,
-
-            'orderby' => 'ID',
-            'order' => 'ASC',
-
-            'cache_results' => false,
-            'update_post_term_cache' => false,
-            'update_post_meta_cache' => false,
-
-            'no_found_rows' => true
-        );
-
-        while ($posts = $query->query($args)) {
-//            echo "Query exécutée avec offset=", $args['offset'], ', result=', count($posts), '<br />';
-            foreach($posts as $id) {
-                $reference = $this->load($id);
-                $indexer->index($type, $id, $this->map($reference));
-            }
-            $args['offset'] += count($posts);
-
-            //if ($args['offset'] >= 10000) break;
-        }
-*/
     }
 
     /**
