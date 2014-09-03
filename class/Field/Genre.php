@@ -20,4 +20,7 @@ use Docalist\Biblio\Type\String;
  * Un genre de document.
  */
 class Genre extends String {
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['genre'] = self::stdIndexAndFilter();
+    }
 }
