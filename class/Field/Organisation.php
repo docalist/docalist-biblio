@@ -81,4 +81,8 @@ class Organisation extends Object {
     public function map(array & $doc) {
         $doc['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
+    }
 }
