@@ -31,4 +31,8 @@ class Journal extends String {
     public function map(array & $doc) {
         $doc['journal'] = $this->value();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['journal'] = self::stdIndexFilterAndSuggest(true);
+    }
 }
