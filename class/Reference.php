@@ -533,4 +533,42 @@ class Reference extends Entity {
         }
         return $data;
     }
+
+    /**
+     * Retourne les mappings ElasticSearch pour un objet Reference.
+     *
+     * @return array
+     */
+    public static function mappings() {
+        $mappings = [
+            '_source' => [
+                'enabled' => true,      // redondant (enabled par défaut), mais explicite
+                'excludes' => [],    // exclut tout
+                'includes' => ['*']        // n'inclut rien pour le moment
+            ],
+
+            'dynamic' => true,
+
+            '_all' => [
+                'enabled' => true,
+                'analyzer' => 'dclref-default-fr'
+            ],
+
+            'include_in_all' => false,
+
+            'date_detection' => false,
+            'numeric_detection' => false,
+
+            'dynamic_templates' => [],
+
+            'properties' => []
+        ];
+
+        foreach (self::defaultSchema()->fields() as $field) { /* @var $field Field */
+            $class = $field->type();
+            $class::ESmapping($mappings);
+        }
+
+        return $mappings;
+    }
 }
