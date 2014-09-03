@@ -46,6 +46,20 @@ class Topic extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['topic'][$this->type()][] = $this->term();
+        $doc['topic.' . $this->type()][] = $this->__get('term')->value();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['dynamic_templates'][] = [
+            'topic.*' => [
+                'path_match' => 'topic.*',
+                'mapping' => self::stdIndexFilterAndSuggest(true) + [
+                    'copy_to' => 'topic',
+                ]
+            ]
+        ];
+
+        $mappings['properties']['topic'] = self::stdIndexFilterAndSuggest(true);
+    }
+
 }
