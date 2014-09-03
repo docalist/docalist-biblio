@@ -65,4 +65,8 @@ class Author extends Object {
     public function map(array & $doc) {
         $doc['author'][] = $this->name() . '¤' . $this->firstname();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['author'] = self::stdIndexFilterAndSuggest(true, 'text'); // pas de stemming
+    }
 }
