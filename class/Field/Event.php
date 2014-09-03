@@ -62,9 +62,10 @@ class Event extends Object {
     }
 
     public function map(array & $doc) {
-        isset($this->title) && $doc['event']['title'] = $this->title();
-        isset($this->date) && $doc['event']['date'] = $this->date();
-        isset($this->place) && $doc['event']['place'] = $this->place();
-        isset($this->number) && $doc['event']['number'] = $this->number();
+        $doc['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['event'] = self::stdIndex(true);
     }
 }
