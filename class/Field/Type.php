@@ -44,11 +44,14 @@ class Type extends String {
     public function map(array & $doc) {
         $types = Reference::types();
         $type = $this->value();
-        $label = '';
         if (isset($types[$type])) {
             $class = $types[$type];
-            $label = $class::defaultSchema()->label();
+            $type = $class::defaultSchema()->label();
         }
-        $doc['type'] = $type . '¤' . $label;
+        $doc['type'] = $type;
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['type'] = self::stdIndexAndFilter(true);
     }
 }
