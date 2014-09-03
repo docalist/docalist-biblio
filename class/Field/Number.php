@@ -41,6 +41,19 @@ class Number extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['number'][$this->type()][] = $this->__get('value')->value();
+        $doc['number.' . $this->type()][] = $this->__get('value')->value();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['dynamic_templates'][] = [
+            'number.*' => [
+                'path_match' => 'number.*',
+                'mapping' => self::stdIndex(false, 'text') + [
+                    'copy_to' => 'number',
+                ]
+            ]
+        ];
+
+        $mappings['properties']['number'] = self::stdIndex(false, 'text');
     }
 }
