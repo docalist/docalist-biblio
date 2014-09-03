@@ -41,6 +41,12 @@ class Content extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['content'][$this->type()][] = $this->__get('value')->value();
+        $doc['content'][] = $this->__get('value')->value();
+        // if (type === private) $doc['content.private'] = value;
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['content'] = self::stdIndex(true);
+        // $mappings['properties']['content.private'] = self::stdIndex(true);
     }
 }
