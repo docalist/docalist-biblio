@@ -42,6 +42,24 @@ class Relation extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['relation'][$this->type()][] = $this->ref();
+        $doc['relation.' . $this->type()][] = $this->ref();
+    }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['dynamic_templates'][] = [
+            'relation.*' => [
+                'path_match' => 'relation.*',
+                'mapping' => [
+                    'type' => 'string',
+                    'index' => 'not_analyzed',
+                    'copy_to' => 'relation',
+                ]
+            ]
+        ];
+
+        $mappings['properties']['number'] = [
+            'type' => 'string',
+            'index' => 'not_analyzed',
+        ];
     }
 }
