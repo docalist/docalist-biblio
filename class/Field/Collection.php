@@ -43,4 +43,8 @@ class Collection extends Object {
     public function map(array & $doc) {
         $doc['collection'][] = $this->name();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['collection'] = self::stdIndex();
+    }
 }
