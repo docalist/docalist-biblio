@@ -63,4 +63,9 @@ class Link extends Object {
     public function map(array & $doc) {
         $doc['link'][] = $this->url();
     }
+
+    public static function ESmapping(array & $mappings) {
+        $mappings['properties']['link'] = self::stdIndex('simple');
+        // cf. http://stackoverflow.com/a/18980048
+    }
 }
