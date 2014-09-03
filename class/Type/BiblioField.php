@@ -46,4 +46,17 @@ interface BiblioField {
      * @param array $doc
      */
     public function map(array & $doc);
+
+    /**
+     * Modifie les mappings ElasticSearch passés en paramètre pour permettre à
+     * chaque champ de définir la façon dont il est indexé.
+     *
+     * La totalité des mappings de l'index sont passés en paramètre. Chaque
+     * champ indexé doit ajouter dans la clé "properties" le mapping de ses
+     * données et peut ajouter dans la clé "dynamic_templates" les modèles
+     * dont il a besoin.
+     *
+     * @param array $mappings
+     */
+    public static function ESmapping(array & $mappings);
 }
