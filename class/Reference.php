@@ -190,7 +190,7 @@ class Reference extends Entity {
                     'description' => __('Titre original du document catalogué', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
-                    'type' => 'Docalist\Biblio\Type\String',
+                    'type' => 'Docalist\Biblio\Field\Status',
                     'label' => __('Statut', 'docalist-biblio'),
                     'description' => __('Statut de la notice.', 'docalist-biblio'),
                 ],
@@ -413,7 +413,7 @@ class Reference extends Entity {
      * @return string
      */
     public function formatDate($format = 'j F Y') {
-        $date = $this->date() ?: $this->creation->date();
+        $date = $this->date->first() ?: $this->creation->date();
 
         return date_i18n('F Y', strtotime($date));
     }
