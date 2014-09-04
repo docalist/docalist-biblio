@@ -81,7 +81,7 @@ trait BiblioFieldTrait {
      * @return Tag
      */
     public function editForm() {
-        return new Tag('p', 'la classe ' . get_class($this) . ' doit implémenter editForm().');
+        return new Tag('p', get_class($this) . '::editForm() not implemented');
     }
 
     /**
@@ -191,5 +191,64 @@ trait BiblioFieldTrait {
         ];
 
         return $mapping;
+    }
+
+    /*
+     * Pour implémenter formatSettings(), certains types (exemple : Repeatable)
+     * ont besoin d'appeller la fonction fu même nom fournie par le trait.
+     * Comme on ne peut pas faire parent:xxx() pour un trait, j'incorporais le
+     * trait dans Repeatable en utilisant
+     * class Repeatable
+     *     use BiblioFieldTrait {
+     *         formatSettings as protected traitFormatSettings;
+     *     }
+     * Ce qui permettait ensuite, dans formatSetting() d'appeller
+     * $this->traitFormatSettings().
+     * Le problème, c'est que sur mon poste, ça fait planter php, et apache en
+     * boucle (un hit ça marche, le hit suivant cela ne marche plus et ainsi
+     * de suite).
+     * Je soupçonne fortement apc d'être à l'origine du problème. Le fait
+     * d'enlever le renommage fait lors de l'import du trait règle immédiatement
+     * le problème.
+     * Pour contourner ça, j'utilise le "hack" suivant :
+     * - le trait dispose d'une méthode (protected) qui s'appelle
+     *   traitFormatSettings()
+     * - le trait dispose d'une méthode (public) formatSettings() qui se contente
+     *   d'appeller traitFormatSettings()
+     * - dans Repeatable, plus besoin de renomage : on peut surcharger
+     *   formatSettings() et appeller traitFormatSettings() si on en a besoin.
+     * DM, 04/09/14
+     */
+
+    public function formatSettings() {
+        return $this->traitFormatSettings();
+    }
+
+    public function traitFormatSettings() {
+        $name = $this->schema->name();
+        $form = new Fragment($name);
+        $form->hidden('name')
+             ->attribute('class', 'name');
+        $form->input('label')
+             ->attribute('id', $name . '-label')
+             ->attribute('class', 'label regular-text')
+             ->label(__('Libellé', 'docalist-biblio'))
+             ->description(__('Libellé affiché devant le champ', 'docalist-biblio'));
+        $form->input('before')
+             ->attribute('id', $name . '-before')
+             ->attribute('class', 'before regular-text')
+             ->label(__('Texte avant', 'docalist-biblio'))
+             ->description(__('Texte affiché avant le contenu du champ', 'docalist-biblio'));
+        $form->input('after')
+             ->attribute('id', $name . '-before')
+             ->attribute('class', 'after regular-text')
+             ->label(__('Texte après', 'docalist-biblio'))
+             ->description(__('Texte affiché après le contenu du champ', 'docalist-biblio'));
+
+        return $form;
+    }
+
+    public function format() {
+        return get_class($this) . '::format() not implemented';
     }
 }
