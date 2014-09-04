@@ -546,8 +546,8 @@ class Database extends PostTypeRepository {
         $limit = 1000;
         $sql = "SELECT ID FROM $wpdb->posts
                 WHERE post_type = %s AND post_status = 'publish'
+                ORDER BY ID DESC
                 LIMIT %d OFFSET %d";
-                // ORDER BY ID DESC ?
 
         // Tant qu'on gagne, on joue
         for (;;) {
@@ -572,7 +572,7 @@ class Database extends PostTypeRepository {
             $offset += count($posts);
 
             // La ligne (commentée) suivante est pratique pour les tests
-//          if ($offset >= 3000) break;
+          if ($offset >= 1000) break;
         }
     }
 
@@ -627,6 +627,12 @@ class Database extends PostTypeRepository {
 
         add_filter('docalist_search_get_facets', function($facets) {
             $facets += array(
+                'ref.status' => array(
+                    'label' => __('Statut', 'docalist-biblio'),
+                    'facet' => array(
+                        'field' => 'status.filter',
+                    )
+                ),
                 'ref.type' => array(
                     'label' => __('Type de document', 'docalist-biblio'),
                     'facet' => array(
@@ -718,31 +724,31 @@ class Database extends PostTypeRepository {
                     )
                 ),
 
-                'ref.creation.date' => array(
+                'ref.creation' => array(
                     'label' => __('Année de création de la notice', 'docalist-biblio'),
                     'type' => 'date_histogram',
                     'facet' => array(
-                        'field' => 'creation.date',
+                        'field' => 'creation',
                         'interval' => 'year'
                     )
                 ),
 
-                'ref.lastupdate.date' => array(
+                'ref.lastupdate' => array(
                     'label' => __('Année de mise à jour de la notice', 'docalist-biblio'),
                     'type' => 'date_histogram',
                     'facet' => array(
-                        'field' => 'lastupdate.date',
+                        'field' => 'lastupdate',
                         'interval' => 'year'
                     )
                 ),
 
                 // creation
                 // lastupdate
-                'ref.errors' => array(
+                'ref.error' => array(
                     //'state' => 'closed',
                     'label' => __('Erreurs détectées', 'docalist-biblio'),
                     'facet' => array(
-                        'field' => 'errors.code',
+                        'field' => 'error.filter',
                     )
                 ),
             );
