@@ -14,24 +14,18 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
+use Docalist\Biblio\Type\StringTable;
 use Docalist\Schema\Field;
 
 /**
  * Un genre de document.
  */
-class Genre extends String {
+class Genre extends StringTable {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['genre'] = self::stdIndexAndFilter();
     }
 
     public function map(array & $doc) {
-        // Ouvre la table utilisée par ce champ pour convertir les codes en libellés
-        $table = $this->openTable();
-
-        $item = $this->value();
-        $label = $table->find('label', sprintf('code="%s"', $item));
-
-        $doc['genre'][] = $label ?: $item;
+        $doc['genre'][] = $this->label();
     }
 }
