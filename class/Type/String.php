@@ -25,4 +25,8 @@ class String extends \Docalist\Type\String implements BiblioField {
     public function editForm() {
         return new Input($this->schema->name());
     }
+
+    public function format() {
+        return $this->value();
+    }
 }
