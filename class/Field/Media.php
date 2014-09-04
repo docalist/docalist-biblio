@@ -14,14 +14,18 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
+use Docalist\Biblio\Type\StringTable;
 use Docalist\Schema\Field;
 
 /**
  * Un support de document.
  */
-class Media extends String {
+class Media extends StringTable {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['media'] = self::stdIndexAndFilter();
+    }
+
+    public function map(array & $doc) {
+        $doc['media'][] = $this->label();
     }
 }
