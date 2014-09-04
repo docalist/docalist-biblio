@@ -27,7 +27,6 @@ class Languages extends Repeatable {
         $field = new TableLookup($this->schema->name(), $this->schema->table());
         $field->multiple(true);
 
-
         return $field;
     }
 
@@ -38,17 +37,5 @@ class Languages extends Repeatable {
              ->options($this->tablesOfType('languages'));
 
         return $form;
-    }
-
-    public function map(array & $doc) {
-        // Ouvre la table utilisée par ce champ pour convertir les codes en libellés
-        $table = $this->openTable();
-
-        foreach($this->value as $item) {
-            $item = $item->value();
-            $label = $table->find('label', sprintf('code="%s"', $item));
-
-            $doc['language'][] = $label ?: $item;
-        }
     }
 }
