@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Une erreur.
@@ -37,6 +38,10 @@ class Error extends Object {
     }
 
     public function map(array & $doc) {
-        $doc['error'][] = $this->code() . '¤' . $this->message();
+        $doc['error'][] = $this->message();
+    }
+
+    public static function ESmapping(array & $mappings, Field $schema) {
+        $mappings['properties']['error'] = self::stdIndexAndFilter();
     }
 }
