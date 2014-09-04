@@ -25,4 +25,8 @@ class Integer extends \Docalist\Type\Integer implements BiblioField {
     public function editForm() {
         return new Input($this->schema->name());
     }
+
+    public function format() {
+        return (string) $this->value;
+    }
 }
