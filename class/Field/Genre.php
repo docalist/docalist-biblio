@@ -24,4 +24,14 @@ class Genre extends String {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['genre'] = self::stdIndexAndFilter();
     }
+
+    public function map(array & $doc) {
+        // Ouvre la table utilisée par ce champ pour convertir les codes en libellés
+        $table = $this->openTable();
+
+        $item = $this->value();
+        $label = $table->find('label', sprintf('code="%s"', $item));
+
+        $doc['genre'][] = $label ?: $item;
+    }
 }
