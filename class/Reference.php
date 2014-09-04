@@ -28,8 +28,8 @@ use Docalist\Biblio\Type\BiblioField;
  * @property Docalist\Biblio\Type\Integer $parent
  * @property Docalist\Biblio\Field\Title $title
  * @property Docalist\Biblio\Type\String $status
- * @property Docalist\Biblio\Type\String $creation
- * @property Docalist\Biblio\Type\String $lastupdate
+ * @property Docalist\Biblio\Type\DateTime $creation
+ * @property Docalist\Biblio\Type\DateTime $lastupdate
  * @property Docalist\Biblio\Type\String $password
  * @property Docalist\Biblio\Type\String $posttype
  * @property Docalist\Biblio\Type\String $type
@@ -195,12 +195,12 @@ class Reference extends Entity {
                     'description' => __('Statut de la notice.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
-                    'type' => 'Docalist\Biblio\Type\String',
+                    'type' => 'Docalist\Biblio\Type\DateTime',
                     'label' => __('Création', 'docalist-biblio'),
                     'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
-                    'type' => 'Docalist\Biblio\Type\String',
+                    'type' => 'Docalist\Biblio\Type\DateTime',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
                 ],
@@ -528,8 +528,8 @@ class Reference extends Entity {
      */
     public function map() {
         $data = [];
-        foreach($this->value as $field) { /* @var $field BiblioField */
-            $field->map($data);
+        foreach($this->defaultSchema()->fieldNames() as $field) {
+            $this->$field->map($data);
         }
         return $data;
     }
@@ -566,7 +566,7 @@ class Reference extends Entity {
 
         foreach (self::defaultSchema()->fields() as $field) { /* @var $field Field */
             $class = $field->type();
-            $class::ESmapping($mappings);
+            $class::ESmapping($mappings, $field);
         }
 
         return $mappings;
