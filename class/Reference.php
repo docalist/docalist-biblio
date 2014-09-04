@@ -175,7 +175,7 @@ class Reference extends Entity {
             'description' => __('Décrit une notice documentaire.', 'docalist-biblio'),
             'fields' => [
                 'ref' => [         // Alias de post_name
-                    'type' => 'Docalist\Biblio\Type\Integer',
+                    'type' => 'Docalist\Biblio\Field\Ref',
                     'label' => __('Numéro de référence', 'docalist-biblio'),
                     'description' => __('Numéro unique identifiant la notice', 'docalist-biblio'),
                 ],
