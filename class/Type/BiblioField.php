@@ -22,26 +22,39 @@ use Docalist\Schema\Field;
  */
 interface BiblioField {
     /**
-     * Retourne le formulaire de paramètres utilisé par ce champ dans la
-     * l'écran de paramétrage de la grille de saisie.
+     * Retourne le formulaire qui permet de paramétrer la saisie de ce champ.
      *
      * @return Fragment
      */
-    public function settingsForm();
+    public function settingsForm(); // renommer en editSettings()
 
     /**
-     * Retourne le formulaire de saisie utilisé par ce champ dans la grille de
-     * saisie/modification de notices.
+     * Retourne le formulaire permettant de saisir ce champ.
      *
      * @return Fragment
      */
-    public function editForm();
+    public function editForm(); // renommer en edit()
+
+    /**
+     * Retourne le formulaire qui permet de paramétrer le format d'affichage
+     * du champ.
+     *
+     * @return Fragment
+     */
+    public function formatSettings();
+
+    /**
+     * Formatte le champ pour affichage.
+     *
+     * @return string
+     */
+    public function format();
 
     /**
      * Convertit et stocke les données du champ dans le document ElasticSearch
      * passé en paramètre.
      *
-     * Cette méthdoe est utilisé par Reference::map() pour construire le
+     * Cette méthode est utilisé par Reference::map() pour construire le
      * document envoyé à ELasticSearch pour indexer la notice.
      *
      * @param array $doc
