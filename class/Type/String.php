@@ -27,6 +27,6 @@ class String extends \Docalist\Type\String implements BiblioField {
     }
 
     public function format() {
-        return $this->value();
+        return $this->value;
     }
 }
