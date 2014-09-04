@@ -15,12 +15,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
+use Docalist\Schema\Field;
 
 /**
  * Un genre de document.
  */
 class Genre extends String {
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['genre'] = self::stdIndexAndFilter();
     }
 }

@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Content.
@@ -45,7 +46,7 @@ class Content extends Object {
         // if (type === private) $doc['content.private'] = value;
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['content'] = self::stdIndex(true);
         // $mappings['properties']['content.private'] = self::stdIndex(true);
     }

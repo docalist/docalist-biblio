@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Organisme.
@@ -82,7 +83,7 @@ class Organisation extends Object {
         $doc['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
     }
 }

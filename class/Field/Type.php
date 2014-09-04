@@ -17,6 +17,7 @@ namespace Docalist\Biblio\Field;
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Select;
 use Docalist\Biblio\Reference;
+use Docalist\Schema\Field;
 
 /**
  * Le type de la notice.
@@ -51,7 +52,7 @@ class Type extends String {
         $doc['type'] = $type;
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['type'] = self::stdIndexAndFilter(true);
     }
 }

@@ -18,6 +18,7 @@ use Docalist\Forms\Fragment;
 use Docalist\Forms\Tag;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
+use Docalist\Schema\Field;
 
 trait BiblioFieldTrait {
     /**
@@ -121,7 +122,7 @@ trait BiblioFieldTrait {
      *
      * @param array $doc
      */
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
     }
 
     /**

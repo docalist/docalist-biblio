@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Autre titre.
@@ -42,7 +43,7 @@ class OtherTitle extends Object {
         $doc['othertitle'][] = $this->__get('value')->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['othertitle'] = self::stdIndex(true);
     }
 }

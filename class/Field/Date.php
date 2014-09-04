@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Date.
@@ -43,7 +44,7 @@ class Date extends Object {
         $doc['date.' . $this->type()][] = $this->__get('value')->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['dynamic_templates'][] = [
             'date.*' => [
                 'path_match' => 'date.*',

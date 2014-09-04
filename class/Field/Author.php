@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Auteur personne physique.
@@ -66,7 +67,7 @@ class Author extends Object {
         $doc['author'][] = $this->name() . '¤' . $this->firstname();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['author'] = self::stdIndexFilterAndSuggest(true, 'text'); // pas de stemming
     }
 }

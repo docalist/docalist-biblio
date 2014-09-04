@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
@@ -44,7 +45,7 @@ class Number extends Object {
         $doc['number.' . $this->type()][] = $this->__get('value')->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['dynamic_templates'][] = [
             'number.*' => [
                 'path_match' => 'number.*',

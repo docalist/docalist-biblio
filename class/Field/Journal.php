@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Input;
+use Docalist\Schema\Field;
 
 /**
  * Un titre de périodique.
@@ -32,7 +33,7 @@ class Journal extends String {
         $doc['journal'] = $this->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['journal'] = self::stdIndexFilterAndSuggest(true);
     }
 }

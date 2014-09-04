@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Une traduction du titre original du document.
@@ -42,7 +43,7 @@ class Translation extends Object {
         $doc['translation'][] = $this->title();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['translation'] = self::stdIndex(true);
     }
 }

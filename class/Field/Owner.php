@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
+use Docalist\Schema\Field;
 
 /**
  * Un producteur.
@@ -24,7 +25,7 @@ class Owner extends String {
         $doc['owner'] = $this->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['owner'] = self::stdIndexAndFilter();
     }
 }

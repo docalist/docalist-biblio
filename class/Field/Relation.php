@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Relation
@@ -45,7 +46,7 @@ class Relation extends Object {
         $doc['relation.' . $this->type()][] = $this->ref();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['dynamic_templates'][] = [
             'relation.*' => [
                 'path_match' => 'relation.*',

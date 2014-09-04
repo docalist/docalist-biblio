@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Input;
+use Docalist\Schema\Field;
 
 /**
  * Le titre de la notice.
@@ -32,7 +33,7 @@ class Title extends String {
         $doc['title'] = $this->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['title'] = self::stdIndex(true);
     }
 }

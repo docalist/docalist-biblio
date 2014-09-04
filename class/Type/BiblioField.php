@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Fragment;
+use Docalist\Schema\Field;
 
 /**
  * Interface pour un champ de premier niveau dans une Reference.
@@ -58,5 +59,5 @@ interface BiblioField {
      *
      * @param array $mappings
      */
-    public static function ESmapping(array & $mappings);
+    public static function ESmapping(array & $mappings, Field $schema);
 }

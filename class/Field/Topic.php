@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Une liste de mots-clés d'un certain type.
@@ -49,7 +50,7 @@ class Topic extends Object {
         $doc['topic.' . $this->type()][] = $this->__get('term')->value();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['dynamic_templates'][] = [
             'topic.*' => [
                 'path_match' => 'topic.*',

@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Editeur
@@ -70,7 +71,7 @@ class Editor extends Object {
         $doc['editor'][] = $this->name() . '¤' . $this->city() . '¤' . $this->country();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['editor'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
     }
 }

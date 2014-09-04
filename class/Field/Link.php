@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Lien internet.
@@ -64,7 +65,7 @@ class Link extends Object {
         $doc['link'][] = $this->url();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['link'] = self::stdIndex('simple');
         // cf. http://stackoverflow.com/a/18980048
     }

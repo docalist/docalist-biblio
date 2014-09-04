@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
+use Docalist\Schema\Field;
 
 /**
  * Collection et numéro au sein de la collection.
@@ -44,7 +45,7 @@ class Collection extends Object {
         $doc['collection'][] = $this->name();
     }
 
-    public static function ESmapping(array & $mappings) {
+    public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['collection'] = self::stdIndex();
     }
 }
