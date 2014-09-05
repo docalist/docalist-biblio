@@ -105,7 +105,7 @@ trait BiblioFieldTrait {
      *
      * @return TableInterface
      */
-    public function openTable($table2 = false) {
+    public function table($table2 = false) {
         // Détermine la table à utiliser
         $table = $table2 ? $this->schema()->table2() : $this->schema()->table();
 

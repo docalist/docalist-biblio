@@ -31,7 +31,7 @@ class StringTable extends String {
      * @return string
      */
     public function label() {
-        return $this->openTable()->find('label', sprintf('code="%s"', $this->value))
+        return $this->table()->find('label', sprintf('code="%s"', $this->value))
                ?: $this->value;
     }
 }
