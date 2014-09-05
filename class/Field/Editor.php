@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -25,7 +25,9 @@ use Docalist\Schema\Field;
  * @property String $country
  * @property String $role
  */
-class Editor extends Object {
+class Editor extends MultiField {
+    static protected $groupkey = 'role';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -73,5 +75,28 @@ class Editor extends Object {
 
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['editor'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('n, t, c, r', "Nom de l'éditeur, ville, pays, rôle", function(Editor $ed, Editors $parent) {
+            $h = $ed->name();
+
+            if (isset($ed->city)) {
+                $h && $h .= ', ';
+                $h .= $ed->city();
+            }
+
+            if (isset($ed->country)) {
+                $h && $h .= ', ';
+                //$h .= $ed->country();
+                $h .= $parent->lookup($ed->country()); // table1
+            }
+
+            if (isset($ed->role)) {
+                $h && $h .= ' / '; // espaces insécables
+                $h .= $parent->lookup($ed->role(), true); // table2
+            }
+            return $h;
+        });
     }
 }
