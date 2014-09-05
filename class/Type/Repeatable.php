@@ -39,6 +39,9 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
         // Option "vue éclatée" si c'est un multi-field
         if (is_a($type, 'Docalist\Biblio\Type\MultiField', true)) {
             $groupkey = $type::groupkey();
+            if (empty($groupkey)) {
+                throw new \Exception("La classe $type doit surcharger la propriété \$groupkey.");
+            }
             $label = $this->schema->field($groupkey)->label();
             $description = sprintf(
                 __("Affiche un champ différent pour chaque %s et utilise le libellé indiqué dans la table d'autorité associée.", 'docalist-biblio'),
