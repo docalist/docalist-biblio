@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -23,7 +23,9 @@ use Docalist\Schema\Field;
  * @property String $type
  * @property String $value
  */
-class Content extends Object {
+class Content extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -49,5 +51,20 @@ class Content extends Object {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['content'] = self::stdIndex(true);
         // $mappings['properties']['content.private'] = self::stdIndex(true);
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('v', 'Contenu', function(Content $content) {
+            return $content->__get('value')->value();
+        });
+
+        self::registerFormat('t : v', 'Type : Contenu', function(Content $content, Contents $parent) {
+            return $parent->lookup($content->type()) . ' : ' . $content->__get('value')->value();
+            // espace insécable avant le ':'
+        });
+
+        self::registerFormat('t: v', 'Type: Contenu', function(Content $content, Contents $parent) {
+            return $parent->lookup($content->type()) . ': ' . $content->__get('value')->value();
+        });
     }
 }
