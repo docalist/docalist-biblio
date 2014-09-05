@@ -105,7 +105,7 @@ trait BiblioFieldTrait {
      *
      * @return TableInterface
      */
-    protected function openTable($table2 = false) {
+    public function openTable($table2 = false) {
         // Détermine la table à utiliser
         $table = $table2 ? $this->schema()->table2() : $this->schema()->table();
 
@@ -233,17 +233,17 @@ trait BiblioFieldTrait {
              ->attribute('id', $name . '-label')
              ->attribute('class', 'label regular-text')
              ->label(__('Libellé', 'docalist-biblio'))
-             ->description(__('Libellé affiché devant le champ', 'docalist-biblio'));
+             ->description(__('Libellé affiché avant le champ.', 'docalist-biblio'));
         $form->input('before')
              ->attribute('id', $name . '-before')
              ->attribute('class', 'before regular-text')
-             ->label(__('Texte avant', 'docalist-biblio'))
-             ->description(__('Texte affiché avant le contenu du champ', 'docalist-biblio'));
+             ->label(__('Avant le champ', 'docalist-biblio'))
+             ->description(__('Texte ou code html à insérer avant le contenu du champ.', 'docalist-biblio'));
         $form->input('after')
              ->attribute('id', $name . '-before')
              ->attribute('class', 'after regular-text')
-             ->label(__('Texte après', 'docalist-biblio'))
-             ->description(__('Texte affiché après le contenu du champ', 'docalist-biblio'));
+             ->label(__('Après le champ', 'docalist-biblio'))
+             ->description(__('Texte ou code html à insérer après le contenu du champ.', 'docalist-biblio'));
 
         return $form;
     }
