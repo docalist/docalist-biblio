@@ -66,7 +66,9 @@ class Date extends MultiField {
         ];
     }
 
-    private static function formatDate($date, $format) {
+    // TODO : créer un Type date
+    // en attentant, la méthode est publique pour permettre à Event d'y accéder
+    public static function formatDate($date) {
         if (strlen($date) < 4) {
             return $date;
         }
