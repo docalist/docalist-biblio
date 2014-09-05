@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -23,7 +23,9 @@ use Docalist\Schema\Field;
  * @property String $type
  * @property String $value
  */
-class Date extends Object {
+class Date extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -62,5 +64,33 @@ class Date extends Object {
             'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
             'ignore_malformed' => true
         ];
+    }
+
+    private static function formatDate($date, $format) {
+        if (strlen($date) < 4) {
+            return $date;
+        }
+
+        $year = substr($date, 0, 4);
+        $month = (strlen($date) < 6) ? '' : substr($date, 4, 2);
+        $day = (strlen($date) < 8) ? '' : substr($date, 6, 2);
+
+        $h = $year;
+        $month && $h = $month . '/' . $h;
+        $day && $h = $day . '/' . $h;
+
+        return $h;
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('date (type)', 'JJ/MM/AAAA (type)', function(Date $date, Dates $parent) {
+            return self::formatDate($date->__get('value')->value(), '') .
+                   ' (' . $parent->lookup($date->type()) . ')';
+
+        });
+
+        self::registerFormat('date', 'JJ/MM/AAAA', function(Date $date) {
+            return self::formatDate($date->__get('value')->value(), '');
+        });
     }
 }
