@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -23,7 +23,9 @@ use Docalist\Schema\Field;
  * @property String $type
  * @property String $value
  */
-class Number extends Object {
+class Number extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -56,5 +58,33 @@ class Number extends Object {
         ];
 
         $mappings['properties']['number'] = self::stdIndex(false, 'text');
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('format', "Format indiqué dans la table d'autorité", function(Number $number, Numbers $parent) {
+            $format = $parent->lookup($number->type(), false, 'code', 'format');
+            return trim(sprintf($format, $number->__get('value')->value()));
+        });
+
+        self::registerFormat('label', "Libellé indiqué dans la table suivi du numéro", function(Number $number, Numbers $parent) {
+            $label = $parent->lookup($number->type());
+            return trim($label . ' ' . $number->__get('value')->value());
+        });
+
+        self::registerFormat('v', 'Numéro uniquement, sans aucune mention', function(Number $number) {
+            return $number->__get('value')->value();
+        });
+
+        self::registerFormat('v (t)', 'Numéro suivi du type entre parenthèses', function(Number $number, Numbers $parent) {
+            $result = $number->__get('value')->value();
+            if (isset($number->type)) {
+                $result && $result .= ' '; // espace insécable avant '('
+                $result .= '(' . $parent->lookup($number->type()) . ')';
+            }
+
+            return $result;
+        });
+
+        // TODO : return Number exemple ou array(Number, Number...)
     }
 }
