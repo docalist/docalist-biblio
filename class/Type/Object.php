@@ -19,11 +19,47 @@ use Docalist\Schema\Schema;
 /**
  * Type de base pour tous les champs structurés
  */
-class Object extends \Docalist\Type\Object  implements BiblioField {
+class Object extends \Docalist\Type\Object implements BiblioField {
     use BiblioFieldTrait;
 
-    static protected $formats;
-    static protected $formatters;
+    /**
+     * Nom et description des formats d'affichage disponibles pour cet objet.
+     *
+     * @var array Un tableau de la forme type => [nom => label].
+     */
+    static protected $formats = [];
+
+    /**
+     * Liste des formatteurs pour cet objet.
+     *
+     * @var array Un tableau de la forme type => [nom => callable].
+     */
+    static protected $formatters = [];
+
+    /**
+     * Initialise les formats d'affichage disponibles.
+     *
+     * Cette méthode est destinée à être surchargée dans les classes
+     * descendantes, elle est appellée lors du premier appel à formats(),
+     * defaultFormat(), registerFormat() ou callFormat().
+     */
+    protected static function initFormats() {
+    }
+
+    /**
+     * Initialise les formats du type indiqué si ce n'est pas déjà fait.
+     *
+     * @param string $type Nom de classe du type.
+     */
+    private static function maybeInit($type) {
+        if (!isset(self::$formatters[$type])){
+            self::$formatters[$type] = self::$formats[$type] = [];
+            $type::initFormats();
+            if (empty(self::$formats[$type])) {
+                echo "EXCEPTION : AUCUN FORMAT POUR $type<br />";
+            }
+        }
+    }
 
     /**
      * Retourne la liste des formats d'affichage disponible pour cet objet.
@@ -34,7 +70,26 @@ class Object extends \Docalist\Type\Object  implements BiblioField {
      * formatter et le schéma de l'objet parent.
      */
     public static final function formats() {
-        return static::$formats;
+        self::maybeInit($type = get_called_class());
+
+        return self::$formats[$type];
+    }
+
+    /**
+     * Retourne le nom du format d'affichage par défaut pour cet objet.
+     *
+     * Par convention, le premier format d'affichage enregistré est considéré
+     * comme étant le format par défaut. Cependant, les classes descendantes
+     * peuvent surcharger cette méthode pour retourner un format différent si
+     * besoin.
+     *
+     * @return string|false Retourne le nom du format par défaut ou false si
+     * aucun format d'affichage n'est disponible.
+     */
+    public static function defaultFormat() {
+        self::maybeInit($type = get_called_class());
+
+        return key(static::$formatters[$type]);
     }
 
     /**
@@ -52,25 +107,16 @@ class Object extends \Docalist\Type\Object  implements BiblioField {
      * formatter(Object $obj, Schema $parent) : string
      */
     public static final function registerFormat($name, $label, callable $callable) {
-        static::$formats[$name] = $label;
-        static::$formatters[$name] = $callable;
-    }
+        self::maybeInit($type = get_called_class());
 
-    /**
-     * Initialise les formats d'affichage disponibles.
-     *
-     * Cette méthode est destinée à être surchargée dans les classes
-     * descendantes, elle est appellée lors du premier appel à callFormatter().
-     */
-    protected static function initFormats() {
-        static::$formats = static::$formatters =[];
+        static::$formats[$type][$name] = $label;
+        static::$formatters[$type][$name] = $callable;
     }
 
     /**
      * Appelle le formatteur dont le nom est passé en paramètre.
      *
-     * Si le format indiqué n'existe pas, le premier format d'affichage
-     * enregistré est utilisé comme format par défaut.
+     * Si le format indiqué n'existe pas, le format par défaut est utilisé.
      *
      * Si aucun format n'est enregistré, la méthode __toString() de l'objet
      * est utilisée.
@@ -81,23 +127,15 @@ class Object extends \Docalist\Type\Object  implements BiblioField {
      * @return string
      */
     protected static function callFormat($name, Object $obj, BiblioField $parent) {
-        // Initialise les formats au premier appel
-        is_null(static::$formatters) && static::initFormats();
+        self::maybeInit($type = get_called_class());
 
-        // Utilise le format indiqué s'il existe
-        if (isset(static::$formatters[$name])) {
-            $formatter = static::$formatters[$name];
-        }
-
-        // Sinon, utilise le premier format qui a été enregistré
-        else {
-            // ou __toString() si on n'a aucun format enregistré
-            if (false === $formatter = reset(static::$formatters[$name])) {
-                return (string) $obj;
-            }
+        // Utilise le format par défaut si le format indiqué n'existe pas
+        if (!isset(static::$formatters[$type][$name])) {
+            $name = static::defaultFormat();
         }
 
         // Exécute le formatter
+        $formatter = static::$formatters[$type][$name];
         return $formatter($obj, $parent);
     }
 }
