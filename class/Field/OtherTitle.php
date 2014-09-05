@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -22,8 +22,11 @@ use Docalist\Schema\Field;
  *
  * @property String $type
  * @property String $value
+ *
  */
-class OtherTitle extends Object {
+class OtherTitle extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -45,5 +48,28 @@ class OtherTitle extends Object {
 
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['othertitle'] = self::stdIndex(true);
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('v', 'Titre', function(OtherTitle $title) {
+            return $title->__get('value')->value();
+        });
+
+        self::registerFormat('t : v', 'Type : Titre', function(OtherTitle $title, OtherTitles $parent) {
+            return $parent->lookup($title->type()) . ' : ' . $title->__get('value')->value();
+            // espace insécable avant le ':'
+        });
+
+        self::registerFormat('t: v', 'Type: Titre', function(OtherTitle $title, OtherTitles $parent) {
+            return $parent->lookup($title->type()) . ': ' . $title->__get('value')->value();
+        });
+
+        self::registerFormat('v (t)', 'Titre (Type)', function(OtherTitle $title, OtherTitles $parent) {
+            $result = $title->__get('value')->value();
+            isset($title->type) && $result .= ' (' . $parent->lookup($title->type()) . ')';
+            // espace insécable avant '('
+
+            return $result;
+        });
     }
 }
