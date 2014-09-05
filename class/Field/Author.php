@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -24,7 +24,9 @@ use Docalist\Schema\Field;
  * @property String $firstname
  * @property String $role
  */
-class Author extends Object {
+class Author extends MultiField {
+    static protected $groupkey = 'role';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -69,5 +71,38 @@ class Author extends Object {
 
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['author'] = self::stdIndexFilterAndSuggest(true, 'text'); // pas de stemming
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('f n (r)', 'Charlie Chaplin (Acteur)', function(Author $aut, Authors $parent) {
+            //self::callFormat('f n', $aut, $parent);
+            $t = [];
+            isset($aut->firstname) && $t[] = $aut->firstname();
+            isset($aut->name) && $t[] = $aut->name();
+            isset($aut->role) && $t[] =  '(' . ( $parent->table()->find('label', sprintf('code="%s"', $aut->role())) ?: $aut->role()) . ')';
+            return implode(' ', $t); // espace insécable
+        });
+
+        self::registerFormat('f n', 'Charlie Chaplin', function(Author $aut, Authors $parent) {
+            $t = [];
+            isset($aut->firstname) && $t[] = $aut->firstname();
+            isset($aut->name) && $t[] = $aut->name();
+            return implode(' ', $t); // espace insécable
+        });
+
+        self::registerFormat('n (f) / r', 'Chaplin (Charlie) / Acteur', function(Author $aut, Authors $parent) {
+            $t = [];
+            isset($aut->name) && $t[] = $aut->name();
+            isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
+            isset($aut->role) && $t[] =  '/' . $parent->table()->find('label', sprintf('code="%s"', $aut->role())) ?: $aut->role();
+            return implode(' ', $t); // espace insécable
+        });
+
+        self::registerFormat('n (f)', 'Chaplin (Charlie) / Acteur', function(Author $aut, Authors $parent) {
+            $t = [];
+            isset($aut->name) && $t[] = $aut->name();
+            isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
+            return implode(' ', $t); // espace insécable
+        });
     }
 }
