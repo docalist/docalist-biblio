@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
+use Docalist\Biblio\Type\Repeatable;
 
 /**
  * Content.
@@ -66,5 +67,13 @@ class Content extends MultiField {
         self::registerFormat('t: v', 'Type: Contenu', function(Content $content, Contents $parent) {
             return $parent->lookup($content->type()) . ': ' . $content->__get('value')->value();
         });
+    }
+
+    public function format(Repeatable $parent = null) {
+        $content = parent::format($parent);
+        if ($replace = $parent->schema()->newlines()) {
+            $content = str_replace( ["\r\n", "\r", "\n"], $replace, $content);
+        }
+        return $content;
     }
 }

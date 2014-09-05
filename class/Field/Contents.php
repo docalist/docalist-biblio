@@ -40,4 +40,18 @@ class Contents extends Repeatable {
 
         return $form;
     }
+
+    public function formatSettings() {
+        $name = $this->schema->name();
+
+        $form = parent::formatSettings();
+
+        $form->input('newlines')
+             ->attribute('id', $name . '-newlines')
+             ->attribute('class', 'newlines regular-text')
+             ->label(__("Remplacer les CR/LF par", 'docalist-biblio'))
+             ->description(__("Indiquez par quoi remplacer les retours chariots (par exemple : <code>&lt;br&gt;&lt;br&gt;</code>), ou videz le champ pour les laisser inchangés.", 'docalist-biblio'));
+
+        return $form;
+    }
 }
