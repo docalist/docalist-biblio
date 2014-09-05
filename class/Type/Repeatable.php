@@ -33,6 +33,34 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
 
         is_null($this->schema->sep) && $this->schema->sep = ', ';
 
+        // Récupère le type des éléments de cette collection
+        $type = $this->schema->type();
+
+        // Option "vue éclatée" si c'est un multi-field
+        if (is_a($type, 'Docalist\Biblio\Type\MultiField', true)) {
+            $groupkey = $type::groupkey();
+            $label = $this->schema->field($groupkey)->label();
+            $description = sprintf(
+                __("Affiche un champ différent pour chaque %s et utilise le libellé indiqué dans la table d'autorité associée.", 'docalist-biblio'),
+                lcfirst($label)
+            );
+
+            $form->checkbox('explode')
+                ->label(__("Vue éclatée", 'docalist-biblio'))
+                ->description($description);
+        }
+
+        // Choix du format d'affichage si c'est un objet
+        if (is_a($type, 'Docalist\Biblio\Type\Object', true)) {
+            $formats = $type::formats();
+            is_null($this->schema->format) && $this->schema->format = $type::defaultFormat();
+
+            $form->select('format')
+                ->label(__("Format d'affichage", 'docalist-biblio'))
+                ->description(__("Choisissez un format d'affichage parmi ceux proposés dans la liste.", 'docalist-biblio'))
+                ->options($formats);
+        }
+
         $form->input('prefix')
             ->attribute('id', $name . '-prefix')
             ->attribute('class', 'prefix regular-text')
