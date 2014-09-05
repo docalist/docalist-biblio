@@ -126,8 +126,8 @@ trait BiblioFieldTrait {
      * @return string Retourne le libellé associé au code. Si le code ne figure
      * pas dans la table, retourne le code.
      */
-    public function lookup($code, $table2 = false) {
-        return $this->table($table2)->find('label', "code='$code'") ?: $code;
+    public function lookup($code, $table2 = false, $search = 'code', $return = 'label') {
+        return $this->table($table2)->find($return, "$search='$code'") ?: $code;
     }
 
     /**
