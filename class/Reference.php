@@ -242,8 +242,9 @@ class Reference extends Entity {
                     'type' => 'Docalist\Biblio\Field\Organisations',
                     'label' => __('Organismes', 'docalist-biblio'),
     //                 'description' => __('Liste des auteurs moraux : organismes, collectivités auteurs, commanditaires, etc.', 'docalist-biblio'),
-                    'table1' => 'table:ISO-3166-1_alpha2_fr',
+                    'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
+                    'sep' => ' ; ', // sép par défaut à l'affichage, espace insécable avant ';'
                 ],
                 'othertitle' => [
                     'type' => 'Docalist\Biblio\Field\OtherTitles',
@@ -296,7 +297,7 @@ class Reference extends Entity {
                     'type' => 'Docalist\Biblio\Field\Editors',
                     'label' => __("Editeurs", 'docalist-biblio'),
                     'description' => __("Société ou organisme délégué par l'auteur pour assurer la diffusion du document.", 'docalist-biblio'),
-                    'table1' => 'table:ISO-3166-1_alpha2_fr',
+                    'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
                 ],
                 'edition' => [
@@ -570,5 +571,27 @@ class Reference extends Entity {
         }
 
         return $mappings;
+    }
+
+    public function format() {
+        $result = '';
+        foreach($this->schema()->fields() as $name => $field) { /* @var $field BiblioField */
+            if (! isset($this->value[$name])) continue;
+
+            $content = $this->value[$name]->format();
+
+            if (empty($content)) continue;
+
+            if (! is_array($content)) {
+                $content = [$field->label() => $content];
+            }
+
+            foreach ($content as $label => $content) {
+                $content = $field->before . $content . $field->after;
+                $result .= "<b>$label</b> : " . $content . '<br /><br />';
+            }
+
+        }
+        return $result;
     }
 }
