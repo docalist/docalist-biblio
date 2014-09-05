@@ -48,4 +48,11 @@ class Collection extends Object {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['collection'] = self::stdIndex();
     }
+
+    public function format() {
+        $h = $this->name();
+        isset($this->number) && $h .= ' (' . $this->number() . ')';
+
+        return $h;
+    }
 }
