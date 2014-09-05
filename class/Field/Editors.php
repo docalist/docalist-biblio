@@ -27,7 +27,7 @@ class Editors extends Repeatable {
         $field = new Table($this->schema->name());
         $field->input('name')->addClass('editor-name');
         $field->input('city')->addClass('editor-city');
-        $field->TableLookup('country', $this->schema->table1())
+        $field->TableLookup('country', $this->schema->table())
               ->addClass('editor-country');
         $field->TableLookup('role', $this->schema->table2())
               ->addClass('editor-role');
@@ -37,7 +37,7 @@ class Editors extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table1')
+        $form->select('table')
              ->label(__("Table des pays", 'docalist-biblio'))
              ->options($this->tablesOfType('countries'));
         $form->select('table2')

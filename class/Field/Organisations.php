@@ -28,7 +28,7 @@ class Organisations extends Repeatable {
         $field->input('name')->addClass('organisation-name');
         $field->input('acronym')->addClass('organisation-acronym');
         $field->input('city')->addClass('organisation-city');
-        $field->TableLookup('country', $this->schema->table1())
+        $field->TableLookup('country', $this->schema->table())
               ->addClass('organisation-country');
         $field->TableLookup('role', $this->schema->table2())
               ->addClass('organisation-role');
@@ -38,7 +38,7 @@ class Organisations extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table1')
+        $form->select('table')
              ->label(__("Table des pays", 'docalist-biblio'))
              ->options($this->tablesOfType('countries'));
         $form->select('table2')
