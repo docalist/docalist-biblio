@@ -69,4 +69,15 @@ class Event extends Object {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['event'] = self::stdIndex(true);
     }
+
+    public function format() {
+        $h = $this->title();
+        isset($this->number) && $h .= ' (' . $this->number() . ')';
+        isset($this->place) && $h .= ', ' . $this->place();
+        isset($this->date) && $h .= ', ' . Date::formatDate($this->date());
+        // TODO : créer un type date avec une méthode format()
+        // utilisable également pour d'autres champs (date.value, par exemple)
+
+        return $h;
+    }
 }
