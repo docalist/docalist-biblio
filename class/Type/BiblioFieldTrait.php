@@ -116,6 +116,21 @@ trait BiblioFieldTrait {
     }
 
     /**
+     * Convertit le code indiqué en libellé en effectuant un lookup dans la
+     * table associée au champ.
+     *
+     * @param string $code Le code recherché.
+     * @param bool $table2 Optionnel, true pour utiliser la propriété 'table2'
+     * du schéma plutôt que la propriété 'table'.
+     *
+     * @return string Retourne le libellé associé au code. Si le code ne figure
+     * pas dans la table, retourne le code.
+     */
+    public function lookup($code, $table2 = false) {
+        return $this->table($table2)->find('label', "code='$code'") ?: $code;
+    }
+
+    /**
      * Implémentation par défaut de BiblioFIeld::ESmapping().
      *
      * Par défaut, ne fait rien.
