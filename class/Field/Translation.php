@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -23,7 +23,9 @@ use Docalist\Schema\Field;
  * @property String $language
  * @property String $title
  */
-class Translation extends Object {
+class Translation extends MultiField {
+    static protected $groupkey = 'language';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -45,5 +47,28 @@ class Translation extends Object {
 
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['translation'] = self::stdIndex(true);
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('t', 'Traduction', function(Translation $title) {
+            return $title->title();
+        });
+
+        self::registerFormat('l : t', 'langue : Traduction', function(Translation $title, Translations $parent) {
+            return $parent->lookup($title->language()) . ' : ' . $title->title();
+            // espace insécable avant le ':'
+        });
+
+        self::registerFormat('l: t', 'langue : Traduction', function(Translation $title, Translations $parent) {
+            return $parent->lookup($title->language()) . ': ' . $title->title();
+        });
+
+        self::registerFormat('t (l)', 'Traduction (langue)', function(Translation $title, Translations $parent) {
+            $result = $title->title();
+            isset($title->language) && $result .= ' (' . $parent->lookup($title->language()) . ')';
+            // espace insécable avant '('
+
+            return $result;
+        });
     }
 }
