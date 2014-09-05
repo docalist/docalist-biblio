@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -23,7 +23,9 @@ use Docalist\Schema\Field;
  * @property String $type
  * @property String[] $terms
  */
-class Topic extends Object {
+class Topic extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -63,4 +65,27 @@ class Topic extends Object {
         $mappings['properties']['topic'] = self::stdIndexFilterAndSuggest(true);
     }
 
+
+    protected static function initFormats() {
+        self::registerFormat('v', 'Mots-clés', function(Topic $topic) {
+            return implode(', ', $topic->term());
+        });
+
+        self::registerFormat('t : v', 'Nom du vocabulaire : Mots-clés', function(Topic $topic, Topics $parent) {
+            return $parent->lookup($topic->type()) . ' : ' . implode(', ', $topic->term());
+            // espace insécable avant le ':'
+        });
+
+        self::registerFormat('t: v', 'Nom du vocabulaire: Mots-clés', function(Topic $topic, Topics $parent) {
+            return $parent->lookup($topic->type()) . ': ' . implode(', ', $topic->term());
+        });
+
+        self::registerFormat('v (t)', 'Mots-clés (Nom du vocabulaire)', function(Topic $topic, Topics $parent) {
+            $result = implode(', ', $topic->term());
+            isset($topic->type) && $result .= ' (' . $parent->lookup($topic->type()) . ')';
+            // espace insécable avant '('
+
+            return $result;
+        });
+    }
 }
