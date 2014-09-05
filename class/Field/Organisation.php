@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -26,7 +26,9 @@ use Docalist\Schema\Field;
  * @property String $country
  * @property String $role
  */
-class Organisation extends Object {
+class Organisation extends MultiField {
+    static protected $groupkey = 'role';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -85,5 +87,32 @@ class Organisation extends Object {
 
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('n (a), t, c, r', 'Nom (sigle), ville, pays, rôle', function(Organisation $org, Organisations $parent) {
+            if (isset($org->name) && isset($org->acronym)) {
+                $h = $org->name() . ' (' . $org->acronym() . ')';
+            } else {
+                $h = $org->name() . $org->acronym(); // l'un des deux est vide
+            }
+
+            if (isset($org->city)) {
+                $h && $h .= ', ';
+                $h .= $org->city();
+            }
+
+            if (isset($org->country)) {
+                $h && $h .= ', ';
+                //$h .= $org->country();
+                $h .= $parent->lookup($org->country()); // table1
+            }
+
+            if (isset($org->role)) {
+                $h && $h .= ' / '; // espaces insécables
+                $h .= $parent->lookup($org->role(), true); // table2
+            }
+            return $h;
+        });
     }
 }
