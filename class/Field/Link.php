@@ -14,7 +14,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
 
 /**
@@ -27,7 +27,9 @@ use Docalist\Schema\Field;
  * @property String $lastcheck
  * @property String $checkstatus
  */
-class Link extends Object {
+class Link extends MultiField {
+    static protected $groupkey = 'type';
+
     static protected function loadSchema() {
         // @formatter:off
         return [
@@ -68,5 +70,31 @@ class Link extends Object {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['link'] = self::stdIndex('simple');
         // cf. http://stackoverflow.com/a/18980048
+    }
+
+    protected static function initFormats() {
+        self::registerFormat('link', 'Lien cliquable uniquement', function(Link $link) {
+            $url = $link->url();
+            $label = isset($link->date) ? $link->label() : $url;
+            if (isset($link->date)) {
+                $title = sprintf(__('Accédé le %s', 'docalist-biblio'), $link->date());
+                $format = '<a href="%1$s" title="%3$s">%2$s</a>';
+            } else {
+                $title = '';
+                $format = '<a href="%1$s">%2$s</a>';
+            }
+
+            $url = esc_attr($url);
+            $title = esc_attr($title);
+            $label = esc_html($label);
+
+            return sprintf($format, $url, $label, $title);
+        });
+
+        self::registerFormat('label : link', 'Type et lien cliquable', function(Link $link, Links $parent) {
+            $type = $parent->lookup($link->type());
+            $link = self::callFormat('link', $link, $parent);
+            return  $type . ' : ' . $link;
+        });
     }
 }
