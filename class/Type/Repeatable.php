@@ -14,6 +14,7 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Forms\Fragment;
 /**
  * Type de base pour tous les champs répétables.
  */
@@ -137,6 +138,56 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
         $items = implode($sep, $items);
         !is_null($ellipsis) && $items .= $ellipsis;
         return $items;
+    }
+
+    /**
+     * Insére un select permettant de choisir la table d'autorité à utiliser
+     * pour un champ dans le formulaire passé en paramètre.
+     *
+     * @param Fragment $form Formulaire dans lequel insérer le select.
+     *
+     * @param string $type Type des tables ('genres', 'medias', etc.)
+     *
+     * @param string $label Optionnel, libellé à afficher (par défaut : "table
+     * d'autorité").
+     *
+     * @param bool $canInherit Optionnel, indique s'il faut ajouter comme
+     * première entrée la valeur "utiliser la table par défaut", false par
+     * défaut.
+     *
+     * @aram bool $table2 (optionnel, internal), paramètre utilisé par
+     * addTable2Select().
+     *
+     * @return Fragment Le formulaire modifié.
+     */
+    protected function addTableSelect(Fragment $form, $type, $label = '', $canInherit = false, $table2 = false) {
+        empty($label) && $label = __("Table d'autorité", 'docalist-biblio');
+
+        $select = $form->select($table2 ? 'table2' : 'table')
+            ->label($label)
+            ->options($this->tablesOfType($type));
+
+        if ($canInherit) {
+            $select->firstOption(__('(utiliser la table par défaut définie par le type)', 'docalist-biblio'));
+            $description  = __("Par défaut, la table d'autorité définie dans la grille de saisie est utilisée. ", 'docalist-biblio');
+            $description .= __("Vous pouvez définir une table différente spécifique à cette grille (par exemple pour avoir des libellés différents). ", 'docalist-biblio');
+            $description .= __("Mais attention, cela complique la maintenance car les différentes tables utilisées doivent rester synchonisées.", 'docalist-biblio');
+
+        } else {
+            $select->firstOption(false);
+            $description = __("Choisissez la table d'autorité à utiliser pour ce champ parmi celles proposées dans la liste.", 'docalist-biblio');
+        }
+        $select->description($description);
+
+        return $form;
 
     }
+
+    // comme addTableSelect mais pour table2
+    protected function addTable2Select(Fragment $form, $type, $label = '', $canInherit = false) {
+        empty($label) && $label = __("Seconde table d'autorité", 'docalist-biblio');
+
+        return $this->addTable2Select($form, $type, $canInherit, $label, true);
+    }
+
 }
