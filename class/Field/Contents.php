@@ -48,6 +48,6 @@ class Contents extends Repeatable {
              ->label(__("Remplacer les CR/LF par", 'docalist-biblio'))
              ->description(__("Indiquez par quoi remplacer les retours chariots (par exemple : <code>&lt;br&gt;&lt;br&gt;</code>), ou videz le champ pour les laisser inchangés.", 'docalist-biblio'));
 
-        return $form;
+        return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'), true);
     }
 }

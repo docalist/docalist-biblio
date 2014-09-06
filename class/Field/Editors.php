@@ -40,4 +40,10 @@ class Editors extends Repeatable {
         $form = $this->addTableSelect($form, 'countries', __("Table des pays", 'docalist-biblio'));
         return $this->addTable2Select($form, 'roles', __("Table des rôles", 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        $form = $this->addTableSelect($form, 'countries', __("Table des pays", 'docalist-biblio'), true);
+        return $this->addTable2Select($form, 'roles', __("Table des rôles", 'docalist-biblio'), true);
+    }
 }

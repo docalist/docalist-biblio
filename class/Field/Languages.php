@@ -34,4 +34,9 @@ class Languages extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'languages', __('Table des langues', 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'languages', __('Table des langues', 'docalist-biblio'), true);
+    }
 }

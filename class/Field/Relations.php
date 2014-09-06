@@ -36,4 +36,9 @@ class Relations extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'relations', __('Table des types de relations', 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'relations', __('Table des types de relations', 'docalist-biblio'), true);
+    }
 }

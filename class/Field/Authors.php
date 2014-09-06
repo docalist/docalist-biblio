@@ -38,4 +38,9 @@ class Authors extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'roles', __("Table des rôles", 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'roles', __("Table des rôles", 'docalist-biblio'), true);
+    }
 }

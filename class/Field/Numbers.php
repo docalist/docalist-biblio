@@ -36,4 +36,9 @@ class Numbers extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'numbers', __('Table des types de numéros', 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'numbers', __('Table des types de numéros', 'docalist-biblio'), true);
+    }
 }

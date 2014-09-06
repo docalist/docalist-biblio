@@ -34,4 +34,9 @@ class Genres extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'genres', __("Table des genres", 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'genres', __("Table des genres", 'docalist-biblio'), true);
+    }
 }

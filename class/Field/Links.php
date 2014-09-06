@@ -38,4 +38,9 @@ class Links extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'links', __('Table des types de liens', 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'links', __('Table des types de liens', 'docalist-biblio'), true);
+    }
 }

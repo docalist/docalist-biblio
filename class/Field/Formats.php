@@ -34,4 +34,9 @@ class Formats extends Repeatable {
         $form = parent::settingsForm();
         return $this->addTableSelect($form, 'format', __('Table des étiquettes de format', 'docalist-biblio'));
     }
+
+    public function formatSettings() {
+        $form = parent::formatSettings();
+        return $this->addTableSelect($form, 'format', __('Table des étiquettes de format', 'docalist-biblio'), true);
+    }
 }
