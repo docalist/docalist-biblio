@@ -151,7 +151,7 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
      * @param string $label Optionnel, libellé à afficher (par défaut : "table
      * d'autorité").
      *
-     * @param bool $canInherit Optionnel, indique s'il faut ajouter comme
+     * @param bool $inherit Optionnel, indique s'il faut ajouter comme
      * première entrée la valeur "utiliser la table par défaut", false par
      * défaut.
      *
@@ -160,14 +160,17 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
      *
      * @return Fragment Le formulaire modifié.
      */
-    protected function addTableSelect(Fragment $form, $type, $label = '', $canInherit = false, $table2 = false) {
+    protected function addTableSelect(Fragment $form, $type, $label = '', $inherit = false, $table2 = false) {
         empty($label) && $label = __("Table d'autorité", 'docalist-biblio');
 
-        $select = $form->select($table2 ? 'table2' : 'table')
+        $table = $table2 ? 'table2' : 'table';
+        $inherit && $table .= 'spec';
+
+        $select = $form->select($table)
             ->label($label)
             ->options($this->tablesOfType($type));
 
-        if ($canInherit) {
+        if ($inherit) {
             $select->firstOption(__('(utiliser la table par défaut définie par le type)', 'docalist-biblio'));
             $description  = __("Par défaut, la table d'autorité définie dans la grille de saisie est utilisée. ", 'docalist-biblio');
             $description .= __("Vous pouvez définir une table différente spécifique à cette grille (par exemple pour avoir des libellés différents). ", 'docalist-biblio');
@@ -184,10 +187,10 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
     }
 
     // comme addTableSelect mais pour table2
-    protected function addTable2Select(Fragment $form, $type, $label = '', $canInherit = false) {
+    protected function addTable2Select(Fragment $form, $type, $label = '', $inherit = false) {
         empty($label) && $label = __("Seconde table d'autorité", 'docalist-biblio');
 
-        return $this->addTableSelect($form, $type, $label, $canInherit, true);
+        return $this->addTableSelect($form, $type, $label, $inherit, true);
     }
 
 }
