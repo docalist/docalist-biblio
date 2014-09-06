@@ -34,10 +34,6 @@ class Dates extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table')
-             ->label(__("Table des types de dates", 'docalist-biblio'))
-             ->options($this->tablesOfType('dates'));
-
-        return $form;
+        return $this->addTableSelect($form, 'dates', __('Table des types de dates', 'docalist-biblio'));
     }
 }

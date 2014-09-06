@@ -37,13 +37,7 @@ class Editors extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table')
-             ->label(__("Table des pays", 'docalist-biblio'))
-             ->options($this->tablesOfType('countries'));
-        $form->select('table2')
-             ->label(__("Table des rôles", 'docalist-biblio'))
-              ->options($this->tablesOfType('roles'));
-
-        return $form;
+        $form = $this->addTableSelect($form, 'countries', __("Table des pays", 'docalist-biblio'));
+        return $this->addTable2Select($form, 'roles', __("Table des rôles", 'docalist-biblio'));
     }
 }

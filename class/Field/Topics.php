@@ -50,10 +50,6 @@ class Topics extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table')
-             ->label(__("Table des vocabulaires", 'docalist-biblio'))
-             ->options($this->tablesOfType('topics'));
-
-        return $form;
+        return $this->addTableSelect($form, 'topics', __('Table des vocabulaires', 'docalist-biblio'));
     }
 }

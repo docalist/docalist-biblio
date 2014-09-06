@@ -34,10 +34,6 @@ class Extents extends Repeatable {
 
     public function settingsForm() {
         $form = parent::settingsForm();
-        $form->select('table')
-             ->label(__("Table des types d'étendues", 'docalist-biblio'))
-             ->options($this->tablesOfType('extent'));
-
-        return $form;
+        return $this->addTableSelect($form, 'extent', __("Table des types d'étendues", 'docalist-biblio'));
     }
 }
