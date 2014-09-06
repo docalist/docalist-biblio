@@ -22,6 +22,8 @@ use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
+use Docalist\Schema\Field;
+use Docalist\Type\Collection;
 
 /**
  * Gestion des bases de données.
@@ -99,7 +101,7 @@ class AdminDatabases extends AdminPage {
      * @param int $dbindex
      * @param int $typeindex
      *
-     * @return Schema
+     * @return TypeSettings
      */
     protected function type($dbindex, $typeindex) {
         $database = $this->database($dbindex);
@@ -499,6 +501,11 @@ class AdminDatabases extends AdminPage {
         if ($this->isPost()) {
             $data = wp_unslash($_POST);
             $grid->merge(['fields' => $data]);
+            // Lorsque la grille de saisie est modifiée, on met à jour
+            // les champs table/table2 de toutes les autres grilles.
+            if ($grid->name === 'edit') {
+                $this->updateOtherGrids($type->grids, $grid);
+            }
             $this->settings->save();
 
             return $this->redirect($this->url('GridList', $dbindex, $typeindex), 303);
@@ -512,6 +519,32 @@ class AdminDatabases extends AdminPage {
             'grid' => $grid,
             'gridname' => $gridname
         ]);
+    }
+
+    public function updateOtherGrids(Collection  $grids, Schema $edit) {
+        foreach($grids as $grid) {/* @var $grid Schema */
+            if ($grid->name === $edit->name) {
+                continue;
+            }
+            foreach($grid->fields() as $name => $dest) { /* @var $dest Field */
+                if (! $edit->has($name)) { // champ qu'on n'a pas dans edit (groupe, etc.)
+                    continue;
+                }
+
+                // TODO : plus tard, gérer les champs filtrés (par exemple si
+                // on a un champ qui s'appelle genre.xxx, comparer avec genre
+
+                $src = $edit->field($name); /* @var $src Field */
+                if ($dest->table !== $table = $src->table()) {
+                    // echo "SET $grid->name.$name.table = $table<br />";
+                    $dest->table = $table;
+                }
+                if ($dest->table2 !== $table2 = $src->table2()) {
+                    // echo "SET $grid->name.$name.table2 = $table2<br />";
+                    $dest->table2 = $table2;
+                }
+            }
+        }
     }
 
     /**
