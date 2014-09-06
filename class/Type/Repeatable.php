@@ -187,7 +187,7 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
     protected function addTable2Select(Fragment $form, $type, $label = '', $canInherit = false) {
         empty($label) && $label = __("Seconde table d'autorité", 'docalist-biblio');
 
-        return $this->addTable2Select($form, $type, $canInherit, $label, true);
+        return $this->addTableSelect($form, $type, $label, $canInherit, true);
     }
 
 }
