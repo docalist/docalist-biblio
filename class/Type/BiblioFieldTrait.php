@@ -107,7 +107,11 @@ trait BiblioFieldTrait {
      */
     public function table($table2 = false) {
         // Détermine la table à utiliser
-        $table = $table2 ? $this->schema()->table2() : $this->schema()->table();
+        if ($table2) {
+            $table = $this->schema()->table2spec() ?: $this->schema()->table2();
+        } else {
+            $table = $this->schema()->tablespec() ?: $this->schema()->table();
+        }
 
         // Le nom de la table est de la forme "type:nom", on ne veut que le nom
         $table = explode(':', $table)[1];
