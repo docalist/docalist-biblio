@@ -339,11 +339,7 @@ class AdminDatabases extends AdminPage {
                 'name' => $name,
                 'label' => $defaultSchema->label(),
                 'description' => $defaultSchema->description(),
-                'grids' => [
-                    'edit' => $edit,
-                    'content' => $content,
-                    'excerpt' => $excerpt,
-                ]
+                'grids' => [ $edit, $content, $excerpt ]
             ]);
         }
 
@@ -545,14 +541,10 @@ class AdminDatabases extends AdminPage {
                 // on a un champ qui s'appelle genre.xxx, comparer avec genre
 
                 $src = $edit->field($name); /* @var $src Field */
-                if ($dest->table !== $table = $src->table()) {
-                    // echo "SET $grid->name.$name.table = $table<br />";
-                    $dest->table = $table;
-                }
-                if ($dest->table2 !== $table2 = $src->table2()) {
-                    // echo "SET $grid->name.$name.table2 = $table2<br />";
-                    $dest->table2 = $table2;
-                }
+
+                $dest->table = $src->table();
+                $dest->table2 = $src->table2();
+                $dest->label = $src->label();
             }
         }
     }
