@@ -35,14 +35,14 @@ class Editors extends Repeatable {
         return $field;
     }
 
-    public function settingsForm() {
-        $form = parent::settingsForm();
+    public function editSettings() {
+        $form = parent::editSettings();
         $form = $this->addTableSelect($form, 'countries', __("Table des pays", 'docalist-biblio'));
         return $this->addTable2Select($form, 'roles', __("Table des rôles", 'docalist-biblio'));
     }
 
-    public function formatSettings() {
-        $form = parent::formatSettings();
+    public function displaySettings() {
+        $form = parent::displaySettings();
         $form = $this->addTableSelect($form, 'countries', __("Table des pays", 'docalist-biblio'), true);
         return $this->addTable2Select($form, 'roles', __("Table des rôles", 'docalist-biblio'), true);
     }

@@ -22,14 +22,14 @@ use Docalist\Schema\Field;
 
 trait BiblioFieldTrait {
     /**
-     * Implémentation de base de BiblioField::settingsForm().
+     * Implémentation de base de BiblioField::editSettings().
      *
      * Retourne un formulaire qui contient les contrôles name, label et
      * description.
      *
      * @return Fragment
      */
-    public function settingsForm() {
+    public function editSettings() {
         $name = $this->schema->name();
         $form = new Fragment($name);
         $form->hidden('name')
@@ -213,16 +213,16 @@ trait BiblioFieldTrait {
     }
 
     /*
-     * Pour implémenter formatSettings(), certains types (exemple : Repeatable)
+     * Pour implémenter displaySettings(), certains types (exemple : Repeatable)
      * ont besoin d'appeller la fonction du même nom fournie par le trait.
      * Comme on ne peut pas faire parent:xxx() pour un trait, j'incorporais le
      * trait dans Repeatable en utilisant
      * class Repeatable
      *     use BiblioFieldTrait {
-     *         formatSettings as protected traitFormatSettings;
+     *         displaySettings as protected traitDisplaySettings;
      *     }
      * Ce qui permettait ensuite, dans formatSetting() d'appeller
-     * $this->traitFormatSettings().
+     * $this->traitDisplaySettings().
      * Le problème, c'est que sur mon poste, ça fait planter php, et apache en
      * boucle (un hit ça marche, le hit suivant cela ne marche plus et ainsi
      * de suite).
@@ -231,19 +231,19 @@ trait BiblioFieldTrait {
      * le problème.
      * Pour contourner ça, j'utilise le "hack" suivant :
      * - le trait dispose d'une méthode (protected) qui s'appelle
-     *   traitFormatSettings()
-     * - le trait dispose d'une méthode (public) formatSettings() qui se contente
-     *   d'appeller traitFormatSettings()
+     *   traitDisplaySettings()
+     * - le trait dispose d'une méthode (public) displaySettings() qui se contente
+     *   d'appeller traitDisplaySettings()
      * - dans Repeatable, plus besoin de renomage : on peut surcharger
-     *   formatSettings() et appeller traitFormatSettings() si on en a besoin.
+     *   displaySettings() et appeller traitDisplaySettings() si on en a besoin.
      * DM, 04/09/14
      */
 
-    public function formatSettings() {
-        return $this->traitFormatSettings();
+    public function displaySettings() {
+        return $this->traitDisplaySettings();
     }
 
-    public function traitFormatSettings() {
+    public function traitDisplaySettings() {
         $name = $this->schema->name();
         $label = $this->schema->label();
         $form = new Fragment($name);

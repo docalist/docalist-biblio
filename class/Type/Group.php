@@ -31,7 +31,7 @@ class Group extends \Docalist\Type\Any implements BiblioField {
         }
     }
 
-    public function settingsForm() {
+    public function editSettings() {
         $name = $this->schema->name();
         $form = new Fragment($name);
 
@@ -78,7 +78,7 @@ class Group extends \Docalist\Type\Any implements BiblioField {
     }
 
 
-    public function formatSettings() {
+    public function displaySettings() {
         $name = $this->schema->name();
         $form = new Fragment($name);
         $form->hidden('name')

@@ -27,8 +27,8 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
         }
     }
 
-    public function formatSettings() {
-        $form = $this->traitFormatSettings();
+    public function displaySettings() {
+        $form = $this->traitDisplaySettings();
 
         $name = $this->schema->name();
 

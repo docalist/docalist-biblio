@@ -32,15 +32,15 @@ class Contents extends Repeatable {
         return $field;
     }
 
-    public function settingsForm() {
-        $form = parent::settingsForm();
+    public function editSettings() {
+        $form = parent::editSettings();
         return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'));
     }
 
-    public function formatSettings() {
+    public function displaySettings() {
         $name = $this->schema->name();
 
-        $form = parent::formatSettings();
+        $form = parent::displaySettings();
 
         $form->input('newlines')
              ->attribute('id', $name . '-newlines')

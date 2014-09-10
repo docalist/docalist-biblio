@@ -33,13 +33,13 @@ class OtherTitles extends Repeatable {
         return $field;
     }
 
-    public function settingsForm() {
-        $form = parent::settingsForm();
+    public function editSettings() {
+        $form = parent::editSettings();
         return $this->addTableSelect($form, 'titles', __('Table des types de titres', 'docalist-biblio'));
     }
 
-    public function formatSettings() {
-        $form = parent::formatSettings();
+    public function displaySettings() {
+        $form = parent::displaySettings();
         return $this->addTableSelect($form, 'titles', __('Table des types de titres', 'docalist-biblio'), true);
     }
 }

@@ -26,7 +26,7 @@ interface BiblioField {
      *
      * @return Fragment
      */
-    public function settingsForm(); // renommer en editSettings()
+    public function editSettings(); // renommer en editSettings()
 
     /**
      * Retourne le formulaire permettant de saisir ce champ.
@@ -41,7 +41,7 @@ interface BiblioField {
      *
      * @return Fragment
      */
-    public function formatSettings();
+    public function displaySettings();
 
     /**
      * Formatte le champ pour affichage.
