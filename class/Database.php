@@ -120,8 +120,11 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
+            // Charge la notice en mode "affichage court"
+            $ref = $this->load($post->ID, 'excerpt');
+
             // Formatte la notice
-            return $this->render('excerpt');
+            return $ref->format();
         }, 10);
 
         add_filter('the_content', function($content) {
@@ -132,8 +135,11 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
+            // Charge la notice en mode "affichage long"
+            $ref = $this->load($post->ID, 'content');
+
             // Formatte la notice
-            return $this->render('content');
+            return $ref->format();
         });
     }
 
@@ -231,23 +237,6 @@ class Database extends PostTypeRepository {
         // Exécute la vue
         $view = "docalist-biblio:format/$format";
         docalist('views')->display($view, ['this' => $this, 'ref' => $ref]);
-    }
-
-    /**
-     * Formatte une notice.
-     *
-     * @param string $format Nom du format d'affichage (correspond au nom de la
-     * vue qui sera utilisée : docalist-biblio:format/$format).
-     * @param null|int|Reference $ref La notice à formatter.
-     *
-     * @return string La notice formattée.
-     *
-     * @throws Exception Si Ref invalide ou erreur dans la vue
-     */
-    protected function render($format = 'content', $ref = null) {
-        ob_start();
-        $this->display($format, $ref);
-        return ob_get_clean();
     }
 
     /**
