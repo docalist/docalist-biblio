@@ -323,8 +323,11 @@ class AdminDatabases extends AdminPage {
                 wp_die(sprintf($msg, $name), $title);
             }
 
-            // Ajoute le type
+            // Initialise les différentes grilles du type
             $defaultSchema = $types[$name]::defaultSchema();
+
+            $base = $types[$name]::baseGrid();
+            $base->name = 'base';
 
             $edit = $types[$name]::editGrid();
             $edit->name = 'edit';
@@ -335,12 +338,19 @@ class AdminDatabases extends AdminPage {
             $excerpt = $types[$name]::excerptGrid();
             $excerpt->name = 'excerpt';
 
-            $database->types[] = new TypeSettings([
+            // Crée le type
+            $type = new TypeSettings([
                 'name' => $name,
                 'label' => $defaultSchema->label(),
                 'description' => $defaultSchema->description(),
-                'grids' => [ $edit, $content, $excerpt ]
+                'grids' => [ $base, $edit, $content, $excerpt ]
             ]);
+
+            // Copie les propriétés de la grille de base dans toutes les autres grilles
+            $this->updateGrids($type);
+
+            // Enregistre le type
+            $database->types[] = $type;
         }
 
         $this->settings->save();
@@ -507,14 +517,14 @@ class AdminDatabases extends AdminPage {
         if ($this->isPost()) {
             $data = wp_unslash($_POST);
             $grid->merge(['fields' => $data]);
-            // Lorsque la grille de saisie est modifiée, on met à jour
-            // les champs table/table2 de toutes les autres grilles.
-            if ($grid->name === 'edit') {
-                $this->updateOtherGrids($type->grids, $grid);
-            }
+            $this->updateGrids($type); // Gère l'héritage des propriétés
             $this->settings->save();
 
             return $this->redirect($this->url('GridList', $dbindex, $typeindex), 303);
+        }
+
+        if ($gridname !== 'base') {
+            $this->initDefaults($type->grids['base'], $grid);
         }
 
         return $this->view('docalist-biblio:grid/edit', [
@@ -527,25 +537,57 @@ class AdminDatabases extends AdminPage {
         ]);
     }
 
-    public function updateOtherGrids(Collection  $grids, Schema $edit) {
-        foreach($grids as $grid) {/* @var $grid Schema */
-            if ($grid->name === $edit->name) {
+    protected function updateGrids(TypeSettings $type) {
+        $base = $type->grids['base'];
+        foreach($type->grids as $grid) {/* @var $grid Schema */
+            if ($grid === $base) {
                 continue;
             }
-            foreach($grid->fields() as $name => $dest) { /* @var $dest Field */
-                if (! $edit->has($name)) { // champ qu'on n'a pas dans edit (groupe, etc.)
+            foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
+                if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
                     continue;
                 }
 
                 // TODO : plus tard, gérer les champs filtrés (par exemple si
                 // on a un champ qui s'appelle genre.xxx, comparer avec genre
 
-                $src = $edit->field($name); /* @var $src Field */
+                $src = $base->field($name); /* @var $src Field */
 
-                $dest->table = $src->table();
-                $dest->table2 = $src->table2();
-                $dest->label = $src->label();
+                // Propriétés héritées, non modifiables
+                // On les copie simplement pour que les grilles y ait accès
+                $dst->type = $src->type;
+                $dst->collection = $src->collection;
+                $dst->key = $src->key;
+
+                // Propriétés héritées et modifiables (xx-spec)
+                // On prend la propriété spécifique si elle existe,
+                // la propriété de la grille de base sinon
+                $dst->table  = $dst->tablespec  ?: $src->table;
+                $dst->table2 = $dst->table2spec ?: $src->table2;
+                $dst->label  = $dst->labelspec  ?: $src->label;
+                $dst->description  = $dst->descriptionspec  ?: $src->description;
             }
+        }
+    }
+
+    protected function initDefaults(Schema $base, Schema $grid) {
+        foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
+            if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
+                continue;
+            }
+
+            // TODO : plus tard, gérer les champs filtrés (par exemple si
+            // on a un champ qui s'appelle genre.xxx, comparer avec genre
+
+            $src = $base->field($name); /* @var $src Field */
+
+            // Propriétés héritées et modifiables (xx-spec)
+            // On prend la propriété spécifique si elle existe,
+            // la propriété de la grille de base sinon
+            $dst->tabledefault  = $src->table;
+            $dst->table2default = $src->table2;
+            $dst->labeldefault  = $src->label;
+            $dst->descriptiondefault  = $src->description;
         }
     }
 
