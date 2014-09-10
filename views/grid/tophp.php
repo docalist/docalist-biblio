@@ -19,6 +19,7 @@ use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
 use Docalist\Schema\Field;
 use Docalist\Forms\Fragment;
+use Docalist\Biblio\Reference;
 
 /**
  * grid to php
@@ -39,7 +40,7 @@ use Docalist\Forms\Fragment;
     <?= screen_icon() ?>
     <h2><?= sprintf(__('Code PHP de la grille "%s" pour le type "%s"', 'docalist-biblio'), $gridname, $typeindex) ?></h2>
 
-    <p class="description">
+	<p class="description">
         <?= __("Le code PHP ci-dessous peut être utilisé pour générer une grille identique.", 'docalist-biblio') ?>
     </p>
 
@@ -47,6 +48,8 @@ use Docalist\Forms\Fragment;
 $properties = $grid->toArray();
 $fields = $properties['fields'];
 unset($properties['fields']);
+
+$base = ($grid->name === 'base') ? Reference::defaultSchema()->toArray() : $type->grids['base']->toArray();
 
 echo '<textarea class="large-text code" rows="35" cols="500" readonly>';
 echo "return [\n";
@@ -57,17 +60,49 @@ echo "return [\n";
     }
 
     echo "    'fields' => [\n";
-    foreach ($fields as $key => $field) {
+    foreach ($fields as $name => $field) {
 
-    	if ($field['type'] === 'Docalist\Biblio\Type\Group') {
-    	    echo "\n        // ", $field['label'], "\n";
-    	}
-    	echo '        ', var_export($key, true), " => [\n";
-    	foreach ($field as $key => $value) {
-        	$value = varExport($value, $key);
-        	echo '            ', var_export($key, true), ' => ', $value, ",\n";
-    	}
-    	echo "        ]\n";
+        if ($field['type'] === 'Docalist\Biblio\Type\Group') {
+            echo "\n        // ", $field['label'], "\n";
+
+            echo '        ', var_export($name, true), " => [ ";
+            $first = true;
+            foreach ($field as $key => $value) {
+                if (!$first) {
+                    echo ', ';
+                }
+                $first = false;
+                $value = varExport($value, $key);
+                echo var_export($key, true), ' => ', $value;
+            }
+            echo " ],\n";
+            continue;
+        }
+
+        // Supprime les propriétés qui ont la valeur par défaut (dans base)
+        foreach ($field as $key => $value) {
+            if (isset($base['fields'][$name][$key]) && $value === $base['fields'][$name][$key]) {
+                unset($field[$key]);
+            }
+            if (isset($field[$key . 'spec'])) {
+                unset($field[$key]);
+            }
+        }
+
+        // Plus aucune propriété spécifique, génère uniquement le nom
+        if (empty($field)) {
+            echo '        ', var_export($name, true), ",\n";
+        }
+
+        // Champ avec au moins une propriété génère nom => [ propriétés ]
+        else {
+            echo '        ', var_export($name, true), " => [\n";
+            foreach ($field as $key => $value) {
+                $value = varExport($value, $key);
+                echo '            ', var_export($key, true), ' => ', $value, ",\n";
+            }
+            echo "        ],\n";
+        }
     }
     echo "    ]\n";
 
@@ -96,7 +131,7 @@ function varExport($value, $key = '') {
     }
 
 	$value = htmlspecialchars($value);
-    if ($key === 'label' || $key ==='description') {
+    if ($key === 'label' || $key ==='description' || $key === 'labelspec' || $key ==='descriptionspec') {
         $value = "__($value, 'docalist-biblio')";
     }
 	return $value;
