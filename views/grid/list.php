@@ -69,6 +69,7 @@ use Docalist\Schema\Schema;
         $edit = esc_url($this->url('GridEdit', $dbindex, $typeindex, $name));
         $copy = esc_url($this->url('GridCopy', $dbindex, $typeindex, $name));
         $delete = esc_url($this->url('GridDelete', $dbindex, $typeindex, $name));
+        $tophp = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $name));
 
         $nb++;
     ?>
@@ -100,6 +101,14 @@ use Docalist\Schema\Schema;
                         <?= __('Supprimer', 'docalist-biblio') ?>
                     </a>
                 </span>
+                <?php if (wp_get_current_user()->user_login === 'dmenard') : ?>
+                |
+                <span class="tophp">
+                    <a href="<?= $tophp ?>">
+                        <?= __('Code PHP', 'docalist-biblio') ?>
+                    </a>
+                </span>
+                <?php endif;?>
             </div>
         </th>
 

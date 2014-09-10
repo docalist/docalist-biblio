@@ -579,4 +579,19 @@ class AdminDatabases extends AdminPage {
         return $this->info('Pas encore implémenté', 'Supprimer une grille');
     }
 
+    public function actionGridToPhp($dbindex, $typeindex, $gridname) {
+        $database = $this->database($dbindex);
+        $type = $this->type($dbindex, $typeindex);
+        /* @var $grid Schema */
+        $grid = $type->grids[$gridname];
+
+        return $this->view('docalist-biblio:grid/tophp', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'type' => $type,
+            'typeindex' => $typeindex,
+            'grid' => $grid,
+            'gridname' => $gridname
+        ]);
+    }
 }
