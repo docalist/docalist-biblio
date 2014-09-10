@@ -48,6 +48,7 @@ use Docalist\Schema\Schema;
 class MultiField extends Object {
 
     static protected $groupkey;
+    static protected $table2ForGroupkey = false;
 
     /**
      * Retourne le nom du champ utilisé comme clé de classement
@@ -59,7 +60,7 @@ class MultiField extends Object {
     public function format(Repeatable $parent = null) {
         $content = self::callFormat($parent->schema->format(), $this, $parent);
         if ($parent->schema()->explode) {
-            $label = $parent->lookup($this->__get(static::$groupkey)->value());
+            $label = $parent->lookup($this->__get(static::$groupkey)->value(), static::$table2ForGroupkey);
             return [$label, $content];
         }
         return $content;

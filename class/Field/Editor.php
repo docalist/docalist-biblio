@@ -27,6 +27,7 @@ use Docalist\Schema\Field;
  */
 class Editor extends MultiField {
     static protected $groupkey = 'role';
+    static protected $table2ForGroupkey = true;
 
     static protected function loadSchema() {
         // @formatter:off
