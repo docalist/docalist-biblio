@@ -40,20 +40,6 @@ use Docalist\Schema\Schema;
  * - pagination de type "page de début - page de fin"
  */
 class Article extends Reference {
-
-    static protected function fields() {
-        // Récupère les champs du schéma
-        $fields = static::loadSchema()['fields'];
-
-        // Indexe par nom
-        foreach($fields as $name => & $field) {
-            $field['name'] = $name;
-        }
-
-        // Ok
-        return $fields;
-    }
-
     static protected function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
