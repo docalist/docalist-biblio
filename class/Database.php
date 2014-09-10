@@ -136,7 +136,7 @@ class Database extends PostTypeRepository {
             }
 
             // Charge la notice en mode "affichage long"
-            $ref = $this->load($post->ID, 'content');
+            $ref = $this->load($post->ID, is_archive() ? 'excerpt' : 'content');
 
             // Formatte la notice
             return $ref->format();
