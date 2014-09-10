@@ -22,26 +22,32 @@ use Docalist\Schema\Field;
  */
 interface BiblioField {
     /**
-     * Retourne le formulaire qui permet de paramétrer la saisie de ce champ.
+     * Retourne le formulaire "paramètres de base" du champ.
      *
      * @return Fragment
      */
-    public function editSettings(); // renommer en editSettings()
+    public function baseSettings();
+
+    /**
+     * Retourne le formulaire "paramètres de saisie" du champ.
+     *
+     * @return Fragment
+     */
+    public function editSettings();
+
+    /**
+     * Retourne le formulaire "paramètres d'affichage" du champ.
+     *
+     * @return Fragment
+     */
+    public function displaySettings();
 
     /**
      * Retourne le formulaire permettant de saisir ce champ.
      *
      * @return Fragment
      */
-    public function editForm(); // renommer en edit()
-
-    /**
-     * Retourne le formulaire qui permet de paramétrer le format d'affichage
-     * du champ.
-     *
-     * @return Fragment
-     */
-    public function displaySettings();
+    public function editForm(); // renommer en edit() ?
 
     /**
      * Formatte le champ pour affichage.

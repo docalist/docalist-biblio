@@ -32,9 +32,14 @@ class Contents extends Repeatable {
         return $field;
     }
 
+    public function baseSettings() {
+        $form = parent::baseSettings();
+        return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'));
+    }
+
     public function editSettings() {
         $form = parent::editSettings();
-        return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'));
+        return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'), true);
     }
 
     public function displaySettings() {

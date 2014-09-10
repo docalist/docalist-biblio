@@ -48,9 +48,14 @@ class Topics extends Repeatable {
         return $field;
     }
 
+    public function baseSettings() {
+        $form = parent::baseSettings();
+        return $this->addTableSelect($form, 'topics', __('Table des vocabulaires', 'docalist-biblio'));
+    }
+
     public function editSettings() {
         $form = parent::editSettings();
-        return $this->addTableSelect($form, 'topics', __('Table des vocabulaires', 'docalist-biblio'));
+        return $this->addTableSelect($form, 'topics', __('Table des vocabulaires', 'docalist-biblio'), true);
     }
 
     public function displaySettings() {

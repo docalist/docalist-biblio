@@ -171,14 +171,18 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
             ->options($this->tablesOfType($type));
 
         if ($inherit) {
-            $select->firstOption(__('(utiliser la table par défaut définie par le type)', 'docalist-biblio'));
-            $description  = __("Par défaut, la table d'autorité définie dans la grille de saisie est utilisée. ", 'docalist-biblio');
-            $description .= __("Vous pouvez définir une table différente spécifique à cette grille (par exemple pour avoir des libellés différents). ", 'docalist-biblio');
+            $default = $table2 ? 'table2default' : 'tabledefault';
+            $default = $this->schema()->$default;
+            $default = sprintf(__("Utiliser la table par défaut (%s)", 'docalist-biblio'), $default);
+            $select->firstOption($default);
+            $description  = __("Par défaut, la table d'autorité définie dans la grille de base est utilisée. ", 'docalist-biblio');
+            $description .= __("Vous pouvez définir une table différente spécifique à cette grille (par exemple pour avoir des libellés différents pour les entrées de la table). ", 'docalist-biblio');
             $description .= __("Mais attention, cela complique la maintenance car les différentes tables utilisées doivent rester synchonisées.", 'docalist-biblio');
 
         } else {
             $select->firstOption(false);
-            $description = __("Choisissez la table d'autorité à utiliser pour ce champ parmi celles proposées dans la liste.", 'docalist-biblio');
+            $description = __("Choisissez la table d'autorité à utiliser parmi celles proposées dans la liste. ", 'docalist-biblio');
+            $description .= __("La table indiquée ici sera utilisée comme table par défaut pour toutes les autres grilles. ", 'docalist-biblio');
         }
         $select->description($description);
 

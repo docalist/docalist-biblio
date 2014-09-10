@@ -31,6 +31,8 @@ class Group extends \Docalist\Type\Any implements BiblioField {
         }
     }
 
+    // pas de baseSettings() pour un groupe : pas de groupes dans une grille de base
+
     public function editSettings() {
         $name = $this->schema->name();
         $form = new Fragment($name);

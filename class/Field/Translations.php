@@ -32,6 +32,11 @@ class Translations extends Repeatable {
         return $field;
     }
 
+    public function baseSettings() {
+        $form = parent::baseSettings();
+        return $this->addTableSelect($form, 'languages', __('Table des langues', 'docalist-biblio'), true);
+    }
+
     public function editSettings() {
         $form = parent::editSettings();
         return $this->addTableSelect($form, 'languages', __('Table des langues', 'docalist-biblio'));

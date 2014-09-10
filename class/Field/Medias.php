@@ -30,9 +30,14 @@ class Medias extends Repeatable {
         return $field;
     }
 
+    public function baseSettings() {
+        $form = parent::baseSettings();
+        return $this->addTableSelect($form, 'medias', __('Table des supports', 'docalist-biblio'));
+    }
+
     public function editSettings() {
         $form = parent::editSettings();
-        return $this->addTableSelect($form, 'medias', __('Table des supports', 'docalist-biblio'));
+        return $this->addTableSelect($form, 'medias', __('Table des supports', 'docalist-biblio'), true);
     }
 
     public function displaySettings() {
