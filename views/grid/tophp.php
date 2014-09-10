@@ -50,6 +50,7 @@ $fields = $properties['fields'];
 unset($properties['fields']);
 
 $base = ($grid->name === 'base') ? Reference::defaultSchema()->toArray() : $type->grids['base']->toArray();
+$format = null;
 
 echo '<textarea class="large-text code" rows="35" cols="500" readonly>';
 echo "return new Schema([\n";
@@ -76,6 +77,7 @@ echo "return new Schema([\n";
                 echo var_export($key, true), ' => ', $value;
             }
             echo " ],\n";
+            $format = isset($field['format']) ? $field['format'] : null;
             continue;
         }
 
@@ -90,7 +92,7 @@ echo "return new Schema([\n";
         }
 
         // Plus aucune propriété spécifique, génère uniquement le nom
-        if (empty($field)) {
+        if (empty($field) || empty($format)) {
             echo '        ', var_export($name, true), ",\n";
         }
 
@@ -112,7 +114,9 @@ echo '</textarea>';
 function varExport($value, $key = '') {
 //	if (false === strpos($value, "'")) {}
     if (is_string($value)) {
-        if (strpos($value, "\n") !== false || strpos($value, "'") !== false) {
+        if ($key === 'explode' && (bool) $value) {
+            $value = 'true';
+        } elseif (strpos($value, "\n") !== false || strpos($value, "'") !== false) {
             // If the string contains a line break or a single quote, use the
             // double quote export mode. Encode backslash and double quotes and
             // transform some common control characters.
