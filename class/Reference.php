@@ -624,7 +624,7 @@ class Reference extends Entity {
             // soit une simple chaine avec le contenu formatté du champ.
             // Si c'est une chaine, on le gère comme un tableau en utilisant
             // le libellé du champ.
-            ! is_array($content) && $content = [$field->label() => $content];
+            ! is_array($content) && $content = [($field->labelspec() ?: $field->label()) => $content];
 
             // Stocke le champ (ou les champs en cas de vue éclatée)
             foreach ($content as $label => $content) {
