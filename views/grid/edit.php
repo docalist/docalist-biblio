@@ -73,7 +73,7 @@ wp_enqueue_script(
         <?php buttons() ?>
         <ul id="fields" class="metabox-holder meta-box-sortables">
             <?php
-                foreach($grid->fields as $field) makeBox($field);
+                foreach($grid->fields as $field) makeBox($field, true, $gridname);
             ?>
         </ul>
         <?php buttons() ?>
@@ -86,11 +86,11 @@ wp_enqueue_script(
                 'name' => 'group{group-number}',
                 'type' => 'Docalist\Biblio\Type\Group',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
-                'newgroup' => true, // utilisé par Group::editForm()
+                'newgroup' => true, // utilisé par Group::editForm() et MakeBox
                 'state' => '', // = normal
             ]);
 
-            makeBox($field, false)
+            makeBox($field, false, $gridname)
         ?>
     </script>
 </div>
@@ -107,7 +107,7 @@ wp_enqueue_script(
  * @param Field $field
  * @param boolean $closed
  */
-function makeBox(Field $schema, $closed = true) { ?>
+function makeBox(Field $schema, $closed = true, $gridname) { ?>
     <?php
         $type = $schema->collection() ?: $schema->type();
     ?>
@@ -117,7 +117,12 @@ function makeBox(Field $schema, $closed = true) { ?>
         <div class="inside">
             <?php
             $field = new $type(null, $schema);
-            $form = $field->settingsForm();
+            $form = ($gridname === 'edit') ? $field->settingsForm() : $field->formatSettings();
+
+            // pour les nouveaux groupes il faut absolument avoir le type, sinon le groupe Field est créé comme un string (type par défaut)
+            if ($schema->newgroup) {
+                $form->hidden('type');
+            }
 
             // On veut que les champs aient un nom de la forme champ[label]
             // Pour cela, on insère le formulaire dans un fragment parent qui contient
