@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
+use Docalist\Schema\Schema;
 
 /**
  * Article.
@@ -39,61 +40,273 @@ use Docalist\Biblio\Reference;
  * - pagination de type "page de début - page de fin"
  */
 class Article extends Reference {
+
+    static protected function fields() {
+        // Récupère les champs du schéma
+        $fields = static::loadSchema()['fields'];
+
+        // Indexe par nom
+        foreach($fields as $name => & $field) {
+            $field['name'] = $name;
+        }
+
+        // Ok
+        return $fields;
+    }
+
     static protected function loadSchema() {
+        // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
-        // @formatter:off
+        // Supprime les champs qu'on n'utilise pas
+        unset($fields['editor']);
+        unset($fields['collection']);
+        unset($fields['event']);
+
+        // Personnalise les tables, les libellés, les description, etc.
+        // todo
+
+        // Contruit notre schéma
         return [
             'name' => 'article',
             'label' => __('Article de périodique', 'docalist-biblio'),
             'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
+            'fields' => $fields,
+        ];
+    }
+
+    static public function editGrid() {
+        return new Schema([
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            'description' => __("Grille de saisie d'un article.", 'docalist-biblio'),
+            'name' => 'edit',
             'fields' => [
-                // Type, Genre, Media
-                'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
-                $fields['genre'],
-                $fields['media'],
 
-                // Title, OtherTitle, Translation
-                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                $fields['title'],
-                $fields['othertitle'],
-                $fields['translation'],
+                // Nature du document
+                'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Nature du document', 'docalist-biblio') ],
+                'genre',
+                'media',
 
-                // Author, Organisation
-                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
-                $fields['author'],
-                $fields['organisation'],
+                // Titres
+                'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Titres', 'docalist-biblio') ],
+                'title',
+                'othertitle',
+                'translation',
 
-                // Journal, Number, Date, Edition
-                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Journal / Périodique'],
-                $fields['journal'],
-                $fields['number'],
-                $fields['date'],
-                $fields['edition'],
+                // Auteurs
+                'group3' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Auteurs', 'docalist-biblio') ],
+                'author',
+                'organisation',
 
-                // Date / Language / Pagination / Format
-                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                $fields['language'],
-                $fields['extent'],
-                $fields['format'],
+                // Journal / Périodique
+                'group4' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Journal / Périodique', 'docalist-biblio') ],
+                'journal',
+                'number',
+                'date',
+                'edition',
 
-                // Topic / Abstract / Note
-                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                $fields['topic'],
-                $fields['content'],
+                // Informations bibliographiques
+                'group5' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Informations bibliographiques', 'docalist-biblio') ],
+                'language',
+                'extent',
+                'format',
+
+                // Indexation et résumé
+                'group6' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Indexation et résumé', 'docalist-biblio') ],
+                'topic',
+                'content',
 
                 // Liens et relations
-                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                $fields['link'],
-                $fields['relation'],
+                'group7' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Liens et relations', 'docalist-biblio') ],
+                'link',
+                'relation',
 
-                // Ref / Owner / Creation / Lastupdate
-                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                $fields['type'],
-                $fields['ref'],
-                $fields['owner'],
+                // Informations de gestion
+                'group8' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Informations de gestion', 'docalist-biblio') ],
+                'type',
+                'ref',
+                'owner',
             ]
-        ];
-        // @formatter:on
+        ]);
+    }
+
+    static public function contentGrid() {
+        return new Schema([
+            'label' => __('Affichage long', 'docalist-biblio'),
+            'description' => __("Affichage long d'un article.", 'docalist-biblio'),
+            'name' => 'content',
+            'fields' => [
+
+                // Champs affichés
+                'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'format' => '<tr><th style="width: 200px; text-align: right; vertical-align: top">%label : </th><td>%content</td></tr>', 'before' => '<table>', 'after' => '</table>' ],
+                'genre' => [
+                    'sep' => ', ',
+                ],
+                'media' => [
+                    'sep' => ', ',
+                ],
+                'othertitle' => [
+                    'explode' => true,
+                    'format' => 'v',
+                    'sep' => ', ',
+                ],
+                'translation' => [
+                    'explode' => true,
+                    'format' => 't',
+                    'sep' => ', ',
+                ],
+                'author' => [
+                    'explode' => true,
+                    'format' => 'f n (r)',
+                    'sep' => ', ',
+                ],
+                'organisation' => [
+                    'explode' => true,
+                    'format' => 'n (a), t, c, r',
+                    'sep' => ', ',
+                ],
+                'journal',
+                'number' => [
+                    'explode' => true,
+                    'format' => 'v',
+                    'sep' => ', ',
+                ],
+                'date' => [
+                    'explode' => true,
+                    'format' => 'date',
+                    'sep' => ', ',
+                ],
+                'extent' => [
+                    'format' => 'v',
+                    'sep' => ', ',
+                    'explode' => true,
+                ],
+                'language' => [
+                    'sep' => ', ',
+                ],
+                'format' => [
+                    'sep' => ', ',
+                ],
+                'edition' => [
+                    'sep' => ', ',
+                ],
+                'content' => [
+                    'explode' => true,
+                    'format' => 'v',
+                    'sep' => ', ',
+                ],
+                'topic' => [
+                    'explode' => true,
+                    'format' => 'v',
+                    'sep' => ', ',
+                ],
+                'link' => [
+                    'explode' => true,
+                    'format' => 'link',
+                    'sep' => ', ',
+                ],
+                'relation' => [
+                    'explode' => true,
+                    'format' => 'ref',
+                    'sep' => ', ',
+                ],
+                'type',
+                'owner' => [
+                    'sep' => ', ',
+                ],
+                'ref',
+
+                // Champs non affichés
+                'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+                'title',
+            ]
+        ]);
+    }
+
+    static public function excerptGrid() {
+        return new Schema([
+            'label' => __('Affichage court', 'docalist-biblio'),
+            'description' => __("Affichage court d'un article.", 'docalist-biblio'),
+            'name' => 'excerpt',
+            'fields' => [
+
+                // Premier auteur
+                'group3' => [ 'label' => __('Premier auteur', 'docalist-biblio'), 'setup' => '', 'format' => '%content', 'type' => 'Docalist\Biblio\Type\Group' ],
+                'author' => [
+                    'format' => 'f n',
+                    'sep' => ', ',
+                    'limit' => '1',
+                    'ellipsis' => '<i> et al.</i>',
+                    'prefix' => '<b>',
+                    'suffix' => '</b>',
+                    'before' => 'Article de ',
+                ],
+
+                // Genre et support entre parenthèses
+                'group4' => [ 'label' => __('Genre et support entre parenthèses', 'docalist-biblio'), 'before' => ' <span style="text-transform: lowercase">(', 'format' => '%content', 'after' => ')</span>', 'sep' => ', ', 'type' => 'Docalist\Biblio\Type\Group' ],
+                'genre' => [
+                    'sep' => ', ',
+                ],
+                'media' => [
+                    'sep' => ', ',
+                ],
+
+                // Groupe "in"
+                'group6' => [ 'label' => __('Groupe "in"', 'docalist-biblio'), 'before' => "<p>\r\n<i>in : </i>", 'format' => '%content', 'after' => '.</p>', 'sep' => ', ', 'type' => 'Docalist\Biblio\Type\Group' ],
+                'journal' => [
+                    'before' => '<b>',
+                    'after' => '</b>',
+                ],
+                'number' => [
+                    'format' => 'format',
+                    'sep' => ', ',
+                ],
+                'edition' => [
+                    'sep' => ', ',
+                ],
+                'date' => [
+                    'format' => 'date',
+                    'sep' => ', ',
+                ],
+                'extent' => [
+                    'format' => 'format',
+                    'sep' => ', ',
+                ],
+
+                // Résumé, mots-clés et premier lien
+                'group7' => [ 'label' => __('Résumé, mots-clés et premier lien', 'docalist-biblio'), 'format' => '<p>%content</p>', 'type' => 'Docalist\Biblio\Type\Group' ],
+                'content' => [
+                    'format' => 'v',
+                    'sep' => ', ',
+                    'limit' => '1',
+                    'prefix' => '<blockquote>',
+                    'suffix' => '</blockquote>',
+                ],
+                'topic' => [
+                    'format' => 'v',
+                    'sep' => ', ',
+                    'before' => '<i>Mots-clés : </i>',
+                ],
+                'link' => [
+                    'format' => 'link',
+                    'sep' => ', ',
+                    'explode' => true,
+                    'limit' => '1',
+                ],
+
+                // Champs non affichés
+                'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+                'title',
+                'translation',
+                'othertitle',
+                'organisation',
+                'type',
+                'ref',
+                'owner',
+                'format',
+                'language',
+                'relation',
+            ]
+        ]);
     }
 }
