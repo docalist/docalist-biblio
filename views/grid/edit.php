@@ -45,15 +45,40 @@ wp_enqueue_script(
 
 ?>
 <style type="text/css">
+<?php if ($gridname !== 'base') :?>
 #fields li {
     margin-left: 3em;
-    margin-bottom: 6px;
 }
-#fields .group {
+<?php endif; ?>
+#fields li {
+    margin-bottom: 10px;
+}
+#fields li.closed {
+    margin-bottom: 0px;
+}
+#fields li h3:before {
+    font-family: "dashicons";
+    content: "\f464";
+    vertical-align: text-bottom;
+    -webkit-font-smoothing: antialiased;
+    padding-right: .5em;
+    color: #777;
+}
+#fields li.group {
+    margin-top: 6px;
     margin-left: 0;
+    background-color: #f9f9f9;
 }
-
-#fields .group h3 span {
+#fields li.group:first-child {
+    margin-top: 0px;
+}
+#fields li.group.closed {
+}
+#fields li.group h3:before {
+    /* content: "\f164"; */
+    content: "\f203";
+}
+#fields li.group h3 span {
     font-weight: bold;
 }
 </style>
@@ -70,13 +95,13 @@ wp_enqueue_script(
     </p>
 
     <form action ="" method="post">
-        <?php buttons() ?>
+        <?php buttons($gridname) ?>
         <ul id="fields" class="metabox-holder meta-box-sortables">
             <?php
                 foreach($grid->fields as $field) makeBox($field, true, $gridname);
             ?>
         </ul>
-        <?php buttons() ?>
+        <?php buttons($gridname) ?>
     </form>
 
     <!-- Template utilisé pour créer de nouveaux groupes. -->
@@ -117,7 +142,17 @@ function makeBox(Field $schema, $closed = true, $gridname) { ?>
         <div class="inside">
             <?php
             $field = new $type(null, $schema);
-            $form = ($gridname === 'edit') ? $field->settingsForm() : $field->formatSettings();
+            switch($gridname) {
+                case 'base':
+                    $form = $field->baseSettings(); // paramètres de base
+                    break;
+                case 'edit':
+                    $form = $field->editSettings(); // paramètres de saisie
+                    break;
+                default:
+                    $form = $field->displaySettings(); // paramètres d'affichage
+                    break;
+            }
 
             // pour les nouveaux groupes il faut absolument avoir le type, sinon le groupe Field est créé comme un string (type par défaut)
             if ($schema->newgroup) {
@@ -143,11 +178,13 @@ function makeBox(Field $schema, $closed = true, $gridname) { ?>
  * Sous forme de fonction pour permettre de répéter les boutons en haut et en
  * bas de page.
  */
-function buttons() { ?>
+function buttons($gridname) { ?>
     <p class="buttons" style="text-align: right">
-        <button type="button" class="button add-group">
-            <?= __('Ajouter un groupe', 'docalist-biblio') ?>
-        </button>
+        <?php if ($gridname !== 'base') :?>
+            <button type="button" class="button add-group">
+                <?= __('Ajouter un groupe', 'docalist-biblio') ?>
+            </button>
+        <?php endif;?>
         <button type="submit" class="button-primary ">
             <?= __('Enregistrer les modifications', 'docalist-biblio') ?>
         </button>
