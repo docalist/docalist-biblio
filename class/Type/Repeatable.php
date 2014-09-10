@@ -73,7 +73,7 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
 
         $form->input('sep')
             ->attribute('id', $name . '-sep')
-            ->attribute('class', 'label small-text')
+            ->attribute('class', 'sep small-text')
             ->label(__('Entre les articles', 'docalist-biblio'))
             ->description(__('Séparateur ou code html à insérer entre les articles.', 'docalist-biblio'));
 
