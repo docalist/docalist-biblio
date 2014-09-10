@@ -89,11 +89,14 @@ class Group extends \Docalist\Type\Any implements BiblioField {
              ->attribute('class', 'label regular-text')
              ->label(__('Nom du groupe', 'docalist-biblio'))
              ->description(__("Ce texte n'est pas affiché dans les notices, il sert uniquement à distinguer les différents groupes.", 'docalist-biblio'));
+/*
         $form->textarea('setup')
              ->attribute('class', 'setup code large-text')
              ->attribute('rows', 3)
              ->label(__('Initialisation', 'docalist-biblio'))
              ->description(__("Code html à insérer la première fois qu'une notice de ce type est affichée (émis une seule fois dans la page)", 'docalist-biblio'));
+*/
+
         $form->textarea('before')
              ->attribute('class', 'before code large-text')
              ->attribute('rows', 3)
@@ -103,7 +106,7 @@ class Group extends \Docalist\Type\Any implements BiblioField {
              ->attribute('class', 'format code large-text')
              ->attribute('rows', 4)
              ->label(__('Format des champs', 'docalist-biblio'))
-             ->description(__("Code html utilisé comme modèle pour afficher chacun des champs de ce groupe. Utilisez <code>%label</code> pour désigner le libellé et <code>%content</code> pour désigner le contenu.<br />Exemple : <code>&lt;p&gt; &lt;b&gt;%label : &lt;/b&gt;%scontent&lt;/p&gt;</code>. Laissez vide pour créer un groupe qui n'affichera aucun champ.", 'docalist-biblio'));
+             ->description(__("Code html utilisé comme modèle pour afficher chacun des champs de ce groupe. Utilisez <code>%label</code> pour désigner le libellé et <code>%content</code> pour désigner le contenu.<br />Exemple : <code>&lt;p&gt; &lt;b&gt;%label : &lt;/b&gt;%content&lt;/p&gt;</code>. Laissez vide pour créer un groupe qui n'affichera aucun champ.", 'docalist-biblio'));
         $form->textarea('after')
              ->attribute('class', 'after code large-text')
              ->attribute('rows', 3)
