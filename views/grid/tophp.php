@@ -52,7 +52,7 @@ unset($properties['fields']);
 $base = ($grid->name === 'base') ? Reference::defaultSchema()->toArray() : $type->grids['base']->toArray();
 
 echo '<textarea class="large-text code" rows="35" cols="500" readonly>';
-echo "return [\n";
+echo "return new Schema([\n";
 
     foreach($properties as $key => $value) {
         $value = varExport($value, $key);
@@ -106,7 +106,7 @@ echo "return [\n";
     }
     echo "    ]\n";
 
-echo "];";
+echo "]);";
 echo '</textarea>';
 
 function varExport($value, $key = '') {
