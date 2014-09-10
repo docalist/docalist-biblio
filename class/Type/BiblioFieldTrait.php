@@ -214,7 +214,7 @@ trait BiblioFieldTrait {
 
     /*
      * Pour implémenter formatSettings(), certains types (exemple : Repeatable)
-     * ont besoin d'appeller la fonction fu même nom fournie par le trait.
+     * ont besoin d'appeller la fonction du même nom fournie par le trait.
      * Comme on ne peut pas faire parent:xxx() pour un trait, j'incorporais le
      * trait dans Repeatable en utilisant
      * class Repeatable
@@ -245,14 +245,16 @@ trait BiblioFieldTrait {
 
     public function traitFormatSettings() {
         $name = $this->schema->name();
+        $label = $this->schema->label();
         $form = new Fragment($name);
         $form->hidden('name')
              ->attribute('class', 'name');
-        $form->input('label')
+        $form->input('labelspec')
              ->attribute('id', $name . '-label')
              ->attribute('class', 'label regular-text')
+             ->attribute('placeholder', $label)
              ->label(__('Libellé', 'docalist-biblio'))
-             ->description(__('Libellé affiché avant le champ.', 'docalist-biblio'));
+             ->description(__("Libellé affiché avant le champ. Par défaut, c'est le même que dans la grille de saisie mais vous pouvez saisir un nouveau texte si vous voulez un libellé différent.", 'docalist-biblio'));
         $form->input('before')
              ->attribute('id', $name . '-before')
              ->attribute('class', 'before regular-text')
