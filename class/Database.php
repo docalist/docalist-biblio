@@ -561,7 +561,7 @@ class Database extends PostTypeRepository {
             $offset += count($posts);
 
             // La ligne (commentée) suivante est pratique pour les tests
-          if ($offset >= 1000) break;
+            // if ($offset >= 1000) break;
         }
     }
 
