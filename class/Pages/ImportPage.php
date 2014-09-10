@@ -201,7 +201,7 @@ class ImportPage extends AdminPage {
             $this->view('docalist-biblio:delete-all/delete-all')->sendContent();
 
             // Lance la suppression
-            $count = $this->database->deleteAll();
+            $this->database->deleteAll();
 
         });
 
