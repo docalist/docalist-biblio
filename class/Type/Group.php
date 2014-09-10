@@ -76,4 +76,46 @@ class Group extends \Docalist\Type\Any implements BiblioField {
 
         return $form;
     }
+
+
+    public function formatSettings() {
+        $name = $this->schema->name();
+        $form = new Fragment($name);
+        $form->hidden('name')
+             ->attribute('class', 'name');
+        $form->input('label')
+             ->attribute('class', 'label regular-text')
+             ->label(__('Nom du groupe', 'docalist-biblio'))
+             ->description(__("Ce texte n'est pas affiché dans les notices, il sert uniquement à distinguer les différents groupes.", 'docalist-biblio'));
+        $form->textarea('setup')
+             ->attribute('class', 'setup code large-text')
+             ->attribute('rows', 3)
+             ->label(__('Initialisation', 'docalist-biblio'))
+             ->description(__("Code html à insérer la première fois qu'une notice de ce type est affichée (émis une seule fois dans la page)", 'docalist-biblio'));
+        $form->textarea('before')
+             ->attribute('class', 'before code large-text')
+             ->attribute('rows', 3)
+             ->label(__('Avant la liste des champs', 'docalist-biblio'))
+             ->description(__('Code html à insérer avant la liste des champs de ce groupe.', 'docalist-biblio'));
+        $form->textarea('format')
+             ->attribute('class', 'format code large-text')
+             ->attribute('rows', 4)
+             ->label(__('Format des champs', 'docalist-biblio'))
+             ->description(__("Code html utilisé comme modèle pour afficher chacun des champs de ce groupe. Utilisez <code>%label</code> pour désigner le libellé et <code>%content</code> pour désigner le contenu.<br />Exemple : <code>&lt;p&gt; &lt;b&gt;%label : &lt;/b&gt;%scontent&lt;/p&gt;</code>. Laissez vide pour créer un groupe qui n'affichera aucun champ.", 'docalist-biblio'));
+        $form->textarea('after')
+             ->attribute('class', 'after code large-text')
+             ->attribute('rows', 3)
+             ->label(__('Après la liste des champs', 'docalist-biblio'))
+             ->description(__('Code html à insérer après la liste des champs de ce groupe.', 'docalist-biblio'));
+        $form->textarea('sep')
+             ->attribute('class', 'sep code large-text')
+             ->attribute('rows', 3)
+             ->label(__('Entre les champs', 'docalist-biblio'))
+             ->description(__('Code html à insérer entre les champs de ce groupe.', 'docalist-biblio'));
+
+        $form->button(__('Supprimer ce groupe', 'docalist-biblio'))
+             ->attribute('class', 'delete-group button right');
+
+        return $form;
+    }
 }
