@@ -574,24 +574,74 @@ class Reference extends Entity {
     }
 
     public function format() {
-        $result = '';
+        // Variables utilisées
+        $group = null;  // Le groupe en cours
+        $format = null; // Le format du groupe en cours
+        $fields = [];   // Les champs générés par le groupe en cours
+        $result = '';   // Le résultat final
+
+        // Si la grille ne commence pas par un groupe, créé un groupe par défaut
+        if (current($this->schema()->fields())->type !== 'Docalist\Biblio\Type\Group') {
+            $group = new Field([
+                'type' => 'Docalist\Biblio\Type\Group',
+                'format' => '<p><b>%label : </b>%content</p>',
+            ]);
+            $format = $group->format;
+        }
+
+        // Construit la notice
         foreach($this->schema()->fields() as $name => $field) { /* @var $field BiblioField */
+            // Si c'est un groupe, cela devient le nouveau groupe courant
+            if ($field->type === 'Docalist\Biblio\Type\Group') {
+                // Génère le groupe précédent s'il n'est pas vide
+                if ($fields) {
+                    $result .= $group->before;
+                    $result .= implode($group->sep, $fields);
+                    $result .= $group->after;
+
+                    $fields = [];
+                }
+
+                // Nouveau groupe en cours
+                $group = $field;
+                $format = $group->format;
+                continue;
+            }
+
+            // C'est un champ
+
+            // Un groupe sans format n'affiche rien, inutile d'aller plus loin
+            if (empty($format)) continue;
+
+            // Si le champ est vide, passe au suivant
             if (! isset($this->value[$name])) continue;
 
+            // Formatte le contenu du champ
             $content = $this->value[$name]->format();
 
+            // Champ renseigné mais format() n'a rien retourné, passe au suivant
             if (empty($content)) continue;
 
-            if (! is_array($content)) {
-                $content = [$field->label() => $content];
-            }
+            // format() nous a retourné soit un tableau de champs (vue éclatée)
+            // soit une simple chaine avec le contenu formatté du champ.
+            // Si c'est une chaine, on le gère comme un tableau en utilisant
+            // le libellé du champ.
+            ! is_array($content) && $content = [$field->label() => $content];
 
+            // Stocke le champ (ou les champs en cas de vue éclatée)
             foreach ($content as $label => $content) {
                 $content = $field->before . $content . $field->after;
-                $result .= "<b>$label</b> : " . $content . '<br /><br />';
+                $fields[] = strtr($format, ['%label' => $label, '%content' => $content]);
             }
-
         }
+
+        // Si on a un groupe non vide en cours, envoie group.after
+        if ($fields) {
+            $result .= $group->before;
+            $result .= implode($group->sep, $fields);
+            $result .= $group->after;
+        }
+
         return $result;
     }
 }
