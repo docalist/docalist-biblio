@@ -370,7 +370,7 @@ class EditReference {
             throw new \Exception("Pas de type dans data");
         }
         $type = $data['type'];
-        $ref = Reference::create($type);
+        $ref = Reference::create($type, $data);
 
 //         if (! isset($postarr['ID'])) {
 //             throw new \Exception("pas d'ID");
