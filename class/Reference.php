@@ -123,7 +123,6 @@ class Reference extends Entity {
      */
     static public function editGrid() {
         $grid = static::defaultSchema();
-        $grid->name = 'edit';
         $grid->description = sprintf(
             __("Grille utilisée pour la saisie et la modification d'une notice de type %s.", 'docalist-biblio'),
             lcfirst($grid->label())
@@ -140,7 +139,6 @@ class Reference extends Entity {
      */
     static public function contentGrid() {
         $grid = static::defaultSchema();
-        $grid->name = 'content';
         $grid->description = sprintf(
             __("Grille utilisée pour l'affichage détaillé d'une notice complète de type %s.", 'docalist-biblio'),
             lcfirst($grid->label())

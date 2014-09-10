@@ -325,14 +325,24 @@ class AdminDatabases extends AdminPage {
 
             // Ajoute le type
             $defaultSchema = $types[$name]::defaultSchema();
+
+            $edit = $types[$name]::editGrid();
+            $edit->name = 'edit';
+
+            $content = $types[$name]::contentGrid();
+            $content->name = 'content';
+
+            $excerpt = $types[$name]::excerptGrid();
+            $excerpt->name = 'excerpt';
+
             $database->types[] = new TypeSettings([
                 'name' => $name,
                 'label' => $defaultSchema->label(),
                 'description' => $defaultSchema->description(),
                 'grids' => [
-                    'edit' => $types[$name]::editGrid(),
-                    'content' => $types[$name]::contentGrid(),
-                    'excerpt' => $types[$name]::excerptGrid()
+                    'edit' => $edit,
+                    'content' => $content,
+                    'excerpt' => $excerpt,
                 ]
             ]);
         }
