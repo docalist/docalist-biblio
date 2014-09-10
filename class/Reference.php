@@ -117,6 +117,22 @@ class Reference extends Entity {
     }
 
     /**
+     * Retourne la grille 'base'.
+     *
+     * @return Schema
+     */
+    static public function baseGrid() {
+        $grid = static::defaultSchema();
+        $grid->description = sprintf(
+            __("Liste des champs et valeurs par défaut pour le type %s.", 'docalist-biblio'),
+            lcfirst($grid->label())
+        );
+        $grid->label = __('Grille de base', 'docalist-biblio');
+
+        return $grid;
+    }
+
+    /**
      * Retourne la grille 'edit'.
      *
      * @return Schema
@@ -175,17 +191,17 @@ class Reference extends Entity {
                 'ref' => [         // Alias de post_name
                     'type' => 'Docalist\Biblio\Field\Ref',
                     'label' => __('Numéro de référence', 'docalist-biblio'),
-                    'description' => __('Numéro unique identifiant la notice', 'docalist-biblio'),
+                    'description' => __('Numéro unique identifiant la notice.', 'docalist-biblio'),
                 ],
                 'parent' => [      // Alias de post_parent
                     'type' => 'Docalist\Biblio\Type\Integer',
                     'label' => __('Notice parent', 'docalist-biblio'),
-                    'description' => __('Numéro de la référence parent', 'docalist-biblio'),
+                    'description' => __('Numéro de référence de la notice parent.', 'docalist-biblio'),
                 ],
                 'title' => [       // Alias de post_title
                     'type' => 'Docalist\Biblio\Field\Title',
                     'label' => __('Titre', 'docalist-biblio'),
-                    'description' => __('Titre original du document catalogué', 'docalist-biblio'),
+                    'description' => __('Titre original du document catalogué.', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
                     'type' => 'Docalist\Biblio\Field\Status',
@@ -216,30 +232,30 @@ class Reference extends Entity {
                 'type' => [
                     'type' => 'Docalist\Biblio\Field\Type',
                     'label' => __('Type de notice', 'docalist-biblio'),
-                    'description' => __('Code unique décrivant la forme du document catalogué', 'docalist-biblio'),
+                    'description' => __('Code indiquant le type de notice.', 'docalist-biblio'),
                 ],
                 'genre' => [
                     'type' => 'Docalist\Biblio\Field\Genres',
                     'label' => __('Genres', 'docalist-biblio'),
-                    'description' => __('Nature du document catalogué', 'docalist-biblio'),
+                    'description' => __('Nature du document catalogué.', 'docalist-biblio'),
                     'table' => 'thesaurus:genres',
                 ],
                 'media' => [
                     'type' => 'Docalist\Biblio\Field\Medias',
                     'label' => __('Supports', 'docalist-biblio'),
-                    'description' => __('Support physique du document (papier, dvd, etc.)', 'docalist-biblio'),
+                    'description' => __('Support physique du document : document imprimé, document numérique, dvd...', 'docalist-biblio'),
                     'table' => 'thesaurus:medias',
                 ],
                 'author' => [
                     'type' => 'Docalist\Biblio\Field\Authors',
                     'label' => __('Auteurs', 'docalist-biblio'),
-    //                 'description' => __('Liste des personnes physiques auteurs du document', 'docalist-biblio'),
+                    'description' => __("Liste des personnes qui ont contribué à l'élaboration du document : auteur, coordonnateur, réalisateur...", 'docalist-biblio'),
                     'table' => 'thesaurus:marc21-relators_fr',
                 ],
                 'organisation' => [
                     'type' => 'Docalist\Biblio\Field\Organisations',
                     'label' => __('Organismes', 'docalist-biblio'),
-    //                 'description' => __('Liste des auteurs moraux : organismes, collectivités auteurs, commanditaires, etc.', 'docalist-biblio'),
+                    'description' => __("Liste des organismes qui ont contribué à l'élaboration du document : organisme considéré comme auteur, organisme commanditaire, financeur...", 'docalist-biblio'),
                     'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
                     'sep' => ' ; ', // sép par défaut à l'affichage, espace insécable avant ';'
@@ -247,94 +263,94 @@ class Reference extends Entity {
                 'othertitle' => [
                     'type' => 'Docalist\Biblio\Field\OtherTitles',
                     'label' => __('Autres titres', 'docalist-biblio'),
-    //                 'description' => __("Titre de l'ensemble, du dossier, du supplément, etc.", 'docalist-biblio'),
+                    'description' => __("Autres titres du document : sigle, variante, titre du dossier, du numéro, du diplôme...)", 'docalist-biblio'),
                     'table' => 'table:titles',
                 ],
                 'translation' => [
                     'type' => 'Docalist\Biblio\Field\Translations',
                     'label' => __('Traductions', 'docalist-biblio'),
-    //                 'description' => __('Traduction en une ou plusieurs langue du titre original qui figure dans Titre.', 'docalist-biblio'),
+                    'description' => __('Traduction en une ou plusieurs langues du titre original du document.', 'docalist-biblio'),
                     'table' => 'table:ISO-639-2_alpha3_EU_fr',
                 ],
                 'date' => [
                     'type' => 'Docalist\Biblio\Field\Dates',
                     'label' => __('Date', 'docalist-biblio'),
-                    'description' => __("Dates du document au format <code>AAAAMMJJ</code>, éventuellement complété (2009→2009<b>0101</b>). La première date saisie sera utilisée pour le tri.", 'docalist-biblio'),
+                    'description' => __("Dates du document au format <code>AAAAMMJJ</code> : date de publication, date d'enregistrement...", 'docalist-biblio'),
                     'table' => 'table:dates',
                 ],
                 'journal'=> [
                     'type' => 'Docalist\Biblio\Field\Journal',
                     'label' => __('Périodique', 'docalist-biblio'),
-                    'description' => __('Nom du journal (revue, magazine, périodique, etc.) dans lequel a été publié le document.', 'docalist-biblio'),
+                    'description' => __('Nom du journal (revue, magazine, périodique...) dans lequel a été publié le document.', 'docalist-biblio'),
                 ],
                 'number' => [
                     'type' => 'Docalist\Biblio\Field\Numbers',
                     'label' => __('Numéros', 'docalist-biblio'),
-                    'description' => __('Numéros du document (ISSN, ISBN, volume, fascicule, ...)', 'docalist-biblio'),
+                    'description' => __('Numéros du document : DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...', 'docalist-biblio'),
                     'table' => 'table:numbers',
                 ],
                 'language' => [
                     'type' => 'Docalist\Biblio\Field\Languages',
                     'label' => __('Langues', 'docalist-biblio'),
-                    'description' => __("Langues des textes qui figurent dans le document.", 'docalist-biblio'),
+                    'description' => __("Langues des textes qui figurent dans le document catalogué.", 'docalist-biblio'),
                     'table' => 'table:ISO-639-2_alpha3_EU_fr',
                 ],
                 'extent' => [
                     'type' => 'Docalist\Biblio\Field\Extents',
                     'label' => __('Etendue', 'docalist-biblio'),
-                    'description' => __("Pagination, nombre de pages, durée, etc.", 'docalist-biblio'),
+                    'description' => __("Pagination, nombre de pages, durée, dimensions...", 'docalist-biblio'),
                     'table' => 'table:extent',
                 ],
                 'format' => [
                     'type' => 'Docalist\Biblio\Field\Formats',
                     'label' => __('Format', 'docalist-biblio'),
-                    'description' => __('Caractéristiques matérielles du document : étiquettes de collation (tabl, ann, fig...), références bibliographiques, etc.', 'docalist-biblio'),
+                    'description' => __("Etiquettes de collation utilisées pour décrire ce que l'on trouve dans le document catalogué : tableaux, annexes, références bibliographiques...", 'docalist-biblio'),
                     'table' => 'thesaurus:format',
                 ],
                 'editor' => [
                     'type' => 'Docalist\Biblio\Field\Editors',
                     'label' => __("Editeurs", 'docalist-biblio'),
-                    'description' => __("Société ou organisme délégué par l'auteur pour assurer la diffusion du document.", 'docalist-biblio'),
+                    'description' => __("Société ou organisme délégué par l'auteur pour assurer la diffusion et la distribution du document.", 'docalist-biblio'),
                     'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
                 ],
                 'edition' => [
                     'type' => 'Docalist\Biblio\Field\Editions',
                     'label' => __("Mentions d'édition", 'docalist-biblio'),
-                    'description' => __("Nouvelle édition, périodicité, etc.", 'docalist-biblio'),
+                    'description' => __("Mentions utilisées pour décrire le type de l'édition : nouvelle édition, édition revue et corrigée, périodicité...", 'docalist-biblio'),
                 ],
                 'collection' => [
                     'type' => 'Docalist\Biblio\Field\Collections',
                     'label' => __('Collection', 'docalist-biblio'),
-                    'description' => __('Collection et numéro dans la collection, sous-collection et numéro dans la sous-collection, etc.', 'docalist-biblio'),
+                    'description' => __("Collection, sous-collection et numéro au sein de la collection de l'éditeur.", 'docalist-biblio'),
                 ],
                 'event' => [
                     'type' => 'Docalist\Biblio\Field\Event',
                     'label' => __("Evènement", 'docalist-biblio'),
-                    'description' => __('Evènement (congrès, colloque, manifestation, soutenance de thèse, etc.) qui a donné lieu au document', 'docalist-biblio'),
+                    'description' => __("Description de l'évènement à l'origine du document : congrès, colloque, manifestation, soutenance de thèse...", 'docalist-biblio'),
                 ],
                 'topic' => [
                     'type' => 'Docalist\Biblio\Field\Topics',
                     'label' => __('Indexation', 'docalist-biblio'),
-    //                 'description' => __('Liste de listes de mots-clés.', 'docalist-biblio'),
+                    'description' => __("Mots-clés décrivant le contenu du document. Les mots-clés utilisés peuvent provenir d'un ou plusieurs vocabulaires différents.", 'docalist-biblio'),
                     'table' => 'table:topics',
                 ],
                 'content' => [
                     'type' => 'Docalist\Biblio\Field\Contents',
                     'label' => __('Contenu du document', 'docalist-biblio'),
-    //                 'description' => __('Notes, remarques et informations supplémentaires sur le document.', 'docalist-biblio'),
+                    'description' => __('Description du contenu du document : résumé, présentation, critique, remarques...', 'docalist-biblio'),
                     'table' => 'table:content',
                 ],
                 'link' => [
                     'type' => 'Docalist\Biblio\Field\Links',
                     'label' => __('Liens internet', 'docalist-biblio'),
-    //                 'description' => __("Liste de liens relatifs au document.", 'docalist-biblio'),
+                    'description' => __("Liens associés au document : site de l'auteur, accès au texte intégral, site de l'éditeur...", 'docalist-biblio'),
                     'table' => 'table:links',
                 ],
                 'relation' => [
                     'type' => 'Docalist\Biblio\Field\Relations',
                     'label' => __("Relations avec d'autres notices", 'docalist-biblio'),
-    //                 'description' => __("Relations entre la notice cataloguée et d'autres notices de la même base.", 'docalist-biblio'),
+                    'description' => __("Relations entre ce document et d'autres documents déjà catalogués : voir aussi, nouvelle édition, erratum...", 'docalist-biblio'),
                     'table' => 'table:relations',
                 ],
                 'owner' => [
