@@ -344,7 +344,7 @@ class ImportPage extends AdminPage {
             return $this->view('docalist-biblio:export/choose-refs', [
                 'database' => $this->database,
                 'exporter' => $exporter,
-                'error'    => __("Aucun notice ne correspond aux critères de recherche indiqués.", 'docalist-biblio')
+                'error'    => __("Aucune notice ne correspond aux critères de recherche indiqués.", 'docalist-biblio')
             ]);
         }
 

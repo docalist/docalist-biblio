@@ -126,10 +126,12 @@ class Plugin {
         $type = get_post_type($id);
 
         if (! isset($this->databases[$type])) {
-            throw new Exception("Ce n'est pas une Reference"); // @todo
+            $msg = __("Le post %s n'est pas une référence docalist (postype=%s)");
+            throw new Exception(sprintf($msg, $id, $type));
         }
 
-        return $this->databases[$type]->load($id, $raw ? false : null);
+        $database = $this->databases[$type]; /* @var $database Database */
+        return $raw ? $database->loadRaw($id) : $database->load($id);
     }
 
     /**
