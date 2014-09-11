@@ -34,7 +34,7 @@ class Xml extends AbstractExporter {
         $xml->openURI('php://output');
 
         if ($indent = $this->get('indent')) {
-            $xml->setIndentString(str_repeat(' ', 4));
+            $xml->setIndentString(str_repeat(' ', $indent));
             $xml->setIndent(true);
         }
         $xml->startDocument('1.0', 'utf-8', 'yes');
@@ -43,7 +43,7 @@ class Xml extends AbstractExporter {
             $xml->writeAttribute('count', $references->count());
             $xml->writeAttribute('datetime', date('Y-m-d H:i:s'));
             $xml->writeAttribute('query', $references->searchRequest()->asEquation());
-            foreach($references as $key => $data) {
+            foreach($references as $data) {
                 $xml->startElement('reference');
                     $this->outputArray($xml, $data);
                 $xml->endElement();
