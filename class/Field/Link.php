@@ -96,5 +96,9 @@ class Link extends MultiField {
             $link = self::callFormat('link', $link, $parent);
             return  $type . ' : ' . $link;
         });
+
+        self::registerFormat('url', 'Url uniquement', function(Link $link, Links $parent) {
+            return $link->url();
+        });
     }
 }
