@@ -113,7 +113,10 @@ class Reference extends Entity {
         if (! isset(self::$types[$type])) {
             throw new \Exception("Type de notice inexistant : $type");
         }
-        return new self::$types[$type]($value, $schema, $id);
+        $ref = new self::$types[$type]($value, $schema, $id); /* @var $ref Reference */
+        $ref->type = $type;
+
+        return $ref;
     }
 
     /**
