@@ -408,7 +408,16 @@ class Reference extends Entity {
         else {
             $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
         }
-        $this->slug = $this->ref();
+
+        // Alloue une slug à la notice
+
+        // slug de la forme 'ref'
+        $slug = $this->ref();
+
+        // slug de la forme 'ref-mots-du-titre'
+        // $slug = $this->ref() . '-' . sanitize_title($this->title(), '', 'save');
+
+        $this->slug = $slug;
     }
 
     /**
