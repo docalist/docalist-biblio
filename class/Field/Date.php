@@ -94,5 +94,13 @@ class Date extends MultiField {
         self::registerFormat('date', 'JJ/MM/AAAA', function(Date $date) {
             return self::formatDate($date->__get('value')->value(), '');
         });
+
+        self::registerFormat('month/year', 'MM/AAAA', function(Date $date, Dates $parent) {
+            return substr(self::callFormat('date', $date, $parent), 3);
+        });
+
+        self::registerFormat('year', 'AAAA', function(Date $date, Dates $parent) {
+            return substr(self::callFormat('date', $date, $parent), 6);
+        });
     }
 }
