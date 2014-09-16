@@ -230,6 +230,10 @@ class Reference extends Entity {
                     'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Post Type', 'docalist-biblio'),
                 ],
+                'slug' => [  // Alias de post_name
+                    'type' => 'Docalist\Biblio\Type\String',
+                    'label' => __('Slug de la notice', 'docalist-biblio'),
+                ],
 
 
                 'type' => [
@@ -404,6 +408,7 @@ class Reference extends Entity {
         else {
             $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
         }
+        $this->slug = $this->ref();
     }
 
     /**
