@@ -38,7 +38,7 @@ class Database extends PostTypeRepository {
      // 'comment_status'        => '',
      // 'ping_status'           => '',
         'post_password'         => 'password',
-        'post_name'             => 'ref',
+        'post_name'             => 'slug',
      // 'to_ping'               => '',
      // 'pinged'                => '',
         'post_modified'         => 'lastupdate',
