@@ -27,8 +27,15 @@ class Relations extends Repeatable {
         $field = new Table($this->schema->name());
         $field->TableLookup('type', $this->schema->table())
               ->addClass('relations-type');
-        $field->input('ref')->addClass('relations-ref');
-
+        $field->input('ref')->addClass('relations-ref')->repeatable(true);
+        /*
+         * Remarque : on ne devrait pas fixer en dur repeatable=true pour
+         * le sous-champ ref.
+         * Mais si on ne le fait pas, le champ n'est pas répétable quand on
+         * saisit une valeur par défaut pour relations dans les grilles de
+         * saisie.
+         * Pb de binding ?
+         */
         return $field;
     }
 
