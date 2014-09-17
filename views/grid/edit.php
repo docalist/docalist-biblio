@@ -19,6 +19,10 @@ use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
 use Docalist\Schema\Field;
 use Docalist\Forms\Fragment;
+use Docalist\Forms\Assets;
+use Docalist\Forms\Themes;
+use Docalist\Utils;
+use Docalist\Biblio\Reference;
 
 /**
  * Edite une grille.
@@ -35,6 +39,10 @@ use Docalist\Forms\Fragment;
 /* @var $type TypeSettings */
 /* @var $grid Schema */
 
+
+wp_enqueue_script('docalist-forms');
+wp_enqueue_style('docalist-forms-wordpress');
+
 wp_enqueue_script(
     'docalist-biblio-grid-edit',
     plugins_url('docalist-biblio/views/grid/edit.js'),
@@ -43,44 +51,52 @@ wp_enqueue_script(
     true
 );
 
+$boxes = [];
+$assets = new Assets();
+foreach($grid->fields as $field) {
+    $box = createBox($field, $gridname);
+    $boxes[] = $box;
+    $assets->add($box->assets());
+}
+$assets->add(Themes::assets('wordpress'));
+Utils::enqueueAssets($assets);
 ?>
 <style type="text/css">
-<?php if ($gridname !== 'base') :?>
-#fields li {
-    margin-left: 3em;
-}
-<?php endif; ?>
-#fields li {
-    margin-bottom: 10px;
-}
-#fields li.closed {
-    margin-bottom: 0px;
-}
-#fields li h3:before {
-    font-family: "dashicons";
-    content: "\f464";
-    vertical-align: text-bottom;
-    -webkit-font-smoothing: antialiased;
-    padding-right: .5em;
-    color: #777;
-}
-#fields li.group {
-    margin-top: 6px;
-    margin-left: 0;
-    background-color: #f9f9f9;
-}
-#fields li.group:first-child {
-    margin-top: 0px;
-}
-#fields li.group.closed {
-}
-#fields li.group h3:before {
-    /* content: "\f164"; */
-    content: "\f203";
-}
-#fields li.group h3 span {
-    font-weight: bold;
-}
+    <?php if ($gridname !== 'base') :?>
+        #fields li {
+            margin-left: 3em;
+        }
+    <?php endif; ?>
+    #fields li {
+        margin-bottom: 10px;
+    }
+    #fields li.closed {
+        margin-bottom: 0px;
+    }
+    #fields li h3:before {
+        font-family: "dashicons";
+        content: "\f464";
+        vertical-align: text-bottom;
+        -webkit-font-smoothing: antialiased;
+        padding-right: .5em;
+        color: #777;
+    }
+    #fields li.group {
+        margin-top: 6px;
+        margin-left: 0;
+        background-color: #f9f9f9;
+    }
+    #fields li.group:first-child {
+        margin-top: 0px;
+    }
+    #fields li.group.closed {
+    }
+    #fields li.group h3:before {
+        content: "\f203";
+    }
+    #fields li.group h3 span {
+        font-weight: bold;
+    }
 </style>
 
 <div class="wrap">
@@ -98,7 +114,11 @@ wp_enqueue_script(
         <?php buttons($gridname) ?>
         <ul id="fields" class="metabox-holder meta-box-sortables">
             <?php
-                foreach($grid->fields as $field) makeBox($field, true, $gridname);
+                $i = 0;
+                foreach($grid->fields as $field) {
+                    renderBox($boxes[$i], $field, true);
+                    $i++;
+                }
             ?>
         </ul>
         <?php buttons($gridname) ?>
@@ -115,7 +135,8 @@ wp_enqueue_script(
                 'state' => '', // = normal
             ]);
 
-            makeBox($field, false, $gridname)
+            $box = createBox($field, $gridname);
+            renderBox($box, $field, false);
         ?>
     </script>
 </div>
@@ -132,42 +153,45 @@ wp_enqueue_script(
  * @param Field $field
  * @param boolean $closed
  */
-function makeBox(Field $schema, $closed = true, $gridname) { ?>
-    <?php
-        $type = $schema->collection() ?: $schema->type();
-    ?>
+function createBox(Field $schema, $gridname) {
+    $type = $schema->collection() ?: $schema->type();
+    $field = new $type(null, $schema);
+    switch($gridname) { /* @var $form Fragment */
+        case 'base':
+            $form = $field->baseSettings(); // paramètres de base
+            break;
+        case 'edit':
+            $form = $field->editSettings(); // paramètres de saisie
+            break;
+        default:
+            $form = $field->displaySettings(); // paramètres d'affichage
+            break;
+    }
+
+    // pour les nouveaux groupes il faut absolument avoir le type, sinon le groupe Field est créé comme un string (type par défaut)
+    if ($schema->newgroup) {
+        $form->hidden('type');
+    }
+
+    // On veut que les champs aient un nom de la forme champ[label]
+    // Pour cela, on insère le formulaire dans un fragment parent qui contient
+    // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
+    // peut pas récupérer les libellés/desc par défaut).
+    $parent = new Fragment($form->name());
+    $form->name('');
+    $parent->add($form);
+    $form->bind($schema->toArray());
+
+    return $form;
+}
+
+function renderBox(Fragment $form, Field $schema, $closed = true) { ?>
+    <?php $type = $schema->collection() ?: $schema->type() ?>
     <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Type\Group' ? 'group' : $schema->name() ?>">
         <div class="handlediv"></div>
         <h3><span><?= $schema->label() ?: $schema->name() ?></span></h3>
         <div class="inside">
-            <?php
-            $field = new $type(null, $schema);
-            switch($gridname) {
-                case 'base':
-                    $form = $field->baseSettings(); // paramètres de base
-                    break;
-                case 'edit':
-                    $form = $field->editSettings(); // paramètres de saisie
-                    break;
-                default:
-                    $form = $field->displaySettings(); // paramètres d'affichage
-                    break;
-            }
-
-            // pour les nouveaux groupes il faut absolument avoir le type, sinon le groupe Field est créé comme un string (type par défaut)
-            if ($schema->newgroup) {
-                $form->hidden('type');
-            }
-
-            // On veut que les champs aient un nom de la forme champ[label]
-            // Pour cela, on insère le formulaire dans un fragment parent qui contient
-            // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
-            // peut pas récupérer les libellés/desc par défaut).
-            $parent = new Fragment($form->name());
-            $form->name('');
-            $parent->add($form);
-            $form->bind($schema->toArray())->render('wordpress', array('indent' => true));
-            ?>
+            <?php $form->render('wordpress') ?>
         </div>
     </li><?php
 }
