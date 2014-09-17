@@ -288,12 +288,7 @@ class EditReference {
         // Insère tous les assets dans la page
         Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
 
-        wp_enqueue_style(
-            'docalist-biblio-edit-css',
-            plugins_url('docalist-biblio/assets/edit-reference.css'),
-            array(),
-            '20140627'
-        );
+        wp_enqueue_style('docalist-biblio-edit-reference');
 
         // Définit l'état initial des metaboxes (normal, replié, masqué)
         $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
