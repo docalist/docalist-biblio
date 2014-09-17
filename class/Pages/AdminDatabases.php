@@ -516,6 +516,11 @@ class AdminDatabases extends AdminPage {
 
         if ($this->isPost()) {
             $data = wp_unslash($_POST);
+            foreach($data as & $field) {
+                if (isset($field['default'])) {
+                    $field['default'] = $this->filterEmpty($field['default']);
+                }
+            }
             $grid->merge(['fields' => $data]);
             $this->updateGrids($type); // Gère l'héritage des propriétés
             $this->settings->save();
@@ -535,6 +540,22 @@ class AdminDatabases extends AdminPage {
             'grid' => $grid,
             'gridname' => $gridname
         ]);
+    }
+
+    private function filterEmpty($data) {
+        if (is_scalar($data)) {
+            empty($data) && $data = null;
+            return $data;
+        }
+
+        foreach ($data as $key => $value) {
+            is_array($value) && $data[$key] = $this->filterEmpty($data[$key]);
+            if (empty($data[$key])){
+                unset($data[$key]);
+            }
+        }
+        empty($data) && $data = null;
+        return $data;
     }
 
     protected function updateGrids(TypeSettings $type) {
