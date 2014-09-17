@@ -40,9 +40,6 @@ use Docalist\Biblio\Reference;
 /* @var $grid Schema */
 
 
-wp_enqueue_script('docalist-forms');
-wp_enqueue_style('docalist-forms-wordpress');
-
 wp_enqueue_script(
     'docalist-biblio-grid-edit',
     plugins_url('docalist-biblio/views/grid/edit.js'),
@@ -60,6 +57,8 @@ foreach($grid->fields as $field) {
 }
 $assets->add(Themes::assets('wordpress'));
 Utils::enqueueAssets($assets);
+wp_enqueue_style('docalist-biblio-edit-reference');
+
 ?>
 <style type="text/css">
     <?php if ($gridname !== 'base') :?>
