@@ -135,7 +135,7 @@ class EditReference {
         // S'il n'y a qu'un seul type de notices, inutile de demander à l'utilisateur
         $types = $this->database->settings()->types;
         if (empty($_REQUEST['ref_type']) && count($types) === 1) {
-            $_REQUEST['ref_type'] = $types->first()->name;
+            $_REQUEST['ref_type'] = $types->first()->name();
         }
 
         // On connaît le type de notice à créer
@@ -150,29 +150,22 @@ class EditReference {
 
             // Injecte les valeurs par défaut dans le draft qui va être créé
             add_filter('wp_insert_post_data', function(array $data) {
-                // On conserve toutes les valeurs par défaut de wp pour le post
-                // On se contente de stocker le type de la notice créée et de
-                // vider le titre par défaut "brouillon auto".
-                $data['post_excerpt'] = json_encode(['type' => $_REQUEST['ref_type']]);
-                $data['post_title'] = '';
+                // Crée une référence du type demandé avec les valeurs par défaut du schéma
+                $ref = Reference::create($_REQUEST['ref_type']);
+
+                // Ecrase avec les valeurs par défaut de wordpress (statut, type, etc.)
+                $data = $this->database->decode($data, 'newref');
+                foreach($data as $key => $value) {
+                    $ref->$key = $value;
+                }
+
+                // Evite le titre wp "brouillon auto"
+                $ref->title = '';
+
+                // Génère les données du post wp à créer
+                $data = $this->database->encode($ref->value());
 
                 return $data;
-
-                /*
-                  Ancienne version en appellant entityToPost (ne marche pas) :
-                  - post_status est forcément à publish, on ne peut pas créer
-                    de brouillon, la notice est publiée dès sa création. Il
-                    faut garder le statut "auto-draft" fourni par wordpress.
-                  - On alloue un numéro de ref, alors que le brouillon ne sera
-                    pas forcément enregistré
-                  - Les champs post_xxx_gmt doivent rester à 0
-
-                $ref = new Reference();
-                $ref->type = $_REQUEST['ref_type'];
-                $data = $this->database->entityToPost($ref);
-
-                return $data;
-                */
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
 
             // Adapte le titre de l'écran de saisie
