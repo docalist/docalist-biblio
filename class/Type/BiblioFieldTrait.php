@@ -19,6 +19,7 @@ use Docalist\Forms\Tag;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
 use Docalist\Schema\Field;
+use Docalist\Forms\Select;
 
 trait BiblioFieldTrait {
     public function baseSettings() {
@@ -68,6 +69,21 @@ trait BiblioFieldTrait {
              ->attribute('placeholder', $this->schema->descriptiondefault())
              ->label(__('Aide à la saisie', 'docalist-biblio'))
              ->description(__("Texte qui sera affiché pour indiquer à l'utilisateur comment saisir le champ. Par défaut, c'est la description du champ qui figure dans la grille de base qui est utilisée.", 'docalist-biblio'));
+
+        $default = $this->editForm()->name('default');
+
+        if ($this->schema->repeatable()) {
+            $default->label(__('Valeurs par défaut', 'docalist-biblio'));
+            if (($default instanceof Select) && $default->multiple()) {
+                // pas besoin du bouton "add"
+            } else {
+                $default->repeatable(true);
+            }
+        } else {
+            $default->label(__('Valeur par défaut', 'docalist-biblio'));
+        }
+
+        $form->add($default);
 
         return $form;
     }
