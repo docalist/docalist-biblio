@@ -99,5 +99,8 @@ class Editor extends MultiField {
             }
             return $h;
         });
+        self::registerFormat('name', 'Nom uniquement', function(Editor $ed) {
+            return $ed->name();
+        });
     }
 }

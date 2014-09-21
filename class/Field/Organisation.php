@@ -115,5 +115,9 @@ class Organisation extends MultiField {
             }
             return $h;
         });
+
+        self::registerFormat('name', 'Nom ou sigle uniquement', function(Organisation $org) {
+            return $org->name() ?: $org->acronym();
+        });
     }
 }
