@@ -66,12 +66,13 @@ class Reference extends Entity {
     static protected $types = [
         'article'           => 'Docalist\Biblio\Reference\Article',
         'book'              => 'Docalist\Biblio\Reference\Book',
-        'degree'            => 'Docalist\Biblio\Reference\Degree',
         'book-chapter'      => 'Docalist\Biblio\Reference\BookChapter',
+        'degree'            => 'Docalist\Biblio\Reference\Degree',
+        'film'              => 'Docalist\Biblio\Reference\Film',
         'legislation'       => 'Docalist\Biblio\Reference\Legislation',
         'meeting'           => 'Docalist\Biblio\Reference\Meeting',
-        'periodical-issue'  => 'Docalist\Biblio\Reference\PeriodicalIssue',
         'periodical'        => 'Docalist\Biblio\Reference\Periodical',
+        'periodical-issue'  => 'Docalist\Biblio\Reference\PeriodicalIssue',
         'report'            => 'Docalist\Biblio\Reference\Report',
         'website'           => 'Docalist\Biblio\Reference\WebSite',
     ];
