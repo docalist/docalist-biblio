@@ -561,33 +561,36 @@ class AdminDatabases extends AdminPage {
     protected function updateGrids(TypeSettings $type) {
         $base = $type->grids['base'];
         foreach($type->grids as $grid) {/* @var $grid Schema */
-            if ($grid === $base) {
+            if ($grid !== $base) {
+                $this->updateGrid($grid, $base);
+            }
+        }
+    }
+
+    protected function updateGrid(Schema $grid, Schema $base) {
+        foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
+            if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
                 continue;
             }
-            foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
-                if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
-                    continue;
-                }
 
-                // TODO : plus tard, gérer les champs filtrés (par exemple si
-                // on a un champ qui s'appelle genre.xxx, comparer avec genre
+            // TODO : plus tard, gérer les champs filtrés (par exemple si
+            // on a un champ qui s'appelle genre.xxx, comparer avec genre
 
-                $src = $base->field($name); /* @var $src Field */
+            $src = $base->field($name); /* @var $src Field */
 
-                // Propriétés héritées, non modifiables
-                // On les copie simplement pour que les grilles y ait accès
-                $dst->type = $src->type;
-                $dst->collection = $src->collection;
-                $dst->key = $src->key;
+            // Propriétés héritées, non modifiables
+            // On les copie simplement pour que les grilles y ait accès
+            $dst->type = $src->type;
+            $dst->collection = $src->collection;
+            $dst->key = $src->key;
 
-                // Propriétés héritées et modifiables (xx-spec)
-                // On prend la propriété spécifique si elle existe,
-                // la propriété de la grille de base sinon
-                $dst->table  = $dst->tablespec  ?: $src->table;
-                $dst->table2 = $dst->table2spec ?: $src->table2;
-                $dst->label  = $dst->labelspec  ?: $src->label;
-                $dst->description  = $dst->descriptionspec  ?: $src->description;
-            }
+            // Propriétés héritées et modifiables (xx-spec)
+            // On prend la propriété spécifique si elle existe,
+            // la propriété de la grille de base sinon
+            $dst->table  = $dst->tablespec  ?: $src->table;
+            $dst->table2 = $dst->table2spec ?: $src->table2;
+            $dst->label  = $dst->labelspec  ?: $src->label;
+            $dst->description  = $dst->descriptionspec  ?: $src->description;
         }
     }
 
@@ -634,11 +637,27 @@ class AdminDatabases extends AdminPage {
         return $this->info('Pas encore implémenté', 'Supprimer une grille');
     }
 
-    public function actionGridToPhp($dbindex, $typeindex, $gridname) {
+    public function actionGridToPhp($dbindex, $typeindex, $gridname, $diffonly = false) {
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
         /* @var $grid Schema */
         $grid = $type->grids[$gridname];
+
+        // recrée la grille telle que'elle était initialement pour
+        // que la vue tophp puisse indiquer les modifications apportées
+        $types = Reference::types();
+
+        if ($diffonly) {
+            $method = $gridname . 'Grid';
+            $base = $types[$typeindex]::$method();
+            $base->name = $gridname;
+            if ($gridname !== 'base') {
+                $this->updateGrid($base, $types[$typeindex]::baseGrid());
+                $this->updateGrid($base, $type->grids['base']);
+            }
+        } else {
+            $base = $types[$typeindex]::baseGrid();
+        }
 
         return $this->view('docalist-biblio:grid/tophp', [
             'database' => $database,
@@ -646,7 +665,9 @@ class AdminDatabases extends AdminPage {
             'type' => $type,
             'typeindex' => $typeindex,
             'grid' => $grid,
-            'gridname' => $gridname
+            'gridname' => $gridname,
+            'base' => $base,
+            'diffonly' => $diffonly
         ]);
     }
 }
