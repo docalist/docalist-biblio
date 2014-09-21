@@ -112,7 +112,7 @@ class Database extends PostTypeRepository {
             new ImportPage($this);
         });
 
-        add_filter('get_the_excerpt', function($content) {
+        add_filter('the_excerpt', function($content) {
             global $post;
 
             // Vérifie que c'est une de nos notices
@@ -120,12 +120,19 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
+            // remarque : pour "court-circuiter" tous les filtres qui sont
+            // après nous en priorité (wp_autop, etc.), on pourrait faire :
+            // global $wp_filter;
+            // end($wp_filter['the_excerpt']);
+            // hyper dépendant du code qu'on a dans apply_filters() mais
+            // cela fonctionne.
+
             // Charge la notice en mode "affichage court"
             $ref = $this->load($post->ID, 'excerpt');
 
             // Formatte la notice
             return $ref->format();
-        }, 10);
+        }, 9999); // priorité très haute pour ignorer wp_autop et cie.
 
         add_filter('the_content', function($content) {
             global $post;
@@ -135,12 +142,12 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
-            // Charge la notice en mode "affichage long"
+            // Charge la notice en mode "affichage long" (court si archive)
             $ref = $this->load($post->ID, is_archive() ? 'excerpt' : 'content');
 
             // Formatte la notice
             return $ref->format();
-        });
+        }, 9999); // priorité très haute pour ignorer wp_autop et cie.
     }
 
     /**
