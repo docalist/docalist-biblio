@@ -54,21 +54,51 @@ class Content extends MultiField {
         // $mappings['properties']['content.private'] = self::stdIndex(true);
     }
 
+    protected static function shortenText($text, $maxlen = 240, $ellipsis = '…') {
+        if (strlen($text) > $maxlen) {
+            // Tronque le texte
+            $text = wp_html_excerpt($text, $maxlen, '');
+
+            // Supprime le dernier mot (coupé) et la ponctuation de fin
+            $text = preg_replace('~\W+\w*$~u', '', $text);
+
+            // Ajoute l'ellipse
+            $text .= $ellipsis;
+        }
+
+        return $text;
+    }
+
+    protected static function prepareText($content, Contents $parent) {
+        if ($maxlen = $parent->schema()->maxlen()) {
+            $maxlen && $content = self::shortenText($content, $maxlen);
+        }
+
+        if ($replace = $parent->schema()->newlines()) {
+            $content = str_replace( ["\r\n", "\r", "\n"], $replace, $content);
+        }
+
+        return $content;
+    }
+
     protected static function initFormats() {
-        self::registerFormat('v', 'Contenu', function(Content $content) {
-            return $content->__get('value')->value();
+        self::registerFormat('v', 'Contenu', function(Content $content, Contents $parent) {
+            $text = $content->__get('value')->value();
+            return self::prepareText($text, $parent);
         });
 
         self::registerFormat('t : v', 'Type : Contenu', function(Content $content, Contents $parent) {
-            return $parent->lookup($content->type()) . ' : ' . $content->__get('value')->value();
+            $text = self::callFormat('v', $content, $parent);
+            return $parent->lookup($content->type()) . ' : ' . $text;
             // espace insécable avant le ':'
         });
 
         self::registerFormat('t: v', 'Type: Contenu', function(Content $content, Contents $parent) {
-            return $parent->lookup($content->type()) . ': ' . $content->__get('value')->value();
+            $text = self::callFormat('v', $content, $parent);
+            return $parent->lookup($content->type()) . ': ' . $text;
         });
     }
-
+/*
     public function format(Repeatable $parent = null) {
         $content = parent::format($parent);
         if ($replace = $parent->schema()->newlines()) {
@@ -76,4 +106,5 @@ class Content extends MultiField {
         }
         return $content;
     }
+*/
 }
