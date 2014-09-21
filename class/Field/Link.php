@@ -75,7 +75,8 @@ class Link extends MultiField {
     protected static function initFormats() {
         self::registerFormat('link', 'Lien cliquable uniquement', function(Link $link) {
             $url = $link->url();
-            $label = isset($link->date) ? $link->label() : $url;
+
+            $label = isset($link->label) ? $link->label() : $url;
             if (isset($link->date)) {
                 $title = sprintf(__('Accédé le %s', 'docalist-biblio'), $link->date());
                 $format = '<a href="%1$s" title="%3$s">%2$s</a>';
@@ -99,6 +100,10 @@ class Link extends MultiField {
 
         self::registerFormat('url', 'Url uniquement', function(Link $link, Links $parent) {
             return $link->url();
+        });
+
+        self::registerFormat('embed', 'Incorporé (embed) si possible, lien cliquable sinon', function(Link $link, Links $parent) {
+            return wp_oembed_get($link->url()) ?: self::callFormat('link', $link, $parent);
         });
     }
 }
