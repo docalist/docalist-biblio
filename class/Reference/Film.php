@@ -355,10 +355,19 @@ class Film extends Reference {
                     'before' => '<blockquote style="font-style: italic">',
                     'after' => '</blockquote>'
                 ],
+
+                // Mots-clés
+                'group6' => [
+                    'type' => 'Docalist\Biblio\Type\Group',
+                    'label' => __('Mots-clés', 'docalist-biblio'),
+                    'before' => '<p>',
+                    'format' => '%label : %content',
+                    'after' => '.</p>',
+                    'sep' => '.<br />'
+                ],
                 'topic' => [
-                    'before' => '<p><i>Mots-clés : </i>',
-                    'after' => '<.p>',
-                    'format' => 'v'
+                    'format' => 'v',
+                    'labelspec' => __('Mots-clés', 'docalist-biblio')
                 ],
 
                 // Bande annonce, extrait ou lien
