@@ -238,18 +238,6 @@ class Film extends Reference {
                     'format' => 'title-link',
                     'sep' => ', '
                 ],
-                'ref',
-                'type',
-                'status',
-                'creation',
-                'lastupdate',
-                'owner' => [
-                    'sep' => ', '
-                ],
-                'imported',
-                'errors' => [
-                    'sep' => ', '
-                ],
 
                 // Résumé, présentation, notes
                 'group3' => [
@@ -273,6 +261,28 @@ class Film extends Reference {
                 'link' => [
                     'explode' => true,
                     'format' => 'embed',
+                    'sep' => ', '
+                ],
+
+                // Champs de gestion
+                'group5' => [
+                    'type' => 'Docalist\Biblio\Type\Group',
+                    'label' => __('Champs de gestion', 'docalist-biblio'),
+                    'before' => '<p style="margin-left: 200px">',
+                    'format' => '<span style="margin-left: -200px;float: left; font-weight: bold;">%label : </span>%content',
+                    'after' => '</p>',
+                    'sep' => '<br />'
+                ],
+                'ref',
+                'type',
+                'status',
+                'creation',
+                'lastupdate',
+                'owner' => [
+                    'sep' => ', '
+                ],
+                'imported',
+                'errors' => [
                     'sep' => ', '
                 ],
 
