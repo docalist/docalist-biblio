@@ -32,7 +32,7 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
 
         $name = $this->schema->name();
 
-        is_null($this->schema->sep) && $this->schema->sep = ', ';
+//         is_null($this->schema->sep) && $this->schema->sep = ', ';
 
         // Récupère le type des éléments de cette collection
         $type = $this->schema->type();
