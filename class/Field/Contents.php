@@ -51,7 +51,13 @@ class Contents extends Repeatable {
              ->attribute('id', $name . '-newlines')
              ->attribute('class', 'newlines regular-text')
              ->label(__("Remplacer les CR/LF par", 'docalist-biblio'))
-             ->description(__("Indiquez par quoi remplacer les retours chariots (par exemple : <code>&lt;br&gt;&lt;br&gt;</code>), ou videz le champ pour les laisser inchangés.", 'docalist-biblio'));
+             ->description(__("Indiquez par quoi remplacer les retours chariots (par exemple : <code>&lt;br/&gt;</code>), ou videz le champ pour les laisser inchangés.", 'docalist-biblio'));
+
+        $form->input('maxlen')
+             ->attribute('id', $name . '-maxlen')
+             ->attribute('class', 'maxlen small-text')
+             ->label(__("Couper à x caractères", 'docalist-biblio'))
+             ->description(__("Coupe les textes trop longs pour qu'ils ne dépassent pas la limite indiquée, ajoute une ellipse (...) si le texte a été tronqué.", 'docalist-biblio'));
 
         return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'), true);
     }
