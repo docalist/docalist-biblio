@@ -100,7 +100,7 @@ class Date extends MultiField {
         });
 
         self::registerFormat('year', 'AAAA', function(Date $date, Dates $parent) {
-            return substr(self::callFormat('date', $date, $parent), 6);
+            return substr(self::callFormat('date', $date, $parent), -4);
         });
     }
 }
