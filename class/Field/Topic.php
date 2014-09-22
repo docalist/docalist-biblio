@@ -21,7 +21,7 @@ use Docalist\Schema\Field;
  * Une liste de mots-clés d'un certain type.
  *
  * @property String $type
- * @property String[] $terms
+ * @property String[] $term
  */
 class Topic extends MultiField {
     static protected $groupkey = 'type';
