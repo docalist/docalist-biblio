@@ -158,14 +158,28 @@ class Reference extends Entity {
      * @return Schema
      */
     static public function contentGrid() {
-        $grid = static::defaultSchema();
-        $grid->description = sprintf(
-            __("Grille utilisée pour l'affichage détaillé d'une notice complète de type %s.", 'docalist-biblio'),
-            lcfirst($grid->label())
-        );
-        $grid->label = __('Affichage long', 'docalist-biblio');
+        $schema = static::loadSchema();
 
-        return $grid;
+        $label = __('Affichage long', 'docalist-biblio');
+        $description = sprintf(
+            __("Affichage détaillé d'une notice de type %s.", 'docalist-biblio'),
+            lcfirst($schema['label'])
+        );
+
+        $fields = array_keys($schema['fields']);
+        $hidden = ['posttype', 'password', 'parent', 'slug', 'imported', 'errors'];
+        $fields = array_diff($fields, $hidden);
+
+        $group1 = [ 'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'before' => '<dl>', 'format' => '<dt>%label</dt><dd>%content</dd>', 'after' => '</dl>' ] ];
+        $group2 = [ 'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ] ];
+
+        $fields = array_merge($group1, $fields, $group2, $hidden);
+
+        return new Schema([
+            'label' => $label,
+            'description' => $description,
+            'fields' => $fields
+        ]);
     }
 
     /**
@@ -174,15 +188,55 @@ class Reference extends Entity {
      * @return Schema
      */
     static public function excerptGrid() {
-        $grid = static::defaultSchema();
-        $grid->name = 'excerpt';
-        $grid->description = sprintf(
-            __("Grille utilisée pour l'affichage court d'une notice de type %s dans une liste de réponses.", 'docalist-biblio'),
-            lcfirst($grid->label())
-        );
-        $grid->label = __('Affichage court', 'docalist-biblio');
+        $schema = static::loadSchema();
 
-        return $grid;
+        $label = __('Affichage court', 'docalist-biblio');
+        $description = sprintf(
+            __("Affichage court d'une notice de type %s dans une liste de réponses.", 'docalist-biblio'),
+            lcfirst($schema['label'])
+        );
+
+        $fields = array_keys($schema['fields']);
+        $show1 = [
+            'group1' => [ 'label' => __('Source du document', 'docalist-biblio'), 'before' => '<p>', 'format' => '%content', 'after' => '.</p>', 'type' => 'Docalist\Biblio\Type\Group' ],
+            'type',
+            'author' => [ 'before' => ' de ', 'limit' => 1, 'format' => 'f n' ],
+        ];
+
+        if (in_array('journal', $fields)) {
+            $show2 = [
+                'journal' => [ 'before' => ', ' ],
+                'number' => [ 'format' => 'format', 'before' => ', ' ],
+                'extent' => [ 'format' => 'format', 'before' => ', ' ],
+            ];
+        } elseif (in_array('editor', $fields)) {
+            $show2 = [
+                'editor' => [ 'before' => ', ' ]
+            ];
+        } else {
+            $show2 = [
+                'othertitle' => [ 'before' => ', ', 'limit' => 1 ]
+            ];
+        }
+
+        $show3= [
+            'date' => [ 'format' => 'date', 'before' => ', ' ],
+            'group2' => [ 'label' => __('Contenu', 'docalist-biblio'), 'format' => '<blockquote>%content</blockquote>', 'type' => 'Docalist\Biblio\Type\Group' ],
+            'content' => [ 'format' => 'v', 'limit' => 1, 'maxlen' => 220 ],
+            'group3' => [ 'label' => __('Indexation', 'docalist-biblio'), 'format' => '<p>%content</p>', 'type' => 'Docalist\Biblio\Type\Group' ],
+            'topic' => [ 'format' => 'v', 'sep' => ', ' ],
+            'group4' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+        ];
+
+        $fields = array_diff_key($schema['fields'], $show1, $show2, $show3);
+
+        $fields = array_merge($show1, $show2, $show3, $fields);
+
+        return new Schema([
+            'label' => $label,
+            'description' => $description,
+            'fields' => $fields
+        ]);
     }
 
     static protected function loadSchema() {
@@ -192,20 +246,9 @@ class Reference extends Entity {
             'label' => __('Référence', 'docalist-biblio'),
             'description' => __('Décrit une notice documentaire.', 'docalist-biblio'),
             'fields' => [
-                'ref' => [         // Alias de post_name
-                    'type' => 'Docalist\Biblio\Field\Ref',
-                    'label' => __('Numéro de référence', 'docalist-biblio'),
-                    'description' => __('Numéro unique identifiant la notice.', 'docalist-biblio'),
-                ],
-                'parent' => [      // Alias de post_parent
-                    'type' => 'Docalist\Biblio\Type\Integer',
-                    'label' => __('Notice parent', 'docalist-biblio'),
-                    'description' => __('Numéro de référence de la notice parent.', 'docalist-biblio'),
-                ],
-                'title' => [       // Alias de post_title
-                    'type' => 'Docalist\Biblio\Field\Title',
-                    'label' => __('Titre', 'docalist-biblio'),
-                    'description' => __('Titre original du document catalogué.', 'docalist-biblio'),
+                'posttype' => [  // Alias de post_type
+                    'type' => 'Docalist\Biblio\Type\String',
+                    'label' => __('Post Type', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
                     'type' => 'Docalist\Biblio\Field\Status',
@@ -227,16 +270,20 @@ class Reference extends Entity {
                     'label' => __('Mot de passe', 'docalist-biblio'),
                     'description' => __('Mot de passe de la notice.', 'docalist-biblio'),
                 ],
-                'posttype' => [  // Alias de post_type
-                    'type' => 'Docalist\Biblio\Type\String',
-                    'label' => __('Post Type', 'docalist-biblio'),
+                'parent' => [      // Alias de post_parent
+                    'type' => 'Docalist\Biblio\Type\Integer',
+                    'label' => __('Notice parent', 'docalist-biblio'),
+                    'description' => __('Numéro de référence de la notice parent.', 'docalist-biblio'),
                 ],
                 'slug' => [  // Alias de post_name
                     'type' => 'Docalist\Biblio\Type\String',
                     'label' => __('Slug de la notice', 'docalist-biblio'),
                 ],
-
-
+                'ref' => [         // Alias de post_name
+                    'type' => 'Docalist\Biblio\Field\Ref',
+                    'label' => __('Numéro de référence', 'docalist-biblio'),
+                    'description' => __('Numéro unique identifiant la notice.', 'docalist-biblio'),
+                ],
                 'type' => [
                     'type' => 'Docalist\Biblio\Field\Type',
                     'label' => __('Type de notice', 'docalist-biblio'),
@@ -254,6 +301,23 @@ class Reference extends Entity {
                     'description' => __('Support physique du document : document imprimé, document numérique, dvd...', 'docalist-biblio'),
                     'table' => 'thesaurus:medias',
                 ],
+                'title' => [       // Alias de post_title
+                    'type' => 'Docalist\Biblio\Field\Title',
+                    'label' => __('Titre', 'docalist-biblio'),
+                    'description' => __('Titre original du document catalogué.', 'docalist-biblio'),
+                ],
+                'othertitle' => [
+                    'type' => 'Docalist\Biblio\Field\OtherTitles',
+                    'label' => __('Autres titres', 'docalist-biblio'),
+                    'description' => __("Autres titres du document : sigle, variante, titre du dossier, du numéro, du diplôme...)", 'docalist-biblio'),
+                    'table' => 'table:titles',
+                ],
+                'translation' => [
+                    'type' => 'Docalist\Biblio\Field\Translations',
+                    'label' => __('Traductions', 'docalist-biblio'),
+                    'description' => __('Traduction en une ou plusieurs langues du titre original du document.', 'docalist-biblio'),
+                    'table' => 'table:ISO-639-2_alpha3_EU_fr',
+                ],
                 'author' => [
                     'type' => 'Docalist\Biblio\Field\Authors',
                     'label' => __('Auteurs', 'docalist-biblio'),
@@ -267,18 +331,6 @@ class Reference extends Entity {
                     'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
                     'sep' => ' ; ', // sép par défaut à l'affichage, espace insécable avant ';'
-                ],
-                'othertitle' => [
-                    'type' => 'Docalist\Biblio\Field\OtherTitles',
-                    'label' => __('Autres titres', 'docalist-biblio'),
-                    'description' => __("Autres titres du document : sigle, variante, titre du dossier, du numéro, du diplôme...)", 'docalist-biblio'),
-                    'table' => 'table:titles',
-                ],
-                'translation' => [
-                    'type' => 'Docalist\Biblio\Field\Translations',
-                    'label' => __('Traductions', 'docalist-biblio'),
-                    'description' => __('Traduction en une ou plusieurs langues du titre original du document.', 'docalist-biblio'),
-                    'table' => 'table:ISO-639-2_alpha3_EU_fr',
                 ],
                 'date' => [
                     'type' => 'Docalist\Biblio\Field\Dates',
@@ -322,15 +374,15 @@ class Reference extends Entity {
                     'table' => 'table:ISO-3166-1_alpha2_fr',
                     'table2' => 'thesaurus:marc21-relators_fr',
                 ],
-                'edition' => [
-                    'type' => 'Docalist\Biblio\Field\Editions',
-                    'label' => __("Mentions d'édition", 'docalist-biblio'),
-                    'description' => __("Mentions utilisées pour décrire le type de l'édition : nouvelle édition, édition revue et corrigée, périodicité...", 'docalist-biblio'),
-                ],
                 'collection' => [
                     'type' => 'Docalist\Biblio\Field\Collections',
                     'label' => __('Collection', 'docalist-biblio'),
                     'description' => __("Collection, sous-collection et numéro au sein de la collection de l'éditeur.", 'docalist-biblio'),
+                ],
+                'edition' => [
+                    'type' => 'Docalist\Biblio\Field\Editions',
+                    'label' => __("Mentions d'édition", 'docalist-biblio'),
+                    'description' => __("Mentions utilisées pour décrire le type de l'édition : nouvelle édition, édition revue et corrigée, périodicité...", 'docalist-biblio'),
                 ],
                 'event' => [
                     'type' => 'Docalist\Biblio\Field\Event',
