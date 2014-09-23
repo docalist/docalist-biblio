@@ -112,6 +112,17 @@ class Book extends Reference {
                 'type',
                 'ref',
                 'owner',
+
+/*
+ posttype
+ creation
+ lastupdate
+ password
+ parent
+ slug
+ imported
+ errors
+ */
             ]
         ]);
     }
