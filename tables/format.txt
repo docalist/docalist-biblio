@@ -1,7 +1,9 @@
 # ------------------------------------------------------------------------------
 # Table "Format du document" (étiquettes de collation)
 #
-# 2014-06-11 Version initiale (cf. daniel-menard/prisme#106).
+# - 11-06-14, DM Version initiale (cf. daniel-menard/prisme#106).
+# - 23/09/14, DM Ajout de audiodescription, sdh, bonus et booklet
+#             (https://github.com/daniel-menard/prisme/issues/177)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 # ------------------------------------------------------------------------------
@@ -20,6 +22,7 @@ cdrom;cdrom;;;;dvd¤vhs;"Le document inclut un CD-ROM.";;
 ;cédérom;cdrom;;;;;;
 dvd;dvd;;;;cdrom¤vhs;"Le document inclut un DVD.";;
 vhs;vhs;;;;cdrom¤dvd;"Le document inclut une cassette vidéo VHS.";;
+booklet;livret;;;;appendices¤bonus;"Le document est accompagné d'un livret (livret joint à un dvd par exemple).";;
 # ------------------------------------------------------------------------------
 # Couleur, langue
 # ------------------------------------------------------------------------------
@@ -27,6 +30,9 @@ color;couleur;;;;b&w;"Le document est en couleur (en totalité ou dans une propo
 b&w;n&b;;;;color;"Le document est en noir et blanc (en totalité ou dans une proportion importante).";;
 french-version;VF;;;;original-version;"Le document est la version française d'un document en langue étrangère.";;
 original-version;VO;;;;french-version;"Le document est en langue étrangère.";;
+audio-description;audiodescription;;;;sdh;"Le film ou la vidéo est accessible aux personnes aveugles ou malvoyantes.";;
+sdh;sous-titrages sourds et malentendants;;;;audio-description;"Le film ou la vidéo dispose de sous-titres spécialement adaptés aux personnes souffrant d'une déficience auditive.";;
+# remarque : en anglais, sdh = subtitles for the deaf and hard-of-hearing
 # ------------------------------------------------------------------------------
 # Glossaire, index et cie
 # ------------------------------------------------------------------------------
@@ -42,7 +48,7 @@ schemas;schémas;;;;;"Le document comporte des schémas, des plans, etc.";;
 tables;tables;;;;;"Le document comporte un nombre important de tables et de tableaux.";;
 secam;secam;;;;;"La vidéo ou le film sont encodés au format SECAM.";;
 addresses;adresses;;;;;"Le document contient une liste d'adresses ou de coordonnées.";;
-appendices;annexes;;;;;"Le document comporte une ou plusieurs annexes.";;
+appendices;annexes;;;;bonus¤booklet;"Le document comporte une ou plusieurs annexes.";;
 maps;cartographie;;;;;"Le document comporte des cartes, des plans ou des informations cartographiques.";;
 drawings;dessins;;;;;"Le document comporte de nombreuses figures (représentations faites à la main d'objets, de plantes, d'animaux, de symboles, etc.)";;
 focus;dossier;;;;;"Le document comporte un dossier spécial qui regroupe plusieurs articles sur le sujet.";;
@@ -51,6 +57,7 @@ graphics;graphiques;;;;;"Le document comporte de graphiques représentant les do
 illustrations;illustrations;;;;;"Le document comporte des illustrations diverses (dessins, figures, etc. qui ne sont pas indispensables à la compréhension du document).";;
 notes;notes;;;;;"Le document comporte un nombre important de notes en bas de page ou de fin de document.";;
 photos;photographies;;;;;"Le document comporte un nombre important de photographies.";;
+bonus;bonus;;;;appendices¤booklet;"Le document contient des bonus, des extras (pour un dvd par exemple).";;
 # ------------------------------------------------------------------------------
 # Résumés
 # ------------------------------------------------------------------------------
