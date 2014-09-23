@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
+use Docalist\Schema\Schema;
 
 /**
  * Un rapport.
@@ -41,54 +42,83 @@ use Docalist\Biblio\Reference;
 // TODO : ne pas appeller ça "rapport". Ce que ça désigne, c'est une monographie non éditée (pas d'isbn)
 class Report extends Reference {
     static protected function loadSchema() {
+        // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
-        // @formatter:off
+        // Supprime les champs qu'on n'utilise pas
+        unset($fields['othertitle']);
+        unset($fields['journal']);
+        unset($fields['editor']);
+        unset($fields['collection']);
+        unset($fields['edition']);
+        unset($fields['event']);
+
+        // Personnalise les tables, les libellés, les description, etc.
+        // todo
+
+        // Contruit notre schéma
         return [
             'name' => 'report',
             'label' => __('Rapport', 'docalist-biblio'),
             'description' => __('Un rapport d\'activité ou une étude non publiée', 'docalist-biblio'),
+            'fields' => $fields,
+        ];
+    }
+
+    static public function editGrid() {
+        return new Schema([
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            'description' => __("Grille de saisie d'un rapport.", 'docalist-biblio'),
             'fields' => [
                 // Type, Genre, Media
                 'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
-                $fields['genre'],
-                $fields['media'],
+                'genre',
+                'media',
 
                 // Title, OtherTitle, Translation
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                $fields['title'],
-                $fields['translation'],
+                'title',
+                'translation',
 
                 // Author, Organisation
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
-                $fields['organisation'],
-                $fields['author'],
+                'organisation',
+                'author',
 
                 // Date / Language / Pagination / Format
                 'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                $fields['date'],
-                $fields['language'],
-                $fields['number'],
-                $fields['extent'],
-                $fields['format'],
+                'date',
+                'language',
+                'number',
+                'extent',
+                'format',
 
                 // Topic / Abstract / Note
                 'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                $fields['topic'],
-                $fields['content'],
+                'topic',
+                'content',
 
                 // // Liens et relations
                 'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                $fields['link'],
-                $fields['relation'],
+                'link',
+                'relation',
 
                 // Ref / Owner / Creation / Lastupdate
                 'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                $fields['type'],
-                $fields['ref'],
-                $fields['owner'],
+                'type',
+                'ref',
+                'owner',
             ]
-        ];
-        // @formatter:on
+        ]);
     }
+/*
+ posttype
+ creation
+ lastupdate
+ password
+ parent
+ slug
+ imported
+ errors
+ */
 }

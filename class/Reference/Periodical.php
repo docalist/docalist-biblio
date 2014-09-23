@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
+use Docalist\Schema\Schema;
 
 /**
  * Un périodique.
@@ -58,61 +59,90 @@ use Docalist\Biblio\Reference;
  */
 class Periodical extends Reference {
     static protected function loadSchema() {
+        // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
-        // @formatter:off
+        // Supprime les champs qu'on n'utilise pas
+        unset($fields['translation']);
+        unset($fields['organisation']);
+        unset($fields['journal']);
+        unset($fields['edition']);
+        unset($fields['event']);
+
+        // Personnalise les tables, les libellés, les description, etc.
+        // todo
+
+        // Contruit notre schéma
         return [
             'name' => 'periodical',
             'label' => __('Périodique', 'docalist-biblio'),
             'description' => __('Une publication périodique (revue, magazine, journal...)', 'docalist-biblio'),
+            'fields' => $fields,
+        ];
+    }
+
+    static public function editGrid() {
+        return new Schema([
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            'description' => __("Grille de saisie d'un périodique.", 'docalist-biblio'),
             'fields' => [
                 // Type, Genre, Media
                 'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
-                $fields['genre'],
-                $fields['media'],
+                'genre',
+                'media',
 
                 // Title, OtherTitle, Translation
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                $fields['title'],
-                $fields['number'],
-                $fields['othertitle'],
-//              $fields['translation'],
+                'title',
+                'number',
+                'othertitle',
+//              'translation',
 
                 // Author, Organisation
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
-                $fields['author'],
-                $fields['organisation'],
+                'author',
+//              'organisation',
 
                 // Date / Language / Pagination / Format
                 'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                $fields['date'],
-                $fields['language'],
-                $fields['extent'],
-                $fields['format'],
+                'date',
+                'language',
+                'extent',
+                'format',
 
                 // Editor / Collection / Edition
                 'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
-                $fields['editor'],
-                $fields['collection'],
-  //              $fields['edition'],
+                'editor',
+                'collection',
+  //              'edition',
 
                 // Topic / Abstract / Note
                 'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                $fields['topic'],
-                $fields['content'],
+                'topic',
+                'content',
 
                 // // Liens et relations
                 'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                $fields['link'],
-                $fields['relation'],
+                'link',
+                'relation',
 
                 // Ref / Owner / Creation / Lastupdate
                 'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                $fields['type'],
-                $fields['ref'],
-                $fields['owner'],
+                'type',
+                'ref',
+                'owner',
             ]
-        ];
-        // @formatter:on
+        ]);
     }
+/*
+ posttype
+ creation
+ lastupdate
+ password
+ parent
+ slug
+ imported
+ errors
+ */
+
 }

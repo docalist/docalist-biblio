@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
+use Docalist\Schema\Schema;
 
 /**
  * Numéro de périodique.
@@ -30,44 +31,78 @@ use Docalist\Biblio\Reference;
  */
 class PeriodicalIssue extends Reference {
     static protected function loadSchema() {
+        // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
-        // @formatter:off
+        // Supprime les champs qu'on n'utilise pas
+        unset($fields['genre']);
+        unset($fields['media']);
+        unset($fields['othertitle']);
+        unset($fields['translation']);
+        unset($fields['author']);
+        unset($fields['organisation']);
+        unset($fields['journal']);
+        unset($fields['language']);
+        unset($fields['editor']);
+        unset($fields['collection']);
+        unset($fields['event']);
+
+        // Personnalise les tables, les libellés, les description, etc.
+        // todo
+
+        // Contruit notre schéma
         return [
             'name' => 'periodical-issue',
             'label' => __('Numéro de périodique', 'docalist-biblio'),
             'description' => __('Une parution d\'un périodique.', 'docalist-biblio'),
-            'fields' => [
+            'fields' => $fields,
+        ];
+    }
 
+    static public function editGrid() {
+        return new Schema([
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            'description' => __("Grille de saisie d'un numéro de périodique.", 'docalist-biblio'),
+            'fields' => [
                 // Title, OtherTitle, Translation
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                $fields['number'],
-                $fields['title'],
+                'number',
+                'title',
 
                 // Date / Language / Pagination / Format
                 'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                $fields['date'],
-                $fields['edition'],
-                $fields['extent'],
-                $fields['format'],
+                'date',
+                'edition',
+                'extent',
+                'format',
 
                 // Topic / Abstract / Note
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                $fields['topic'],
-                $fields['content'],
+                'topic',
+                'content',
 
                 // // Liens et relations
                 'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                $fields['link'],
-                $fields['relation'],
+                'link',
+                'relation',
 
                 // Ref / Owner / Creation / Lastupdate
                 'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                $fields['type'],
-                $fields['ref'],
-                $fields['owner'],
+                'type',
+                'ref',
+                'owner',
             ]
-        ];
-        // @formatter:on
+        ]);
     }
+/*
+ posttype
+ creation
+ lastupdate
+ password
+ parent
+ slug
+ imported
+ errors
+ */
+
 }
