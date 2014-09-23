@@ -151,6 +151,17 @@ class Film extends Reference {
                 'owner',
             ]
         ]);
+
+        /*
+         posttype
+         creation
+         lastupdate
+         password
+         parent
+         slug
+         imported
+         errors
+         */
     }
 
     static public function contentGrid() {
