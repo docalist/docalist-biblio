@@ -65,7 +65,6 @@ class Article extends Reference {
         return new Schema([
             'label' => __('Formulaire de saisie', 'docalist-biblio'),
             'description' => __("Grille de saisie d'un article.", 'docalist-biblio'),
-            'name' => 'edit',
             'fields' => [
 
                 // Nature du document
@@ -112,6 +111,16 @@ class Article extends Reference {
                 'type',
                 'ref',
                 'owner',
+/*
+posttype
+creation
+lastupdate
+password
+parent
+slug
+imported
+errors
+*/
             ]
         ]);
     }
