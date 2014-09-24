@@ -55,4 +55,14 @@ class Type extends String {
     public static function ESmapping(array & $mappings, Field $schema) {
         $mappings['properties']['type'] = self::stdIndexAndFilter(true);
     }
+
+    public function format() {
+        $types = Reference::types();
+        $type = $this->value();
+        if (isset($types[$type])) {
+            $class = $types[$type];
+            $type = $class::defaultSchema()->label();
+        }
+        return $type;
+    }
 }
