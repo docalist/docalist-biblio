@@ -73,10 +73,10 @@ class Link extends MultiField {
     }
 
     protected static function initFormats() {
-        self::registerFormat('link', 'Lien cliquable uniquement', function(Link $link) {
+        self::registerFormat('link', 'Lien cliquable uniquement', function(Link $link, Links $parent) {
             $url = $link->url();
 
-            $label = isset($link->label) ? $link->label() : $url;
+            $label = isset($link->label) ? $link->label() : $parent->lookup($link->type());
             if (isset($link->date)) {
                 $title = sprintf(__('Accédé le %s', 'docalist-biblio'), $link->date());
                 $format = '<a href="%1$s" title="%3$s">%2$s</a>';
@@ -100,6 +100,10 @@ class Link extends MultiField {
 
         self::registerFormat('url', 'Url uniquement', function(Link $link, Links $parent) {
             return $link->url();
+        });
+
+        self::registerFormat('url', 'Libellés uniquement', function(Link $link, Links $parent) {
+            return $link->label() ?: $parent->lookup($link->type());
         });
 
         self::registerFormat('embed', 'Incorporé (embed) si possible, lien cliquable sinon', function(Link $link, Links $parent) {
