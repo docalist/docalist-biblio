@@ -193,6 +193,29 @@ class AdminDatabases extends AdminPage {
                 $database->slug = $_POST['slug'];
 
                 $database->validate();
+
+                // vérifie unicité nom/slug (https://github.com/daniel-menard/prisme/issues/181)
+                foreach ($this->settings->databases as $name => $db) {
+                    if ($name === $dbindex) {
+                        continue;
+                    }
+
+                    if ($database->name() === $db->name()) {
+                        $msg = __('Il existe déjà une base avec le nom "%s"', 'docalist-biblio');
+                        throw new Exception(sprintf($msg, $db->name()));
+                    }
+
+                    if ($database->slug() === $db->slug()) {
+                        $msg = __('Il existe déjà une base avec le slug "%s"', 'docalist-biblio');
+                        throw new Exception(sprintf($msg, $db->slug()));
+                    }
+
+                    if (trim(strtolower($database->label())) === trim(strtolower($db->label()))) {
+                        $msg = __('Il existe déjà une base avec le même libellé (%s), vous allez vous mélanger les pinceaux !', 'docalist-biblio');
+                        throw new Exception(sprintf($msg, $db->label()));
+                    }
+                }
+
                 $this->settings->save(); // refreshKeys
 
                 // Met à jour les rewrite rules si le slug a changé
