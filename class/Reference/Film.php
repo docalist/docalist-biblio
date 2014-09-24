@@ -163,7 +163,7 @@ class Film extends Reference {
          errors
          */
     }
-
+/*
     static public function contentGrid() {
         return new Schema([
             'name' => 'content',
@@ -432,4 +432,5 @@ class Film extends Reference {
             ]
         ]);
     }
+*/
 }

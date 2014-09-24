@@ -124,7 +124,7 @@ errors
             ]
         ]);
     }
-
+/*
     static public function contentGrid() {
         return new Schema([
             'label' => __('Affichage long', 'docalist-biblio'),
@@ -304,4 +304,5 @@ errors
             ]
         ]);
     }
+*/
 }

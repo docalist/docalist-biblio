@@ -126,7 +126,7 @@ class Book extends Reference {
             ]
         ]);
     }
-
+/*
     static public function contentGrid() {
         return new Schema([
             'name' => 'content',
@@ -337,4 +337,5 @@ class Book extends Reference {
             ]
         ]);
     }
+*/
 }
