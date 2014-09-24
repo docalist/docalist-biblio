@@ -16,6 +16,8 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
+use Docalist\Table\TableManager;
+use Docalist\Table\TableInfo;
 
 /**
  * Une liste de mots-clés d'un certain type.
@@ -67,25 +69,55 @@ class Topic extends MultiField {
 
 
     protected static function initFormats() {
-        self::registerFormat('v', 'Mots-clés', function(Topic $topic) {
+        self::registerFormat('v', 'Mots-clés', function(Topic $topic, Topics $parent) {
+            // Récupère la liste des termes
+            $terms = $topic->term();
+
+            $tables = docalist('table-manager'); /* @var $tables TableManager */
+
+            // Récupère la table qui contient la liste des vocabulaires
+            $tableName = explode(':', $parent->schema->table())[1];
+            $table = $tables->get($tableName); /* @var $table TableInfo */
+
+            // Détermine la source qui correspond au type du topic
+            $source = $table->find('source', 'code="'. $topic->type() .'"');
+            if ($source !== false) { // type qu'on n'a pas dans la table topics
+                list($type, $tableName) = explode(':', $source);
+
+                // Si la source est une table, on traduit les termes
+                if ($type === 'table' || $type === 'thesaurus') {
+                    $table = $tables->get($tableName); /* @var $table TableInfo */
+                    foreach ($terms as & $term) {
+                        $result = $table->find('label', "code=\"$term\"");
+                        $result !== false && $term = $result;
+                    }
+                }
+            }
+
+            // Sinon, on les retourne tels quels
+
+            return implode(', ', $terms);
+        });
+
+        self::registerFormat('V', 'Code des mots-clés (i.e. mots-clés en majuscules)', function(Topic $topic, Topics $parent) {
             return implode(', ', $topic->term());
         });
 
         self::registerFormat('t : v', 'Nom du vocabulaire : Mots-clés', function(Topic $topic, Topics $parent) {
-            return $parent->lookup($topic->type()) . ' : ' . implode(', ', $topic->term());
+            $terms = self::callFormat('v', $topic, $parent);
+            return $parent->lookup($topic->type()) . ' : ' . $terms;
             // espace insécable avant le ':'
         });
 
         self::registerFormat('t: v', 'Nom du vocabulaire: Mots-clés', function(Topic $topic, Topics $parent) {
-            return $parent->lookup($topic->type()) . ': ' . implode(', ', $topic->term());
+            $terms = self::callFormat('v', $topic, $parent);
+            return $parent->lookup($topic->type()) . ': ' . $terms;
         });
 
         self::registerFormat('v (t)', 'Mots-clés (Nom du vocabulaire)', function(Topic $topic, Topics $parent) {
-            $result = implode(', ', $topic->term());
-            isset($topic->type) && $result .= ' (' . $parent->lookup($topic->type()) . ')';
+            $terms = self::callFormat('v', $topic, $parent);
+            return $terms . ' (' . $parent->lookup($topic->type()) . ')';
             // espace insécable avant '('
-
-            return $result;
         });
     }
 }
