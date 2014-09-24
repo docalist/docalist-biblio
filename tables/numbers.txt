@@ -1,40 +1,46 @@
 # ------------------------------------------------------------------------------
 # Table "Numbers" (types de numéros)
 #
-# 2014-06-25, DM Version initiale (cf. daniel-menard/prisme#82).
-# La colonne type, optionnelle, sert à regrouper les entrées par famille.
-# La colonne format, obligatoire, détermine le masque d'affichage.
-# 2014-09-05, DM Plusieurs corrections.
-# - Utilise un espace insécable entre n° et le nombre qui suit 
-#   (cf. http://www.druide.com/enquetes/pour-des-espaces-insécables-impeccables)
-# - Pour "suppl." et "hors-série", qui normalement n'ont pas de n° associé, 
-#   affiche tout de même ce qui a été saisi si jamais on a quelque chose.
-# - Donne un exemple en description pour n° année et n° série.
-# - Précise "autre n°" pour l'entrée other-no
-# - Utilise un espace insécable pour les entrées de la forme XXXX %s (ISBN, etc.)
+# 25/06/14, DM Version initiale (cf. daniel-menard/prisme#82).
+#              La colonne type, optionnelle, sert à regrouper les entrées par 
+#              famille. La colonne format, obligatoire, détermine le masque 
+#              d'affichage.
+# 05/09/14, DM Plusieurs corrections.
+#              - Utilise un espace insécable entre nº et le nombre qui suit 
+#                (cf. http://www.druide.com/enquetes/pour-des-espaces-insécables-impeccables)
+#              - Pour "suppl." et "hors-série", qui normalement n'ont pas de 
+#                nº associé, affiche tout de même ce qui a été saisi si jamais 
+#                on a quelque chose.
+#              - Donne un exemple en description pour nº année et nº série.
+#              - Précise "autre nº" pour l'entrée other-no
+#              - Utilise un espace insécable pour les entrées de la forme 
+#                XXXX %s (ISBN, etc.)
+# 23/09/14, DM Remplace tous les signes degré (°) par des signes 
+#              "indicateur ordinal" (º) pour que les césures soient correctes.
+#              (https://github.com/daniel-menard/prisme/issues/182)
 # ------------------------------------------------------------------------------
 code;type;format;label;description
 # ------------------------------------------------------------------------------
 # Numéros de fascicule, de supplément...
 # ------------------------------------------------------------------------------
-issue-no;issue;n° %s;Fascicule n°;Numéro de fascicule du périodique (n° xxx, fasc. xxx, etc.)
+issue-no;issue;nº %s;Fascicule nº;Numéro de fascicule du périodique (nº xxx, fasc. xxx, etc.)
 supplement;issue;suppl. %s;Supplément;Supplément non numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
-supplement-no;issue;suppl. n° %s;Supplément n°;Numéro d'un supplément numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
-supplement-to;issue;suppl. au n° %s;Supplément au n°;Supplément à un fascicule numéroté (tiré à part)
+supplement-no;issue;suppl. nº %s;Supplément nº;Numéro d'un supplément numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
+supplement-to;issue;suppl. au nº %s;Supplément au nº;Supplément à un fascicule numéroté (tiré à part)
 special-issue;issue;hors-série %s;Hors-série;Hors-série ou numéro spécial non numéroté.
-special-issue-no;issue;hors-série n° %s;Hors-série n°;Numéro d'un hors-série ou d'un numéro spécial.
+special-issue-no;issue;hors-série nº %s;Hors-série nº;Numéro d'un hors-série ou d'un numéro spécial.
 # ------------------------------------------------------------------------------
 # Numéros de volume, de tome, etc.
 # ------------------------------------------------------------------------------
-volume-no;vol;vol. %s;volume n°;Numéro de volume
-part-no;vol;tome %s;tome n°;Numéro de tome
-year-no;vol;%sème année;n° année;Numéro d'année (par exemple "27ème année")
-serial-no;vol;%sème série;n° série;Numéro de la série (par exemple "3ème série")
+volume-no;vol;vol. %s;volume nº;Numéro de volume
+part-no;vol;tome %s;tome nº;Numéro de tome
+year-no;vol;%sème année;nº année;Numéro d'année (par exemple "27ème année")
+serial-no;vol;%sème série;nº série;Numéro de la série (par exemple "3ème série")
 # ------------------------------------------------------------------------------
 # divers
 # ------------------------------------------------------------------------------
-disc-no;;disque %s;disque n°;Numéro du disque (n° du CD-ROM, n° du DVD, etc.)
-other-no;;%s (autre n°);Autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
+disc-no;;disque %s;disque nº;Numéro du disque (nº du CD-ROM, nº du DVD, etc.)
+other-no;;%s (autre nº);Autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
 # ------------------------------------------------------------------------------
 # Numéros et identifiants relevant d'un standard ou faisant l'objet d'une norme
 # ------------------------------------------------------------------------------
