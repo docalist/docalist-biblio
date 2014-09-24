@@ -167,13 +167,14 @@ class Reference extends Entity {
         );
 
         $fields = array_keys($schema['fields']);
-        $hidden = ['posttype', 'password', 'parent', 'slug', 'imported', 'errors'];
-        $fields = array_diff($fields, $hidden);
+        $hidden = ['title', 'posttype', 'password', 'parent', 'slug', 'imported', 'errors'];
+        $last = ['owner', 'status', 'creation', 'lastupdate', 'ref'];
+        $fields = array_diff($fields, $hidden, $last);
 
         $group1 = [ 'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'before' => '<dl>', 'format' => '<dt>%label</dt><dd>%content</dd>', 'after' => '</dl>' ] ];
         $group2 = [ 'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ] ];
 
-        $fields = array_merge($group1, $fields, $group2, $hidden);
+        $fields = array_merge($group1, $fields, $last, $group2, $hidden);
 
         return new Schema([
             'label' => $label,
@@ -208,25 +209,30 @@ class Reference extends Entity {
                 'journal' => [ 'before' => ', ' ],
                 'number' => [ 'format' => 'format', 'before' => ', ' ],
                 'extent' => [ 'format' => 'format', 'before' => ', ' ],
+                'date' => [ 'format' => 'date', 'before' => ', ', 'limit' => 1 ],
             ];
         } elseif (in_array('editor', $fields)) {
             $show2 = [
-                'editor' => [ 'before' => ', ' ]
+                'editor' => [ 'before' => ', ' ],
+                'date' => [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ],
             ];
         } else {
             $show2 = [
-                'othertitle' => [ 'before' => ', ', 'limit' => 1 ]
+                'othertitle' => [ 'before' => ', ', 'limit' => 1 ],
+                'date' => [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ],
             ];
         }
 
         $show3= [
-            'date' => [ 'format' => 'date', 'before' => ', ' ],
             'group2' => [ 'label' => __('Contenu', 'docalist-biblio'), 'format' => '<blockquote>%content</blockquote>', 'type' => 'Docalist\Biblio\Type\Group' ],
             'content' => [ 'format' => 'v', 'limit' => 1, 'maxlen' => 220 ],
             'group3' => [ 'label' => __('Indexation', 'docalist-biblio'), 'format' => '<p>%content</p>', 'type' => 'Docalist\Biblio\Type\Group' ],
             'topic' => [ 'format' => 'v', 'sep' => ', ' ],
-            'group4' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+            'group5' => [ 'label' => __('Liens disponibles', 'docalist-biblio'), 'before' => '<p>', 'format' => '%content', 'after' => '</p>', 'sep' => ', ', 'type' => 'Docalist\Biblio\Type\Group' ],
+            'link' => [ 'format' => 'link' ],
+            'group6' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
         ];
+        // Liens disponibles
 
         $fields = array_diff_key($schema['fields'], $show1, $show2, $show3);
 
