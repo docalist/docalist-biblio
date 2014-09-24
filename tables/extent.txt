@@ -11,7 +11,7 @@ no-pages;Document non paginé;n.p. %s;A employer lorsque les pages du document c
 page;Numéro de page;p. %s;Numéro de la page où figure l'article.
 page-roman;Numéro de page en romain;p. %s;Numéro en chiffres romains de la page où figure l'article.
 page-range;Pages début-fin;pp. %s;Numéros de la page de début et de la page de fin de l'article, séparés par un tiret.
-page-range-roman;Pages début-fin en romain;pp %s;Numéros en chiffres romains de la page de début et de la page de fin de l'article, séparés par un tiret.
+page-range-roman;Pages début-fin en romain;pp. %s;Numéros en chiffres romains de la page de début et de la page de fin de l'article, séparés par un tiret.
 pages;Nombre de pages;%sp.;Nombre de pages de l'ouvrage.
 minutes;Durée en minutes;%s min.;Durée en minutes du film, du DVD, de la vidéo, etc.
 other;Autre type;%s;A utiliser quand aucun élément de la liste ne convient.
