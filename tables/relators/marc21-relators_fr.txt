@@ -20,10 +20,12 @@
 #
 # Date de génération : 14/03/2014 17:30:45
 # Historique :
-# - 2014-03-18 : Ajout des codes win et wpr qui figurent dans la version en 
+# - 18/03/14, DM Ajout des codes win et wpr qui figurent dans la version en 
 #                anglais, traduction des libellés et des définitions.
-# - 2014-03-18 : Correction des codes ctb (contributeur) et clb (collaborateur).
+# - 18/03/14, DM Correction des codes ctb (contributeur) et clb (collaborateur).
 #                Le code clb est maintenant deprecated (use ctb).
+# - 26/09/14, DM On avait deux fois la ligne ctb.
+#                (https://github.com/daniel-menard/prisme/issues/189)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 act;Acteur;;;;;"Terme utilisé pour désigner toute personne qui joue dans une présentation musicale ou dramatique.";;
@@ -77,7 +79,6 @@ chr;Chorégraphe;;;;;"Terme utilisé pour désigner toute personne ou tout organ
 plt;Clicheur;;;;;;;
 cli;Client;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui reçoit des services d'une autre personne ou collectivité.";;
 ;Coauteur;aut;;;;;;
-ctb;Contributeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui participe de manière limitée à l'élaboration de l'œuvre d'une autre personne ou d'un autre organisme en ajoutant un complément comme par exemple des annexes, des notes.";;
 ;Collaborateur;ctb;;;;;;
 col;Collectionneur;;;;;"Terme utilisé pour désigner toute personne qui a réuni du matériel de sources diverses et qui l'a organisé, décrit et catalogué comme une collection. Le collectionneur n'est ni le créateur du matériel, ni la personne à qui les manuscrits de la collection étaient peut-être destinés.";;
 spn;Commanditaire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui émet un contrat ou sous les auspices duquel une œuvre a été rédigée, imprimée, publiée, etc.";;
