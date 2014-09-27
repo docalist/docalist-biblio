@@ -254,40 +254,35 @@ class EditReference {
         // Crée une metabox "debug" pour afficher le contenu brut du post
         $this->addDebugMetabox($ref);
 
-        // Metabox normales pour la saisie
+        // Construit le formulaire
         $assets = new Assets();
         foreach($this->metaboxes($ref) as $form) {
             $id = $form->attribute('id');
-            $title = $form->label();
-            if (empty($title)) {
-                $type = Reference::types()[$ref->type()];
-                $title = $type::defaultSchema()->label();
-            }
+            $title = $form->label() ?: $ref->schema()->label();
+            $form->label(false); // comme on affiche le titre nous même
 
-            // @formatter:off
+            // binde le formulaire
+            $form->bind($ref);
+
+            // Envoie les assets requis
+            $assets->add($form->assets());
+
+            // Ajoute une metabox qui se chargera d'afficher le formulaire
             add_meta_box(
-                $id,                        // id metabox
-                $title,                     // titre
-                function() use($form){                // Callback
-                    // Le titre du formulaire a déjà été affiché par add_meta_box
-                    $form->label(false);
-
-                    // Affiche le formulaire
+                $id,
+                $title,
+                function() use($form) {
                     $form->render('wordpress');
                 },
-                $this->postType,    // posttype
-                'normal',           // contexte
-                'high'              // priorité
+                $this->postType,
+                'normal',
+                'high'
             );
-            // @formatter:on
-
-            $form->bind($ref);
-            $assets->add($form->assets());
         }
-        $assets->add(Themes::assets('wordpress'));
-        // Insère tous les assets dans la page
-        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
 
+        // Insère tous les assets dans la page
+        $assets->add(Themes::assets('wordpress'));
+        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
         wp_enqueue_style('docalist-biblio-edit-reference');
 
         // Définit l'état initial des metaboxes (normal, replié, masqué)
@@ -349,22 +344,15 @@ class EditReference {
         // Crée une référence à partir des données du post
         // $data contient les données standard d'un post wordpress (post_author,
         // post_date, post_content, etc.)
-        // Ce qui nous intéresse, c'est post_excerpt, qui contient le type actuel
-        // de la notice.
+        // Ce qui nous intéresse, c'est post_excerpt, qui contient toutes les
+        // données actuelles de la notice.
         $data = $this->database->decode(wp_unslash($data), $postarr['ID']);
 
         // Récupère le type actuel de la notice
         if (! isset($data['type'])) {
             throw new \Exception("Pas de type dans data");
         }
-        $type = $data['type'];
-        $ref = Reference::create($type, $data);
-
-//         if (! isset($postarr['ID'])) {
-//             throw new \Exception("pas d'ID");
-//         }
-//         $id = (int) $postarr['ID'];
-//         $ref = $this->database->load($id);
+        $ref = Reference::create($data['type'], $data);
 
         // Binde la référence avec les données transmises dans $_POST
         $record = wp_unslash($_POST);
@@ -376,16 +364,14 @@ class EditReference {
             }
         }
 
+        // Numérote la notice s'il y a lieu
         $ref->beforeSave($this->database);
 
         // Récupère les données de la référence obtenue
         $data = $this->database->encode($ref->value());
 
         // Retourne le résultat à Wordpress
-        $data = wp_slash($data);
-// var_dump($data);
-// die('jj');
-        return $data;
+        return wp_slash($data);
     }
 
     /**
@@ -398,14 +384,19 @@ class EditReference {
      *
      * @return array
      */
-    private function filterEmpty(array $data) {
+    private function filterEmpty($data) {
+        if (is_scalar($data)) {
+            empty($data) && $data = null;
+            return $data;
+        }
+
         foreach ($data as $key => $value) {
             is_array($value) && $data[$key] = $this->filterEmpty($data[$key]);
             if (empty($data[$key])){
                 unset($data[$key]);
             }
         }
-
+        empty($data) && $data = null;
         return $data;
     }
 
