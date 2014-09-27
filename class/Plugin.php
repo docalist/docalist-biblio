@@ -301,8 +301,8 @@ class Plugin {
         wp_register_style(
             'docalist-biblio-edit-reference',
             "$url/assets/edit-reference.css",
-            [],
-            '140627'
+            ['wp-admin'],
+            '140927'
         );
     }
 }
