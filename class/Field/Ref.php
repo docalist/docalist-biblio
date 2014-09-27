@@ -24,7 +24,7 @@ use Docalist\Schema\Field;
 class Ref extends Integer {
     public function editForm() {
         $field = new Input($this->schema->name());
-        $field->addClass('small-text');
+        $field->attribute('type', 'number');
 
         return $field;
     }
