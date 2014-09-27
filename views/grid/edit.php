@@ -188,7 +188,7 @@ function renderBox(Fragment $form, Field $schema, $closed = true) { ?>
     <?php $type = $schema->collection() ?: $schema->type() ?>
     <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Type\Group' ? 'group' : $schema->name() ?>">
         <div class="handlediv"></div>
-        <h3><span><?= $schema->label() ?: $schema->name() ?></span></h3>
+        <h3 class="hndle"><span><?= $schema->label() ?: $schema->name() ?></span></h3>
         <div class="inside">
             <?php $form->render('wordpress') ?>
         </div>
