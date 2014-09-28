@@ -87,4 +87,8 @@ class Number extends MultiField {
 
         // TODO : return Number exemple ou array(Number, Number...)
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['value']);
+    }
 }

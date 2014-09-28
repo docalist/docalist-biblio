@@ -120,4 +120,8 @@ class Topic extends MultiField {
             // espace insécable avant '('
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['term']);
+    }
 }

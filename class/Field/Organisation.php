@@ -120,4 +120,9 @@ class Organisation extends MultiField {
             return $org->name() ?: $org->acronym();
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty()
+        || (!isset($this->value['name']) && !isset($this->value['acronym']));
+    }
 }

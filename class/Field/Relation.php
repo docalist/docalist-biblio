@@ -154,4 +154,8 @@ class Relation extends MultiField {
             return $type . ' : ' . $refs;
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['ref']);
+    }
 }

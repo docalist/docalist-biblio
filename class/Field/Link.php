@@ -110,4 +110,8 @@ class Link extends MultiField {
             return wp_oembed_get($link->url()) ?: self::callFormat('link', $link, $parent);
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['url']);
+    }
 }

@@ -103,4 +103,8 @@ class Editor extends MultiField {
             return $ed->name();
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['name']);
+    }
 }

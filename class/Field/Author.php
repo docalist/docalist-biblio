@@ -105,4 +105,8 @@ class Author extends MultiField {
             return implode(' ', $t); // espace insécable
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['name']);
+    }
 }

@@ -107,4 +107,7 @@ class Content extends MultiField {
         return $content;
     }
 */
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['value']);
+    }
 }

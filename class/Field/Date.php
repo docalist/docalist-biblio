@@ -103,4 +103,8 @@ class Date extends MultiField {
             return substr(self::callFormat('date', $date, $parent), -4);
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['value']);
+    }
 }

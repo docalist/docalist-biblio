@@ -72,4 +72,8 @@ class OtherTitle extends MultiField {
             return $result;
         });
     }
+
+    public function filterEmpty() {
+        return parent::filterEmpty() || !isset($this->value['value']);
+    }
 }
