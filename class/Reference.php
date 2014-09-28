@@ -619,9 +619,10 @@ class Reference extends Entity {
      */
     public function map() {
         $data = [];
-        foreach($this->defaultSchema()->fieldNames() as $field) {
-            $this->$field->map($data);
+        foreach($this->value as $field) { /* @var $field BiblioField */
+            $field->map($data);
         }
+
         return $data;
     }
 
