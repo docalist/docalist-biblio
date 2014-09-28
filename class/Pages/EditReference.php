@@ -358,11 +358,15 @@ class EditReference {
         $record = wp_unslash($_POST);
         foreach($this->metaboxes($ref) as $metabox) {
             $metabox->bind($record);
-            $data = $this->filterEmpty($metabox->data());
-            foreach($data as $key => $value) {
-                $ref->$key = $value;
+            foreach($metabox->data() as $key => $value) {
+                if ($value !== '') {
+                    $ref->$key = $value;
+                }
             }
         }
+
+        // Filtre les champs et les valeurs vides
+        $ref->filterEmpty();
 
         // Numérote la notice s'il y a lieu
         $ref->beforeSave($this->database);
@@ -372,32 +376,6 @@ class EditReference {
 
         // Retourne le résultat à Wordpress
         return wp_slash($data);
-    }
-
-    /**
-     * Supprime les valeurs vides du tableau passé en paramètre.
-     *
-     * Récursif : si un élément est un tableau qui ne contient que des valeurs
-     * vides, il est supprimé.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    private function filterEmpty($data) {
-        if (is_scalar($data)) {
-            empty($data) && $data = null;
-            return $data;
-        }
-
-        foreach ($data as $key => $value) {
-            is_array($value) && $data[$key] = $this->filterEmpty($data[$key]);
-            if (empty($data[$key])){
-                unset($data[$key]);
-            }
-        }
-        empty($data) && $data = null;
-        return $data;
     }
 
     /**
