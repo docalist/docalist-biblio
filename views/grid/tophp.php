@@ -108,7 +108,7 @@ echo "return new Schema([\n";
         }
 
         // Si c'est un champ dans un groupe sans format (i.e. non affiché)
-        if (empty($format) && $field->type() !== 'Docalist\Biblio\Type\Group') {
+        if (($gridname !== 'base') && empty($format) && $field->type() !== 'Docalist\Biblio\Type\Group') {
             $properties = [];
         }
 
