@@ -59,6 +59,8 @@ div.dbdesc{
         $edit = esc_url($this->url('DatabaseEdit', $dbindex));
         $delete = esc_url($this->url('DatabaseDelete', $dbindex));
         $listTypes = esc_url($this->url('TypesList', $dbindex));
+        $exportSettings = esc_url($this->url('DatabaseExportSettings', $dbindex));
+        $importSettings = esc_url($this->url('DatabaseImportSettings', $dbindex));
 
         $count = wp_count_posts($database->postType())->publish;
         $listRefs = esc_url(admin_url('edit.php?post_type=' . $database->postType()));
@@ -85,6 +87,18 @@ div.dbdesc{
                     <span class="delete">
                         <a href="<?= $delete ?>">
                             <?= __('Supprimer', 'docalist-biblio') ?>
+                        </a>
+                    </span>
+                    |
+                    <span class="export-settings">
+                        <a href="<?= $exportSettings ?>">
+                            <?= __('Exporter paramètres', 'docalist-biblio') ?>
+                        </a>
+                    </span>
+                    |
+                    <span class="import-settings">
+                        <a href="<?= $importSettings ?>">
+                            <?= __('Importer paramètres', 'docalist-biblio') ?>
                         </a>
                     </span>
                 </div>

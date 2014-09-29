@@ -271,6 +271,88 @@ class AdminDatabases extends AdminPage {
     }
 
     /**
+     * Exporte (affiche) les paramètres complets d'une base.
+     *
+     * @param string $dbindex
+     */
+    public function actionDatabaseExportSettings($dbindex, $pretty = false) {
+        // Vérifie que la base à éditer existe
+        $database = $this->database($dbindex);
+
+        // Affiche le formulaire
+        return $this->view('docalist-biblio:database/export-settings', [
+            'database' => $database,
+            'dbindex' => $dbindex,
+            'pretty' => $pretty
+        ]);
+    }
+
+    /**
+     * Importe les paramètres d'une base.
+     *
+     * @param string $dbindex
+     */
+    public function actionDatabaseImportSettings($dbindex, $settings = null, $types = null) {
+        // Vérifie que la base à éditer existe
+        $database = $this->database($dbindex);
+
+        // Requête POST : enregistre les paramètres de la base
+        if ($this->isPost()) {
+            $settings = json_decode(wp_unslash($settings), true);
+            if (! is_array($settings) || ! isset($settings['slug'])) {
+                return $this->view('docalist-core:error', [
+                    'h2' => __('Importer des paramètres', 'docalist-biblio'),
+                    'h3' => __("Paramètres incorrects", 'docalist-biblio'),
+                    'message' => __("Le code que vous avez fourni n'est pas valide, vérifiez que vous avez bien collé la totalité des paramètres.", 'docalist-biblio'),
+                ]);
+            }
+
+            if (empty($settings['types'])) {
+                return $this->view('docalist-core:info', [
+                    'h2' => __('Importer des paramètres', 'docalist-biblio'),
+                    'h3' => __("Aucun type", 'docalist-biblio'),
+                    'message' => __("Le code que vous avez fourni est valide mais ne contient aucun type, impossible d'importer quoi que ce soit.", 'docalist-biblio'),
+                ]);
+            }
+
+            // Affiche le formulaire permettant de choisir les types à importer
+            if (empty($types)) {
+                return $this->view('docalist-biblio:database/import-settings-confirm', [
+                    'database' => $database,
+                    'dbindex' => $dbindex,
+                    'settings' => $settings,
+                ]);
+            }
+
+            foreach($settings['types'] as $type) {
+                $name = $type['name'];
+                if (! in_array($name, $types)) {
+//                    echo "ne pas importer $name<br />";
+                    continue;
+                }
+//                 echo "importer $name<br />";
+                if (isset($database->types[$name])) {
+//                     echo "Le type $name existe déjà<br />";
+                    $database->types[$name] = $type;
+                } else {
+//                     echo "Le type $name n'existe pas encore<br />";
+                    $database->types[$name] = $type;
+                }
+            }
+
+            $this->settings->save();
+
+            return $this->redirect($this->url('DatabasesList'), 303);
+        }
+
+        // Affiche le formulaire permettant de coller le code
+        return $this->view('docalist-biblio:database/import-settings', [
+            'database' => $database,
+            'dbindex' => $dbindex
+        ]);
+    }
+
+    /**
      * Listes les types d'une base.
      *
      * @param int $dbindex Numéro de la base à éditer.
