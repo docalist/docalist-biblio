@@ -89,7 +89,7 @@ div.dbdesc{
                             <?= __('Supprimer', 'docalist-biblio') ?>
                         </a>
                     </span>
-                    |
+                    <br />
                     <span class="export-settings">
                         <a href="<?= $exportSettings ?>">
                             <?= __('Exporter paramètres', 'docalist-biblio') ?>
