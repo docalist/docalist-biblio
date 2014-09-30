@@ -16,6 +16,8 @@
 # - Date de fin (endDate)
 # - Date attendue de livraison (expectedDate)
 # - Date de remise en vente (reissueDate)
+# 30/09/14, DM Ajout de l'entrée "signing-date"
+#           https://github.com/daniel-menard/prisme/issues/192
 # ------------------------------------------------------------------------------
 code;label;description
 # Entrées Onix :
@@ -55,3 +57,4 @@ death;Date de décès;Date de décès d'une personne.
 # 18 Dernière date pour les retours Dernière date où les retours seront acceptés, généralement pour un produit soldé ou épuisé. 
 # 23 Date d'embargo des critiques Date à partir de laquelle les critiques d'un produit peuvent être publiées, dans les journaux ou les revues, ou en ligne, par exemple. Information donnée au secteur du livre à titre d'information uniquement : il n'est pas prévu que les journaux et les magazines soient les destinataires de métadonnées ONIX. 
 # 24 A partir du… jusqu'au;Combinaison de la date « A partir du » et de la date « Jusqu'au » pour définir une période (les deux dates sont incluses).
+signing-date;Date de signature;Date de signature pour un traité, un contrat, un texte officiel...
