@@ -18,7 +18,7 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Forms\Form;
 
 /**
- * Importe les paramètres d'une base. Etape 2 : choix des types.
+ * Importe les paramètres d'une base. Etape 1 :récupération du code json.
  *
  * @param DatabaseSettings $database La base en cours.
  * @param string $dbindex L'index de la base.
@@ -26,7 +26,7 @@ use Docalist\Forms\Form;
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - exporter les paramètres de la base', 'docalist-biblio'), $database->label()) ?></h2>
+    <h2><?= sprintf(__('%s - importer des paramètres', 'docalist-biblio'), $database->label()) ?></h2>
 
     <p class="description">
         <?= __('Collez le code contenant les paramètres à importer dans la zone de texte ci-dessous.', 'docalist-biblio') ?>

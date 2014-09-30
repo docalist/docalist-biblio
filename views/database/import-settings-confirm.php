@@ -18,7 +18,7 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Forms\Form;
 
 /**
- * Importe les paramètres d'une base. Etape 1 :récupération du code json.
+ * Importe les paramètres d'une base. Etape 2 : choix des types.
  *
  * @param DatabaseSettings $database La base en cours.
  * @param string $dbindex L'index de la base.
