@@ -1,9 +1,11 @@
 # ------------------------------------------------------------------------------
 # Table "Contenu du document"
 #
-# 2013-10-04 Version initiale.
-# 2014-06-02 Ajout de plusieurs entrées suite à l'intégration du champ résumé 
-#            dans le champ notes.
+# 04/10/13, DM Version initiale.
+# 02/06/14, DM Ajout de plusieurs entrées suite à l'intégration du champ résumé 
+#              dans le champ notes.
+# 30/09/14, DM Ajout des entrées explanatory-memo et explanatory-memo-excerpt.
+#              https://github.com/daniel-menard/prisme/issues/192
 # ------------------------------------------------------------------------------
 code;label;description
 # ------------------------------------------------------------------------------
@@ -33,6 +35,8 @@ intro-excerpt;Extrait de l'introduction;Extrait de l'introduction, de la préfac
 toc;Sommaire;Sommaire ou table des matières.
 index;Index;Index des mots-clés.
 sample;Échantillon de contenu;Similaire à extrait mais présente un échantillon du document.
+explanatory-memo;Exposé des motifs;Pour un texte législatif, partie du texte qui présente les raisons de fait et de droit qui justifient l'adoption du texte.
+explanatory-memo-excerpt;Extrait de l'exposé des motifs;Pour un texte législatif, extrait de la partie du texte qui présente les raisons de fait et de droit qui justifient l'adoption du texte.
 # ------------------------------------------------------------------------------
 # Critiques
 # ------------------------------------------------------------------------------
