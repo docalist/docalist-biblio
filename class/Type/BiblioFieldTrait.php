@@ -59,14 +59,14 @@ trait BiblioFieldTrait {
         $form->input('labelspec')
              ->attribute('id', $name . '-label')
              ->attribute('class', 'labelspec regular-text')
-             ->attribute('placeholder', $this->schema->labeldefault())
+             ->attribute('placeholder', isset($this->schema->labeldefault) ? $this->schema->labeldefault() : __('(aucun libellé)', 'docalist-biblio'))
              ->label(__('Libellé en saisie', 'docalist-biblio'))
              ->description(__("Libellé affiché en saisie. Par défaut, c'est le libellé indiqué dans la grille de base qui est utilisé mais vous pouvez indiquer un libellé différent si vous le souhaitez.", 'docalist-biblio'));
         $form->textarea('descriptionspec')
              ->attribute('id', $name . '-description')
              ->attribute('class', 'description large-text')
              ->attribute('rows', 2)
-             ->attribute('placeholder', $this->schema->descriptiondefault())
+             ->attribute('placeholder', isset($this->schema->descriptiondefault) ? $this->schema->descriptiondefault() : __('(pas de description)', 'docalist-biblio'))
              ->label(__('Aide à la saisie', 'docalist-biblio'))
              ->description(__("Texte qui sera affiché pour indiquer à l'utilisateur comment saisir le champ. Par défaut, c'est la description du champ qui figure dans la grille de base qui est utilisée.", 'docalist-biblio'));
 
@@ -301,7 +301,7 @@ trait BiblioFieldTrait {
         $form->input('labelspec')
              ->attribute('id', $name . '-label')
              ->attribute('class', 'labelspec regular-text')
-             ->attribute('placeholder', $this->schema->labeldefault())
+             ->attribute('placeholder', isset($this->schema->labeldefault) ? $this->schema->labeldefault() : __('(aucun libellé)', 'docalist-biblio'))
              ->label(__('Libellé', 'docalist-biblio'))
              ->description(__("Libellé affiché avant le champ. Par défaut, c'est le même que dans la grille de saisie mais vous pouvez saisir un nouveau texte si vous voulez un libellé différent.", 'docalist-biblio'));
         $form->input('before')
