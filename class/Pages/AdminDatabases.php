@@ -619,11 +619,22 @@ class AdminDatabases extends AdminPage {
         /* @var $grid Schema */
         $grid = $type->grids[$gridname];
 
+        // Enregistre la grille si on est en POST
         if ($this->isPost()) {
             $data = wp_unslash($_POST);
-            foreach($data as & $field) {
+
+            // Filtre les valeurs par défaut qui sont vides. On crée une ref,
+            // on initialise chaque champ avec la valeur par défaut indiquée
+            // dans la grille et on lui demande de la filtrer.
+            $ref = Reference::create($typeindex);
+            foreach($data as $name => & $field) {
                 if (isset($field['default'])) {
-                    $field['default'] = $this->filterEmpty($field['default']);
+                    $ref->$name = $field['default'];
+                    if ($ref->$name->filterEmpty()) {
+                        unset($field['default']);
+                    } else {
+                        $field['default'] = $ref->$name->value();
+                    }
                 }
             }
             $grid->merge(['fields' => $data]);
