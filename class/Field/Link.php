@@ -73,12 +73,12 @@ class Link extends MultiField {
     }
 
     protected static function initFormats() {
-        self::registerFormat('link', 'Lien cliquable uniquement', function(Link $link, Links $parent) {
+        self::registerFormat('link', 'Libellé cliquable', function(Link $link, Links $parent) {
             $url = $link->url();
 
             $label = isset($link->label) ? $link->label() : $parent->lookup($link->type());
             if (isset($link->date)) {
-                $title = sprintf(__('Accédé le %s', 'docalist-biblio'), $link->date());
+                $title = sprintf(__('Lien consulté le %s', 'docalist-biblio'), $link->date());
                 $format = '<a href="%1$s" title="%3$s">%2$s</a>';
             } else {
                 $title = '';
@@ -92,22 +92,38 @@ class Link extends MultiField {
             return sprintf($format, $url, $label, $title);
         });
 
-        self::registerFormat('label : link', 'Type et lien cliquable', function(Link $link, Links $parent) {
-            $type = $parent->lookup($link->type());
-            $link = self::callFormat('link', $link, $parent);
-            return  $type . ' : ' . $link;
-        });
-
-        self::registerFormat('url', 'Url uniquement', function(Link $link, Links $parent) {
-            return $link->url();
-        });
-
-        self::registerFormat('url', 'Libellés uniquement', function(Link $link, Links $parent) {
+        self::registerFormat('label', 'Libellé', function(Link $link, Links $parent) {
             return $link->label() ?: $parent->lookup($link->type());
         });
 
-        self::registerFormat('embed', 'Incorporé (embed) si possible, lien cliquable sinon', function(Link $link, Links $parent) {
+        self::registerFormat('urllink', 'Url cliquable', function(Link $link, Links $parent) {
+            $label = $url = $link->url();
+
+            $title = isset($link->label) ? $link->label() : $parent->lookup($link->type());
+            if (isset($link->date)) {
+                $title .= sprintf(__(' (lien consulté le %s)', 'docalist-biblio'), $link->date());
+            }
+
+            $url = esc_attr($url);
+            $title = esc_attr($title);
+            $label = esc_html($label);
+
+            $format = '<a href="%1$s" title="%3$s">%2$s</a>';
+            return sprintf($format, $url, $label, $title);
+        });
+
+        self::registerFormat('url', 'Url', function(Link $link, Links $parent) {
+            return $link->url();
+        });
+
+        self::registerFormat('embed', 'Incorporé si possible, libellé cliquable sinon', function(Link $link, Links $parent) {
             return wp_oembed_get($link->url()) ?: self::callFormat('link', $link, $parent);
+        });
+
+        self::registerFormat('label : link', 'Type et libellé cliquable', function(Link $link, Links $parent) {
+            $type = $parent->lookup($link->type());
+            $link = self::callFormat('link', $link, $parent);
+            return  $type . ' : ' . $link;
         });
     }
 
