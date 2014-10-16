@@ -5,6 +5,8 @@
 #            Basée sur les tables qu'on avait avant (tables spécifiques par
 #            type) et sur les valeurs trouvées dans les abses Prisme/Afertes.
 #            cf. https://github.com/daniel-menard/prisme/issues/93
+# 2014-10-16 Ajout des entrées leaving-certificate, licence, master et 
+#            doctorate (https://github.com/daniel-menard/prisme/issues/202)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HN
 #
@@ -59,6 +61,10 @@ mémoire;Mémoire;;;;professional-practices¤thesis;Document, habituellement cou
 professional-practices;Dossier de pratiques professionnelles;;;;mémoire¤thesis;Analyse d'expériences professionnelles, récentes ou en cours, présentées par leurs auteurs pour un groupe de personnes exerçant la même profession.;degree;
 technical-course;Stage technique;;;;;Période de formation, d'apprentissage ou de perfectionnement qui dure quelques jours à plusieurs mois effectué dans un lieu approprié à l'acquisition des techniques propres à un domaine ou un métier donné.;video;
 study;Étude;;;;scientific-study;Œuvre littéraire ou scientifique étudiant un sujet donné.;book;
+leaving-certificate;Écrit de fin d'étude;;;;;Ecrit réalisé en vue de l'obtenition d'un diplôme de fin détudes.;degree,book;
+licence;Licence;;;;;Ecrit réalisé en vue de l'obtention d'un diplôme de niveau bac+3.;degree,book;
+master;Master;;;;;Ecrit réalisé en vue de l'obtention d'un diplôme de niveau bac+5 (ou bac+6 dans d'autres pays).;degree,book;
+doctorate;Doctorate;;;;;Ecrit réalisé en vue de l'obtention d'un diplôme de niveau bac+8.;degree,book;
 scientific-study;Étude scientifique;;;;;Étude relevant d'une démarche rationnelle, organisée et rigoureuse destinée à produire et à développer les connaissances scientifiques.;Report;
 # ------------------------------------------------------------------------------
 # Législation et documents juridiques
