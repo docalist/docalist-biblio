@@ -366,7 +366,7 @@ class EditReference {
         }
 
         // Filtre les champs et les valeurs vides
-        $ref->filterEmpty();
+        $ref->filterEmpty(false);
 
         // Numérote la notice s'il y a lieu
         $ref->beforeSave($this->database);
