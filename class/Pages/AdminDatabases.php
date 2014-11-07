@@ -630,7 +630,7 @@ class AdminDatabases extends AdminPage {
             foreach($data as $name => & $field) {
                 if (isset($field['default'])) {
                     $ref->$name = $field['default'];
-                    if ($ref->$name->filterEmpty()) {
+                    if ($ref->$name->filterEmpty()) { // mode strict pour conserver tout ce qu'on a mis en valeur par défaut
                         unset($field['default']);
                     } else {
                         $field['default'] = $ref->$name->value();
@@ -656,22 +656,6 @@ class AdminDatabases extends AdminPage {
             'grid' => $grid,
             'gridname' => $gridname
         ]);
-    }
-
-    private function filterEmpty($data) {
-        if (is_scalar($data)) {
-            empty($data) && $data = null;
-            return $data;
-        }
-
-        foreach ($data as $key => $value) {
-            is_array($value) && $data[$key] = $this->filterEmpty($data[$key]);
-            if (empty($data[$key])){
-                unset($data[$key]);
-            }
-        }
-        empty($data) && $data = null;
-        return $data;
     }
 
     protected function updateGrids(TypeSettings $type) {
