@@ -104,7 +104,12 @@ class Date extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['value']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a que le type et pas de date
+        return $this->filterEmptyProperty('value');
     }
 }

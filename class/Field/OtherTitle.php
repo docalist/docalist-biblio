@@ -73,7 +73,12 @@ class OtherTitle extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['value']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on a que le type de titre et pas de valeur
+        return $this->filterEmptyProperty('value');
     }
 }

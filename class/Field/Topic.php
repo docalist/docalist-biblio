@@ -121,7 +121,12 @@ class Topic extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['term']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a pas de mots-clés
+        return $this->filterEmptyProperty('term');
     }
 }

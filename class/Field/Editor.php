@@ -104,7 +104,12 @@ class Editor extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['name']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a pas de nom
+        return $this->filterEmptyProperty('name');
     }
 }

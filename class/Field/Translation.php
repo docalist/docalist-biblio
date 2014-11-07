@@ -72,7 +72,12 @@ class Translation extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['title']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on a la langue mais pas le titre traduit
+        return $this->filterEmptyProperty('title');
     }
 }

@@ -72,7 +72,12 @@ class Extent extends MultiField {
         // TODO : return Extent exemple ou array(Extent, Extent...)
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['value']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a que le type et pas de valeur
+        return $this->filterEmptyProperty('value');
     }
 }

@@ -155,7 +155,12 @@ class Relation extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['ref']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a pas de numéros de ref
+        return $this->filterEmptyProperty('ref');
     }
 }

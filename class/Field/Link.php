@@ -127,7 +127,12 @@ class Link extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['url']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a pas d'url
+        return $this->filterEmptyProperty('url');
     }
 }

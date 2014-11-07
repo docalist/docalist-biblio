@@ -107,7 +107,12 @@ class Content extends MultiField {
         return $content;
     }
 */
-    public function filterEmpty() {
-        return parent::filterEmpty() || !isset($this->value['value']);
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a que le type et pas de contenu
+        return $this->filterEmptyProperty('value');
     }
 }

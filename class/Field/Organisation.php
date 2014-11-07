@@ -121,8 +121,12 @@ class Organisation extends MultiField {
         });
     }
 
-    public function filterEmpty() {
-        return parent::filterEmpty()
-        || (!isset($this->value['name']) && !isset($this->value['acronym']));
+    public function filterEmpty($strict = true) {
+        if ($strict) {
+            return parent::filterEmpty();
+        }
+
+        // vide si on n'a ni nom ni sigle
+        return $this->filterEmptyProperty('name') && $this->filterEmptyProperty('acronym');
     }
 }
