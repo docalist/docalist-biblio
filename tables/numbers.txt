@@ -60,9 +60,9 @@ istc;std;ISTC %s;ISTC;International Standard Text Code (code normalisé pour un
 ean;std;EAN %s;EAN;International Article Number (numéro de produit, code barres). Exemple : 9782123456803
 coden;std;CODEN %s;CODEN;Code à 6 caractères identifiant un titre de publication périodique ou non-périodique. Exemples : TEREAU, 66HYAL, USXXDP, etc.
 nor;std;NOR %s;NOR;Numéro normalisé pour un texte officiel publié en France (12 caractères : 4 lettres, 7 chiffres, une lettre). Exemple : RDFB1420014D.
-official-number;std;nº ;Numéro officiel;Numéro officiel attribué au document par un organisme gouvernemental. Utiliser de préférence NOR pour un texte officiel et NNT pour un thèse.
+official-number;std;nº ;Numéro officiel;Numéro officiel attribué au document par un organisme gouvernemental. Utiliser de préférence NOR pour un texte officiel et NNT pour une thèse.
 # ------------------------------------------------------------------------------
 # Thèses et diplômes
 # ------------------------------------------------------------------------------
 nnt;diploma;NNT %s;NNT - Numéro National de Thèse;En France, numéro de thèse géré par l'ABES et attribué par l'établissement de soutenance (12 caractères : 4 chiffres pour l'année, code de 4 lettres identifiant l'établissement de soutenance, séquence numérique ou alphanumérique de 4 caractères attribuée par la bibliothèque de l'établissement de soutenance). Exemple : 2012PEST1049.
-diploma-no;diploma;diplôme nº %s;Numéro de diplôme;Numéro du diplôme (pour une thèse, utiliser NNT - Numéro National de Thèse)
+diploma-no;diploma;diplôme nº %s;Numéro de diplôme;Numéro du diplôme (pour une thèse, utiliser NNT - Numéro National de Thèse).
