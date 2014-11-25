@@ -38,8 +38,11 @@ class WebSite extends Reference {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
-        // Supprime les champs qu'on n'utilise pas
+        // Supprime les champs qu'on n'utilise pas (https://github.com/daniel-menard/prisme/issues/208)
         unset($fields['media']);
+        unset($fields['journal']);
+        unset($fields['number']);
+        unset($fields['collection']);
 
         // Personnalise les tables, les libellés, les description, etc.
         // todo
@@ -73,11 +76,6 @@ class WebSite extends Reference {
                 'author',
                 'organisation',
 
-                // Journal, Number
-                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Journal / Périodique'],
-                'journal',
-                'number',
-
                 // Date / Language / Pagination / Format
                 'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
                 'date',
@@ -85,10 +83,9 @@ class WebSite extends Reference {
                 'extent',
                 'format',
 
-                // Editor / Collection / Edition
+                // Editor / Edition
                 'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
                 'editor',
-                'collection',
                 'edition',
 
                 // Event
