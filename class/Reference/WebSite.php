@@ -41,7 +41,7 @@ class WebSite extends Reference {
         // Supprime les champs qu'on n'utilise pas (https://github.com/daniel-menard/prisme/issues/208)
         unset($fields['media']);
         unset($fields['journal']);
-        unset($fields['number']);
+        unset($fields['extent']);
         unset($fields['collection']);
 
         // Personnalise les tables, les libellés, les description, etc.
@@ -80,7 +80,7 @@ class WebSite extends Reference {
                 'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
                 'date',
                 'language',
-                'extent',
+                'number',
                 'format',
 
                 // Editor / Edition
