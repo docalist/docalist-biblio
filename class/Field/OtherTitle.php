@@ -74,11 +74,15 @@ class OtherTitle extends MultiField {
     }
 
     public function filterEmpty($strict = true) {
-        if ($strict) {
-            return parent::filterEmpty();
+        // Supprime les éléments vides
+        $empty = parent::filterEmpty();
+
+        // Si tout est vide ou si on est en mode strict, terminé
+        if ($empty || $strict) {
+            return $empty;
         }
 
-        // vide si on a que le type de titre et pas de valeur
+        // Retourne true si on a que le type de titre et pas de valeur
         return $this->filterEmptyProperty('value');
     }
 }

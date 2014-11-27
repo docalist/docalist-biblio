@@ -73,11 +73,15 @@ class Translation extends MultiField {
     }
 
     public function filterEmpty($strict = true) {
-        if ($strict) {
-            return parent::filterEmpty();
+        // Supprime les éléments vides
+        $empty = parent::filterEmpty();
+
+        // Si tout est vide ou si on est en mode strict, terminé
+        if ($empty || $strict) {
+            return $empty;
         }
 
-        // vide si on a la langue mais pas le titre traduit
+        // Retourne true si on a la langue mais pas le titre traduit
         return $this->filterEmptyProperty('title');
     }
 }

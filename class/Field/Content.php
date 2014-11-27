@@ -108,11 +108,15 @@ class Content extends MultiField {
     }
 */
     public function filterEmpty($strict = true) {
-        if ($strict) {
-            return parent::filterEmpty();
+        // Supprime les éléments vides
+        $empty = parent::filterEmpty();
+
+        // Si tout est vide ou si on est en mode strict, terminé
+        if ($empty || $strict) {
+            return $empty;
         }
 
-        // vide si on n'a que le type et pas de contenu
+        // Retourne true si on n'a que le type et pas de contenu
         return $this->filterEmptyProperty('value');
     }
 }

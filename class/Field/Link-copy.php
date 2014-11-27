@@ -117,7 +117,32 @@ class Link extends MultiField {
         });
 
         self::registerFormat('embed', 'Incorporé si possible, libellé cliquable sinon', function(Link $link, Links $parent) {
-            return wp_oembed_get($link->url()) ?: self::callFormat('link', $link, $parent);
+            global $wp_embed;
+
+            $url = $link->url();
+
+            $sav = $wp_embed->return_false_on_fail;
+            $wp_embed->return_false_on_fail = true;
+            // petit : L=320px H=180px
+            // moyen : L=480px H=270px
+            // grand : L=640px H=360px
+            // gigan : L=960px H=540px
+
+            //$result = $wp_embed->autoembed($url);
+            $result = $wp_embed->shortcode(['width' => '480', 'height' => '270'], $url);
+            $wp_embed->return_false_on_fail = $sav;
+            if ($result !== false) {
+                return $result;
+            }
+/*
+            $embed = wp_oembed_get($url);
+            if ($embed) {
+                return $embed;
+            }
+            //var_dump(do_shortcode('[embed]' . $url . '[/embed]'));
+            var_dump(wp_video_shortcode(['src' => $url]));
+*/
+            return self::callFormat('link', $link, $parent);
         });
 
         self::registerFormat('label : link', 'Type et libellé cliquable', function(Link $link, Links $parent) {
