@@ -117,14 +117,15 @@ class Plugin {
      * Implémentation du filtre 'docalist_biblio_get_reference'.
      *
      * @param string $id POST_ID de la référence à charger.
-     * @param boolean $raw Par défaut, retourne un objet Reference. En passant
-     * raw=true, on obtient un tableau contenant les donnnées brutes.
+     * @param string|null $grid Grille à utiliser ou null pour retourner un
+     * tableau contenant les données brutes.
      *
-     * @return Reference
+     * @return Reference|array Retourne un objet Reference si une grille a été
+     * indiquée ; un tableau contenant les données de la notice sinon.
      *
      * @throws Exception
      */
-    public function getReference($id = null, $raw = false) {
+    public function getReference($id = null, $grid = null) {
         is_null($id) && $id = get_the_ID();
         $type = get_post_type($id);
 
@@ -134,7 +135,7 @@ class Plugin {
         }
 
         $database = $this->databases[$type]; /* @var $database Database */
-        return $raw ? $database->loadRaw($id) : $database->load($id);
+        return is_null($grid) ? $database->loadRaw($id) : $database->load($id, $grid);
     }
 
     /**
