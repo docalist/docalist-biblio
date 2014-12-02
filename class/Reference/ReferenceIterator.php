@@ -17,6 +17,7 @@ namespace Docalist\Biblio\Reference;
 use Docalist\Search\SearchRequest;
 use Docalist\Search\SearchResults;
 use Iterator, Countable;
+use Docalist\Biblio\Reference;
 
 /**
  * Un itérateur de références (pour l'export).
@@ -53,24 +54,25 @@ class ReferenceIterator implements Iterator, Countable {
     protected $current;
 
     /**
-     * Indique si l'itérateur retourne des objets Reference (true) ou les
-     * données brutes (false).
+     * Indique la grille à utiliser pour charger les notices.
      *
-     * @var boolean
+     * @var string|null Le nom de la grille à utiliser (base, edit...) pour que
+     * l'itérateur retourne des objets Reference ou null pour qu'il retourne
+     * un tableau contenant les données brutes de la notice.
      */
-    protected $raw;
+    protected $grid;
 
     /**
      * Construit l'itérateur.
      *
      * @param SearchRequest $request
-     * @param boolean $raw Par défaut (true), l'itérateur retourne des objets
-     * Reference. Si raw est à false, l'itérateur retournera un tableau
-     * contenant les données brutes.
+     * @param boolean $grid Le nom de la grille à utiliser (base, edit...) pour
+     * que l'itérateur retourne des objets Reference ou null pour qu'il retourne
+     * un tableau contenant les données brutes de la notice.
      */
-    public function __construct(SearchRequest $request, $raw = false) {
+    public function __construct(SearchRequest $request, $grid = null) {
         $this->request = $request;
-        $this->raw = $raw;
+        $this->grid = $grid;
     }
 
     public function rewind() {
@@ -82,7 +84,7 @@ class ReferenceIterator implements Iterator, Countable {
     }
 
     public function current() {
-        return docalist('docalist-biblio')->getReference($this->key(), $this->raw);
+        return docalist('docalist-biblio')->getReference($this->key(), $this->grid);
     }
 
     public function key() {
