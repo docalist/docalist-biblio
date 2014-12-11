@@ -7,6 +7,9 @@
 #            cf. https://github.com/daniel-menard/prisme/issues/93
 # 2014-10-16 Ajout des entrées leaving-certificate, licence, master et 
 #            doctorate (https://github.com/daniel-menard/prisme/issues/202)
+# 2014-12-11 Ajout de HDR et ajout d'un "voir aussi" vers hdr pour thesis, 
+#            mémoire et professional-practices. 
+#            (https://github.com/daniel-menard/prisme/issues/219)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HN
 #
@@ -56,9 +59,10 @@ humour;Humour;;;;;Œuvre qui vise à susciter volontairement le rire ou le souri
 # ------------------------------------------------------------------------------
 # Mémoires, thèses, diplômes, études
 # ------------------------------------------------------------------------------
-thesis;Thèse;;;;professional-practices¤mémoire;Ensemble des travaux présentés, sous forme d'ouvrage, en vue de l'obtention du grade de docteur.;degree,book;
-mémoire;Mémoire;;;;professional-practices¤thesis;Document, habituellement court et incisif, permettant d'exposer une opinion, un fait, une recherche concernant un sujet donné en s'appuyant logiquement sur une analyse pour en arriver à une recommandation ou une conclusion.;degree;
-professional-practices;Dossier de pratiques professionnelles;;;;mémoire¤thesis;Analyse d'expériences professionnelles, récentes ou en cours, présentées par leurs auteurs pour un groupe de personnes exerçant la même profession.;degree;
+habilitation;HDR;;;;thesis¤mémoire¤professional-practices;Ensemble des travaux présentés en vue de l'obtention d'une Habilitation à Diriger des Recherches (Arrêté du 23 novembre 1988 relatif à l'HDR).;degree,book;
+thesis;Thèse;;;;habilitation¤professional-practices¤mémoire;Ensemble des travaux présentés, sous forme d'ouvrage, en vue de l'obtention du grade de docteur.;degree,book;
+mémoire;Mémoire;;;;professional-practices¤thesis¤habilitation;Document, habituellement court et incisif, permettant d'exposer une opinion, un fait, une recherche concernant un sujet donné en s'appuyant logiquement sur une analyse pour en arriver à une recommandation ou une conclusion.;degree;
+professional-practices;Dossier de pratiques professionnelles;;;;mémoire¤thesis¤habilitation;Analyse d'expériences professionnelles, récentes ou en cours, présentées par leurs auteurs pour un groupe de personnes exerçant la même profession.;degree;
 technical-course;Stage technique;;;;;Période de formation, d'apprentissage ou de perfectionnement qui dure quelques jours à plusieurs mois effectué dans un lieu approprié à l'acquisition des techniques propres à un domaine ou un métier donné.;video;
 study;Étude;;;;scientific-study;Œuvre littéraire ou scientifique étudiant un sujet donné.;book;
 leaving-certificate;Écrit de fin d'étude;;;;;Ecrit réalisé en vue de l'obtenition d'un diplôme de fin détudes.;degree,book;
