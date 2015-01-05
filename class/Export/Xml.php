@@ -20,14 +20,16 @@ use XMLWriter;
 /**
  * Un exporteur au format XML.
  */
-class Xml extends AbstractExporter {
-    public function mimeType() {
-        return 'application/xml';
-    }
+class Xml extends Exporter {
+    protected static $defaultSettings = [
+        // Surcharge des paramètres hérités
+        'mime-type' => 'application/xml',
+        'extension' => '.xml',
 
-    public function extension() {
-        return 'xml';
-    }
+        // Taille de l'indentation ou zéro ou false pour générer un code compact
+        'indent' => 4,
+        'binary' => true,
+    ];
 
     public function export(ReferenceIterator $references) {
         $xml = new XMLWriter();
@@ -38,12 +40,13 @@ class Xml extends AbstractExporter {
             $xml->setIndent(true);
         }
         $xml->startDocument('1.0', 'utf-8', 'yes');
-            $xml->writeComment('test');
+        //  $xml->writeComment('test');
             $xml->startElement('references');
             $xml->writeAttribute('count', $references->count());
             $xml->writeAttribute('datetime', date('Y-m-d H:i:s'));
             $xml->writeAttribute('query', $references->searchRequest()->asEquation());
-            foreach($references as $data) {
+            foreach($references as $reference) {
+                $data = $this->converter->convert($reference);
                 $xml->startElement('reference');
                     $this->outputArray($xml, $data);
                 $xml->endElement();
@@ -78,5 +81,13 @@ class Xml extends AbstractExporter {
             }
             $xml->endElement();
         }
+    }
+
+    public static function label() {
+        return 'XML';
+    }
+
+    public static function description() {
+        return __('<a href="http://fr.wikipedia.org/wiki/Extensible_Markup_Language">Extensible Markup Language</a> : fichier texte dans lequel les données sont encadrées par des &lt;balises&gt;.', 'docalist-biblio');
     }
 }
