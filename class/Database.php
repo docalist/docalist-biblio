@@ -283,7 +283,14 @@ class Database extends PostTypeRepository {
             'show_in_menu'         => true,
             'show_in_nav_menus'    => true,
             'show_in_admin_bar'    => true,
+            'menu_icon' => 'dashicons-feedback',
+//             'menu_icon' => 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMzZweCIgaGVpZ2h0PSIzNnB4IiB2aWV3Qm94PSI2IDYgMzYgMzYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgNiA2IDM2IDM2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8Zz4NCgkJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yNCw5LjYzQzE2LjA3Nyw5LjYzLDkuNjMxLDE2LjA3Nyw5LjYzMSwyNHM2LjQ0NiwxNC4zNjgsMTQuMzcsMTQuMzY4DQoJCQkJYzcuOTIzLDAsMTQuMzY4LTYuNDQ1LDE0LjM2OC0xNC4zNjhTMzEuOTI0LDkuNjMsMjQsOS42M3ogTTI3LjQ4MSwzMC45NjRsLTYuNDIxLTYuMzg1bC0wLjA0MywwLjA0NHY2LjM0MWgtMS41MDl2LTE0LjI5aDEuNTA5DQoJCQkJdjUuOTI5bDYuMDI5LTUuOTI5aDIuMDcybC03LjAwNyw2Ljg5M2w3LjQxNiw3LjM5N0gyNy40ODF6Ii8+DQoJCTwvZz4NCgk8L2c+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTI0LDZDMTQuMDU5LDYsNiwxNC4wNTksNiwyNGMwLDkuOTQsOC4wNTksMTgsMTgsMThjOS45NCwwLDE4LTguMDU5LDE4LTE4UzMzLjk0MSw2LDI0LDZ6IE0yNCw0MC4wOQ0KCQkJCWMtOC44NzMsMC0xNi4wOS03LjIxOC0xNi4wOS0xNi4wOWMwLTguODczLDcuMjE4LTE2LjA5MSwxNi4wOS0xNi4wOTFTNDAuMDksMTUuMTI3LDQwLjA5LDI0QzQwLjA5LDMyLjg3MiwzMi44NzIsNDAuMDksMjQsNDAuMDkNCgkJCQl6Ii8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==',
+//             'menu_icon' => 'http://www.femixsports.fr/templates/rt_oculus/images/icons/icon-home.png',
+//             'menu_icon' => 'http://upload.wikimedia.org/wikipedia/commons/a/a3/Report.svg',
 
+// http://melchoyce.github.io/dashicons/
+// http://mannieschumpert.com/blog/using-wordpress-3-8-icons-custom-post-types-admin-menu/
+// https://icomoon.io/
             'rewrite' => array(
                 'slug' => $this->settings->slug(),
                 'with_front' => false,
