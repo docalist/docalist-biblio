@@ -126,7 +126,7 @@ class Object extends \Docalist\Type\Object implements BiblioField {
      *
      * @return string
      */
-    protected static function callFormat($name, Object $obj, BiblioField $parent) {
+    public static function callFormat($name, Object $obj, BiblioField $parent) {
         self::maybeInit($type = get_called_class());
 
         // Utilise le format par défaut si le format indiqué n'existe pas
