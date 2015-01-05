@@ -71,38 +71,38 @@ class Plugin {
         add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 2);
 
         // Liste des exporteurs définis dans ce plugin
-        add_filter('docalist_biblio_get_exporters', function(array $exporters, Database $database) {
-            $exporters['docalist-biblio-json'] = [
-                'label' => 'Docalist - JSON',
-                'description' => 'Notices en format natif Docalist, fichier au format JSON.',
-                'classname' => 'Docalist\Biblio\Export\Json',
+        add_filter('docalist_biblio_get_export_formats', function(array $formats, Database $database) {
+            $formats['docalist-json'] = [
+                'label' => 'Compact',
+                'converter' => 'Docalist\Biblio\Export\Converter',
+                'exporter' => 'Docalist\Biblio\Export\Json',
             ];
 
-            $exporters['docalist-biblio-json-pretty'] = [
-                'label' => 'Docalist - JSON (formatté)',
-                'description' => 'Notices en format natif Docalist, fichier au format JSON (indenté et formatté).',
-                'classname' => 'Docalist\Biblio\Export\Json',
-                'settings' => [
+            $formats['docalist-json-pretty'] = [
+                'label' => 'Indenté',
+                'converter' => 'Docalist\Biblio\Export\Converter',
+                'exporter' => 'Docalist\Biblio\Export\Json',
+                'exporter-settings' => [
                     'pretty' => true,
                 ],
             ];
 
-            $exporters['docalist-biblio-xml'] = [
-                'label' => 'Docalist - XML',
-                'description' => 'Notices en format natif Docalist, fichier au format XML.',
-                'classname' => 'Docalist\Biblio\Export\Xml',
+            $formats['docalist-xml'] = [
+                'label' => 'Compact',
+                'converter' => 'Docalist\Biblio\Export\Converter',
+                'exporter' => 'Docalist\Biblio\Export\Xml',
             ];
 
-            $exporters['docalist-biblio-xml-pretty'] = [
-                'label' => 'Docalist - XML (formatté)',
-                'description' => 'Notices en format natif Docalist, fichier au format XML (indenté et formatté).',
-                'classname' => 'Docalist\Biblio\Export\Xml',
-                'settings' => [
+            $formats['docalist-xml-pretty'] = [
+                'label' => 'Indenté',
+                'converter' => 'Docalist\Biblio\Export\Converter',
+                'exporter' => 'Docalist\Biblio\Export\Xml',
+                'exporter-settings' => [
                     'indent' => 4,
                 ],
             ];
 
-            return $exporters;
+            return $formats;
         }, 10, 2);
 
         // Déclare les JS et les CSS prédéfinis inclus dans docalist-biblio
