@@ -20,23 +20,33 @@ use Docalist\Biblio\Reference\ReferenceIterator;
 /**
  * Un exporteur au format JSON.
  */
-class Json extends AbstractExporter {
-    public function mimeType() {
-        return 'application/json';
-    }
+class Json extends Exporter {
+    protected static $defaultSettings = [
+        // Surcharge des paramètres hérités
+        'mime-type' => 'application/json',
+        'extension' => '.json',
 
-    public function extension() {
-        return 'json';
-    }
+        // Indique s'il faut générer du code lisible ou indenté
+        'pretty' => false,
+    ];
 
     public function export(ReferenceIterator $references) {
         $pretty = $this->get('pretty');
         $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         $pretty && $options |= JSON_PRETTY_PRINT;
 
-        foreach($references as $data) {
+        foreach($references as $reference) {
+            $data = $this->converter->convert($reference);
             echo json_encode($data, $options);
             $pretty && print("\n\n");
         }
+    }
+
+    public static function label() {
+        return 'JSON';
+    }
+
+    public static function description() {
+        return __('Fichier texte contenant des données structurées au format <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">Javascript Object Notation</a>.', 'docalist-biblio');
     }
 }
