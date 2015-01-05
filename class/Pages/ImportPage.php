@@ -22,8 +22,9 @@ use Docalist\Utils;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
 use Docalist\Search\SearchRequest;
-use Docalist\Biblio\Export\AbstractExporter;
 use Docalist\Biblio\Reference\ReferenceIterator;
+use Docalist\Biblio\Export\Converter;
+use Docalist\Biblio\Export\Exporter;
 
 /**
  * Page "Importer" d'une base
@@ -310,22 +311,25 @@ class ImportPage extends AdminPage {
      *
      * @param array $queryArgs Paramètres de la requête Docalist Search à
      * exécuter.
-     * @param string $exporter Nom du format d'export à utiliser
+     * @param string $format Nom du format d'export à utiliser
      */
-    public function actionExport($exporter = null) {
+    public function actionExport($format = null, $mode = 'download', $zip = false) {
         // Essaie de construire une requête avec les arguments en cours
         $args = $_REQUEST;
         unset($args['page']); // nom de la page admin / numéro de page de résultats
         unset($args['m']); // nom de l'action
         unset($args['post_type']); // type
-        unset($args['exporter']); // exporter
+        unset($args['format']); // nom du format
+        unset($args['mode']); // download, display ou mail
+        unset($args['zip']); // faire un zip
+
         $request = new SearchRequest($args);
 
         // Si la requête est vide, demande à l'utilisateur de saisir une équation
         if (0 === count($request->search())) {
             return $this->view('docalist-biblio:export/choose-refs', [
                 'database' => $this->database,
-                'exporter' => $exporter,
+                'format' => $format,
             ]);
         }
 
@@ -343,14 +347,14 @@ class ImportPage extends AdminPage {
         if (0 === $results->total()) {
             return $this->view('docalist-biblio:export/choose-refs', [
                 'database' => $this->database,
-                'exporter' => $exporter,
+                'format' => $format,
                 'error'    => __("Aucune notice ne correspond aux critères de recherche indiqués.", 'docalist-biblio')
             ]);
         }
 
         // Récupère la liste des exporteurs disponibles
-        $exporters = apply_filters('docalist_biblio_get_exporters', [], $this->database);
-        if (empty($exporters)) {
+        $formats = apply_filters('docalist_biblio_get_export_formats', [], $this->database);
+        if (empty($formats)) {
             return $this->view('docalist-core:error', [
                 'h2' => __('Exporter des notices', 'docalist-biblio'),
                 'h3' => __("Aucun format d'export disponible", 'docalist-biblio'),
@@ -359,43 +363,58 @@ class ImportPage extends AdminPage {
         }
 
         // Permet à l'utilisateur de choisir le format d'export
-        if (empty($exporter)) {
+        if (empty($format)) {
             return $this->view('docalist-biblio:export/choose-exporter', [
                 'database' => $this->database,
-                'exporters' => $exporters,
+                'formats' => $formats,
                 'args' => $args,
             ]);
         }
 
         // Vérifie que le format d'export indiqué existe
-        if (!isset($exporters[$exporter])) {
+        if (!isset($formats[$format])) {
             return $this->view('docalist-core:error', [
                 'h2' => __('Exporter des notices', 'docalist-biblio'),
                 'h3' => __("Format d'export incorrect", 'docalist-biblio'),
-                'message' => sprintf(__("Le format d'export indiqué (%s) n'est pas valide.", 'docalist-biblio'), $exporter),
+                'message' => sprintf(__("Le format d'export indiqué (%s) n'est pas valide.", 'docalist-biblio'), $format),
             ]);
         }
+        $name = $format;
+        $format = $formats[$format];
 
-        // Vérifie que l'exporter a indiqué un nom de classe
-        if (!isset($exporters[$exporter]['classname'])) {
+        // Vérifie que le format indique le nom du convertisseur à utiliser
+        if (!isset($format['converter'])) {
             return $this->view('docalist-core:error', [
                 'h2' => __('Exporter des notices', 'docalist-biblio'),
                 'h3' => __("Format d'export incorrect", 'docalist-biblio'),
-                'message' => sprintf(__("Aucune classe indiquée dans l'exporteur %s.", 'docalist-biblio'), $exporter),
+                'message' => sprintf(__("Aucun convertisseur indiqué dans le format %s.", 'docalist-biblio'), $name),
             ]);
         }
+        $converter = $format['converter'];
+
+        // Vérifie que le format indique le nom de l'exporter à utiliser
+        if (!isset($format['exporter'])) {
+            return $this->view('docalist-core:error', [
+                'h2' => __('Exporter des notices', 'docalist-biblio'),
+                'h3' => __("Format d'export incorrect", 'docalist-biblio'),
+                'message' => sprintf(__("Aucune exporteur indiqué dans le format %s.", 'docalist-biblio'), $name),
+            ]);
+        }
+        $exporter = $format['exporter'];
+
+        // Crée le convertisseur
+        $settings = isset($format['converter-settings']) ? $format['converter-settings'] : [];
+        $converter = new $converter($settings); /* @var $converter Converter */
 
         // Crée l'exporteur
-        $exporter = $exporters[$exporter];
-        $classname = $exporter['classname'];
-        $settings = isset($exporter['settings']) ? $exporter['settings'] : [];
-        /* @var $exporter AbstractExporter */
-        $exporter = new $classname($settings);
+        $settings = isset($format['exporter-settings']) ? $format['exporter-settings'] : [];
+        $exporter = new $exporter($converter, $settings); /* @var $exporter Exporter */
 
         // Crée l'itérateur
-        $iterator = new ReferenceIterator($request, true);
+        $grid = isset($format['grid']) ? $format['grid'] : 'base';
+        $iterator = new ReferenceIterator($request, $grid);
 
-        // On retourne une réponse de type "callback" qui lance l'export
+        // Crée une réponse de type "callback" qui lancera l'export
         $response = new CallbackResponse(function() use($exporter, $iterator) {
             // Permet au script de s'exécuter longtemps
             set_time_limit(3600);
@@ -404,8 +423,10 @@ class ImportPage extends AdminPage {
             $exporter->export($iterator);
         });
 
+        $disposition = ($mode==='display') ? 'inline' : 'attachment';
+
         $response->headers->set('Content-Type', $exporter->contentType());
-        $response->headers->set('Content-disposition', $exporter->contentDisposition());
+        $response->headers->set('Content-disposition', $exporter->contentDisposition($disposition));
         $response->headers->set('X-Content-Type-Options', 'nosniff');
 
         return $response;
