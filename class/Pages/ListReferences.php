@@ -15,6 +15,9 @@
 namespace Docalist\Biblio\Pages;
 
 use Docalist\Biblio\Database;
+use Docalist\Biblio\Reference;
+use WP_Post;
+use DateTime, DateInterval;
 
 /**
  * Page "Liste des notices" d'une base
@@ -56,35 +59,36 @@ class ListReferences{
      * différents dans la base.
      */
     protected function setupColumns() {
-        add_filter("manage_edit-{$this->postType}_columns", function($columns) {
-            $t = [];
-            $position = 0;
-            foreach($columns as $key => $label) {
-                ++$position;
-                $position === 2 && $t['ref'] = __('Ref', 'docalist-biblio');
-
-//                 if (count($this->types) > 1) {
-                    $position === 3 && $t['type'] = __('Type', 'docalist-biblio');
-//                 }
-
-                $t[$key] = $label;
-            }
-
+        // Définit la liste des colonnes à afficher
+        add_filter("manage_{$this->postType}_posts_columns", function($columns) {
             echo
-            '<style type="text/css">
-                    .widefat .column-ref  { width: 6%; text-align: center }
-                    .column-type { width: 10% }
+                '<style type="text/css">
+                    .widefat .column-ref  { width: 3em; text-align: right }
+                    .column-type { width: 5em }
+                    .column-creation { width: 9em }
+                    .column-lastupdate { width: 9em }
                 </style>';
-            return $t;
+
+            return [
+                'cb' => $columns['cb'],
+                'ref' => __('Ref', 'docalist-biblio'),
+                'type' => __('Type', 'docalist-biblio'),
+                'title' => $columns['title'],
+                'creation' => __('Création', 'docalist-biblio'),
+                'lastupdate' => __('Mise à jour', 'docalist-biblio'),
+//                 'author' => $columns['author'],
+                'comments' => $columns['comments'],
+//                 'date' => $columns['date'],
+            ];
         });
 
+        // Fournit le contenu des colonnes personnalisées pour chaque notice
         add_action("manage_{$this->postType}_posts_custom_column", function($column, $post_id) {
             /* @var $ref Reference */
             static $ref = null;
 
-            if ($column !== 'ref' && $column !== 'type') {
-                return;
-            }
+            /* @var $post WP_Post */
+            global $post;
 
             if (is_null($ref) || $ref->id() !== $post_id) {
                 $ref = $this->database->load($post_id);
@@ -101,13 +105,117 @@ class ListReferences{
                     if (isset($types[$type])) {
                         echo $types[$type]->label();
                     } else {
-                        $title = __("Le type %s n'existe pas dans %s.", 'docalist-core');
+                        $title = __("Le type %s n'existe pas dans la base %s.", 'docalist-biblio');
                         $title = sprintf($title, $type, $this->database->settings()->label());
                         printf('<span style="color:red;" title="%s">%s</span>', $title, $type);
                     }
                     break;
+
+                case 'creation':
+                    $date = $post->post_date;
+                    $author = get_user_by('id', $post->post_author); /* @var $author WP_User */
+                    printf('%s<br/><a href="%s">%s</a>',
+                        $this->formatDate($date),
+                        esc_url(add_query_arg(['author' => $author->ID])),
+                        $author->display_name
+                    );
+                    break;
+
+                case 'lastupdate':
+                    $date = $post->post_modified;
+                    if ($date !== $post->post_date) {
+                        $id = get_post_meta($post->ID, '_edit_last', true);
+                        if ($id /* && $id !== $post->post_author */) {
+                            $author = get_user_by('id', $id); /* @var $author WP_User */
+                            printf('%s<br/><a href="%s">%s</a>',
+                                $this->formatDate($date),
+                                esc_url(add_query_arg(['author' => $author->ID])),
+                                $author->display_name
+                            );
+                        }
+                    }
+                    break;
             }
         }, 10, 2 );
+
+        add_filter("manage_edit-{$this->postType}_sortable_columns", function($columns) {
+            /*
+             * On a plusieurs possibilités pour trier sur "la date de dernière
+             * modification" et peu de doc. Examen des requêtes SQL générées:
+             * - orderby=last_modified -> ORDER BY wp_posts.post_date DESC
+             * - orderby=modified      -> ORDER BY wp_posts.post_modified DESC
+             * - orderby=post_modified -> ORDER BY wp_posts.post_modified DESC
+             *
+             * Conclusion :
+             * - last_modified est vraiment trompeur : ça trie sur la date de
+             *   création et non pas la date de mise à jour !
+             * - modified est juste un alias de post_modified
+             * - orderby=post_modified est l'option la plus lisible
+             *
+             * Ordre par défaut :
+             * - si l'utilisateur demande à trier par "date de modif", il veut
+             *   en général les derniers posts modifiés
+             * - donc : order=desc
+             *
+             * Tri secondaire :
+             * - les posts qui n'ont jamais été modifiés arrivent dans un
+             *   ordre quelconque.
+             * - Il faut un tri secondaire : post_date.
+             * - Pb : comment indiquer ça ?
+             * - Par essais successifs, il semble que la syntaxe champ1+champ2
+             *   fonctionne (non documenté).
+             *    -> orderby=post_modified+post_date&order=desc
+             *    -> ORDER BY wp_posts.post_modified DESC, wp_posts.post_date DESC
+             * - Seule limite : l'ordre de tri ne s'inverse pas quand on
+             *   reclique sur la colonne lastupdate (pas grave).
+             *
+             * Performances :
+             * - dans la base wordpress, le champ post_modified n'est pas indexé
+             * - du coup, le tri par date de dernière modification est très lent
+             *   (la slow query générée dure environ 1 seconde).
+             * - ajouter un index ? utiliser ES ?
+             */
+            $columns['creation']   = ['post_date', true];
+            $columns['lastupdate'] = ['post_modified+post_date', true];
+
+            return $columns;
+        });
+    }
+
+    private function formatDate($date) {
+        global $wp_locale;
+        global $mode; // "list" ou "excerpt"
+
+        $date = new DateTime($date);
+        $now = new DateTime();
+        $excerpt = $mode === 'excerpt';
+
+        // Aujourd'hui
+        if ($date->format('Ymd') === $now->format('Ymd')) {
+            return $date->format('H:i:s');
+        }
+
+        // Un des jours précédents : affiche hier, mardi, lundi, etc.
+        $oneDay = new DateInterval('P1D');
+        for ($i = 0; $i < 6; $i++) {
+            $now->sub($oneDay);
+            if ($date->format('Ymd') === $now->format('Ymd')) {
+                $day = $i ? $wp_locale->get_weekday($date->format('w')) : __('hier', 'docalist-biblio');
+                $format = $excerpt ? '%s %s' : '<abbr title="%2$s">%1$s</abbr>';
+                return sprintf($format, $day, $date->format('H:i:s'));
+            }
+        }
+
+        // Même année : affiche jour/mois
+        $now = new DateTime();
+        if ($date->format('Y') === $now->format('Y')) {
+            $format = $excerpt ? '%s %s' : '<abbr title="%2$s">%1$s</abbr>';
+            return sprintf($format, $date->format('d/m'), $date->format('H:i:s'));
+        }
+
+        // Autre date
+        $format = $excerpt ? '%s %s' : '<abbr title="%2$s">%1$s</abbr>';
+        return sprintf($format, $date->format('d/m/y'), $date->format('H:i:s'));
     }
 
     /**
@@ -120,16 +228,14 @@ class ListReferences{
      * retournée par countTypes().
      */
     protected function setupFilters() {
-
-        // Nos filtres sont désactivés pour l'instant, c'est beaucoup trop lent
-        // (une seconde de délai en plus). cf. docalist-biblio#8.
-
         // Pour le moment, on se contente de masquer le bouton "filtrer"
         // comme on n'a plus aucun filtre
         add_action('restrict_manage_posts', function() {
             echo '<style type="text/css">#post-query-submit {display: none;}</style>';
         });
 
+        // Nos filtres sont désactivés pour l'instant, c'est beaucoup trop lent
+        // (une seconde de délai en plus). cf. docalist-biblio#8.
         return;
 
         add_action('restrict_manage_posts', function() {
