@@ -140,8 +140,8 @@ class EditReference {
 
         // On connaît le type de notice à créer
         if (isset($_REQUEST['ref_type'])) {
-            // On va laisser WordPress continuer sont process
-            // Il va créer un "auto-draft" et appeller wp_insert_post().
+            // On va laisser WordPress continuer son process
+            // Il va appeller wp_insert_post() pour créer un "auto-draft".
             // Juste avant l'insertion, il appelle le filtre wp_insert_post_data
             // avec les données initiales du post. C'est ce filtre qu'on intercepte
             // pour initialiser la notice.
@@ -320,61 +320,121 @@ class EditReference {
      * @return array Les données à enregistrer dans le post.
      */
     protected function save($data, $postarr) {
+        $debug = false;
+
         /*
          * Cette méthode est appellée par wp_insert_post() quand wordpress
-         * s'apprête à enregistrer le post modifié dans la base.
-         * Wordpress nous passe dans $data les nouvelles données du post.
-         * A partir de ces données, on construit une référence (postToEntity)
-         * On binde cette référence avec les données transmises dans $_POST
-         * On met ensuite à jour $data à partir de la référence en appellant
-         * entityToPost.
-         * On retourne à wp le résultat obtenu.
+         * s'apprête à enregistrer le post modifié dans la base (cf __constuct)
+         * - $postarr contient la totalité des données transmises lors de
+         *   l'appel à wp_insert_post (i.e. tous les champs du formulaire).
+         * - $data contient les données standard du WP_POST que wordpress a
+         *   construit à partir de $postarr (post_author, post_date, etc.)
          */
 
-        // Si wordpress nous a appellé pour une révision, on ne change rien
-        if ($data['post_type'] !== $this->postType) {
+        // Vérifie le nonce et le post type (ignore révisions et autres types)
+        if ($data['post_type'] !== $this->postType || ! $this->checkNonce()) {
             return $data;
         }
 
-        // Vérifie le nonce
-        if (! $this->checkNonce()) {
-            return;
+        // Les données transmises par Wordpress sont "slashées"
+        $data = wp_unslash($data);
+        $postarr = wp_unslash($postarr);
+
+        if ($debug) {
+            header('content-type: text/html; charset=UTF8');
+            echo '<style>code{color: darkblue;font-weight: bold;}</style>';
+            echo '<h1>Données de $data</h1>';
+            var_dump($data);
         }
 
-        // Crée une référence à partir des données du post
-        // $data contient les données standard d'un post wordpress (post_author,
-        // post_date, post_content, etc.)
-        // Ce qui nous intéresse, c'est post_excerpt, qui contient toutes les
-        // données actuelles de la notice.
-        $data = $this->database->decode(wp_unslash($data), $postarr['ID']);
+        // Wordpress considère que "content" est un alias de "post_content"
+        // Du coup, on récupère dans $data.post_content le champ docalist
+        // "content" (un tableau donc comme le champ est un objet multivalué)
+        $data['post_content'] = '';
 
-        // Récupère le type actuel de la notice
-        if (! isset($data['type'])) {
+        /*
+         * Etape 1
+         *
+         * On part de $data qui contient :
+         * - les champ wordpress mis à jour (post_status, post_date, etc.)
+         * - les anciennes données de la notice existante, encodées en json
+         *   dans le champ post_excerpt fournit par wordpress dans $data.
+         *
+         * On construit un objet Reference à partir de ces données :
+         * - la référence obtenue correspond aux données de l'ancienne notice
+         *   sauf pour les champs mappés qui contiennent les données WP à jour.
+         * - les champs wordpress qui ne sont pas mappés (post_date_gmt,
+         *   ping_status...) sont perdus : ils figurent dans $data mais pas
+         *   dans $ref. Ils seront réinjectés à la fin (étape 4).
+         */
+        $ref = $this->database->decode($data, $postarr['ID']);
+        if (! isset($ref['type'])) {
             throw new \Exception("Pas de type dans data");
         }
-        $ref = Reference::create($data['type'], $data);
+        $ref = Reference::create($ref['type'], $ref);
 
-        // Binde la référence avec les données transmises dans $_POST
-        $record = wp_unslash($_POST);
+        if ($debug) {
+            echo '<h1>Reference créée à partir de $data)</h1>';
+            echo "<p>Il s'agit de la notice existante, sauf pour les champs WP mappés qui contiennent déjà la valeur mise à jour.</p>";
+            echo "<pre>$ref</pre>";
+        }
+
+        /*
+         * Etape 2
+         *
+         * Met à jour la référence avec les données des metaboxes.
+         */
         foreach($this->metaboxes($ref) as $metabox) {
-            $metabox->bind($record);
+            $metabox->bind($postarr);
             foreach($metabox->data() as $key => $value) {
-                if ($value !== '') {
-                    $ref->$key = $value;
-                }
+                $ref->$key = $value;
             }
+        }
+
+        if ($debug) {
+            echo "<h1>Etat de la notice après binding</h1>";
+            echo "<pre>$ref</pre>";
         }
 
         // Filtre les champs et les valeurs vides
         $ref->filterEmpty(false);
+        if ($debug) {
+            echo "<h1>Filtrage des champs vides. Notice après :</h1>";
+            echo "<pre>$ref</pre>";
+        }
 
         // Numérote la notice s'il y a lieu
         $ref->beforeSave($this->database);
+        if ($debug) {
+            echo "<h1>Appel de beforeSave() :</h1>";
+            echo "<pre>$ref</pre>";
+        }
 
-        // Récupère les données de la référence obtenue
-        $data = $this->database->encode($ref->value());
+        /*
+         * Etape 3
+         *
+         * Génère le post wordpress à partir de la notice
+         */
+        $ref = $this->database->encode($ref->value()); // !!! encode ne doit pas générer de valeurs par défaut
+        if ($debug) {
+            echo "<h1>Données de la notice après encode() = post généré :</h1>";
+            var_dump($ref);
+        }
 
-        // Retourne le résultat à Wordpress
+        /*
+         * Etape 4
+         *
+         * Injecte dans le post les champs wordpress qu'on a perdu à l'étape 1
+         * quand on a convertit $data en référence
+         */
+        $data = $ref + $data;
+        if ($debug) {
+            echo "<h1>Injecte les champs wordpress manquants. Données finales retournées à wordpress :</h1>";
+            var_dump($data);
+        }
+
+        // Retourne le résultat à Wordpress, en "slashant" les données
+        $debug && die();
         return wp_slash($data);
     }
 
@@ -403,8 +463,11 @@ class EditReference {
      * @return Fragment[] Un tableau de la forme id metabox => form fragment
      */
     protected function metaboxes(Reference $ref) {
+        // Charge la grille "edit" correspondant au type de la notice
+        $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
+
         $metaboxes = [];
-        foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
+        foreach($schema->fields() as $name => $field) { /* @var $field Field */
             if ($field->type() === 'Docalist\Biblio\Type\Group') {
                 $box = new Fragment();
                 $box->label($field->label())
