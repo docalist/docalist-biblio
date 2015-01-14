@@ -61,6 +61,16 @@ class EditReference {
     protected $reference;
 
     /**
+     * Indique si on crée un nouveau post ou si on édite une notice existante.
+     *
+     * Initialisé par create() et utilisé par edit() pour savoir s'il faut ou
+     * non injecter les valeurs par défaut dans les champs des metaboxes.
+     *
+     * @var bool
+     */
+    protected $isNewPost = false;
+
+    /**
      *
      * @param Database $database
      */
@@ -131,7 +141,9 @@ class EditReference {
     /**
      * Affiche l'écran "choix du type de notice à créer".
      */
-    protected function create(){
+    protected function create() {
+        $this->isNewPost = true;
+
         // S'il n'y a qu'un seul type de notices, inutile de demander à l'utilisateur
         $types = $this->database->settings()->types;
         if (empty($_REQUEST['ref_type']) && count($types) === 1) {
@@ -256,7 +268,7 @@ class EditReference {
 
         // Construit le formulaire
         $assets = new Assets();
-        foreach($this->metaboxes($ref) as $form) {
+        foreach($this->metaboxes($ref, ! $this->isNewPost) as $form) {
             $id = $form->attribute('id');
             $title = $form->label() ?: $ref->schema()->label();
             $form->label(false); // comme on affiche le titre nous même
@@ -460,9 +472,12 @@ class EditReference {
      * Retourne les formulaires utilisés pour saisir une notice de ce type.
      *
      * @param string $type
+     * @param bool $ignoreDefaults Indique s'il faut ignorer la valeur par
+     * défaut des champs.
+     *
      * @return Fragment[] Un tableau de la forme id metabox => form fragment
      */
-    protected function metaboxes(Reference $ref) {
+    protected function metaboxes(Reference $ref, $ignoreDefaults = false) {
         // Charge la grille "edit" correspondant au type de la notice
         $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
 
@@ -485,6 +500,7 @@ class EditReference {
                     $metaboxes[] = $box;
                 }
 
+                $ignoreDefaults && $field->__set('default', null);
                 $box->add($ref->$name->editForm());
             }
         }
