@@ -215,7 +215,7 @@ class ListReferences{
 
         // Autre date
         $format = $excerpt ? '%s %s' : '<abbr title="%2$s">%1$s</abbr>';
-        return sprintf($format, $date->format('d/m/y'), $date->format('H:i:s'));
+        return sprintf($format, $date->format('d/m/Y'), $date->format('H:i:s'));
     }
 
     /**
