@@ -4,6 +4,8 @@
 # - 11-06-14, DM Version initiale (cf. daniel-menard/prisme#106).
 # - 23/09/14, DM Ajout de audiodescription, sdh, bonus et booklet
 #             (https://github.com/daniel-menard/prisme/issues/177)
+# - 28/01/15, DM Ajout de vost et subtitles-fra/eng/spa/ger/ita/rus/ara
+#             (https://github.com/daniel-menard/prisme/issues/177)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 # ------------------------------------------------------------------------------
@@ -28,8 +30,9 @@ booklet;livret;;;;appendices¤bonus;"Le document est accompagné d'un livret (li
 # ------------------------------------------------------------------------------
 color;couleur;;;;b&w;"Le document est en couleur (en totalité ou dans une proportion importante).";;
 b&w;n&b;;;;color;"Le document est en noir et blanc (en totalité ou dans une proportion importante).";;
-french-version;VF;;;;original-version;"Le document est la version française d'un document en langue étrangère.";;
-original-version;VO;;;;french-version;"Le document est en langue étrangère.";;
+french-version;VF;;;;original-version¤vost;"Le document est la version française d'un document en langue étrangère.";;
+original-version;VO;;;;french-version¤vost;"Le document est en langue étrangère.";;
+vost;VOST;;;;original-version¤french-version;"En France, se dit d'un film diffusé en version originale avec des sous-titres en français (Version Originale Sous-Titrée).";;
 audio-description;audiodescription;;;;sdh;"Le film ou la vidéo est accessible aux personnes aveugles ou malvoyantes.";;
 sdh;sous-titrages sourds et malentendants;;;;audio-description;"Le film ou la vidéo dispose de sous-titres spécialement adaptés aux personnes souffrant d'une déficience auditive.";;
 # remarque : en anglais, sdh = subtitles for the deaf and hard-of-hearing
@@ -91,3 +94,14 @@ mp4;"vidéo MP4";;;;;"Vidéo au format MP4.";;
 quicktime;"vidéo QuickTime";;;;;"Vidéo au format QuickTime (QT).";;
 wmv;"vidéo WMV";;;;;"Vidéo au format Windows Media Player.";;
 avi;"vidéo AVI";;;;;"Vidéo au format AVI.";;
+# ------------------------------------------------------------------------------
+# Sous-titres
+# ------------------------------------------------------------------------------
+subtitles;sous-titres;;;;;"Le document (film, vidéo...) comporte des sous-titres.";"Utiliser de préférence les étiquettes qui indiquent la langue des sous-titres (""sous-titres en français"", ""sous-titres en anglais"", etc.)";
+subtitles-fra;"sous-titres en français";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en français.";;
+subtitles-eng;"sous-titres en anglais";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en anglais";;
+subtitles-spa;"sous-titres en espagnol";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en espagnol.";;
+subtitles-ger;"sous-titres en allemand";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en allemand.";;
+subtitles-ita;"sous-titres en italien";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en italien.";;
+subtitles-rus;"sous-titres en russe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en russe.";;
+subtitles-ara;"sous-titres en arabe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en arabe.";;
