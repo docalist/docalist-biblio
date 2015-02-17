@@ -165,17 +165,11 @@ class EditReference {
                 // Crée une référence du type demandé avec les valeurs par défaut du schéma
                 $ref = Reference::create($_REQUEST['ref_type']);
 
-                // Ecrase avec les valeurs par défaut de wordpress (statut, type, etc.)
-                $data = $this->database->decode($data, 'newref');
-                foreach($data as $key => $value) {
-                    $ref->$key = $value;
-                }
-
                 // Evite le titre wp "brouillon auto"
                 $ref->title = '';
 
                 // Génère les données du post wp à créer
-                $data = $this->database->encode($ref->value());
+                $data = $this->database->encode($ref->value()) + $data;
 
                 return $data;
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
