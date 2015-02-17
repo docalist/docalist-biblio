@@ -6,6 +6,8 @@
 #             (https://github.com/daniel-menard/prisme/issues/177)
 # - 28/01/15, DM Ajout de vost et subtitles-fra/eng/spa/ger/ita/rus/ara
 #             (https://github.com/daniel-menard/prisme/issues/177)
+# - 17/02/15, DM Hiérarchise les formats de fichiers en introduisant des TG
+#             (https://github.com/daniel-menard/prisme/issues/226)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 # ------------------------------------------------------------------------------
@@ -65,43 +67,48 @@ bonus;bonus;;;;appendices¤booklet;"Le document contient des bonus, des extras (
 # Résumés
 # ------------------------------------------------------------------------------
 abstract;résumé;;;;;"Le document comporte un résumé dont la langue n'est pas connue.";"Utiliser de préférence les étiquettes résumé qui indiquent la langue (""résumé en français"", ""résumé en anglais"", etc.)";
-abstract-fra;"résumé en français";;;abstract;;"Le document comporte un résumé en français.";;
-abstract-eng;"résumé en anglais";;;abstract;;"Le document comporte un résumé en anglais";;
-abstract-spa;"résumé en espagnol";;;abstract;;"Le document comporte un résumé en espagnol.";;
-abstract-ger;"résumé en allemand";;;abstract;;"Le document comporte un résumé en allemand.";;
-abstract-ita;"résumé en italien";;;abstract;;"Le document comporte un résumé en italien.";;
-abstract-rus;"résumé en russe";;;abstract;;"Le document comporte un résumé en russe.";;
-abstract-ara;"résumé en arabe";;;abstract;;"Le document comporte un résumé en arabe.";;
+    abstract-fra;"résumé en français";;;abstract;;"Le document comporte un résumé en français.";;
+    abstract-eng;"résumé en anglais";;;abstract;;"Le document comporte un résumé en anglais";;
+    abstract-spa;"résumé en espagnol";;;abstract;;"Le document comporte un résumé en espagnol.";;
+    abstract-ger;"résumé en allemand";;;abstract;;"Le document comporte un résumé en allemand.";;
+    abstract-ita;"résumé en italien";;;abstract;;"Le document comporte un résumé en italien.";;
+    abstract-rus;"résumé en russe";;;abstract;;"Le document comporte un résumé en russe.";;
+    abstract-ara;"résumé en arabe";;;abstract;;"Le document comporte un résumé en arabe.";;
 # ------------------------------------------------------------------------------
 # Formats de fichiers
 # ------------------------------------------------------------------------------
-pdf;"document PDF";;;;;"Document électronique en format PDF.";;
-html;"page HTML";;;;;"Document électronique en format HTML.";;
-xml;"fichier XML";;;;;"Document électronique en format XML.";;
-doc;"document Word 97-2003";;;;;"Document électronique en format Microsoft Word 97/2000/XP/2003.";;
-docx;"document Word 2007 et plus";;;;;"Document électronique en format Microsoft Word 2007 ou ultérieur.";;
-rtf;"document RTF";;;;;"Document électronique en format RTF (Rich Text Format).";;
-odt;"texte OpenDocument.";;;;;"Document électronique en format Open Document Text (Oasis, Open Office, Libre Office, etc.)";;
-odp;"présentation OpenDocument";;;;;"Présentation électronique au format Open Document Presentation (Oasis, Open Office, Libre Office, etc.)";;
-ppt;"présentation PowerPoint";;;;;"Présentation électronique au format Microsoft PowerPoint.";;
-zip;"archive ZIP";;;;;"Archive compressée au format ZIP";;
-jpeg;"image JPEG";;;;;"Photo ou image au format JPEG.";;
-png;"image PNG";;;;;"Photo ou image au format PNG.";;
-mp3;"audio au format MP3";;;;;"Document audio au format MP3.";;
-wma;"audio WMA";;;;;"Document audio au format WMA.";;
-mpeg;"vidéo MPEG";;;;;"Vidéo au format MPEG.";;
-mp4;"vidéo MP4";;;;;"Vidéo au format MP4.";;
-quicktime;"vidéo QuickTime";;;;;"Vidéo au format QuickTime (QT).";;
-wmv;"vidéo WMV";;;;;"Vidéo au format Windows Media Player.";;
-avi;"vidéo AVI";;;;;"Vidéo au format AVI.";;
+computer-file;"fichier informatique";;;;;"Fichier informatique.";"Utiliser de préférence l'un des termes spécifiques pour décrire précisément le format (pdf, jpeg, avi...)";
+    electronic-document;"document numérique";;;computer-file;;"Document électronique.";"Utiliser de préférence l'un des termes spécifiques pour décrire précisément le format (pdf, zip, avi...)";
+        pdf;"document PDF";;;electronic-document;;"Document électronique en format PDF.";;
+        html;"page HTML";;;electronic-document;;"Document électronique en format HTML.";;
+        xml;"fichier XML";;;electronic-document;;"Document électronique en format XML.";;
+        doc;"document Word 97-2003";;;electronic-document;;"Document électronique en format Microsoft Word 97/2000/XP/2003.";;
+        docx;"document Word 2007 et plus";;;electronic-document;;"Document électronique en format Microsoft Word 2007 ou ultérieur.";;
+        rtf;"document RTF";;;electronic-document;;"Document électronique en format RTF (Rich Text Format).";;
+        odt;"texte OpenDocument";;;electronic-document;;"Document électronique en format Open Document Text (Oasis, Open Office, Libre Office, etc.)";;
+        odp;"présentation OpenDocument";;;electronic-document;;"Présentation électronique au format Open Document Presentation (Oasis, Open Office, Libre Office, etc.)";;
+        ppt;"présentation PowerPoint";;;electronic-document;;"Présentation électronique au format Microsoft PowerPoint.";;
+        zip;"archive ZIP";;;electronic-document;;"Archive compressée au format ZIP";;
+    digital-image;"image numérique";;;computer-file;;"Image au format numérique.";"Utiliser de préférence l'un des termes spécifiques pour décrire précisément le format (jpeg, png...)";
+        jpeg;"image JPEG";;;digital-image;;"Photo ou image au format JPEG.";;
+        png;"image PNG";;;digital-image;;"Photo ou image au format PNG.";;
+    audio-file;"fichier son";;;computer-file;;"Fichier son.";"Utiliser de préférence l'un des termes spécifiques pour décrire précisément le format (mp3, wma...)";
+        mp3;"audio au format MP3";;;audio-file;;"Document audio au format MP3.";;
+        wma;"audio WMA";;;audio-file;;"Document audio au format WMA.";;
+    video-file;"fichier vidéo";;;computer-file;;"Fichier vidéo.";"Utiliser de préférence l'un des termes spécifiques pour décrire précisément le format (mpeg, avi, quicktime, wmv...)";
+        mpeg;"vidéo MPEG";;;video-file;;"Vidéo au format MPEG.";;
+        mp4;"vidéo MP4";;;video-file;;"Vidéo au format MP4.";;
+        quicktime;"vidéo QuickTime";;;video-file;;"Vidéo au format QuickTime (QT).";;
+        wmv;"vidéo WMV";;;video-file;;"Vidéo au format Windows Media Player.";;
+        avi;"vidéo AVI";;;video-file;;"Vidéo au format AVI.";;
 # ------------------------------------------------------------------------------
 # Sous-titres
 # ------------------------------------------------------------------------------
 subtitles;sous-titres;;;;;"Le document (film, vidéo...) comporte des sous-titres.";"Utiliser de préférence les étiquettes qui indiquent la langue des sous-titres (""sous-titres en français"", ""sous-titres en anglais"", etc.)";
-subtitles-fra;"sous-titres en français";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en français.";;
-subtitles-eng;"sous-titres en anglais";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en anglais";;
-subtitles-spa;"sous-titres en espagnol";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en espagnol.";;
-subtitles-ger;"sous-titres en allemand";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en allemand.";;
-subtitles-ita;"sous-titres en italien";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en italien.";;
-subtitles-rus;"sous-titres en russe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en russe.";;
-subtitles-ara;"sous-titres en arabe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en arabe.";;
+    subtitles-fra;"sous-titres en français";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en français.";;
+    subtitles-eng;"sous-titres en anglais";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en anglais";;
+    subtitles-spa;"sous-titres en espagnol";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en espagnol.";;
+    subtitles-ger;"sous-titres en allemand";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en allemand.";;
+    subtitles-ita;"sous-titres en italien";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en italien.";;
+    subtitles-rus;"sous-titres en russe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en russe.";;
+    subtitles-ara;"sous-titres en arabe";;;subtitles;;"Le document (film, vidéo...) comporte des sous-titres en arabe.";;
