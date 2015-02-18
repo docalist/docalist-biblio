@@ -64,7 +64,6 @@ class Periodical extends Reference {
 
         // Supprime les champs qu'on n'utilise pas
         unset($fields['translation']);
-        unset($fields['organisation']);
         unset($fields['journal']);
         unset($fields['edition']);
         unset($fields['event']);
@@ -101,7 +100,7 @@ class Periodical extends Reference {
                 // Author, Organisation
                 'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
                 'author',
-//              'organisation',
+                'organisation',
 
                 // Date / Language / Pagination / Format
                 'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
