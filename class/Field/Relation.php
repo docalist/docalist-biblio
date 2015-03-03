@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -53,15 +53,15 @@ class Relation extends MultiField {
             'relation.*' => [
                 'path_match' => 'relation.*',
                 'mapping' => [
-                    'type' => 'string',
+                    'type' => 'long',
                     'index' => 'not_analyzed',
                     'copy_to' => 'relation',
                 ]
             ]
         ];
 
-        $mappings['properties']['number'] = [
-            'type' => 'string',
+        $mappings['properties']['relation'] = [
+            'type' => 'long',
             'index' => 'not_analyzed',
         ];
     }
