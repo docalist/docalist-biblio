@@ -37,6 +37,7 @@ class Ref extends Integer {
         $mappings['properties']['ref'] = [
             'type' => 'long',
             'index' => 'not_analyzed',
+            'ignore_malformed' => true
         ];
     }
 }

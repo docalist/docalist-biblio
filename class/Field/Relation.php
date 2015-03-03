@@ -55,6 +55,7 @@ class Relation extends MultiField {
                 'mapping' => [
                     'type' => 'long',
                     'index' => 'not_analyzed',
+                    'ignore_malformed' => true,
                     'copy_to' => 'relation',
                 ]
             ]
@@ -63,6 +64,7 @@ class Relation extends MultiField {
         $mappings['properties']['relation'] = [
             'type' => 'long',
             'index' => 'not_analyzed',
+            'ignore_malformed' => true
         ];
     }
 
