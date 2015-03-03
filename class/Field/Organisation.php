@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -87,7 +87,7 @@ class Organisation extends MultiField {
     }
 
     public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(true); // stemming sur les noms d'organismes
+        $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(); // stemming sur les noms d'organismes
     }
 
     protected static function initFormats() {

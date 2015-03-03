@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -58,13 +58,13 @@ class Topic extends MultiField {
         $mappings['dynamic_templates'][] = [
             'topic.*' => [
                 'path_match' => 'topic.*',
-                'mapping' => self::stdIndexFilterAndSuggest(true) + [
+                'mapping' => self::stdIndexFilterAndSuggest() + [
                     'copy_to' => 'topic',
                 ]
             ]
         ];
 
-        $mappings['properties']['topic'] = self::stdIndexFilterAndSuggest(true);
+        $mappings['properties']['topic'] = self::stdIndexFilterAndSuggest();
     }
 
 
