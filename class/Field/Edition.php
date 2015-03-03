@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,6 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
+use Docalist\Schema\Field;
 
 /**
  * Une mention d'édition
@@ -22,5 +23,9 @@ use Docalist\Biblio\Type\String;
 class Edition extends String {
     public function map(array & $doc) {
         $doc['edition'][] = $this->value();
+    }
+
+    public static function ESmapping(array & $mappings, Field $schema) {
+        $mappings['properties']['edition'] = self::stdIndex();
     }
 }
