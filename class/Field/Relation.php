@@ -49,23 +49,22 @@ class Relation extends MultiField {
     }
 
     public static function ESmapping(array & $mappings, Field $schema) {
+        $analyzer = [
+            'type' => 'long',
+            'index' => 'not_analyzed',
+            'ignore_malformed' => true
+        ];
+
         $mappings['dynamic_templates'][] = [
             'relation.*' => [
                 'path_match' => 'relation.*',
-                'mapping' => [
-                    'type' => 'long',
-                    'index' => 'not_analyzed',
-                    'ignore_malformed' => true,
+                'mapping' => $analyzer + [
                     'copy_to' => 'relation',
                 ]
             ]
         ];
 
-        $mappings['properties']['relation'] = [
-            'type' => 'long',
-            'index' => 'not_analyzed',
-            'ignore_malformed' => true
-        ];
+        $mappings['properties']['relation'] = $analyzer;
     }
 
     private static function getRef($ref) {

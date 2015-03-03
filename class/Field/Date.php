@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -47,23 +47,22 @@ class Date extends MultiField {
     }
 
     public static function ESmapping(array & $mappings, Field $schema) {
+        $analyzer = [
+            'type' => 'date',
+            'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
+            'ignore_malformed' => true
+        ];
+
         $mappings['dynamic_templates'][] = [
             'date.*' => [
                 'path_match' => 'date.*',
-                'mapping' => [
-                    'type' => 'date',
-                    'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
-                    'ignore_malformed' => true,
+                'mapping' => $analyzer + [
                     'copy_to' => 'date',
                 ],
             ]
         ];
 
-        $mappings['properties']['date'] = [
-            'type' => 'date',
-            'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
-            'ignore_malformed' => true
-        ];
+        $mappings['properties']['date'] = $analyzer;
     }
 
     // TODO : créer un Type date

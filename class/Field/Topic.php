@@ -55,16 +55,17 @@ class Topic extends MultiField {
     }
 
     public static function ESmapping(array & $mappings, Field $schema) {
+        $analyzer = self::stdIndexFilterAndSuggest();
         $mappings['dynamic_templates'][] = [
             'topic.*' => [
                 'path_match' => 'topic.*',
-                'mapping' => self::stdIndexFilterAndSuggest() + [
+                'mapping' => $analyzer + [
                     'copy_to' => 'topic',
                 ]
             ]
         ];
 
-        $mappings['properties']['topic'] = self::stdIndexFilterAndSuggest();
+        $mappings['properties']['topic'] = $analyzer;
     }
 
 
