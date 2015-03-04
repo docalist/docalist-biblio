@@ -22,4 +22,8 @@
 #            system and is making it available as a public domain data set".
 #
 # Date de génération : %3$s
+#
+# La table est triée par codes croissants. Les non-descripteurs (les entrées 
+# qui n'ont pas de code) apparaissent juste après le descripteur auquel ils 
+# sont rattachés (cf. script lc-autorithy.php).
 # ------------------------------------------------------------------------------
