@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -110,6 +110,7 @@ echo "- Generation du fichier CSV, ", count($relators), " entrees :\n";
 $nb = 0;
 
 /* @var $relator EasyRdf_Resource */
+$rows = [];
 foreach($relators as $relator) {
     // Nouvelle ligne
     $row = array_fill_keys(array_keys($row), '');
@@ -135,7 +136,8 @@ foreach($relators as $relator) {
     $row['HS'] = history($relator);
 
     // Ecrit le terme dans le fichier CSV
-    fputcsv($file, $row, $delimiter);
+    // fputcsv($file, $row, $delimiter);
+    $rows[sortkey($row, count($rows))] = $row;
 
     // Si le terme a des variantes, génère un nondes pour chaque variante
     foreach($relator->all('mads:hasVariant') as $variant) {
@@ -147,7 +149,8 @@ foreach($relators as $relator) {
         $row['USE'] = $relator->get('mads:code');
 
         // Ecrit le terme dans le fichier CSV
-        fputcsv($file, $row, $delimiter);
+        // fputcsv($file, $row, $delimiter);
+        $rows[sortkey($row, count($rows))] = $row;
     }
 
 
@@ -158,6 +161,10 @@ foreach($relators as $relator) {
     // if ($nb > 12) break;
 }
 
+ksort($rows);
+foreach($rows as $row) {
+    fputcsv($file, $row, $delimiter);
+}
 // Ferme le fichier CSV
 fclose($file);
 
@@ -195,4 +202,12 @@ function history(EasyRdf_Resource $relator) {
     rsort($t);
 
     return implode("\n", $t);
+}
+
+function sortkey(array $row, $count) {
+    $key = $row['USE'] ? $row['USE'] : $row['code'];
+    $key.= $row['USE'] ? $row['USE'] : '---';
+    $key.= substr('0000' . $count, -4);
+
+    return $key;
 }
