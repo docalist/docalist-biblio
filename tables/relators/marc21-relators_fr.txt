@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # This file is part of a Docalist plugin.
 #
-# Copyright (C) 2012-2014 Daniel Ménard
+# Copyright (C) 2012-2015 Daniel Ménard
 #
 # For copyright and license information, please view the
 # LICENSE.txt file that was distributed with this source code.
@@ -15,8 +15,15 @@
 # ------------------------------------------------------------------------------
 # marc21-relators_fr.txt
 #
-# Ce fichier a été généré automatiquement à partir des données disponibles sur
-# la page http://www.lac-bac.gc.ca/marc/040010-220-f.html
+# Ne pas modifier directement cette table, utiliser le fichier de travail ODS
+# qui figure dans ../not-used.
+#
+# Initiallement, ce fichier était basé sur les données disponibles sur la page 
+# http://www.lac-bac.gc.ca/marc/040010-220-f.html
+#
+# Depuis, de nombreuses erreurs ont été corrigées et la majorité des libellés
+# et des descriptions ont été ré-écrits (traduction humaine, pas de traduction
+# automatique !).
 #
 # Date de génération : 14/03/2014 17:30:45
 # Historique :
@@ -26,276 +33,590 @@
 #                Le code clb est maintenant deprecated (use ctb).
 # - 26/09/14, DM On avait deux fois la ligne ctb.
 #                (https://github.com/daniel-menard/prisme/issues/189)
+# - 04/03/15, DM Remaniement complet de la table
+#             - travail effectué du 18/02 au 04/03
+#             - tri dans le même ordre que la table EN pour pouvoir comparer
+#             - création du fichier de travail ODS
+#             - traduction manuelle de tous les libellés/descriptions (plusieurs
+#               des traductions d'origine étaient incompréhensibles ou 
+#               inutilement compliquées)
+#             - ajout de tous les codes ajoutés en 2014 dans la table EN et qui
+#               ne figuraient pas encore dans la table FR 
+#               (https://github.com/daniel-menard/prisme/issues/166)
+#             - traduction des libellés et des descriptions des nouveaux codes
+#             - correction de nombreuses erreurs (le fichier ODS permet de les 
+#               détecter) : libellés en double, sens différent de ce que disait 
+#               la table EN, non-descripteur sans USE, etc.)
+#             - Au final, au 04/03/15 la table FR est parfaitement synchro
+#               avec la table EN.
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
-act;Acteur;;;;;"Terme utilisé pour désigner toute personne qui joue dans une présentation musicale ou dramatique.";;
-adp;Adaptateur;;;;;"Terme utilisé pour désigner toute personne qui 1) remanie une composition musicale pour d'autres instruments ou 2) récrit des romans ou des nouvelles pour l'écran ou un autre médium audio-visuel.";;
-pma;"Agence de réglementation";;;;;"Terme utilisé pour désigner une source, généralement une agence gouvernementale, qui émet les permis pour lesquels un travail est exécuté.";;
-prc;"Agent de liaison du processus";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la réalisation ou du déclenchement d'un processus effectué sur un ensemble de données.";;
-mdc;"Agent de liaison sur les métadonnées";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la compilation et de la mise à jour de la description d'origine de l'ensemble de métadonnées.";;
-anl;Analyste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui révise, étudie et analyse des données ou de l'information dans un domaine particulier.";;
-fmo;"Ancien propriétaire";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui était propriétaire du livre, manuscrit, etc. à un moment donné et comprend la personne ou l'organisme à qui le livre, manuscrit, etc. a déjà été remis et dont les noms paraissent dans une mention signalée par une autre personne ou collectivité; la personne ou collectivité qui donne le livre, manuscrit, etc. au propriétaire actuel s'appelle le donateur [dnr].";;
-anm;Animateur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui dessine des figures à deux dimensions, manipule des objets à trois dimensions. Il peut également programmer un ordinateur afin de pouvoir déplacer des objets et des images dans le but de créer un film d'animation. Les caméras d'animation, les supports, les feuilles de celluloïd, les transparents et les encres sont quelques-uns des outils de l'animateur.";;
-mod;"Animateur de débat";;;;;"Terme utilisé pour désigner toute personne qui anime une émission où l'on discute de différents sujets, généralement avec la participation d'experts provenant de domaines reliés au sujet de discussion et qui est souvent diffusé.";;
-ann;Annotateur;;;;;"Terme utilisé pour désigner toute personne qui écrit des notes sur un ouvrage imprimé.";;
-ant;"Antécédent bibliographique";;;;;"Terme utilisé pour désigner l'auteur de l'œuvre sur laquelle est fondée l'œuvre décrite dans la notice catalographique. Peut être utilisé dans le cas d'adaptations, de suites, d'index, etc.";;
-etr;Aquafortiste;;;;;;;
-arc;Architecte;;;;;;;
-lsa;Architecte-paysagiste;;;;;"Terme utilisé pour désigner une personne ou un organisme dont les tâches consistent à coordonner l'aménagement d'un terrain ainsi que les structures existantes ou proposées.";;
-srv;Arpenteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme effectuant les relevés d'une bande de terre afin d'en déterminer l'emplacement, les formes et les limites.";;
-arr;Arrangeur;;;;;"Terme utilisé pour désigner toute personne qui transcrit une composition musicale normalement pour un autre instrument que celui pour lequel la composition a été destinée. Dans un arrangement l'essence musicale demeure en principe inchangée.";;
-art;Artiste;;;;;"Terme utilisé pour désigner toute personne par exemple, un peintre, un sculpteur, qui conçoit ou réalise une conception graphique originale ou une œuvre d'art. Dans certains cas, vous pouvez utiliser un code spécifique, par exemple les codes [egr] ou [etr] au lieu du code [art]. Utilisez le code [ill] pour les « Illustrateur de livres ».";;
-;"Artiste vocal";voc;;;;;;
-aut;Auteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est principalement responsable du contenu intellectuel ou artistique de l'œuvre, généralement un texte imprimé. Ce terme peut aussi être utilisé dans les cas où ce contenu a été créé par plus d'une personne ou collectivité.";;
-aft;"Auteur de la postface, de l'achevé d'imprimer, etc.";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsables d'une postface, d'un achevé d'imprimer, etc., mais qui n'est pas l'auteur principal de l'œuvre.";;
-aui;"Auteur de l'introduction, etc.";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a écrit l'introduction, la préface, l'avant-propos, la postface, les notes ou la critique, mais qui n'est pas le principal auteur de l'œuvre.";;
-rbr;"Auteur de rubriques";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable des parties d'une œuvre, tels les titres, les en-têtes ou la préface d'un manuscrit. Les rubriques sont généralement rédigées en rouge ou toute autre couleur les distinguant du reste du texte.";;
-dub;"Auteur douteux";;;;;"Terme utilisé pour désigner toute personne ou tout organisme à qui la paternité d'une œuvre a été attribuée, mais sans doute à tort.";;
-aud;"Auteur du dialogue";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable du dialogue ou du commentaire parlé d'un scénario ou d'un enregistrement sonore.";;
-wam;"Auteur du matériel d'appoint";;;;;"Terme utilisé pour désigner toute personne qui écrit la documentation accompagnant un enregistrement sonore ou d'autres produits audio-visuels.";;
-aus;"Auteur d'un scénario, etc.";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a écrit le scénario, le dialogue, le commentaire parlés, d'un film.";;
-dto;"Auteur d'une dédicace";;;;;"Terme utilisé pour désigner la personne, qui formule et écrit une dédicace. La dédicace peut prendre la forme d'une formule officielle ou d'une envolée épistolaire ou poétique.";;
-ins;"Auteur d'une mention de représentation";;;;;"Terme utilisé pour désigner toute personne qui signe une mention de représentation.";;
-aqt;"Auteur mentionné dans une citation ou des extraits de textes";;;;;"Terme utilisé pour désigner toute personne dont le travail est largement mentionné dans des citations ou des extraits de textes tirés d'une œuvre et qui n'y a pas directement contribué. On trouve ce genre de citations dans les catalogues d'exposition, les collections de photographies, etc.";;
-oth;Autre;;;;;"Terme utilisé pour les codes de relation d'autres formats qui n'ont pas d'équivalents dans le format MARC ou pour les termes auxquels un code n'a pas été attribué.";;
-fnd;"Bailleur de fonds";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a agit en tant que soutien financier pour la production d'une œuvre, par exemple un livre écrit, imprimé ou publié, etc. ""sous les auspices de"".";;
-;"Bois, Graveur sur";wdc;;;;;;
-mke;"Baliseur de données";mrk;;;;;;
-cll;Calligraphiste;;;;;;;
-app;Candidat;;;;;;;
-;"Caractères typographiques, Concepteur de";tyd;;;;;;
-ctg;Cartographe;;;;;;;
-cns;Censeur;;;;;"Terme utilisé pour un censeur, responsable de l'expurgation de texte, etc. agissant à titre officiel ou privé.";;
-asg;Cessionnaire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme à qui le droit d'impression ou d'édition a été cédé.";;
-sng;Chanteur;;;;;"Terme utilisé pour désigner toute personne qui utilise sa voix avec ou sans accompagnement instrumental pour produire de la musique. Le chanteur, lors de sa prestation, peut ou non employer des mots réels.";;
-led;Chef;;;;;"Terme utilisé pour désigner toute personne ou tout organisme prenant la responsabilité principale d'une activité particulière ou d'un engagement. Utiliser avec un autre terme ou code de relation afin de démontrer l'importance du rôle particulier que possède cette personne ou organisme. Lorsque plusieurs termes pointent vers une vedette, utilisez la relation « Chef » seulement si elle s'applique à toutes les relations.";;
-rth;"Chef d'équipe de chercheurs";;;;;"Terme utilisé pour désigner toute personne responsable de la direction et de la gestion d'un projet de recherche.";;
-cnd;"Chef d'orchestre";;;;;"Terme utilisé pour désigner toute personne qui dirige un groupe d'exécutants par exemple, un orchestre, un choeur, un opéra, etc.).";;
-;"Chef électricien";elg;;;;;;
-res;Chercheur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de l'exécution de travaux de recherche.";;
-;"Chercheur principal";org;;;;;;
-chr;Chorégraphe;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui compose, règle les pas ou les figures de danse pour un spectacle, un film, une comédie musicale, une représentation dramatique.";;
-;Cinématographe;cng;;;;;;
-plt;Clicheur;;;;;;;
-cli;Client;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui reçoit des services d'une autre personne ou collectivité.";;
+abr;Abréviateur;;;;aut;Une personne, un groupe ou un organisme qui contribue à une ressource en raccourcissant ou en condensant l'œuvre originale, mais en laissant la nature et le contenu de cette œuvre originale pratiquement inchangée. Pour des modifications substantielles qui se traduisent par la création d'un nouveau travail, voir auteur (aut).;;"2013-05-15:modified
+1970-01-01:new"
+acp;Copiste d'art;;;;;Une personne (un peintre ou un sculpteur), qui produit des copies d'œuvres d'art visuel.;;"2013-05-15:modified
+1970-01-01:new"
+act;Acteur;;;;;Une personne qui joue dans une représentation musicale ou théâtrale.;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+adi;Chef décorateur;;;;;Une personne contribuant à une production cinématographique ou télévisuelle en supervisant les artistes et les artisans qui construisent les décors.;Changed RDA def;2013-05-15:new
+adp;Adaptateur;;;;;Une personne ou un organisme qui 1) remanie une composition musicale, en général pour d'autres instruments ou 2) réécrit des romans ou des nouvelles pour l'écran ou un autre médium audio-visuel.;;"2013-05-15:modified
+1970-01-01:new"
+aft;Auteur de la postface, de l'achevé d'imprimer, etc.;;;;;Une personne ou un organisme responsable d'une postface, d'un achevé d'imprimer, etc., mais qui n'est pas l'auteur principal de l'œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+anl;Analyste;;;;;Une personne ou un organisme qui vérifie, étudie et analyse des données ou de l'information dans un domaine particulier.;;"2013-05-15:modified
+1970-01-01:new"
+anm;Animateur 2D et 3D;;;;art;Une personne ou un organisme qui contribue à un film ou à un logiciel en donnant un mouvement apparent à des objets inanimés ou à des dessins. Pour désigner l'auteur des dessins qui sont animés, voir artiste (art).;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ann;Annotateur;;;;;Une personne qui ajoute des notes manuscrites sur un ouvrage imprimé.;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ant;Antécédent bibliographique;;;;;L'auteur de l'œuvre sur laquelle est fondée l'œuvre décrite dans la notice bibliographique. Peut être utilisé dans le cas d'adaptations, de suites, d'index, etc.;;"2013-05-15:modified
+1970-01-01:new"
+ape;Intimé;;;;;Une personne ou un organisme contre laquelle un appel est interjeté.;MARC had more specific roles;2013-05-15:new
+apl;Appelant;;;;;Une personne ou un organisme qui fait appel de la décision d'un tribunal.;MARC had more specific roles;2013-05-15:new
+app;Candidat;;;;;Une personne ou un organisme responsable de la soumission d'une demande ou qui bénéficiera du résultat de la demande (allocation de droits, récompense, titre, promotion...);;"2013-05-15:modified
+1970-01-01:new"
+aqt;Auteur mentionné dans une citation ou des extraits de textes;;;;;Une personne dont le travail est largement mentionné dans des citations ou des extraits de textes tirés d'une œuvre et qui n'y a pas directement contribué. On trouve ce genre de citations dans les catalogues d'exposition, les collections de photographies, etc.;;"2013-05-15:modified
+1970-01-01:new"
+arc;Architecte;;;;;Une personne, un groupe, ou un organisme responsable de la création d'une conception architecturale, y compris la représentation graphique destinée à montrer comment un bâtiment, etc., se présentera une fois construit. Il supervise également la construction de structures,;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ard;Directeur artistique;;;;;Une personne responsable du contrôle de l'élaboration du style artistique d'une production, y compris le choix des œuvres qui sont présentées ainsi que la sélection du personnel de la production.;;"2013-05-15:modified
+1970-01-01:new"
+arr;Arrangeur;;;;cmp;Une personne qui transcrit une composition musicale pour un autre instrument que celui pour lequel la composition était destinée. Dans un arrangement l'essence musicale demeure en principe inchangée. Pour des modifications plus conséquentes qui aboutissent à la création d'une nouvelle œuvre, voir compositeur (cmp).;"changed MARC def; changed RDA term";"2013-05-15:modified
+1970-01-01:new"
+;Arrangeur musical;arr;;;;;;
+art;Artiste;;;;;Une personne, un groupe ou un organisme responsable de la conception et de la création d'une œuvre graphique original (designer, peintre, dessinateur...) Pour désigner l'auteur des illustrations qui figurent dans un livre, utilisez de préférence illustrateur (ill).;"changed MARC def; Relator term ""Graphic technician"" (coded [grt]) used before March 1988 only";"2013-05-15:modified
+1970-01-01:new"
+;Graphiste;art;;;;;;
+asg;Cessionnaire;;;;;Une personne ou un organisme à qui le droit d'impression ou d'édition a été cédé.;;"2013-05-15:modified
+1970-01-01:new"
+asn;Nom associé;;;;;Une personne ou un organisme qui est associé ou que l'on trouve dans un ouvrage ou dans une collection. Utilisez ce terme lorsqu'il n'est pas possible d'utiliser les termes ancien propriétaire (fmo) ou d'autres termes indiquant la provenance.;;"2013-05-15:modified
+1970-01-01:new"
+ato;Auteur de l'autographe;;;;;Une personne dont la signature manuscrite apparaît sur le document catalogué.;;2013-05-15:new
+att;Nom attribué;;;;;Terme utilisé pour relier un auteur, artiste, etc. à un ouvrage lorsqu'une source suffisamment fiable désigne cette personne en tant qu'auteur, créateur, etc.;;"2013-05-15:modified
+1970-01-01:new"
+;Nom supposé;att;;;;;;
+auc;Commissaire-priseur;;;;;Une personne ou un organisme responsable de l'évaluation et de la vente de biens aux enchères publiques, en particulier des livres, des œuvres artistiques, etc.;;"2013-05-15:modified
+1970-01-01:new"
+aud;Auteur du dialogue;;;;;Une personne ou un organisme responsable du dialogue ou du commentaire parlé d'un scénario ou d'un enregistrement sonore.;;"2013-05-15:modified
+1970-01-01:new"
+aui;Auteur de l'introduction, etc.;;;;;Une personne ou un organisme responsable de l'introduction, la préface, l'avant-propos, la postface, les notes ou la critique, mais qui n'est pas le principal auteur de l'œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+aus;Auteur du scénario;;;;;L'auteur du scénario, du script ou de la scène.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+;Auteur du script;aus;;;;;;
+aut;Auteur;;;;;Une personne ou un organisme responsable du contenu intellectuel ou artistique d'une œuvre à dominante textuelle, quel que soit le média utilisé (texte imprimé, discours, texte électronique, texte en braille...) ou le genre (poème, nouvelle, scénarios, blogs...) Ce terme peut aussi être utilisé pour décrire un travail de paraphrase, de réécriture ou d'adaptation d'une œuvre d'un autre auteur lorsque les modifications apportées changent de façon substantielle la nature, le contenu ou le support de l'œuvre originale.;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
 ;Coauteur;aut;;;;;;
-;Collaborateur;ctb;;;;;;
-col;Collectionneur;;;;;"Terme utilisé pour désigner toute personne qui a réuni du matériel de sources diverses et qui l'a organisé, décrit et catalogué comme une collection. Le collectionneur n'est ni le créateur du matériel, ni la personne à qui les manuscrits de la collection étaient peut-être destinés.";;
-spn;Commanditaire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui émet un contrat ou sous les auspices duquel une œuvre a été rédigée, imprimée, publiée, etc.";;
-cmm;Commentateur;;;;;"Terme utilisé pour désigner toute personne qui fait l'interprétation, l'analyse ou une discussion du contenu d'un enregistrement, d'un film cinématographique ou d'un autre support audio-visuel.";;
-cwt;"Commentateur d'un texte écrit";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable du commentaire ou des notes explicatives au sujet d'un texte. Dans le cas de l'auteur des notes manuscrites d'un ouvrage imprimé, utiliser le terme Annotateur [ann].";;
-auc;Commissaire-priseur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable ou de l'évaluation et de la vente de biens aux enchères publiques, en particulier des livres, des oeuvres artistiques, etc.";;
-com;Compilateur;;;;;"Terme utilisé pour désigner toute personne qui produit un ouvrage ou une publication en sélectionnant et en réunissant du matériel provenant de personnes ou de collectivités variées.";;
-cmp;Compositeur;;;;;"Terme utilisé pour désigner toute personne qui crée une œuvre musicale sous forme manuscrite ou imprimée.";;
-cmt;"Compositeur (Imprimerie)";;;;;;;
-ccp;Concepteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de l'idée originale sur laquelle se fonde une œuvre, ce qui comprend l'auteur scientifique d'un document audiovisuel et le concepteur d'une publicité.";;
-bpd;"Concepteur d'ex-libris";;;;;;;
-tyd;"Concepteur de caractères typographiques";;;;;"Terme utilisé pour désigner toute personne qui a conçu les caractères typographiques ou la";;
-bjd;"Concepteur de jaquettes";;;;;;;
-;"Concepteur de livres";bkd;;;;;;
-cov;"Concepteur de pages couvertures";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est responsable de la conception de pages couvertures de livre, de pochettes de disque, d'étuis, de boîtes, de contenants, etc.";;
-bdd;"Concepteur de reliures";;;;;;;
-sds;"Concepteur du son";;;;;"Terme utilisé pour désigner toute personne qui crée ou reproduit une trame sonore, que ce soit en direct ou enregistré, qui voit à l'installation des microphones, à l'ajustement des niveaux sonores et à la coordination des sources sonores pour une production.";;
-csp;"Conseiller-expert d'un projet";;;;;"Terme utilisé pour désigner toute personne ou tout organisme embauché dans le but précis de fournir une vue d'ensemble professionnelle concernant une tâche stratégique ou opérationnelle appuyée par une analyse, des spécifications ou des instructions afin de créer ou de proposer un moyen d'action ou une solution rentable.";;
-sad;"Conseiller scientifique";;;;;"Terme utilisé pour désigner toute personne qui contribue, par sa compétence scientifique, pédagogique ou historique, à la conception et à la réalisation d'une œuvre, en particulier dans le cas de documents audiovisuels.";;
-cur;"Conservateur d'exposition";;;;;"Terme utilisé pour désigner toute personne qui est responsable de la conception et de l'organisation d'une exposition.";;
-cos;Contestant;;;;;"Terme utilisé pour désigner la partie qui conteste, par exemple, une demande, une décision ou une conclusion, devant une cour de justice, ou qui s'y oppose.";;
-cot;Contestant-appelant;;;;;"Terme utilisé pour désigner le contestant qui en appelle de la décision d'une cour de justice ou d'un ressort, en vue de son infirmation, devant une instance supérieure.";;
-coe;Contestant-intimé;;;;;"Terme utilisé pour désigner le contestant que vise l'appel interjeté à l'égard de la décision d'une cour de justice ou d'un ressort, en vue de son infirmation, devant une instance supérieure.";;
-cts;Contesté;;;;;"Terme utilisé pour désigner la partie qui défend, par exemple, une demande, une décision ou une conclusion visée par une contestation ou une opposition, devant une cour de justice.";;
-ctt;Contesté-appelant;;;;;"Terme utilisé pour désigner le contesté qui en appelle de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure.";;
-cte;Contesté-intimé;;;;;"Terme utilisé pour désigner le contesté que vise un appel interjeté à l'égard de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure.";;
-stl;Conteur;;;;;"Terme utilisé pour désigner toute personne qui transmet une histoire en lui donnant une interprétation théâtrale ou une autre forme de création.";;
-ctr;Contractant;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui s'engage par contrat envers une autre personne ou une autre collectivité à exécuter une tâche particulière.";;
-;Contrefacteur;frg;;;;;;
-ctb;Contributeur;;;;;"Terme utilisé pour désigner toute personne dont l'œuvre a contribué à une œuvre plus générale tels une anthologie, une publication de série ou toute autre compilation ou tout ouvrage individuel. Il ne doit pas s'utiliser pour désigner une personne dont la seule fonction par rapport à une œuvre en est une d'auteur, d'éditeur, de compilateur ou de traducteur.";;
-dtc;"Contributeur de données";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui fournit des données à intégrer dans une base de données ou tout autre ensemble de données.";;
-fac;Copiste;;;;;"Terme utilisé pour la personne ou la collectivité qui exécutent la reproduction.";;
-acp;"Copiste d'art";;;;;(;;
-mcp;"Copiste de musique";;;;;"Terme utilisé pour désigner toute personne qui transcrit ou copie des notations musicales.";;
-;Correcteur;pfr;;;;;;
-pfr;"Correcteur d'épreuves";;;;;"Terme utilisé pour désigner toute personne qui corrige des textes imprimés. Il faut utiliser le code [crr] Réviseur dans le cas des manuscript.";;
-crp;Correspondant;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est l'auteur ou le destinataire d'une lettre ou autre correspondance.";;
-cst;Costumier;;;;;"Terme utilisé pour désigner toute personne qui conçoit et fabrique les costumes, coiffent des acteurs, etc. pour une présentation musicale ou dramatique.";;
-cre;Créateur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable du contenu intellectuel ou artistique d'une œuvre.";;
-rev;Critique;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la critique d'un livre, d'un film, d'une représentation, etc.";;
-;Curieux;wit;;;;;;
-dnc;Danseur;;;;;"Terme utilisé pour désigner toute personne qui danse dans une présentation musicale ou dramatique.";;
-std;"Décorateur de scène";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui traduit les ébauches du directeur artistique en de véritables structures architecturales pour une présentation théâtrale, divertissement, film, etc. Les décorateurs de scène dessinent les guides détaillés et les spécifications pour monter la scène.";;
-dte;Dédicataire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme à qui on dédie un livre, manuscrit, etc. (pas le donataire).";;
-;Dédicateur;dto;;;;;;
-dfd;Défendeur;;;;;"Terme utilisé pour désigner la partie qui, dans le cadre d'une action, présente une défense ou nie des allégations et dont on cherche à obtenir, devant le tribunal, une réparation ou un redressement, habituellement dans le cadre d'un recours fondé sur la loi.";;
-dft;Défendeur-appelant;;;;;"Terme utilisé pour désigner le défendeur qui en appelle de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'un recours fondé sur la loi.";;
-dfe;Défendeur-intimé;;;;;"Terme utilisé pour désigner le défendeur que vise un appel interjeté à l'égard de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'un recours fondé sur la loi.";;
-ptf;Demandeur;;;;;"Terme utilisé pour désigner la partie qui exerce un recours ou qui intente une action personnelle devant un tribunal, habituellement dans le cadre d'une procédure prévue par la loi.";;
-ptt;Demandeur-appelant;;;;;"Terme utilisé pour désigner le demandeur qui en appelle de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure prévue par la loi.";;
-pta;"Demandeur de brevet";;;;;"Terme utilisé pour désigner toute personne ou société présentant une demande de brevet.";;
-cpc;"Demandeur du droit d'auteur";;;;;"Terme utilisé pour désigner la personne classée comme titulaire du droit d'auteur au moment de l'enregistrement . Un droit d'auteur peut être accordé ou transféré plus tard à une autre personne ou à un agent : c'est à ce moment que le demandeur devient titulaire du droit d'auteur.";;
-pte;Demandeur-intimé;;;;;"Terme utilisé pour désigner le demandeur que vise un appel interjeté à l'égard de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure prévue par la loi.";;
-dpt;Déposant;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui place du matériel sous la garde d'une bibliothèque ou d'un dépôt d'archives sans en transférer le titre légal.";;
-dsr;Designer;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la conception lorsque des codes spécifiques (p. ex. [bkd] [tyd]) ne conviennent pas.";;
-dln;Dessinateur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme exécutant des dessins techniques à partir de conceptions d'autres personnes.";;
-drm;Dessinateur;;;;;"Terme utilisé pour désigner toute personne exécutant des dessins techniques ou mécaniques";;
-bkd;Dessinateur-maquettiste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la conception graphique d'un livre, y compris la typographie et les illustrations, le choix des matériaux et du procédé.";;
-rcp;Destinataire;;;;;"Terme utilisé pour désigner toute personne à qui la correspondance est adressée.";;
-spy;"Deuxième partie";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est identifié en tant que partie de la seconde part. Dans le cas de transfert de droit, c'est le concessionnaire, le destinataire du transfert, le concessionnaire d'une licence, le bénéficiaire, etc. Les parties multiples peuvent être nommées conjointement en tant que seconde partie.";;
-drt;Directeur;;;;;"Terme utilisé pour désigner toute personne qui est responsable de l'administration générale d'une œuvre ou qui supervise la production d'une interprétation pour la scène, l'écran ou un enregistrement sonore.";;
-ard;"Directeur artistique";;;;;"Terme utilisé pour désigner toute personne responsable du contrôle de l'élaboration du style artistique d'une production, y compris le choix des oeuvres qui sont présentées ainsi que la sélection du personnel de la production.";;
-;"Directeur de lab";ldr;;;;;;
-ldr;"Directeur de laboratoire";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui gère ou supervise le travail accompli dans un milieu ou un environnement contrôlé.";;
-cng;"Directeur de la photographie";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est responsable des prises de vues pour une production cinématographique. Ne pas confondre avec vidéaste.";;
-pbd;"Directeur de la publication";;;;;"Terme utilisé pour désigner toute personne qui voit à l'élaboration d'une œuvre collective afin de s'assurer de sa cohérence ou de sa continuité. Ce code couvre les rédacteurs en chef, les directeurs d'œuvres littéraires, de collections, etc.";;
-pmn;"Directeur de production";;;;;"Terme utilisé pour désigner toute personne responsable des affaires courantes ainsi que de toutes les questions d'ordre techniques dans une production.";;
-pdr;"Directeur de projet";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a pour responsabilité principale tous les aspects fondamentaux d'un projet. Il peut aussi gérer un très grand projet qui demande des responsabilités d'ordre supérieur. Il peut aussi avoir la responsabilité globale sur la gestion de projets ou donner l'orientation générale au gestionnaire de projet.";;
-ths;"Directeur de thèse";;;;;"Terme utilisé pour désigner toute personne qui dirige et conseille un candidat aux études supérieures qui rédige et présente une thèse, un mémoire ou une dissertation.";;
-fld;"Directeur local";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui gère ou supervise le travail accompli pour la collecte de données brutes ou fait de la recherche dans le milieu ou dans l'environnement à sa disposition.";;
-msd;"Directeur musical";;;;;"Terme utilisé pour désigner toute personne responsable des décisions essentielles concernant le volet musical d'une production incluant la coordination du travail du compositeur, du monteur de son, du preneur de son, du choix des musiciens ainsi que l'organisation et dans certains cas s'occuper de la sonorisation aux répétitions et aux spectacles.";;
-tcd;"Directeur technique";;;;;"Terme utilisé pour désigner toute personne qui est en fin de compte responsable des décors, des accessoires, de l'éclairage et du son pour une production.";;
-dst;Distributeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui détient la totalité ou une partie des droits de commercialisation d'une œuvre.";;
-dis;Doctorant;;;;;"Terme utilisé pour désigner toute personne qui prépare et soutient une thèse en vue d'obtenir un diplôme universitaire ou d'études supérieures.";;
-dnr;Donateur;;;;;"Terme utilisé pour désigner toute personne qui a fait don d'un livre, manuscrit, etc. au propriétaire actuel. Se servir d'ancien propriétaire [fmo] ou de présentateur [ins] pour désigner les donateurs du livre, manuscrit, etc. à d'anciens propriétaires.";;
-lso;"Donneur de licence";;;;;"Terme utilisé pour désigner le signataire d'un brevet, d'un imprimatur, etc.";;
-;"Droit d'auteur, Titulaire du";cph;;;;;;
-lgd;Éclairagiste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui confectionne le plan de l'éclairage pour une présentation théâtrale, un spectacle, un film, etc.";;
-pbl;Éditeur;;;;;;;
-mrk;"Éditeur de langage balisé";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui effectue le codage de texte, de métadonnées ou autre document en SGML, HTML ou en XML.";;
-edt;"Éditeur intellectuel";;;;;"Terme utilisé pour désigner toute personne qui prépare, en vue de la publication, un ouvrage qui n'est pas principalement le sien. Celle-ci clarifie le texte, ajoute l'introduction ou autre sujet important, ou dirige techniquement le personnel de rédaction.";;
-elg;Électricien;;;;;"Terme utilisé pour désigner toute personne responsable du matériel d'éclairage, de l'installation de gréement d'éclairage et s'occupe aussi de l'éclairage pendant les spectacles ou les productions.";;
-;"Électricien maison";elg;;;;;;
-ilu;Enlumineur;;;;;;;
-;Enquêteur;org;;;;;;
-dpc;"Entité illustrée";;;;;"Terme utilisé pour désigner toute entité faisant l'objet d'une illustration ou d'un portrait dans une œuvre, particulièrement une œuvre d'art.";;
-;Estimateur;exp;;;;;;
-;"Ex-libris, Concepteur d'";bpd;;;;;;
-exp;Expert;;;;;"Terme utilisé pour désigner toute personne responsable de la description et de l'évaluation de biens, en particulier d'objets rares, d'œuvres d'art, etc.";;
-csl;Expert-conseil;;;;;"Terme utilisé pour désigner toute personne avec qui on communique dans le but d'obtenir des conseils ou des services professionnels concernant un domaine spécialisé ou de la formation.";;
-mfr;Fabricant;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui effectue un travail artéfactuel (un objet produit ou modifié par une ou plusieurs personnes). Des exemples d'œuvres artéfactuelles comprennent des vases, des canons ou du mobilier.";;
-frg;Faussaire;;;;;;;
-elt;Galvanotypeur;;;;;;;
-dtm;"Gestionnaire de données";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui gère des bases de données ou toutes autres sources de données.";;
-grt;Graphiste;;;;;"VOIR Artiste";;
-egr;Graveur;;;;;;;
-prm;"Graveur, (arts visuels)";;;;;"Terme utilisé pour désigner toute personne qui réalise des impressions en relief, en creux, ou planographique.";;
-;"Graveur sur bois";wdc;;;;;;
-wde;"Graveur sur bois de bout";;;;;"Terme utilisé pour désigner toute personne qui réalise des impressions en découpant une image en relief sur le côté plat d'un bloc de bois.";;
-;"Graveur sur bois de fil";wdc;;;;;;
-mte;"Graveur sur métal";;;;;;;
-;"Honorée, Personne";hnr;;;;;;
-hst;Hôte;;;;;"Terme utilisé pour désigner toute personne qui est invitée ou qui anime régulièrement une émission qui est souvent diffusée et à laquelle participent d'autres invités, des artistes, etc. par exemple, l'hôte d'une émission de variétés.";;
-ill;Illustrateur;;;;;"Terme utilisé pour désigner toute personne qui conçoit, et peut-être aussi exécute, un dessin ou une illustration, généralement pour accompagner un texte écrit.";;
-;Imprimatur;lso;;;;;;
-prt;Imprimeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui imprime des textes, à l'aide de caractères typographiques ou de planches.";;
-pop;"Imprimeur de planches";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui imprime des illustrations sur planches.";;
-eng;Ingénieur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la conception technique et de la planification, particulièrement en ce qui concerne la construction.";;
-rce;"Ingénieur du son";;;;;"Terme utilisé pour désigner toute personne qui supervise les aspects techniques d'une séance d'enregistrement sonore ou vidéo.";;
-org;Initiateur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui exécutent le travail, c'est-à-dire une personne ou collectivité qui est associée au contenu intellectuel de l'œuvre. Cette catégorie n'inclut pas l'éditeur ou autres affiliations, ou les commanditaires sauf dans le cas ou il sont considérés en tant qu'auteurs collectifs.";;
-;Instigateur;org;;;;;;
-dgg;"Institution émettrice d'un diplôme";;;;;(;;
-itr;Instrumentiste;;;;;"Terme utilisé pour désigner toute personne qui joue d'un instrument dans une présentation musicale ou dramatique.";;
-prf;Interprète;;;;;"Terme utilisé pour désigner toute personne qui évolue dans une présentation musicale ou dramatique à moins que des codes spécifiques ([act], [dnc], [itr], [voc], etc.) ne soient utilisés. On se sert du code [prf] lorsque le talent principal de la personne n'est pas connu ou spécifié.";;
-spk;Intervenant;;;;;"Terme utilisé pour désigner toute personne qui participe à un programme (souvent une émission) et qui apporte une contribution ou fait une présentation officielle généralement préparée à l'avance.";;
-ivr;Interviewer;;;;;;;
-inv;Inventeur;;;;;;;
-;"Jaquettes, Concepteur de";bjd;;;;;;
-;"Lab, Directeur de";ldr;;;;;;
-lbr;Laboratoire;;;;;"Terme utilisé par une institution qui fournit des analyses scientifiques d'échantillons de produits.";;
-;"Langage balisé, Éditeur de";mrk;;;;;;
-bsl;Libraire;;;;;;;
-lbt;Librettiste;;;;;"Terme utilisé pour l'auteur du livret d'un opéra, d'un oratorio, etc.";;
-;"Licence, Donneur de";lso;;;;;;
-;"Licence, Preneur de";lse;;;;;;
-ltg;Lithographe;;;;;"Terme utilisé pour désigner toute personne qui apprête la pierre ou la planche en vue d'une impression lithographique y compris le graphiste qui exécute un dessin en travaillant directement sur la surface à imprimer.";;
-;"Livres, Producteur de";bkp;;;;;;
-;"Maître électricien";elg;;;;;;
+bdd;Concepteur de reliures;;;;;Une personne ou un organisme responsable de la conception de la reliure d'un ouvrage : type de reliure, matériaux utilisés, design, décorations...;;"2013-05-15:modified
+1970-01-01:new"
+;Reliures, Concepteur de;bdd;;;;;;
+bjd;Concepteur de jaquettes;;;;;Une personne ou un organisme responsable de la conception de la jaquette souple d'un livre : matériaux utilisés, design, décorations...;;"2013-05-15:modified
+1970-01-01:new"
+;Jaquettes, Concepteur de;bjd;;;;;;
+bkd;Dessinateur-maquettiste;;;;;Une personne ou un organisme responsable, pour une édition donnée, de l'ensemble de la conception graphique d'un livre : typographie, mise en page, illustrations, choix des matériaux, procédé d'impression,;;"2013-05-15:modified
+1970-01-01:new"
+;Concepteur de livres;bkd;;;;;;
 ;Maquettiste;bkd;;;;;;
-ppt;Marionnettiste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui manipule, contrôle, ou dirige des pantins ou des marionnettes à l'occasion d'une comédie musicale ou une dramatique ou bien lors de spectacles.";;
-;"Marqueur de rubriques";rbr;;;;;;
-;"Matériel d'appoint, Auteur du";wam;;;;;;
-pat;Mécène;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de commander une œuvre. En général, un mécène utilise son influence pour appuyer le travail des artistes, des écrivains, etc. Ce code inclut les personnes qui commandent des œuvres individuelles et qui paient pour ces dernières.";;
-rtm;"Membre d'équipe de chercheurs";;;;;"Terme utilisé pour désigner toute personne ou société ayant pris part à un projet de recherche, mais dont le rôle ne consistait pas à le diriger ou à le gérer.";;
-;"Métadonnées, Agent de liaison sur les";mdc;;;;;;
-;"Métal, Graveur sur";mte;;;;;;
-rsg;"Metteur en scène";;;;;"Terme utilisé pour désigner toute personne ou tout organisme, autres que le premier chorégraphe ou le premier directeur, responsable de remettre en scène une œuvre chorégraphique ou dramatique et qui contribue au nouveau contenu d'une façon minimale.";;
-mon;Moniteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui supervise l'exécution du contrat et qui est responsable du rapport et de sa diffusion. S'appelle parfois le concessionnaire ou l'organisme de contrôle.";;
-flm;"Monteur de films";;;;;"Terme utilisé pour désigner toute personne qui monte d'un film. Ce terme est utilisé, quel que soit le support par exemple, pellicule sur support d'acétate ou bande vidéo, employé pour la production ou la fabrication de ce film.";;
-mus;Musicien;;;;;"Terme utilisé pour désigner toute personne qui joue de la musique ou qui contribue au contenu musical d'une œuvre lorsqu'il est impossible ou qu'il n'est pas souhaitable d'indiquer la fonction de manière plus précise";;
-nrt;Narrateur;;;;;"Terme utilisé pour désigner toute personne qui relate les détails d'un acte, d'un événement ou d'une suite d'événements.";;
-asn;"Nom associé";;;;;"Terme utilisé à titre de relation générale pour un nom associé à un ouvrage ou collection ou qui s'y trouve, ou qu'on ne peut déterminer comme étant celui d'un ancien propriétaire [fmo] ou pour toute autre relation désignée indiquant la provenance.";;
-att;"Nom attribué";;;;;"Terme utilisé pour relier un auteur, artiste, etc. à un ouvrage lorsqu'une source suffisamment fiable désigne cette personne en tant qu'auteur, créateur, etc.";;
-;Observateur;wit;;;;;;
-opn;Opposant;;;;;"Terme utilisé pour désigner toute personne ou tout organisme dont la tâche consiste à s'opposer à une thèse ou un mémoire.";;
-orm;"Organisateur de réunion";;;;;"Terme utilisé pour désigner la personne ou société chargée d'organiser une réunion dont un point fait l'objet du rapport ou du compte rendu.";;
-stn;"Organisme de normalisation";;;;;"Terme utilisé pour désigner toute société ou agence responsable de l'élaboration ou de la mise en application d'une norme.";;
-sht;"Organisme de soutien";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui soutient un projet, un programme, une réunion, une activité, des objets de données, objets de culture matérielle ou autres entités ayant la capacité de soutenir soit en attribuant de l'équipement, du personnel, ou toutes autres ressources.";;
-ppm;Papetier;;;;;;;
-lyr;Parolier;;;;;"Terme utilisé pour désigner l'auteur des paroles d'une chanson.";;
-;Parrain;ths;;;;;;
-lel;"Partie adverse";;;;;"Terme utilisé pour désigner la partie visée par l'acte introductif d'instance dont est saisi un tribunal ecclésiastique ou une cour de l'Amirauté.";;
-let;"Partie adverse-appelant";;;;;"Terme utilisé pour désigner la partie adverse qui en appelle de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.";;
-lee;"Partie adverse-intimé";;;;;"Terme utilisé pour désigner la partie adverse que vise un appel interjeté à l'égard de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.";;
-rpy;"Partie responsable";;;;;"Terme utilisé pour désigner toute personne ou tout organisme légalement responsable du contenu de la publication.";;
-;"Personne de soutien";sht;;;;;;
-hnr;"Personne honorée";;;;;"Terme utilisé pour désigner toute personne à la mémoire ou en l'honneur de qui un livre, manuscrit, etc. est donné.";;
-ive;"Personne interrogée";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est interrogé lors d'une consultation ou d'une réunion, généralement par un reporteur, un enquêteur, ou toute autre personne qui fait la collecte d'information.";;
-prd;"Personnel de la réalisation";;;;;"Terme utilisé pour désigner toute personne associée à la réalisation d'une comédie musicale ou une dramatique tels les accessoires, l'éclairage, les effets spéciaux, etc.";;
-ren;Perspectiviste;;;;;"Terme utilisé pour désigner le dessinateur qui prépare les plans d'architecture, les rendus architecturaux, de façon précise à l'aide d'un dessin en perspective et ce, afin de fournir une représentation graphique du projet tel qu'il sera, une fois terminé.";;
-pht;Photographe;;;;;"Terme utilisé pour désigner toute personne ou tout organisme chargée de prendre des photographies, qu'elles soient utilisées dans leurs formes originales ou comme reproductions.";;
-cpl;Plaignant;;;;;"Terme utilisé pour désigner la partie qui demande au tribunal de lui accorder réparation, habituellement dans le cadre d'une procédure fondée sur l'équité.";;
-cpt;Plaignant-appelant;;;;;"Terme utilisé pour désigner le plaignant qui en appelle du jugement d'un tribunal ou d'une cour, en vue d'infirmer, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.";;
-cpe;Plaignant-intimé;;;;;"Terme utilisé pour désigner le plaignant que vise l'appel interjeté à l'égard du jugement d'un tribunal en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.";;
-;"Planches, Imprimeur de";pop;;;;;;
-;"Polices de caractères, Concepteur de";tyd;;;;;;
-lse;"Porteur de licence";;;;;"Terme utilisé pour désigner la première personne qui obtient le droit d'imprimer ou de publier.";;
-fpy;"Première partie";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est identifié en tant que la seule partie ou la partie de la première part. Dans le cas de transfert de droit, c'est le cédant, l'auteur du transfert, le concédant, le concesseur, etc. Les parties multiples peuvent être nommées conjointement en tant que première partie.";;
-;Présentateur;ins;;;;;;
-len;Prêteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme autorisant l'emprunt d'un livre, manuscrit, etc. pour le photocopier ou le microfilmer.";;
-;"Processus, Agent de liaison du";prc;;;;;;
-pro;Producteur;;;;;"Terme utilisé pour désigner toute personne qui est chargée de la production d'un film, ce qui comprend le financement, la direction de la production et le succès commercial du film.";;
-bkp;"Producteur de livres";;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la production de livres et autres supports d'information imprimés lorsque des codes spécifiques (p. ex., [bkd], [egr], [tyd], [prt]) ne conviennent pas.";;
-tch;Professeur;;;;;"Terme utilisé pour désigner toute personne qui dans le contexte d'une ressource, enseigne une matière, une discipline ou qui démontre des aptitudes physiques.";;
-prg;Programmeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la conception ou de l'entretien des programmes informatiques, des codes de sources, des fichiers numériques exécutables par machine et de la documentation relative à l'entretien.";;
-own;Propriétaire;;;;;"Terme utilisé pour désigner toute personne ou tout organisme à qui appartient un document ou une collection.";;
-;Protecteur;pat;;;;;;
-red;Rédacteur;;;;;"Terme utilisé pour désigner toute personne qui écrit ou qui élabore la structure d'une œuvre sans être responsable intellectuellement de son contenu";;
-stm;"Régisseur de plateau";;;;;"Terme utilisé pour désigner toute personne qui est responsable de tout ce qui se passe sur une scène et qui agit en tant que chef de toutes les équipes et assistant au directeur lors des répétitions.";;
-bnd;Relieur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui est responsable de la reliure de tout document imprimé ou manuscrit.";;
-;"Reliures, Concepteur de";bdd;;;;;;
-rsp;Répondant;;;;;"Terme utilisé pour désigner la partie qui répond au tribunal relativement à une demande de redressement, habituellement dans le cadre d'une procédure fondée sur l'équité.";;
-rst;Répondant-appelant;;;;;"Terme utilisé pour désigner le répondant qui en appelle de la décision d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une prodécure fondée sur l'équité.";;
-rse;Répondant-intimé;;;;;"Terme utilisé pour désigner le répondant que vise l'appel interjeté à l'égard d'un tribunal ou d'un ressort, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.";;
-rpt;Reporteur;;;;;"Terme utilisé pour désigner tout présentateur de nouvelles dans les média de masse dont le reportage est souvent accompagné d'un commentaire objectif et d'un support audio ou visuel.";;
-lil;Requérant;;;;;"Terme utilisé pour désigner la partie qui produit un libelle dans une affaire ecclésiastique ou relative à l'amirauté.";;
-lit;Requérant-appelant;;;;;"Terme utilisé pour désigner le requérant qui en appelle de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.";;
-lie;Requérant-intimé;;;;;"Terme utilisé pour désigner le requérant que vise un appel interjeté à l'égard de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.";;
-clt;"Responsable de la phototypie";;;;;;;
-;"Responsable de l'attribution des grades";dgg;;;;;;
-;"Responsable de l'expurgation de texte";cns;;;;;;
-crr;Réviseur;;;;;"Terme utilisé pour désigner le réviseur de manuscrits, tel que les personnes qui corrigent le travail d'un scribe. Pour le matériel imprimé, utiliser « Correcteur » [pfr].";;
-;"Rubriques, Auteur de";rbr;;;;;;
-sce;Scénariste;;;;;"Terme utilisé pour désigner l'auteur d'un scénario de film.";;
-scr;Scribe;;;;;"Terme utilisé pour désigner toute personne qui écrit à la main des manuscrits. Utilisez [fac] « Copiste » pour désigner toute personne qui reproduit à la main des manuscrits.";;
-scl;Sculpteur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui modèle ou sculpte des figures sous formes tridimensionnelles.";;
-sec;Secrétaire;;;;;"Terme utilisé pour désigner un secrétaire, un rapporteur, un rédacteur ou une autre personne chargée d'exprimer les vues d'un organisme.";;
-rps;"Service d'archives";;;;;"Terme utilisé pour désigner toute organisation qui héberge des données ou des objets de culture matérielle et qui fournie des services de promotion à long terme et qui sont conformes à l'utilisation partagée de ces données ou de ces objets.";;
-sgn;Signataire;;;;;"Terme utilisé pour désigner toute personne pour laquelle sa signature figure dans un livre sans présentation ni autre mention de provenance. Lorsqu'il y a une présentation, utilisez « Présentateur » [ins].";;
-gis;"Spécialiste de l'information géographique";;;;;"Terme utilisé pour désigner toute personne responsable du développement et de l'intégration d'un système d'information géographique (SIG) avec les données d'un système de positionnement global.";;
-;"Spécialiste de l'information géospatiale";gis;;;;;;
-str;Stéréotypeur;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable de la conception par moulage d'une nouvelle plaque d'imprimerie ou en copiant une autre surface d'impression.";;
-wit;Témoin;;;;;"Terme utilisé pour désigner toute personne qui confirme la véracité d'un acte ou d'un événement.";;
-;"Témoin oculaire";wit;;;;;;
-;Témoignant;wit;;;;;;
-pth;"Titulaire de brevet";;;;;;;
-cph;"Titulaire du droit d'auteur";;;;;;;
-trl;Traducteur;;;;;"Terme utilisé pour désigner toute personne qui traduit un texte d'une langue à une autre ou d'une forme plus ancienne à une une forme plus moderne d'une langue.";;
-trc;Transcripteur;;;;;"Terme utilisé pour désigner toute personne qui prépare une copie, à la main ou à la machine à écrire, à partir du matériel original, y compris du matériel dicté et enregistré. Utilisez [scr] « Scribe » pour désigner toute personne qui écrit à la main des manuscrits.";;
-tyg;Typographe;;;;;"Terme utilisé pour désigner toute personne qui choisit le type des caractères et la mise en pages dans un ouvrage. Si le typographe a aussi conçu la maquette du livre, par exemple le dessinateur-maquettiste [bkd], on peut utiliser les codes de chaque fonction.";;
-vdg;Vidéaste;;;;;"Terme utilisé pour désigner toute personne ou tout organisme responsable d'une production vidéographique d'une production de spectacles à l'opposé d'un film commercial. Le vidéoaste peut être un cameraman ou peut superviser un ou plusieurs cameramen. Ne pas confondre avec cinématographe.";;
-voc;Vocaliste;;;;;"Terme utilisé pour désigner toute personne qui chante dans une comédie musicale ou un spectacle.";;
-wdc;Xylographe;;;;;"Terme utilisé pour désigner toute personne qui réalise des estampes en gravant une image en relief sur un bloc de bois de bout.";;
-#
-# Codes ajouités manuellement (figurent dans la version anglaise mais pas sur marc21.ca).
-#
-win;"Rédacteur de l'introduction";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a contribué au document en fournissant une introduction au travail original";;"2014-02-05:Added in RDA and MARC
+bkp;Producteur de livres;;;;;Une personne ou un organisme responsable de la production de livres et d'autres documents imprimés.;;"2013-05-15:modified
+1970-01-01:new"
+;Livres, Producteur de;bkp;;;;;;
+blw;Auteur du texte de présentation;;;;;Une personne ou un organisme responsable de la rédaction d'une appréciation ou d'un témoignage pour une oeuvre, qui apparaît sur ou dans la publication elle-même, souvent sur le dos ou la jaquette pour des documents imprimées, ou sur du matériel promotionnel.;;"2013-05-15:modified
+1970-01-01:new"
+bnd;Relieur;;;;;Une personne responsable de la reliure d'un document.;changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+bpd;Concepteur d'ex-libris;;;;;Une personne ou un organisme responsable de la conception de l'ex-libris (marque d'appartenance propre au collectionneur) collé, imprimé ou tamponné, en général sur le contreplat de l'ouvrage (l'intérieur de la couverture).;;"2013-05-15:modified
+1970-01-01:new"
+brd;Diffuseur;;;;;Une personne, un groupe ou un organisme impliqué dans la diffusion d'une ressource à un public via la radio, la télévision, internet, etc.;;2013-05-15:new
+brl;Imprimeur braille;;;;;Une personne, un groupe ou un organisme impliqué dans l'impression en Braille d'un document à l'aide d'un stylet, d'une imprimante spéciale, ou de tout autre dispositif.;;2013-05-15:new
+bsl;Libraire;;;;;Une personne ou un organisme qui assure la vente, souvent pour des raisons lucratives, de livres et d'autres types de documents imprimés.;;"2013-05-15:modified
+1970-01-01:new"
+cas;Fondeur;;;;;Une personne, un groupe ou un organisme impliqué dans la fabrication d'un objet consistant à verser une substance liquide ou fondue dans un moule puis à la laisser se solidifier pour qu'elle prenne la forme du moule.;;2013-05-15:new
+ccp;Concepteur;;;;;Une personne ou un organisme responsable de l'idée originale d'une œuvre. Cela comprend également l'auteur scientifique d'un document audiovisuel et le concepteur d'une publicité.;;"2013-05-15:modified
+1970-01-01:new"
+chr;Chorégraphe;;;;;Une personne ou un organisme qui crée ou contribue à une œuvre de mouvement.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+cli;Client;;;;;Une personne ou un organisme qui reçoit des services d'une autre personne ou d'un autre organisme.;;"2013-05-15:modified
+1970-01-01:new"
+cll;Calligraphiste;;;;;Une personne ou un organisme qui utilise une écriture artistique pour recopier ou graver un texte.;;"2013-05-15:modified
+1970-01-01:new"
+clr;Coloriste;;;;;Une personne ou un organisme chargé d'appliquer la couleur sur des dessins, des estampes, des photographies, des cartes, des images animées, etc.;;"2013-05-15:modified
+1970-01-01:new"
+clt;Responsable de la phototypie;;;;;Une personne ou un organisme qui effectue le tirage de photographie en utilisant la phototypie (impression à l'encre grasse au moyen de gélatine bichromatée)  comme procédé d'impression.;;"2013-05-15:modified
+1970-01-01:new"
+cmm;Commentateur;;;;;Une personne qui fait l'interprétation, l'analyse ou un commentaire sur le contenu d'un enregistrement, d'un film ou d'un autre type de document audio-visuel.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+cmp;Compositeur;;;;;Une personne, un groupe ou un organisme qui crée ou contribue à une œuvre musicale en y ajoutant de la musique.;"Changed MARC def; combines RDA terms";"2013-05-15:modified
+1970-01-01:new"
+cmt;Compositeur (Imprimerie);;;;;Une personne ou un organisme responsable de la création des caractères en métal et des moules utilisés pour imprimer le texte et les images d'un document.;;"2013-05-15:modified
+1970-01-01:new"
+;Composition (Imprimerie);cmt;;;;;;
+cnd;Chef d'orchestre;;;;;Une personne qui contribue à une œuvre musicale en assurant la direction des artistes (orchestre, chanteurs, opéra...) lors d'une représentation.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+cng;Directeur de la photographie;;;;vdg;Une personne responsable de la photographie dans un film qui gère les aspects techniques de l'éclairage et de la prise de vue des scènes et assiste souvent le réalisateur dans le choix des angles de vue, la mise en place des caméras et des lumières. Elle peut également superviser d'autres aspects du film jusqu'à sa finalisation. Les termes directeur photo et chef opérateur (de la prise de vue) sont parfois utilisés. Ne pas confondre avec vidéaste.;"Changed MARC def (FIAF); RDA uses for videographer and MARC differentiates (confirmed with Andrea Leigh)";"2013-05-15:modified
+1970-01-01:new"
+;Chef opérateur de la prise de vue;cng;;;;;;
+cns;Censeur;;;;;Une personne ou un organisme qui examine un texte en vue d'expurger ou de censurer les parties jugées contestables d'un point de vue moral, politique, militaire ou autre.;Changed MARC def (not RDA);"2013-05-15:modified
+1970-01-01:new"
+;Bowdlerisation ;cns;;;;;;
+;Responsable de l'expurgation de texte;cns;;;;;;
+coe;Contestant-intimé;;;;;Le contestant visé par l'appel interjeté à l'égard de la décision d'une cour de justice ou d'une juridiction, en vue de son infirmation devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+col;Collectionneur;;;;;Une personne qui a réuni des œuvres provenant de sources diverses et qui les a organisé, décrit et catalogué comme une collection. Le collectionneur n'est ni le créateur du matériel, ni la personne à qui les manuscrits de la collection étaient peut-être destinés.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+com;Compilateur;;;;edc;"Une personne, un groupe ou un organisme qui créée un nouveau document (une bibliographie, un répertoire...) en effectuant une compilation de documents existants (recueil, sélection et classement ; ajout de données ou d'informations ; etc.)";Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+con;Conservateur;;;;;Une personne ou un organisme responsable de la documentation, de la préservation, ou du traitement de documents imprimés ou manuscrits, d'œuvres d'art, d'artefacts ou d'autres médias.;;"2013-05-15:modified
+1970-01-01:new"
+;Responsable de la préservation;con;;;;;;
+cor;Conservateur de la collection;;;;;Un conservateur qui liste et répertorie les objets et les œuvres qui constituent une collection.;;2013-05-15:new
+cos;Contestant;;;;;Une personne, un groupe ou un organisme qui refuse, conteste ou s'oppose à une demande, une décision ou un arrêt émanant d'une cour de justice.;;"2013-05-15:modified
+1970-01-01:new"
+cot;Contestant-appelant;;;;;Le contestant qui en appelle de la décision d'une cour de justice ou d'une juridiction, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+cou;Tribunal régi;;;;;Une cour régie par des règles de procédure, indépendamment de leur nature officielle (par exemple, lois, règlements administratifs).;;2013-05-15:new
+cov;Concepteur de la couverture;;;;;Une personne ou un organisme responsable de la conception de la couverture d'un ouvrage, de la pochette d'un disque, d'un étui, d'une boîte, etc. Pour désigner la conception graphique de l'ensemble d'un livre, utiliser Dessinateur-maquettiste (bkd), pour la jaquette d'un livre, utiliser Concepteur de jaquettes (bjd),;;"2013-05-15:modified
+1970-01-01:new"
+;Concepteur de la pochette;cov;;;;;;
+cpc;Demandeur du droit d'auteur;;;;;Une personne ou un organisme mentionné comme détenteur des droits d'auteur au moment de l'enregistrement. Les droits d'auteur peuvent par la suite être accordés ou transférés à une autre personne ou à un autre organisme qui devient alors le titulaire du droit d'auteur (cph).;;"2013-05-15:modified
+1970-01-01:new"
+cpe;Plaignant-intimé;;;;;Le plaignant visé par l'appel interjeté à l'égard du jugement d'un tribunal en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.;;"2013-05-15:modified
+1970-01-01:new"
+cph;Titulaire du droit d'auteur;;;;;Une personne ou un organisme à qui les droits d'auteur et de propriété intellectuelle ont été accordés ou transférés. Le titulaire du droit d'auteur n'est pas obligatoirement le créateur de l'œuvre mais il dispose en général d'un droit exclusif sur la vente et l'usage de l'œuvre à laquelle s'applique la protection du droit d'auteur.;;"2013-05-15:modified
+1970-01-01:new"
+cpl;Plaignant;;;;;Une personne ou un organisme qui demande au tribunal de lui accorder réparation, habituellement dans le cadre d'une procédure fondée sur l'équité.;;"2013-05-15:modified
+1970-01-01:new"
+cpt;Plaignant-appelant;;;;;Le plaignant qui en appelle du jugement d'un tribunal ou d'une cour, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.;;"2013-05-15:modified
+1970-01-01:new"
+cre;Créateur;;;;;Une personne ou un organisme responsable du contenu intellectuel ou artistique d'une œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+crp;Correspondant;;;;;Une personne ou un organisme qui est l'auteur ou le destinataire d'une lettre ou d'une correspondance.;;"2013-05-15:modified
+1970-01-01:new"
+crr;Réviseur;;;;pfr;Une personne ou un organisme qui révise et corrige un manuscrit Pour du texte imprimé, utiliser Correcteur (pfr).;;"2013-05-15:modified
+1970-01-01:new"
+crt;Sténographe judiciaire;;;;;Une personne, un groupe ou un organisme qui rapporte et prépare les avis d'un tribunal avant publication.;;"2014-02-04:Altered definition
 2013-05-15:new"
-wpr;"Rédacteur de la préface";;;;;"Terme utilisé pour désigner toute personne ou tout organisme qui a contribué au document en fournissant une préface au travail original";;"2014-02-05:Added in RDA and MARC
+csl;Expert-conseil;;;;;Une personne ou un organisme expert sur un sujet à qui on fait appel pour obtenir des conseils ou des services concernant un savoir professionnel spécialisé ou de la formation.;;"2014-02-04:added to RDA
+2013-05-15:modified
+1970-01-01:new"
+csp;Conseiller-expert d'un projet;;;;;Une personne ou un organisme embauché dans le but précis de fournir une vue d'ensemble professionnelle concernant une tâche stratégique ou opérationnelle appuyée par une analyse, des spécifications ou des recommandations afin de créer ou de proposer une démarche ou une solution efficace.;;"2013-05-15:modified
+1970-01-01:new"
+cst;Costumier;;;;;Une personne, un groupe ou un organisme qui conçoit et fabrique les costumes lors du tournage d'un film ou pour une représentation musicale ou théâtrale ou dans un spectacle.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ctb;Contributeur;;;;;Une personne, un groupe ou un organisme dont le travail a contribué à une œuvre plus générale telle qu'une anthologie, une publication en série ou une compilation de travaux individuels. Lorsque c'est possible, utilisez un terme plus spécifique tel que éditeur intellectuel (edt), compilateur (com), illustrateur (ill), etc.;"Changed MARC def; Collaborator deprecated in MARC list and reference made";"2013-05-15:modified
+1970-01-01:new"
+;Collaborateur;ctb;;;;;;
+cte;Contesté-intimé;;;;;Le contesté visé par un appel interjeté à l'égard de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+ctg;Cartographe;;;;;Une personne, un groupe ou un organisme responsable de la création d'une carte, d'un atlas, d'un globe ou de tout autre élément cartographique.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ctr;Contractant;;;;;Une personne ou un organisme qui s'engage par contrat envers une autre personne ou un autre organisme à exécuter une tâche particulière.;;"2013-05-15:modified
+1970-01-01:new"
+cts;Contesté;;;;;Une personne ou un organisme qui défend devant une cour de justice une demande, une décision ou un arrêt contesté.;;"2013-05-15:modified
+1970-01-01:new"
+ctt;Contesté-appelant;;;;;Le contesté qui en appelle de la décision d'un tribunal ou d'une juridiction en vue de son infirmation.;;"2013-05-15:modified
+1970-01-01:new"
+cur;Commissaire d'exposition;;;;;Une personne, un groupe ou un organisme qui conçoit et organise une exposition.;;"2013-05-15:modified
+1970-01-01:new"
+;Curateur;cur;;;;;;
+cwt;Commentateur du texte;;;;ann;Une personne ou un organisme responsable des commentaires ou des notes explicatives au sujet d'un texte. S'il s'agit de notes manuscrites sur un document imprimé, utilisez le terme annotateur (ann).;;"2013-05-15:modified
+1970-01-01:new"
+dbp;Canal de distribution;;;;;Canal utilisé pour la distribution d'une ressource (par exemple un grossiste pour un périodique).;;"2013-05-15:modified
+1970-01-01:new"
+dfd;Défendeur;;;;;Une personne ou une organisation qui est poursuivie ou accusée dans le cadre d'une affaire criminelle ou civile.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+dfe;Défendeur-intimé;;;;;Le défendeur visé par un appel interjeté à l'égard de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'un recours fondé sur la loi.;;"2013-05-15:modified
+1970-01-01:new"
+dft;Défendeur-appelant;;;;;Le défendeur qui en appelle de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'un recours fondé sur la loi.;;"2013-05-15:modified
+1970-01-01:new"
+dgg;Institution émettrice d'un diplôme;;;;;L'institution qui décerne le diplôme pour lequel on a présenté une thèse ou un mémoire.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+;Responsable de l'attribution des grades;dgg;;;;;;
+dgs;Superviseur de thèse;;;;;Une personne qui supervise un diplôme universitaire de niveau supérieur.;;"2014-02-04:added to RDA and MARC
+2013-05-15:new"
+dis;Doctorant;;;;;Une personne qui prépare et soutient une thèse en vue d'obtenir un diplôme universitaire ou d'études supérieures.;;"2013-05-15:modified
+1970-01-01:new"
+dln;Illustrateur technique;;;;;Une personne ou un organisme qui réalise des dessins techniques à partir de conceptions faites par d'autres personnes.;;"2013-05-15:modified
+1970-01-01:new"
+dnc;Danseur;;;;;Une personne qui danse dans une représentation musicale, théâtrale, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+dnr;Donateur;;;;;Une personne qui a fait don d'un livre, d'un manuscrit, etc. au propriétaire actuel.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+dpc;Entité illustrée;;;;;Une entité faisant l'objet d'une illustration ou d'un portrait dans une œuvre, particulièrement une œuvre d'art.;Subject relationship;"2013-05-15:modified
+1970-01-01:new"
+dpt;Déposant;;;;;Une personne ou un organisme qui place du matériel sous la garde d'une bibliothèque ou d'un dépôt d'archives sans en transférer le titre légal.;;"2013-05-15:modified
+1970-01-01:new"
+drm;Dessinateur industriel;;;;;Une personne, un groupe ou une organisation qui contribue à l’œuvre d'un architecte, d'un inventeur, etc. en réalisant des plans détaillés et des dessins techniques de bâtiments, de bateaux, d'avions, de machines, d'objets, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+;Dessinateur projeteur;drm;;;;;;
+drt;Directeur des programmes;;;;;Une personne responsable de l'administration générale et de la supervision d'une œuvre filmée ou d'un programme de radio, de télévision, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+dsr;Designer;;;;;Une personne, un groupe ou un organisme responsable de la conception d'un objet.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+dst;Distributeur;;;;;Une personne ou un organisme qui détient la totalité ou une partie des droits de commercialisation d'une œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+dtc;Contributeur de données;;;;;Une personne ou un organisme qui fournit des données en vue de leur intégration dans une base de données ou tout autre ensemble de données.;;"2013-05-15:modified
+1970-01-01:new"
+dte;Dédicataire;;;;;Une personne, un groupe ou un organisme à qui une œuvre est dédicacée,;"Changed MARC def; Combines RDA dedicatee (work) and dedicatee of item (item)";"2014-02-05:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+;Destinataire de la dédicace;dte;;;;;;
+dtm;Gestionnaire de données;;;;;Une personne ou un organisme qui gère des bases de données ou d'autres sources de données.;;"2013-05-15:modified
+1970-01-01:new"
+dto;Auteur d'une dédicace;;;;;La personne qui formule et écrit une dédicace. La dédicace peut prendre la forme d'une formule officielle ou d'une envolée épistolaire ou poétique.;;"2013-05-15:modified
+1970-01-01:new"
+dub;Auteur douteux;;;;;Une personne ou un organisme à qui la paternité d'une œuvre a été attribuée à tort ou de façon incorrecte.;;"2013-05-15:modified
+1970-01-01:new"
+edc;Éditeur intellectuel de la compilation;;;;com;Une personne, un groupe, ou un organisme qui contribue à un travail collectif ou une compilation en sélectionnant et en assemblant des travaux ou parties de travaux provenant d'un ou plusieurs auteurs différents. Pour des compilations de données, d'information, etc., qui aboutissent à une nouvelle œuvre, utiliser le terme compilateur (com).;;2013-05-15:new
+edm;Chef monteur;;;;;Une personne, un groupe, ou un organisme chargé de couper, d'assembler et d'arranger l'image et le son d'un film, d'une vidéo ou d'un autre type d'œuvre audiovisuelle.;;2013-05-15:new
+;Responsable du montage du film;edm;;;;;;
+edt;Éditeur intellectuel;;;;;Une personne, un groupe ou un organisme qui contribue à une œuvre en révisant ou en clarifiant le contenu (ajout d'une introduction, de notes ou d'un texte similaire). Elle peut également préparer le texte de façon à ce qu'il soit publié et diffusé. Pour des révisions majeures, des adaptations, etc. qui change de façon conséquente la nature et le contenu de l'oeuvre originale, voir auteur (aut).;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+egr;Graveur;;;;;Une personne ou une organisation qui découpe des lettres, des figures, etc. sur une surface en bois ou en métal utilisée pour l'impression.;;"2013-05-15:modified
+1970-01-01:new"
+elg;Électricien;;;;;Une personne responsable de la gestion et de l'installation du matériel d'éclairage pour une production et de son utilisation pendant une représentation.;;"2013-05-15:modified
+1970-01-01:new"
+;Chef électricien;elg;;;;;;
+;Électricien maison;elg;;;;;;
+;Maître électricien;elg;;;;;;
+elt;Galvanotypeur;;;;;Une personne ou un organisme qui crée une surface destinée à la photogravure (galvanotype) en utilisant des techniques de moulage sous pression et d'électrophorèse.;;"2013-05-15:modified
+1970-01-01:new"
+eng;Ingénieur;;;;;Une personne ou un organisme responsable de la conception technique et de la planification, notamment en matière de constructions.;;"2013-05-15:modified
+1970-01-01:new"
+enj;Juridiction compétente;;;;;Une juridiction décrétant une loi, un règlement, une constitution, une règle de cour, etc.;;2013-05-15:new
+etr;Aquafortiste;;;;;Une personne ou un organisme qui imprime du texte ou des images en soumettant du métal, du verre ou d'autre surface à l'action d'un acide ou à l'action corrosive d'une autre substance (eau-forte, acide nitrique, etc.);;"2013-05-15:modified
+1970-01-01:new"
+evp;Lieu de l'événement;;;;;Le lieu où un événement comme une conférence ou un concert s'est déroulé.;;"2013-05-15:modified
+1970-01-01:new"
+exp;Expert en œuvres d'art;;;;;Une personne ou un organisme responsable de la description et de l'évaluation de la valeur d'un bien, notamment d'objets rares, d'œuvres d'art, etc.;;"2013-05-15:modified
+1970-01-01:new"
+;Estimateur;exp;;;;;;
+fac;Copiste;;;;;Une personne ou un organisme qui a produit le fac-similé de l'œuvre;;"2013-05-15:modified
+1970-01-01:new"
+;Auteur de la copie;fac;;;;;;
+fds;Distributeur du film;;;;;Une personne, un groupe ou un organisme qui assure la distribution d'un film dans les salles ou d'autres canaux de distribution.;;2013-05-15:new
+fld;Directeur de terrain;;;;;Une personne ou un organisme qui gère ou supervise le travail de collecte de données brutes ou fait de la recherche dans le milieu ou dans l'environnement à sa disposition (s'applique notamment en sciences sociales et en science naturelle).;;"2013-05-15:modified
+1970-01-01:new"
+flm;Monteur de films;;;;;Une personne qui, en suivant le script et de concert avec le réalisateur, sélectionne, organise et assemble les scènes d'un film, vérifie la synchronisation de l'image et du son et participe à d'autres tâches de post-production telles que le mixage du son et le traitement des effets spéciaux. De nos jours le travail de montage est très souvent effectué en numérique.;Changed MARC def (FIAF);"2013-05-15:modified
+1970-01-01:new"
+;Monteur d'images animées;flm;;;;;;
+fmd;Réalisateur du film;;;;;Un réalisateur responsable de la gestion générale et de la supervision d'une performance filmée.;;2013-05-15:new
+fmk;Cinéaste;;;;;Une personne, un groupe ou un organisme responsable de la création d'un film indépendant ou personnel. Un cinéaste est responsable personnellement de la conception et de la création de tous les aspects du film.;;2013-05-15:new
+fmo;Ancien propriétaire;;;;;Une personne, un groupe ou un organisme qui était auparavant le détenteur légal d'une œuvre.;"Changed MARC def; in RDA associated with Owner (element) which is broader than MARC owner (which means current owner)";"2013-05-15:modified
+1970-01-01:new"
+fmp;Producteur du film;;;;;Un producteur responsable de la plupart des aspects commerciaux d'un film.;;2013-05-15:new
+fnd;Bailleur de fonds;;;;;Une personne ou un organisme qui apporte un soutien financier à la production d'une œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+fpy;D'une part;;;;;"Une personne ou un organisme nommé dans la section ""d'une part"" dans le chapitre ""désignation des parties"" d'un contrat. Dans le cas d'un contrat de transfert de droits, il peut s'agir du cédant, du vendeur, du détenteur de licence, du bailleur, etc. Plusieurs entités peuvent être présentées comme constituant une même partie.";;"2013-05-15:modified
+1970-01-01:new"
+frg;Faussaire;;;;;Une personne ou une organisation qui fait ou imite quelque chose de valeur ou d'importance, avec l'intention de frauder,;;"2013-05-15:modified
+1970-01-01:new"
+;Contrefacteur;frg;;;;;;
+;Falsificateur;frg;;;;;;
+gis;Spécialiste de l'information géographique;;;;;Une personne responsable du développement et de l'intégration d'un système d'information géographique (SIG) avec les données provenant d'un système de positionnement global.;;"2013-05-15:modified
+1970-01-01:new"
+;Spécialiste de l'information géospatiale;gis;;;;;;
+his;Institution hôte;;;;;Un organisme qui accueille un événement, une exposition, une conférence, etc., qui a donné lieu à un document, mais ayant peu ou aucune responsabilité concernant le contenu de ce document.;;"2014-02-05:Altered definition
+2013-05-15:new"
+hnr;Personne honorée;;;;;Une personne, un groupe ou un organisme mis à l'honneur dans un travail ou un document (par exemple le sujet d'une commémoration, une personne à la mémoire ou en l'honneur de qui un livre ou un manuscrit a été fait, etc.);"Changed MARC def; combines RDA honoree and honoree of item";"2013-05-15:modified
+1970-01-01:new"
+;Personne mise à l'honneur;hnr;;;;;;
+;Lauréat;hnr;;;;;;
+hst;Animateur;;;;;Une personne qui anime régulièrement une émission (de radio, de télévision, etc.), à laquelle participent des invités, des artistes, etc. (par exemple l'animateur d'une émission de variétés).;;"2013-05-15:modified
+1970-01-01:new"
+ill;Illustrateur;;;;art;Une personne, un groupe ou un organisme qui contribue à une œuvre en l'agrémentant de dessins, de diagrammes, de photographies, etc. Si le travail artistique constitue l'essentiel de l'œuvre, utilisez plutôt artiste (art) ou photographe (pht).;Changed MARC def;"2014-02-04:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+ilu;Enlumineur;;;;;Une personne qui décore un ouvrage en utilisant des métaux précieux ou de la couleur, souvent avec des motifs et des dessins élaborés.;;"2013-05-15:modified
+1970-01-01:new"
+ins;Auteur d'une mention de représentation;;;;;Une personne qui signe une mention de représentation (dédicace, présent, etc.);Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+inv;Inventeur;;;;;Une personne, un groupe ou un organisme qui a créé une nouvelle machine ou inventé un nouveau procédé.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+;Inventeur du brevet;inv;;;;;;
+isb;Organisme agréé;;;;;Groupe ou organisme officiel chargé de délivrer une œuvre au public (une agence de l'État par exemple).;;"2014-02-05:Altered definition
+2013-05-15:new"
+itr;Instrumentiste;;;;;Une personne qui contribue à une œuvre en jouant d'un d'un instrument de musique.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ive;Interviewé;;;;;Personne, groupe ou organisme qui contribue à une œuvre en répondant aux questions d'un interviewer (reporteur, enquêteur ou toute autre personne qui collecte de l'information).;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ivr;Interviewer;;;;;Personne, groupe ou organisme qui créée ou contribue à une œuvre en faisant des interviews (reporteur, enquêteur ou toute autre personne qui collecte de l'information).;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+jud;Juge;;;;;Une personne qui écoute et tranche les litiges qui opposent les parties devant un tribunal.;;2013-05-15:new
+jug;Juridiction régie;;;;;Une juridiction régie par une loi, un règlement, etc., qui a été adoptée par une autre juridiction.;;2013-05-15:new
+lbr;Laboratoire;;;;;Un organisme qui procède à des analyses scientifiques sur des échantillons de produits.;;"2013-05-15:modified
+1970-01-01:new"
+lbt;Librettiste;;;;;L'auteur d'un livret d'un opéra, d'un oratorio, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+ldr;Directeur de laboratoire;;;;;Une personne ou un organisme qui gère ou supervise le travail accompli dans un cadre ou un environnement contrôlés.;;"2013-05-15:modified
+1970-01-01:new"
+;Directeur de labo;ldr;;;;;;
+led;Responsable;;;;;Une personne ou un organisme qui endosse la responsabilité d'une activité particulière ou d'un effort.;;"2013-05-15:modified
+1970-01-01:new"
+lee;Partie adverse-intimé;;;;;La partie adverse visée par un appel interjeté à l'égard de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+lel;Partie adverse;;;;;Terme utilisé pour désigner la partie visée par l'acte introductif d'instance dont est saisi un tribunal ecclésiastique ou une cour de l'Amirauté.;;"2013-05-15:modified
+1970-01-01:new"
+len;Prêteur;;;;;Une personne ou une organisme autorisant l'emprunt d'un livre, d'un manuscrit, etc. par exemple pour le photocopier ou le microfilmer.;;"2013-05-15:modified
+1970-01-01:new"
+let;Partie adverse-appelant;;;;;Terme utilisé pour désigner la partie adverse qui en appelle de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+lgd;Éclairagiste;;;;;Une personne ou un organisme qui conçoit les éclairages pour une représentation théâtrale, un spectacle, un film, etc.;;"2013-05-15:modified
+1970-01-01:new"
+lie;Requérant-intimé;;;;;Terme utilisé pour désigner le requérant visé par un appel interjeté à l'égard de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+lil;Requérant;;;;;Terme utilisé pour désigner la partie qui produit un plainte dans une affaire ecclésiastique ou relative à l'amirauté.;;"2013-05-15:modified
+1970-01-01:new"
+lit;Requérant-appelant;;;;;Terme utilisé pour désigner le requérant qui en appelle de la décision d'un tribunal ecclésiastique ou maritime, en vue de son infirmation, devant une instance supérieure.;;"2013-05-15:modified
+1970-01-01:new"
+lsa;Architecte-paysagiste;;;;;Un architecte dont les tâches consistent à concevoir et à coordonner l'aménagement d'un terrain et l'intégration des structures existantes ou proposées.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+lse;Porteur de licence;;;;;Terme utilisé pour désigner la première personne qui obtient le droit d'imprimer ou de publier.;;"2013-05-15:modified
+1970-01-01:new"
+lso;Donneur de licence;;;;;Terme utilisé pour désigner le signataire d'un brevet, d'un imprimatur, etc.;;"2013-05-15:modified
+1970-01-01:new"
+;Imprimatur;lso;;;;;;
+ltg;Lithographe;;;;;Terme utilisé pour désigner toute personne qui apprête de la pierre ou une planche pour faire une impression lithographique, y compris le graphiste qui exécute un dessin en travaillant directement sur la surface qui servira à l'impression.;;"2013-05-15:modified
+1970-01-01:new"
+lyr;Parolier;;;;;L'auteur des paroles d'une chanson.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+mcp;Copiste de musique;;;;;Une personne qui transcrit ou recopie des partitions de musique.;;"2013-05-15:modified
+1970-01-01:new"
+mdc;Agent de liaison sur les métadonnées;;;;;Une personne ou un organisme responsable de la compilation et de la maintenance de la description d'un ensemble de données (par exemple un ensemble de métadonnées géospatiales).;;"2013-05-15:modified
+1970-01-01:new"
+med;Médium;;;;;Une personne supposée être capable de communiquer entre le monde terrestre et le monde des esprits.;;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
+mfp;Lieu de fabrication;;;;;Le lieu de fabrication (impression, duplication, fonderie, etc.) d'une ressource sous sa forme publiée.;;"2013-05-15:modified
+1970-01-01:new"
+mfr;Fabricant;;;;;Une personne ou un organisme responsable de l'impression, la duplication, la fonderie, etc. d'une œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+mod;Animateur de débat;;;;;Une personne qui anime une émission (radio, télévision, etc.) où l'on discute de différents sujets, en général avec la participation d'experts de domaines liés au sujet de discussion.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+mon;Autorité de contrôle;;;;;Une personne ou un organisme qui veille au respect d'un contrat et élabore des documents dont elle contrôle la distribution.;;"2013-05-15:modified
+1970-01-01:new"
+mrb;Marbreur;;;;;L'entité responsable de la marbrure du papier, du tissu, du cuir, etc. utilisé pour la fabrication de l'œuvre.;;"2013-05-15:modified
+1970-01-01:new"
+mrk;Éditeur de langage balisé;;;;;Une personne ou un organisme qui effectue le codage de textes, de métadonnées ou d'autres document en SGML, HTML ou en XML.;;"2013-05-15:modified
+1970-01-01:new"
+;Langage balisé, Éditeur de;mrk;;;;;;
+msd;Directeur musical;;;;;Une personne qui coordonne le travail du compositeur, du preneur de son et de l'arrangeur lors de la production d'un film, une représentation musicale ou théâtrale, un spectacle.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+mte;Graveur sur métal;;;;;Un graveur qui effectue les dessins, les illustrations, les lettres, etc. qui sont gravées sur une surface métallisée dans un but d'impression ou de décoration.;;"2013-05-15:modified
+1970-01-01:new"
+mtk;Auteur du compte-rendu;;;;;Une personne, un groupe ou un organisme responsable du compte-rendu d'une réunion.;;"2014-02-06:Added in RDA and MARC
+2013-05-15:new"
+mus;Musicien;;;;;Une personne ou un organisme qui joue de la musique ou qui contribue au contenu musical d'une œuvre lorsqu'il est impossible ou qu'il n'est pas souhaitable d'indiquer la fonction de manière plus précise;;"2013-05-15:modified
+1970-01-01:new"
+nrt;Narrateur;;;;;Une personne qui relate oralement les détails d'un acte, d'un événement ou d'une suite d'événements.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+opn;Opposant;;;;;Une personne ou un organisme dont la tâche consiste à s'opposer à une thèse ou un mémoire.;;"2013-05-15:modified
+1970-01-01:new"
+org;Initiateur;;;;;Une personne ou un organisme qui exécute le travail et qui est associé associé au contenu intellectuel de l'œuvre. Cette catégorie n'inclut pas l'éditeur ou autres affiliations, ni les commanditaires sauf dans le cas ou il sont considérés en tant qu'auteurs collectifs.;;"2014-02-06:added to RDA
+2014-02-06:Changed MARC term and definition
+2013-05-15:modified
+1970-01-01:new"
+orm;Organisateur;;;;;Une personne, un groupe ou un organisme chargé d'organiser l'exposition, l'événement, la conférence, etc. qui a donné lieu au document.;changed MARC term and def;2013-05-15:new
+;Organisateur de la rencontre;orm;;;;;;
+osp;Présentateur;;;;;Une personne qui apparaît à l'écran pour présenter un documentaire ou le contexte général ou historique d'une fiction. Terme générique à utiliser si vous ne souhaitez pas employer un terme plus spécifique comme narrateur (nrt), présentateur (hst), etc.;;2013-05-15:new
+oth;Autre;;;;;Autre rôle;;"2013-05-15:modified
+1970-01-01:new"
+own;Propriétaire;;;;;Une personne, un groupe ou un organisme à qui appartient légalement un document ou une collection.;Combined defs;"2014-02-05:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+;Détenteur actuel;own;;;;;;
+pan;Participant;;;;;Une personne qui participe à un programme (souvent une émission) dans laquelle des sujets sont discutés, en général aux côtés d'experts du domaine.;;2013-05-15:new
+pat;Mécène;;;;;Une personne ou un organisme qui encourage financièrement la création d'un œuvre. En général, un mécène utilise son influence pour soutenir le travail des artistes, des écrivains, etc. Cela inclut les mécènes qui commandent des œuvres individuelles et qui paient pour ces dernières.;;"2013-05-15:modified
+1970-01-01:new"
+pbd;Directeur de la publication;;;;;Une personne ou un organisme qui dirige l'élaboration d'une œuvre collective afin de s'assurer de sa cohésion ou de sa continuité. Ce code couvre les rédacteurs en chef, les directeurs d'œuvres littéraires, les responsables de collections, etc.;;"2013-05-15:modified
+1970-01-01:new"
+pbl;Éditeur;;;;;Une personne ou un organisme chargé de la publication, la diffusion ou la parution d'une œuvre.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+pdr;Directeur de projet;;;;;Une personne ou un organisme qui est responsable des aspects fondamentaux d'un projet, qui assure la gestion générale d'un projet ou qui définit l'orientation générale d'un projet.;;"2013-05-15:modified
+1970-01-01:new"
+pfr;Correcteur d'épreuves;;;;crr;Une personne qui corrige des textes imprimés. Utilisez le code [crr] Réviseur dans le cas des manuscript.;;"2013-05-15:modified
+1970-01-01:new"
+pht;Photographe;;;;;Une personne ou un organisme chargé de prendre des photographies.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+plt;Clicheur;;;;;Une personne, un groupe ou un organisme chargé de fabriquer ou d'utiliser des plaques en relief utilisées pour l'impression de dessins ou de texte.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+pma;Agence de réglementation;;;;;Un organisme (souvent une agence gouvernementale) qui délivre les autorisations nécessaires à la réalisation d'un travail.;;"2013-05-15:modified
+1970-01-01:new"
+pmn;Directeur de production;;;;;Une personne responsable des aspects techniques et commerciaux d'une production.;;"2013-05-15:modified
+1970-01-01:new"
+pop;Imprimeur de planches;;;;;Une personne ou un organisme qui imprime des illustrations à partir de planches.;;"2013-05-15:modified
+1970-01-01:new"
+;Planches, Imprimeur de;pop;;;;;;
+ppm;Papetier;;;;;Une personne ou un organisme qui produit du papier, en général à partir de bois, de tissus ou d'autres matériaux à base de fibres.;;"2013-05-15:modified
+1970-01-01:new"
+ppt;Marionnettiste;;;;;Une personne qui contribue à une œuvre en en manipulant, en contrôlant, ou en dirigeant des pantins ou des marionnettes dans un film, dans une représentation musicale ou théâtrale ou lors d'un spectacle.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+pra;Présidence;;;;;"Une personne qui préside et modère une discussion académique, assez souvent en proposant un point de vue et en participant aux discussions qui s'ensuivent (""sous la présidence de..."").";;2013-05-15:new
+prc;Agent de liaison du processus;;;;;Une personne ou un organisme responsable de la réalisation ou du déclenchement d'un processus effectué sur un ensemble de données.;;"2013-05-15:modified
+1970-01-01:new"
+prd;Personnel de la réalisation;;;;;Une personne qui gère les accessoires, l'éclairage, les effets spéciaux, etc. lors d'une représentation musicale ou théâtrale, un spectacle, etc.;;"2013-05-15:modified
+1970-01-01:new"
+pre;Crédité au générique;;;;;"Une personne ou un organisme mentionné dans le générique d'un film ou d'une vidéo sous la forme ""X présente"" et qui est associé d'une façon ou d'une autre à la production, aux finances, ou à la distribution du film (""crédit de vanité"", studio de production).";includes one sentence from FIAF def;2013-05-15:new
+prf;Interprète;;;;;Une personne qui contribue à une œuvre en tant que musicien, acteur, danseur, orateur, etc. en général dans une représentation musicale ou théâtrale, etc. Si des termes spécifiques sont utilisés par ailleurs, Interprète est utilisé pour des personnes dont le talent principal n'est pas indiqué.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+prg;Programmeur;;;;;Une personne ou un organisme responsable de la création d'un logiciel.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+prm;Graveur (arts visuels);;;;;Une personne ou un organisme qui crée une surface d'impression en relief, en creux ou à plat.;;"2013-05-15:modified
+1970-01-01:new"
+prn;Société de production;;;;;Un organisme qui est responsable de la gestion financière, technique et organisationnelle d'une production : scène, écran, enregistrement audio, télévision, webcast, etc.;;"2014-02-04:Altered definition
+2013-05-15:new"
+pro;Producteur;;;;;Une personne, un groupe ou un organisme responsable de la plupart des aspects commerciaux liés à la production d'un film, d'une émission de radio, de télévision, etc. Le producteur est en général responsable du financement, de la gestion de la production, de l'embauche des personnes clés, de l'organisation de la distribution, etc.;Changed MARC def;"2014-02-04:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+prp;Lieu de production;;;;;Le lieu de production d'une œuvre non publiée (par exemple l'endroit ou elle a été créée, fabriquée, construite, etc.;;"2013-05-15:modified
+1970-01-01:new"
+prs;Architecte décorateur;;;;;Une personne ou un organisme responsable de l'ensemble des aspects visuels d'un film.;;2013-05-15:new
+prt;Imprimeur;;;;;Une personne, un groupe ou un organisme ou tout organisme impliqué dans la reproduction d'un texte imprimé, d'une partition de musique, etc. à partir d'une épreuve ou de planches : livres, journaux, magazines, posters, partitions, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+prv;Fournisseur;;;;;Une personne ou un organisme qui produit, édite, fabrique ou distribue une ressource. Terme générique à utiliser si vous ne souhaitez pas employer un terme plus spécifique comme fabriquant (mfr), éditeur (pbl), etc.;;"2013-05-15:modified
+1970-01-01:new"
+pta;Demandeur de brevet;;;;;Une personne ou un organisme qui présente une demande de brevet.;;"2013-05-15:modified
+1970-01-01:new"
+pte;Demandeur-intimé;;;;;Le demandeur visé par un appel interjeté à l'égard de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure prévue par la loi.;;"2013-05-15:modified
+1970-01-01:new"
+ptf;Demandeur;;;;;Une personne ou un organisme qui engage des poursuites dans une procédure au civil.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+pth;Titulaire de brevet;;;;;Une personne ou un organisme à qui a été accordé le brevet auquel se réfère le document.;;"2013-05-15:modified
+1970-01-01:new"
+;Détenteur du brevet;pth;;;;;;
+ptt;Demandeur-appelant;;;;;Le demandeur qui en appelle de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure prévue par la loi.;;"2013-05-15:modified
+1970-01-01:new"
+pup;Lieu de publication;;;;;L'endroit où une ressource est publiée.;;"2013-05-15:modified
+1970-01-01:new"
+rbr;Rubricateur;;;;;Dans un manuscrit (médiéval, par exemple), une personne ou un organisme responsable de certaines parties de l'œuvre (souvent les titres et les textes introductifs du manuscrit) qui apparaissent avec une couleur distinctive, en général en rouge.;;"2013-05-15:modified
+1970-01-01:new"
+rcd;Opérateur d'enregistrement;;;;;Une personne ou un organisme qui utilise un dispositif d'enregistrement pour capturer les sons et/ou la vidéo pendant une session d'enregistrement, y compris les enregistrements sur le terrain de sons naturels, manifestations folkloriques, musiques, etc.;;"2013-05-15:modified
+1970-01-01:new"
+rce;Ingénieur du son;;;;;Une personne qui contribue à une œuvre en supervisant les aspects techniques d'une séance d'enregistrement sonore ou vidéo.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+rcp;Destinataire;;;;;Une personne, un groupe ou un organisme à qui la correspondance mentionnée dans l'œuvre est adressée.;changed MARC term and def;"2014-02-05:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+;Récipiendaire ;rcp;;;;;;
+rdd;Réalisateur radio;;;;;Un réalisateur responsable de la gestion générale et de la supervision d'un programme radio.;;2013-05-15:new
+red;Rédacteur;;;;;Une personne ou un organisme qui écrit ou rédige un article sans être responsable intellectuellement de son contenu,;;"2013-05-15:modified
+1970-01-01:new"
+ren;Perspectiviste;;;;;Une personne ou un organisme qui produit une vue réaliste, en perspective d'un projet architectural (le rendu) pour montrer ce à quoi le projet ressemblera une fois terminé.;;"2013-05-15:modified
+1970-01-01:new"
+res;Chercheur;;;;;Une personne ou un organisme en charge de travaux de recherche.;;"2013-05-15:modified
+1970-01-01:new"
+;Investigateur;res;;;;;;
+rev;Critique;;;;;Une personne ou un organisme responsable de la critique d'un livre, d'un film, d'une représentation, etc.;;"2013-05-15:modified
+1970-01-01:new"
+rpc;Producteur radio;;;;;Un producteur responsable de la plupart des aspects commerciaux d'une émission de radio.;;2013-05-15:new
+rps;Service d'archives;;;;;Un organisme qui stocke des données ou des biens culturels et assure la pérennité, la préservation et l'accès à ces données ou à ces biens.;;"2013-05-15:modified
+1970-01-01:new"
+rpt;Journaliste;;;;;Une personne ou un organisme qui écrit, fait un reportage ou présente des actualités dans une émission ou un média imprimé.;;"2013-05-15:modified
+1970-01-01:new"
+rpy;Responsable éditorial;;;;;Une personne ou un organisme légalement responsable du contenu d'une œuvre publiée.;;"2013-05-15:modified
+1970-01-01:new"
+rse;Répondant-intimé;;;;;Le répondant visé par l'appel interjeté à l'égard d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.;;"2013-05-15:modified
+1970-01-01:new"
+rsg;Metteur en scène de la reprise;;;;;Une personne ou un organisme, autre que le chorégraphe ou le réalisateur, responsable de la mise en scène d'une œuvre chorégraphique ou théâtrale mais qui intervient assez peu sur le contenu.;;"2013-05-15:modified
+1970-01-01:new"
+rsp;Répondant;;;;;Une personne ou un organisme qui apporte une réponse dans une procédure de redressement (en général dans le cadre d'une procédure fondée sur l'équité) ou le candidat à un diplôme qui défend ou s'oppose à la thèse officielle dans une dispute académique.;;"2013-05-15:modified
+1970-01-01:new"
+rsr;Restaurateur;;;;;Une personne, un groupe ou un organisme responsable des procédures intellectuelles et techniques visant à compenser la dégradation d'une œuvre en la ramenant à un état aussi proche que possible de son état d'origine.;;2013-05-15:new
+rst;Répondant-appelant;;;;;Le répondant qui en appelle de la décision d'un tribunal ou d'une juridiction, en vue de son infirmation, devant une instance supérieure, habituellement dans le cadre d'une procédure fondée sur l'équité.;;"2013-05-15:modified
+1970-01-01:new"
+rth;Directeur de recherche;;;;;Une personne responsable de la direction et de la gestion d'un projet de recherche.;;"2013-05-15:modified
+1970-01-01:new"
+rtm;Membre de l'équipe de recherche;;;;;Une personne ayant pris part à un projet de recherche, mais dont le rôle ne consistait pas à le diriger ou à le gérer.;;"2013-05-15:modified
+1970-01-01:new"
+sad;Conseiller scientifique;;;;;Une personne ou un organisme qui apporte des compétences scientifiques, pédagogiques ou historiques à la conception et à la réalisation d'un travail, en particulier dans le cas d'une œuvre audiovisuelle.;;"2013-05-15:modified
+1970-01-01:new"
+sce;Scénariste;;;;aus;Une personne ou un organisme auteur du scénario d'un film, souvent la personne qui a écrit le script.;Revised MARC def;"2013-05-15:modified
+1970-01-01:new"
+scl;Sculpteur;;;;;Un artiste qui a créé un objet par modelage, en sculptant ou en utilisant une technique similaire.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+scr;Scribe;;;;fac;Un secrétaire qui écrit à la main ce qu'on lui dicte pour produire un manuscrit. Pour désigner une personne qui recopie à la main un manuscrit existant, utilisez copiste (fac).;;"2013-05-15:modified
+1970-01-01:new"
+sds;Concepteur du son;;;;;Une personne qui crée ou reproduit une ambiance sonore (en direct ou enregistrée), installe les micros, ajuste les niveaux sonores et combine les sons pour une production.;;"2013-05-15:modified
+1970-01-01:new"
+sec;Secrétaire;;;;;Une personne ou un organisme qui agit en tant que secrétaire ou rédacteur ou toute personne qui exprime les vues d'un groupe.;;"2013-05-15:modified
+1970-01-01:new"
+sgd;Metteur en scène;;;;;Une personne ou un organisme qui contribue à une œuvre scénique en assurant la direction générale et la supervision d'une performance.;;2013-05-15:new
+sgn;Signataire;;;;;Une personne dont la signature apparaît mais sans aucun texte ni indication de provenance. Lorsqu'il y a une indication, utilisez Auteur d'une mention de représentation (ins).;;"2013-05-15:modified
+1970-01-01:new"
+sht;Organisme de soutien;;;;;Une personne ou un organisme qui soutient (en fournissant des équipements, du personnel ou d'autres ressources) un projet, un programme, une rencontre, un événement ou toute autre activité susceptible d'être soutenue.;;"2013-05-15:modified
+1970-01-01:new"
+;Personne de soutien;sht;;;;;;
+sll;Vendeur;;;;;Le propriétaire précédent d'une œuvre qui a été vendue à quelqu'un d'autre.;;2013-05-15:new
+sng;Chanteur;;;;;Une personne qui contribue à une œuvre en utilisant sa voix, avec ou sans accompagnement instrumental, pour produire de la musique. Le chanteur, lors de sa prestation, peut ou non employer des mots réels.;"Changed MARC def; Vocalist is deprecated and made reference";"2013-05-15:modified
+1970-01-01:new"
+;Vocaliste;sng;;;;;;
+spk;Intervenant;;;;;Une personne qui contribue à une œuvre oralement, par exemple pour une conférence, un discours, etc.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+spn;Commanditaire;;;;;Une personne, un groupe ou un organisme qui parraine certains aspects d'un travail (par exemple : financement de la recherche, organisation d'événements, etc.);Changed MARC def;"2014-02-05:Altered definition
+2013-05-15:modified
+1970-01-01:new"
+;Organisme de parrainage;spn;;;;;;
+spy;D'autre part;;;;;"Une personne ou un organisme nommé dans la section ""d'autre part"" dans le chapitre ""désignation des parties"" d'un contrat. Dans le cas d'un contrat de transfert de droits, il peut s'agir du cessionnaire, de l'acquéreur, du licencié, du bénéficiaire, etc. Plusieurs entités peuvent être présentées comme constituant une même partie.";;"2013-05-15:modified
+1970-01-01:new"
+srv;Arpenteur;;;;;Une personne, un groupe ou un organisme qu icontribue à une œuvre en effectuant les mesures et les relevés topographiques de l'aire géographique représentée.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+std;Décorateur de scène;;;;;Une personne qui traduit les ébauches du directeur artistique en de véritables structures architecturales pour une représentation théâtrale, un spectacle, un film, etc. Les décorateurs de scène fournissent les indications détaillés et les spécifications servant à monter la scène.;;"2013-05-15:modified
+1970-01-01:new"
+stg;Contexte;;;;;Le contexte dans lequel l'action ou l'intrigue se déroule, par exemple, un lieu géographique, une période de temps, un bâtiment, un événement...;Subject relationship;"2013-05-15:modified
+1970-01-01:new"
+stl;Conteur;;;;;Une personne qui contribue à une œuvre en relatant l'histoire originale de l'auteur en lui donnant une interprétation théâtrale ou autre.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+stm;Régisseur de plateau;;;;;Une personne responsable de tout ce qui se passe sur une scène ou un plateau et qui agit en tant que chef d'équipes et assistant du réalisateur lors des répétitions.;;"2013-05-15:modified
+1970-01-01:new"
+stn;Organisme de normalisation;;;;;Un organisme responsable de l'élaboration et de l'application d'une norme.;;"2013-05-15:modified
+1970-01-01:new"
+str;Stéréotypeur;;;;;Une personne ou un organisme qui créée une nouvelle plaque d'imprimerie en moulant ou en copiant une autre surface d'impression.;;"2013-05-15:modified
+1970-01-01:new"
+tcd;Directeur technique;;;;;Une personne à qui incombe la responsabilité finale des décors, des accessoires, de l'éclairage et du son dans une production.;;"2013-05-15:modified
+1970-01-01:new"
+tch;Professeur;;;;;Une personne qui contribue à une œuvre en enseignant ou en faisant des démonstrations.;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+;Instructeur;tch;;;;;;
+ths;Directeur de thèse;;;;;Une personne sous le contrôle duquel un candidat à un diplôme élabore et présente une thèse, un mémoire, ou un rapport.;;"2013-05-15:modified
+1970-01-01:new"
+;Parrain;ths;;;;;;
+tld;Réalisateur TV;;;;;Un réalisateur responsable de la gestion générale et de la supervision d'un programme de télévision.;;2013-05-15:new
+tlp;Producteur TV;;;;;Un producteur responsable de la plupart des aspects commerciaux d'une émission de télévision.;;2013-05-15:new
+trc;Transcripteur;;;;"arr
+fac";Une personne, un groupe ou un organisme qui contribue à une œuvre en le transcrivant d'un système de notation à un autre. Pour un travail de transcription pour un instrument ou un orchestre différent, utiliser Arrangeur (arr). Pour un fac-similé réalisé à la main, utiliser Copiste (fac),;Changed MARC def;"2013-05-15:modified
+1970-01-01:new"
+trl;Traducteur;;;;;Une personne ou un organisme qui traduit un texte d'une langue à une autre ou de la forme ancienne d'une langue vers la forme actuelle.;;"2013-05-15:modified
+1970-01-01:new"
+tyd;Concepteur de caractères typographiques;;;;;Une personne ou un organisme qui conçoit la police de caractères typographiques utilisée.;;"2013-05-15:modified
+1970-01-01:new"
+;Caractères typographiques, Concepteur de;tyd;;;;;;
+tyg;Typographe;;;;bkd;Une personne ou un organisme qui choisit les polices de caractères et la mise en page d'un ouvrage.;;"2013-05-15:modified
+1970-01-01:new"
+uvp;Université;;;;;Le lieu où se trouve l'université qui est associée à une œuvre, par exemple, l'université où un mémoire ou une thèse ont été présentés.;;"2013-05-15:modified
+1970-01-01:new"
+vac;Acteur doublage;;;;;Un acteur contribuant à une ressource en fournissant la voix de personnages dans une œuvre audio ou radio, la voix de personnages animés dans un film, la voix dans une publicité radio ou TV, le doublage, etc.;;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
+vdg;Vidéaste;;;;cng;Une personne ou un organisme qui réalise une vidéo (par exemple l'enregistrement d'un spectacle) par opposition à un film commercial. Le vidéaste peut être le cameraman ou superviser un ou plusieurs cameramen. Ne pas confondre avec cinématographe.;In RDA included under Director of photography (i.e. cinematographer);"2013-05-15:modified
+1970-01-01:new"
+wac;Auteur des commentaires ajoutés;;;;;Une personne, un groupe ou un organisme contribuant à l'expression d'une œuvre en fournissant une interprétation ou une explication critique de l'œuvre originale.;;"2014-02-05:Made subproperty of new wst
+2013-05-15:new"
+wal;Auteur des paroles ajoutées;;;;;L'auteur des textes qui ont été ajoutés à une œuvre musicale. Pour les textes écrits en collaboration avec un compositeur pour élaborer une œuvre originale, voir parolier (lyr).;;"2014-02-05:Made subproperty of new wst
+2013-05-15:new"
+wam;Auteur du matériel d'appoint;;;;;Une personne ou un organisme qui écrit le matériel d'accompagnement d'un enregistrement sonore ou d'autres produits audio-visuels.;;"2013-05-15:modified
+1970-01-01:new"
+wat;Auteur des descriptions et légendes;;;;;Une personne, un groupe ou un organisme qui a contribué à une œuvre non-textuelle en fournissant du texte (par exemple les légendes des photos, les descriptions des cartes).;;"2014-02-05:Made subproperty of new wst
+2013-05-15:new"
+wdc;Xylographe;;;;;Une personne ou un organisme qui réalise des estampes en gravant une image en relief sur une planche en bois de fil.;;"2013-05-15:modified
+1970-01-01:new"
+wde;Graveur sur bois;;;;;Une personne ou un organisme qui réalise des estampes en gravant une image en relief sur un bloc de bois de bout.;;"2013-05-15:modified
+1970-01-01:new"
+win;Rédacteur de l'introduction;;;;;Une personne, un groupe ou un organisme qui contribue à une œuvre en rédigeant une introduction au travail original;;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
+wit;Témoin;;;;;Une personne qui confirme la véracité d'un événement ou d'un fait.;;"2013-05-15:modified
+1970-01-01:new"
+;Curieux;wit;;;;;;
+;Observateur;wit;;;;;;
+;Témoignant;wit;;;;;;
+;Témoin oculaire;wit;;;;;;
+;Spectateur;wit;;;;;;
+wpr;Rédacteur de la préface;;;;;Une personne, un groupe ou un organisme qui contribue à une œuvre en fournissant une préface au travail original,;;"2014-02-05:Added in RDA and MARC
+2013-05-15:new"
+wst;Auteurs des textes en supplément;;;;;Une personne, une famille ou un organisme qui contribué à une œuvre en fournissant un contenu textuel supplémentaire (par exemple, une introduction, une préface).;;"2014-02-05:Added in RDA and MARC
 2013-05-15:new"
