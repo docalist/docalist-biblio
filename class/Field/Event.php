@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Object;
 use Docalist\Forms\Table;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Description d'un événement (colloque, réunion, soutenance, etc.)
@@ -62,12 +62,12 @@ class Event extends Object {
         return $field;
     }
 
-    public function map(array & $doc) {
-        $doc['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('event')->text();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['event'] = self::stdIndex();
+    public function map(array & $document) {
+        $document['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
     }
 
     public function format() {
