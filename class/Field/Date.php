@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
 use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Date.
@@ -42,27 +43,13 @@ class Date extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['date.' . $this->type()][] = $this->__get('value')->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('date')->date();
+        $mapping->template('date.*')->idem('date')->copyTo('date');
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $analyzer = [
-            'type' => 'date',
-            'format' => 'yyyy-MM-dd||yyyy-MM||yyyyMMdd||yyyyMM||yyyy',
-            'ignore_malformed' => true
-        ];
-
-        $mappings['dynamic_templates'][] = [
-            'date.*' => [
-                'path_match' => 'date.*',
-                'mapping' => $analyzer + [
-                    'copy_to' => 'date',
-                ],
-            ]
-        ];
-
-        $mappings['properties']['date'] = $analyzer;
+    public function map(array & $document) {
+        $document['date.' . $this->type()][] = $this->__get('value')->value();
     }
 
     // TODO : créer un Type date
