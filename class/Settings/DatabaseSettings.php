@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -30,6 +30,7 @@ use Exception;
  * @property String $slug Slug de la base de données.
  * @property String $label Libellé de la base.
  * @property String $description Description de la base.
+ * @property String $stemming Stemming / analyseur par défaut.
  * @property TypeSettings[] $types Types de notices gérés dans cette base,
  * indexés par nom.
  * @property Integer $creation Date de création de la base.
@@ -57,6 +58,12 @@ class DatabaseSettings extends Object {
                 'description' => [
                     'label' => __('Description, notes, remarques', 'docalist-biblio'),
                     'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
+                ],
+
+                'stemming' => [
+                    'label' => __('Stemming', 'docalist-biblio'),
+                    'description' => __("Définit le stemming qui sera appliqué aux champs textes des notices.", 'docalist-biblio'),
+                    'default' => 'fr',
                 ],
 
                 'types' => [
