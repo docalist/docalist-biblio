@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Auteur personne physique.
@@ -65,12 +65,12 @@ class Author extends MultiField {
         return new self(['name' => 'et al.']);
     }
 
-    public function map(array & $doc) {
-        $doc['author'][] = $this->name() . '¤' . $this->firstname();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('author')->string()->filter()->suggest();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['author'] = self::stdIndexFilterAndSuggest(false, 'text'); // pas de stemming
+    public function map(array & $document) {
+        $document['author'][] = $this->name() . '¤' . $this->firstname();
     }
 
     protected static function initFormats() {
