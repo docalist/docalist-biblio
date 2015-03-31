@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,17 +15,12 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Fragment;
+use Docalist\Search\MappingBuilder;
 /**
  * Type de base pour tous les champs répétables.
  */
 class Repeatable extends \Docalist\Type\Collection implements BiblioField {
     use BiblioFieldTrait;
-
-    public function map(array & $doc) {
-        foreach($this->value as $item) { /* @var $item BiblioField */
-            $item->map($doc);
-        }
-    }
 
     public function displaySettings() {
         $form = $this->traitDisplaySettings();
@@ -197,4 +192,17 @@ class Repeatable extends \Docalist\Type\Collection implements BiblioField {
         return $this->addTableSelect($form, $type, $label, $inherit, true);
     }
 
+    public function mapping(MappingBuilder $mapping) {
+        // Ajoute un élément dans la collection
+        $this->offsetSet(0, null);
+
+        // Demande à cet élément de générer le mapping
+        $this->first()->mapping($mapping);
+    }
+
+    public function map(array & $document) {
+        foreach($this->value as $item) { /* @var $item BiblioField */
+            $item->map($document);
+        }
+    }
 }
