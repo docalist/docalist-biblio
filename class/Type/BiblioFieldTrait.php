@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,12 +14,14 @@
  */
 namespace Docalist\Biblio\Type;
 
-use Docalist\Forms\Fragment;
-use Docalist\Forms\Tag;
-use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
-use Docalist\Schema\Field;
+use Docalist\Table\TableManager;
+
+use Docalist\Search\MappingBuilder;
+
+use Docalist\Forms\Fragment;
 use Docalist\Forms\Select;
+use Docalist\Forms\Tag;
 
 trait BiblioFieldTrait {
     public function baseSettings() {
@@ -100,7 +102,6 @@ trait BiblioFieldTrait {
         return $this->traitDisplaySettings();
     }
 
-
     /**
      * Retourne toutes les tables d'un type donné.
      * Cette méthode utilitaire sert aux champs qui utilisent ce trait pour
@@ -139,14 +140,23 @@ trait BiblioFieldTrait {
     }
 
     /**
-     * Implémentation par défaut de BiblioFIeld::map().
+     * Implémentation par défaut de BiblioField::mapping().
+     *
+     * Par défaut, ne fait rien (champ non indexé).
+     *
+     * @param MappingBuilder $mapping
+     */
+    public function mapping(MappingBuilder $mapping) {
+    }
+
+    /**
+     * Implémentation par défaut de BiblioField::map().
      *
      * Par défaut, ne fait rien.
      *
      * @param array $doc
      */
-    public function map(array & $doc) {
-
+    public function map(array & $document) {
     }
 
     /**
@@ -188,84 +198,6 @@ trait BiblioFieldTrait {
         return $this->table($table2)->find($return, "$search='$code'") ?: $code;
     }
 
-    /**
-     * Implémentation par défaut de BiblioFIeld::ESmapping().
-     *
-     * Par défaut, ne fait rien.
-     *
-     * @param array $doc
-     */
-    public static function ESmapping(array & $mappings, Field $schema) {
-    }
-
-    /**
-     * Mapping standard pour un champ texte.
-     *
-     * @param bool $includeInAll Indique s'il faut ajouter la clause
-     * "include_in_all" au mapping (false par défaut).
-     *
-     * @param string $analyzer Nom de l'analyseur à utiliser.
-     *
-     * @return array
-     */
-    protected static function stdIndex($includeInAll = false, $analyzer = 'dclref-default-fr') {
-        $mapping =  [
-            'type' => 'string',
-            'analyzer' => $analyzer,
-        ];
-
-        if ($includeInAll) {
-            $mapping['include_in_all'] = true;
-        }
-
-        return $mapping;
-    }
-
-    /**
-     * Mapping standard champ texte + filtre.
-     *
-     * @param bool $includeInAll Indique s'il faut ajouter la clause
-     * "include_in_all" au mapping (false par défaut).
-     *
-     * @param string $analyzer Nom de l'analyseur à utiliser.
-     *
-     * @return array
-     */
-    protected static function stdIndexAndFilter($includeInAll = false, $analyzer = 'dclref-default-fr') {
-        $mapping = self::stdIndex($includeInAll, $analyzer);
-
-        $mapping['fields'] = [
-            'filter' => [
-                'type' => 'string',
-                'index' => 'not_analyzed',
-            ]
-        ];
-
-        return $mapping;
-    }
-
-    /**
-     * Mapping standard champ texte + filtre + lookup.
-     *
-     * @param bool $includeInAll Indique s'il faut ajouter la clause
-     * "include_in_all" au mapping (false par défaut).
-     *
-     * @param string $analyzer Nom de l'analyseur à utiliser.
-     *
-     * @return array
-     */
-    protected static function stdIndexFilterAndSuggest($includeInAll = false, $analyzer = 'dclref-default-fr') {
-        $mapping = self::stdIndexAndFilter($includeInAll, $analyzer);
-
-        $mapping['fields']['suggest'] = [
-            'type' => 'completion',
-            'index_analyzer' => 'suggest', // utile ?
-            'search_analyzer' => 'suggest', // utile ?
-        ];
-
-        return $mapping;
-    }
-
     /*
      * Pour implémenter displaySettings(), certains types (exemple : Repeatable)
      * ont besoin d'appeller la fonction du même nom fournie par le trait.
@@ -288,7 +220,7 @@ trait BiblioFieldTrait {
      *   traitDisplaySettings()
      * - le trait dispose d'une méthode (public) displaySettings() qui se contente
      *   d'appeller traitDisplaySettings()
-     * - dans Repeatable, plus besoin de renomage : on peut surcharger
+     * - dans Repeatable, plus besoin de renommage : on peut surcharger
      *   displaySettings() et appeller traitDisplaySettings() si on en a besoin.
      * DM, 04/09/14
      */
