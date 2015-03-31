@@ -22,11 +22,11 @@ use Docalist\Search\MappingBuilder;
  * La date de dernière modification de la notice.
  */
 class LastUpdate extends DateTime {
-    public function map(array & $document) {
-        DatabaseIndexer::standardMap('post_modified', $this->value(), $document);
-    }
-
     public function mapping(MappingBuilder $mapping) {
         DatabaseIndexer::standardMapping('post_modified', $mapping);
+    }
+
+    public function map(array & $document) {
+        DatabaseIndexer::standardMap('post_modified', $this->value(), $document);
     }
 }

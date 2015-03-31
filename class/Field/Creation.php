@@ -22,11 +22,11 @@ use Docalist\Search\MappingBuilder;
  * La date de création de la notice.
  */
 class Creation extends DateTime {
-    public function map(array & $document) {
-        DatabaseIndexer::standardMap('post_date', $this->value(), $document);
-    }
-
     public function mapping(MappingBuilder $mapping) {
         DatabaseIndexer::standardMapping('post_date', $mapping);
+    }
+
+    public function map(array & $document) {
+        DatabaseIndexer::standardMap('post_date', $this->value(), $document);
     }
 }
