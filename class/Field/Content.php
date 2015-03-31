@@ -15,8 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
-use Docalist\Biblio\Type\Repeatable;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Content.
@@ -44,13 +43,12 @@ class Content extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['content'][] = $this->__get('value')->value();
-        // if (type === private) $doc['content.private'] = value;
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('content')->text();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['content'] = self::stdIndex();
+    public function map(array & $document) {
+        $document['content'][] = $this->__get('value')->value();
     }
 
     protected static function shortenText($text, $maxlen = 240, $ellipsis = '…') {
@@ -97,15 +95,7 @@ class Content extends MultiField {
             return $parent->lookup($content->type()) . ': ' . $text;
         });
     }
-/*
-    public function format(Repeatable $parent = null) {
-        $content = parent::format($parent);
-        if ($replace = $parent->schema()->newlines()) {
-            $content = str_replace( ["\r\n", "\r", "\n"], $replace, $content);
-        }
-        return $content;
-    }
-*/
+
     public function filterEmpty($strict = true) {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();
