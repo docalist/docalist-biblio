@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Forms\Fragment;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Interface pour un champ de premier niveau dans une Reference.
@@ -57,26 +57,17 @@ interface BiblioField {
     public function format();
 
     /**
+     * Construit le mapping ElasticSearch du champ.
+     *
+     * @param MappingBuilder $mapping Le mapping à modifier.
+     */
+    public function mapping(MappingBuilder $mapping);
+
+    /**
      * Convertit et stocke les données du champ dans le document ElasticSearch
      * passé en paramètre.
      *
-     * Cette méthode est utilisé par Reference::map() pour construire le
-     * document envoyé à ELasticSearch pour indexer la notice.
-     *
-     * @param array $doc
+     * @param array $document Le document ELasticSearch à modifier.
      */
-    public function map(array & $doc);
-
-    /**
-     * Modifie les mappings ElasticSearch passés en paramètre pour permettre à
-     * chaque champ de définir la façon dont il est indexé.
-     *
-     * La totalité des mappings de l'index sont passés en paramètre. Chaque
-     * champ indexé doit ajouter dans la clé "properties" le mapping de ses
-     * données et peut ajouter dans la clé "dynamic_templates" les modèles
-     * dont il a besoin.
-     *
-     * @param array $mappings
-     */
-    public static function ESmapping(array & $mappings, Field $schema);
+    public function map(array & $document);
 }
