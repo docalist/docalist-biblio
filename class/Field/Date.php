@@ -15,7 +15,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
 use Docalist\Search\MappingBuilder;
 
 /**
