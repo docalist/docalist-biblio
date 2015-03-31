@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -40,11 +40,30 @@ use Docalist\Forms\Form;
     <?php endif ?>
 
     <?php
+        // Charge la liste des analyseurs disponibles
+        $settings = apply_filters('docalist_search_get_index_settings', []);
+        $analyzers = $settings['settings']['analysis']['analyzer'];
+        $analyzers = array_keys($analyzers);
+
+        // Ne conserve que les analyseurs "texte"
+        foreach($analyzers as $key => $analyzer) {
+            if (strpos($analyzer, 'text') === false) {
+                unset($analyzers[$key]);
+            }
+        }
+
         $form = new Form('', 'post');
         $form->input('name')->attribute('class', 'regular-text');
         $form->input('slug')->attribute('class', 'regular-text');
         $form->input('label')->attribute('class', 'large-text');
         $form->textarea('description')->attribute('rows', 10)->attribute('class', 'large-text');
+
+        $form
+            ->select('stemming')
+            ->attribute('class', 'regular-text')
+            ->firstOption(__('(Pas de stemming)', 'docalist-biblio'))
+            ->options($analyzers);
+
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
 
         $form->bind($database)->render('wordpress');
