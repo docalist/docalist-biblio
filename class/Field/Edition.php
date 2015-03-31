@@ -15,17 +15,17 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Une mention d'édition
  */
 class Edition extends String {
-    public function map(array & $doc) {
-        $doc['edition'][] = $this->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('edition')->text();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['edition'] = self::stdIndex();
+    public function map(array & $document) {
+        $document['edition'][] = $this->value();
     }
 }
