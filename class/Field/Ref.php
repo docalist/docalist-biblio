@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\Integer;
 use Docalist\Forms\Input;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Le numéro de référence de la notice.
@@ -29,15 +29,11 @@ class Ref extends Integer {
         return $field;
     }
 
-    public function map(array & $doc) {
-        $doc['ref'] = $this->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('ref')->long();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['ref'] = [
-            'type' => 'long',
-            'index' => 'not_analyzed',
-            'ignore_malformed' => true
-        ];
+    public function map(array & $document) {
+        $document['ref'] = $this->value();
     }
 }
