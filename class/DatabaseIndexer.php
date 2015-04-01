@@ -58,7 +58,11 @@ class DatabaseIndexer extends PostIndexer {
 
     public function map($post) {
         // Crée la référence à partir des données du post passé en paramètre
-        $ref = $this->database->fromPost($post);
+        if ($post instanceof Reference) {
+            $ref = $post;
+        } else {
+            $ref = $this->database->fromPost($post);
+        }
 
         // Mappe la notice
         $document = [];
