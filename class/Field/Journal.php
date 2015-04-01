@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Input;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Un titre de périodique.
@@ -29,11 +29,11 @@ class Journal extends String {
         return $field;
     }
 
-    public function map(array & $doc) {
-        $doc['journal'] = $this->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('journal')->text()->filter()->suggest();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['journal'] = self::stdIndexFilterAndSuggest();
+    public function map(array & $document) {
+        $document['journal'] = $this->value();
     }
 }
