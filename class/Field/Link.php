@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Lien internet.
@@ -63,13 +63,12 @@ class Link extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['link'][] = $this->url();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('link')->url();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['link'] = self::stdIndex(false, 'simple');
-        // cf. http://stackoverflow.com/a/18980048
+    public function map(array & $document) {
+        $document['link'][] = $this->url();
     }
 
     protected static function initFormats() {
