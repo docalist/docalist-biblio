@@ -191,6 +191,7 @@ class AdminDatabases extends AdminPage {
                 $database->label = $_POST['label'];
                 $database->description = $_POST['description'];
                 $database->slug = $_POST['slug'];
+                $database->stemming = $_POST['stemming'];
 
                 $database->validate();
 
