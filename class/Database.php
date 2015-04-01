@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -21,7 +21,9 @@ use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
 use Docalist\Search\Indexer;
-use Exception;
+use Docalist\Search\TypeIndexer;
+use WP_Post;
+use InvalidArgumentException;
 
 /**
  * Une base de données documentaire.
@@ -154,8 +156,36 @@ class Database extends PostTypeRepository {
      * @return Reference
      */
     public function load($id, $context = null) {
-        // Charge les données brutes de la notice
-        $data = $this->loadRaw($id);
+        // Vérifie que l'ID est correct
+        $id = $this->checkId($id);
+
+        // Charge le post wordpress
+        $post = $this->loadData($id);
+
+        // Crée la référence
+        return $this->fromPost($post, $context);
+    }
+
+    /**
+     *
+     * @param WP_Post|array $post
+     * @param string $context
+     * @throws InvalidArgumentException
+     * @return Reference
+     */
+    public function fromPost($post, $context = null) {
+        // Si on nous passé un objet WP_Post, on le convertit en tableau
+        if (is_object($post)) {
+            $post = (array) $post;
+        } elseif (! is_array($post)) {
+            throw new InvalidArgumentException('Expected post (array or WP_Post)');
+        }
+
+        // Récupère l'ID du post
+        $id = isset($post['ID']) ? $post['ID'] : null;
+
+        // Construit les données brutes de la notice à partir des données du post
+        $data = $this->decode($post, $id);
 
         // Récupère le type de la notice
         if (isset($data['type'])) {
@@ -190,14 +220,14 @@ class Database extends PostTypeRepository {
                             __('Chargement de la grille par défaut.', 'docalist-biblio')
                         );
                     });
-                    // shcmea = null = grille par défaut
+                    // schéma = null = grille par défaut
                 } else {
-                    throw new \Exception($msg);
+                    throw new InvalidArgumentException($msg);
                 }
             } else {
                 if (! isset($this->settings->types[$type]->grids[$context])) {
                     $msg = __("La grille %s n'existe pas pour le type %s.", 'docalist-biblio');
-                    throw new \Exception(sprintf($msg, $context, $type));
+                    throw new InvalidArgumentException(sprintf($msg, $context, $type));
                 } else {
                     $schema = $this->settings->types[$type]->grids[$context];
                 }
@@ -216,7 +246,7 @@ class Database extends PostTypeRepository {
      * vue qui sera utilisée : docalist-biblio:format/$format).
      * @param null|int|Reference $ref La notice à formatter.
      *
-     * @throws Exception Si Ref invalide ou erreur dans la vue
+     * @throws InvalidArgumentException Si Ref invalide ou erreur dans la vue
      */
     protected function display($format = 'content', $ref = null) {
         // Aucune ref passée en paramètre
@@ -238,7 +268,7 @@ class Database extends PostTypeRepository {
 
         // Erreur
         else {
-            throw new Exception('invalid ref');
+            throw new InvalidArgumentException('invalid ref');
         }
 
         // Exécute la vue
@@ -381,202 +411,9 @@ class Database extends PostTypeRepository {
             return $types;
         });
 
-        // Settings de l'index Elastic Search
-        add_filter("docalist_search_get_{$type}_settings", function ($settings) {
-            $ours = require __DIR__ . '/../mappings/dclref-index-settings.php';
-            $settings = array_merge_recursive($settings, $ours);
-
-            return $settings; // @todo
+        add_filter("docalist_search_get_{$type}_indexer", function(TypeIndexer $indexer = null) {
+            return new DatabaseIndexer($this);
         });
-
-        // Mappings
-        add_filter("docalist_search_get_{$type}_mappings", function ($mappings) {
-            return Reference::mappings();
-        });
-
-        // Reindexation
-        add_action("docalist_search_reindex_{$type}", function(Indexer $indexer){
-            $this->reindex($indexer);
-        });
-    }
-
-    /**
-     * Transforme une notice de la base en document Docalist Search.
-     *
-     * @return array
-     */
-    public function map(array $ref) {
-/*
-        $ref=array (
-            'ref' => 1,
-            'creation' => array (
-                'date' => '20000127',
-                'by' => 'IRTS-Ile-de-France-Montrouge-Neuilly sur Marne',
-            ),
-            'owner' => array ('IRTS-Ile-de-France'),
-            'type' => 'Article',
-            'title' => 'L\'avenir du social à l\'aube du XXIème siècle',
-            'journal' => 'Actualités sociales hebdomadaires (ASH)',
-            'issue' => 'n° 2149',
-            'date' => '20000114',
-            'pagination' => '21-25',
-            'othertitle' =>  array (
-                array (
-                  'type' => 'dossier',
-                  'title' => 'Le social historique',
-                ),
-                array (
-                  'type' => 'hs',
-                  'title' =>  'titre du hors série',
-                ),
-            ),
-            'topic' =>  array (
-                array (
-                  'type' => 'period',
-                  'term' => array ('XXIEME SIECLE'),
-                ),
-                array (
-                  'type' => 'prisme',
-                  'term' =>  array('TRAVAIL SOCIAL', 'TRAVAILLEUR SOCIAL', 'ASSOCIATION LOI 1901'),
-                ),
-            ),
-            'language' => array ('fre'),
-        );
-*/
-
-//         if (isset($ref['title']) && isset($ref['language'])) {
-//             $ref['title' . $ref['language']] = $ref['title'];
-//         }
-//         if (isset($ref['othertitle'])) {
-//             var_dump($ref);
-//             die();
-//             foreach($ref['othertitle'] as $title) {
-
-//             }
-//         }
-/*
-        echo 'AVANT<pre>', var_export($ref,true), '</pre>';
-        $this->degroup($ref, 'othertitle', 'type', 'title');
-        $this->degroup($ref, 'abstract', 'language', 'content');
-        $this->degroup($ref, 'topic', 'type', 'term');
-        // $this->degroup($ref, 'note', 'type', 'content');
-        echo 'APRES<pre>', var_export($ref,true), '</pre>';
-*/
-/*
-        if (isset($ref['author'])) {
-            foreach($ref['author'] as &$author) {
-                $aut = isset($author['name']) ? $author['name'] : '';
-                $aut .= '¤';
-                isset($author['firstname']) && $aut .= $author['firstname'];
-
-                $author = $aut;
-            }
-        }
-*/
-        $this->concat($ref, 'author', 'name', 'firstname');
-        $this->concat($ref, 'organisation', 'name', 'city', 'country');
-        $this->concat($ref, 'othertitle', 'title');
-        $this->concat($ref, 'date', 'date');
-        $this->concat($ref, 'translation', 'title');
-        unset($ref['pagination']);
-        unset($ref['format']);
-        $this->concat($ref, 'editor', 'name', 'city', 'country');
-        unset($ref['edition']);
-        $this->concat($ref, 'collection', 'name');
-        $this->concat($ref, 'event', 'title', 'date', 'place', 'number');
-        $this->concat($ref, 'degree', 'level', 'title');
-        $this->concat($ref, 'note', 'content');
-        if (isset($ref['topic'])) {
-            $terms = array();
-            foreach($ref['topic'] as $topic) {
-                isset($topic['term']) && $terms += $topic['term'];
-            }
-            $ref['topic'] = $terms;
-        }
-        $this->concat($ref, 'link', 'url');
-
-        unset($ref['statusdate']);
-        unset($ref['imported']);
-        unset($ref['todo']);
-// var_dump($ref);
-// die();
-        return $ref; // @todo à affiner
-    }
-
-    protected function concat(& $ref, $field, $subfield1 /*...*/) {
-        // Si le champ est vide, rien à faire
-        if (! isset($ref[$field])) {
-            return;
-        }
-
-        $args = func_get_args();
-        $field = & $ref[$field];
-
-        // Champ structuré non répétable (exemple : event)
-        if (is_string(key($field))) {
-            $result = '';
-            for ($i = 2 ; $i < count($args) ; $i++) {
-                $i > 2 && $result .= '¤';
-                $result .= isset($field[$args[$i]]) ? $field[$args[$i]] : '';
-            }
-            $field = $result;
-
-            return;
-        }
-
-        // Champ structuré répétable
-        foreach($field as & $item) {
-            $result = '';
-            for ($i = 2 ; $i < count($args) ; $i++) {
-                $i > 2 && $result .= '¤';
-                $result .= isset($item[$args[$i]]) ? $item[$args[$i]] : '';
-            }
-            $item = $result;
-        }
-    }
-
-    /**
-     * Réindexe toutes les notices de la base dans Docalist Search.
-     *
-     * @param Indexer $indexer L'indexeur docalist-search à utiliser.
-     */
-    protected function reindex(Indexer $indexer) {
-        global $wpdb;
-
-        // Prépare la requête utilisée pour charger les posts par lots de $limit
-        $type = $this->postType();
-        $offset = 0;
-        $limit = 1000;
-        $sql = "SELECT ID FROM $wpdb->posts
-                WHERE post_type = %s AND post_status = 'publish'
-                ORDER BY ID DESC
-                LIMIT %d OFFSET %d";
-
-        // Tant qu'on gagne, on joue
-        for (;;) {
-            // Génère (et prepare) la requête pour ce lot
-            $query = $wpdb->prepare($sql, $type, $limit, $offset);
-
-            // $output == OBJECT est le plus efficace, pas de recopie
-            $posts = $wpdb->get_results($query);
-
-            // Si le lot est vide, c'est qu'on a terminé
-            if (empty($posts)) {
-                break;
-            }
-
-            // Indexe tous les posts de ce lot
-            foreach($posts as $post) {
-                $ref = $this->load($post->ID);
-                $indexer->index($type, $post->ID, $ref->map());
-            }
-
-            // Passe au lot suivant
-            $offset += count($posts);
-
-            // La ligne (commentée) suivante est pratique pour les tests
-            // if ($offset >= 1000) break;
-        }
     }
 
     /**
@@ -601,18 +438,7 @@ class Database extends PostTypeRepository {
      * @see \Docalist\Repository\PostTypeRepository::decode()
      */
     public function decode($post, $id) {
-        $data = parent::decode($post, $id);
-//         if (isset($data['ref']) && is_string($data['ref'])) {
-//             if ($data['ref'] === '') {
-//                 unset($data['ref']);
-//             } else {
-//                 $data['ref'] = (int) $data['ref'];
-//                 if ($data['ref'] === 0) {
-//                     throw new \Exception("ref non int pour notice $id");
-//                 }
-//             }
-//         }
-        return $data;
+        return parent::decode($post, $id);
     }
 
     /**
@@ -745,8 +571,6 @@ class Database extends PostTypeRepository {
                     )
                 ),
 
-                // creation
-                // lastupdate
                 'ref.error' => array(
                     //'state' => 'closed',
                     'label' => __('Erreurs détectées', 'docalist-biblio'),
