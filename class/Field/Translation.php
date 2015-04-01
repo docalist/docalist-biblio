@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Une traduction du titre original du document.
@@ -41,12 +41,12 @@ class Translation extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['translation'][] = $this->title();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('translation')->text();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['translation'] = self::stdIndex();
+    public function map(array & $document) {
+        $document['translation'][] = $this->title();
     }
 
     protected static function initFormats() {
