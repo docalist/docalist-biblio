@@ -15,9 +15,9 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Une liste de mots-clés d'un certain type.
@@ -50,24 +50,14 @@ class Topic extends MultiField {
         return $this->type() . ' : ' . implode(', ', $this->term());
     }
 
-    public function map(array & $doc) {
-        $doc['topic.' . $this->type()][] = $this->__get('term')->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('topic')->text()->filter()->suggest();
+        $mapping->template('topic.*')->idem('topic')->copyTo('topic');
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $analyzer = self::stdIndexFilterAndSuggest();
-        $mappings['dynamic_templates'][] = [
-            'topic.*' => [
-                'path_match' => 'topic.*',
-                'mapping' => $analyzer + [
-                    'copy_to' => 'topic',
-                ]
-            ]
-        ];
-
-        $mappings['properties']['topic'] = $analyzer;
+    public function map(array & $document) {
+        $document['topic.' . $this->type()][] = $this->__get('term')->value();
     }
-
 
     protected static function initFormats() {
         self::registerFormat('v', 'Mots-clés', function(Topic $topic, Topics $parent) {
