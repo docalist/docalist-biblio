@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Relation
@@ -44,27 +44,13 @@ class Relation extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['relation.' . $this->type()][] = $this->ref();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('relation')->long();
+        $mapping->template('relation.*')->idem('relation')->copyTo('relation');
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $analyzer = [
-            'type' => 'long',
-            'index' => 'not_analyzed',
-            'ignore_malformed' => true
-        ];
-
-        $mappings['dynamic_templates'][] = [
-            'relation.*' => [
-                'path_match' => 'relation.*',
-                'mapping' => $analyzer + [
-                    'copy_to' => 'relation',
-                ]
-            ]
-        ];
-
-        $mappings['properties']['relation'] = $analyzer;
+    public function map(array & $document) {
+        $document['relation.' . $this->type()][] = $this->ref();
     }
 
     private static function getRef($ref) {
