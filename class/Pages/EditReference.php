@@ -27,6 +27,7 @@ use Docalist\Forms\Fragment;
 use Docalist\Http\ViewResponse;
 use Docalist\Forms\Assets;
 use Docalist\Schema\Field;
+use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Gère la page "création/modification d'une notice" d'une base documentaire.
@@ -226,8 +227,10 @@ class EditReference {
                 echo "</pre>";
 
                 echo "<h4>Mapping Docalist-Search</h4><pre>";
-                echo json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                //echo $ref;
+                $indexer = new DatabaseIndexer($this->database);
+                $document = $indexer->map($ref);
+                echo json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
                 echo "</pre>";
             },
             $this->postType,    // posttype
@@ -375,7 +378,7 @@ class EditReference {
          */
         $ref = $this->database->decode($data, $postarr['ID']);
         if (! isset($ref['type'])) {
-            throw new \Exception("Pas de type dans data");
+            throw new Exception("Pas de type dans data");
         }
         $ref = Reference::create($ref['type'], $ref);
 
