@@ -66,8 +66,11 @@ class Database extends PostTypeRepository {
      * @param DatabaseSettings $settings Paramètres de la base.
      */
     public function __construct(DatabaseSettings $settings) {
+        // Récupère le post_type de cette base
+        $type = $settings->postType();
+
         // Construit le dépôt
-        parent::__construct($settings->postType(), 'Docalist\Biblio\Reference');
+        parent::__construct($type, 'Docalist\Biblio\Reference');
 
         // Stocke nos paramètres
         $this->settings = $settings;
@@ -75,8 +78,17 @@ class Database extends PostTypeRepository {
         // Crée le custom post type WordPress
         $this->registerPostType();
 
-        // Installe les hooks Docalist Search
-        $this->docalistSearchHooks();
+        // Indique à docalist-search que cette base est indexable
+        add_filter('docalist_search_get_types', function (array $types) use ($type) {
+            $types[$type] = $this->settings->label();
+
+            return $types;
+        });
+
+        // Retourne l'indexeur à utiliser pour indexer les notices de cette base
+        add_filter("docalist_search_get_{$type}_indexer", function(TypeIndexer $indexer = null) {
+            return new DatabaseIndexer($this);
+        });
 
         // Déclare nos facettes
         $this->docalistSearchFacets();
@@ -395,25 +407,6 @@ class Database extends PostTypeRepository {
             'name_admin_bar' => $singular,
         );
         // @formatter:on
-    }
-
-    /**
-     * Installe les filtres et les actions qui vont permettre à Docalist Search
-     * d'indexer les données de cette base.
-     */
-    protected function docalistSearchHooks() {
-        $type = $this->postType();
-
-        // Signale à docalist-search que cette base est indexable
-        add_filter('docalist_search_get_types', function ($types) use ($type) {
-            $types[$type] = $this->settings->label();
-
-            return $types;
-        });
-
-        add_filter("docalist_search_get_{$type}_indexer", function(TypeIndexer $indexer = null) {
-            return new DatabaseIndexer($this);
-        });
     }
 
     /**
