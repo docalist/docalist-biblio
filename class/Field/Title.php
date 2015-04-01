@@ -16,7 +16,8 @@ namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Input;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
+use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le titre de la notice.
@@ -29,11 +30,11 @@ class Title extends String {
         return $field;
     }
 
-    public function map(array & $doc) {
-        $doc['title'] = $this->value();
+    public function mapping(MappingBuilder $mapping) {
+        DatabaseIndexer::standardMapping('post_title', $mapping);
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['title'] = self::stdIndex();
+    public function map(array & $document) {
+        DatabaseIndexer::standardMap('post_title', $this->value(), $document);
     }
 }
