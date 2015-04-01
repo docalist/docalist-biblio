@@ -20,19 +20,20 @@ use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
 use Docalist\Schema\Field;
 use Docalist\Biblio\Type\BiblioField;
+use Exception;
 
 /**
  * Référence documentaire.
  *
- * @property Docalist\Biblio\Type\Integer $ref
+ * @property Docalist\Biblio\Field\Ref $ref
  * @property Docalist\Biblio\Type\Integer $parent
  * @property Docalist\Biblio\Field\Title $title
- * @property Docalist\Biblio\Type\String $status
- * @property Docalist\Biblio\Type\DateTime $creation
- * @property Docalist\Biblio\Type\DateTime $lastupdate
+ * @property Docalist\Biblio\Field\Status $status
+ * @property Docalist\Biblio\Field\Creation $creation
+ * @property Docalist\Biblio\Field\LastUpdate $lastupdate
  * @property Docalist\Biblio\Type\String $password
- * @property Docalist\Biblio\Type\String $posttype
- * @property Docalist\Biblio\Type\String $type
+ * @property Docalist\Biblio\Field\PostType $posttype
+ * @property Docalist\Biblio\Field\Type $type
  * @property Docalist\Biblio\Field\Genres $genre
  * @property Docalist\Biblio\Field\Medias $media
  * @property Docalist\Biblio\Field\Authors $author
@@ -108,11 +109,11 @@ class Reference extends Entity {
      * @param string $id
      *
      * @return Reference
-     * @throws \Exception
+     * @throws Exception
      */
     static public function create($type, array $value = null, Schema $schema = null, $id = null) {
         if (! isset(self::$types[$type])) {
-            throw new \Exception("Type de notice inexistant : $type");
+            throw new Exception("Type de notice inexistant : $type");
         }
         $ref = new self::$types[$type]($value, $schema, $id); /* @var $ref Reference */
         $ref->type = $type;
@@ -253,7 +254,7 @@ class Reference extends Entity {
             'description' => __('Décrit une notice documentaire.', 'docalist-biblio'),
             'fields' => [
                 'posttype' => [  // Alias de post_type
-                    'type' => 'Docalist\Biblio\Type\String',
+                    'type' => 'Docalist\Biblio\Field\PostType',
                     'label' => __('Post Type', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
@@ -262,12 +263,12 @@ class Reference extends Entity {
                     'description' => __('Statut de la notice.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
-                    'type' => 'Docalist\Biblio\Type\DateTime',
+                    'type' => 'Docalist\Biblio\Field\Creation',
                     'label' => __('Création', 'docalist-biblio'),
                     'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
-                    'type' => 'Docalist\Biblio\Type\DateTime',
+                    'type' => 'Docalist\Biblio\Field\LastUpdate',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
                 ],
@@ -443,6 +444,7 @@ class Reference extends Entity {
         foreach($schema['fields'] as $name => & $field) {
             $field['name'] = $name;
         }
+        unset($field);
 
         return $schema;
     }
@@ -454,7 +456,7 @@ class Reference extends Entity {
     public function beforeSave(Repository $repository) {
         // Vérifie qu'on peut accéder à $repository->postType()
         if (! $repository instanceof PostTypeRepository) {
-            throw new \Exception("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
+            throw new Exception("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
         }
 
         // Met à jour la séquence si on a déjà un numéro de ref
@@ -562,9 +564,9 @@ class Reference extends Entity {
      *
      * @return Collection
      */
-    public function filter($name, $value, $reverse = false) {
+    public function filter($name, $value, $reverse = false) { // Encore utilisé ?
         if (false === $key = $this->filterable($name)) {
-            throw new \Exception("Le champ $name n'est pas filtrable");
+            throw new Exception("Le champ $name n'est pas filtrable");
         }
 
         if (is_string($value)) {
@@ -610,57 +612,6 @@ class Reference extends Entity {
         }
 
         return $label;
-    }
-
-    /**
-     * Convertit la référence en document Elastic Search
-     *
-     * @return array
-     */
-    public function map() {
-        $data = [];
-        foreach($this->value as $field) { /* @var $field BiblioField */
-            $field->map($data);
-        }
-
-        return $data;
-    }
-
-    /**
-     * Retourne les mappings ElasticSearch pour un objet Reference.
-     *
-     * @return array
-     */
-    public static function mappings() {
-        $mappings = [
-            '_source' => [
-                'enabled' => true,      // redondant (enabled par défaut), mais explicite
-                'includes' => ['*'],    // inclut tout
-                'excludes' => []        // n'exclut rien
-            ],
-
-            'dynamic' => true,
-
-            '_all' => [
-                'enabled' => false,
-            ],
-
-            'include_in_all' => false,
-
-            'date_detection' => false,
-            'numeric_detection' => false,
-
-            'dynamic_templates' => [],
-
-            'properties' => []
-        ];
-
-        foreach (self::defaultSchema()->fields() as $field) { /* @var $field Field */
-            $class = $field->type();
-            $class::ESmapping($mappings, $field);
-        }
-
-        return $mappings;
     }
 
     public function format() {
