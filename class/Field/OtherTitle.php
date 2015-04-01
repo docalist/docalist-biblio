@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Autre titre.
@@ -42,12 +42,12 @@ class OtherTitle extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['othertitle'][] = $this->__get('value')->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('othertitle')->text();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['othertitle'] = self::stdIndex();
+    public function map(array & $document) {
+        $document['othertitle'][] = $this->__get('value')->value();
     }
 
     protected static function initFormats() {
