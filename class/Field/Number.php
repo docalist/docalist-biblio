@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
@@ -43,22 +43,13 @@ class Number extends MultiField {
         // @formatter:on
     }
 
-    public function map(array & $doc) {
-        $doc['number.' . $this->type()][] = $this->__get('value')->value();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('number')->string();
+        $mapping->template('number.*')->idem('number')->copyTo('number');
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $analyzer = self::stdIndex(false, 'text');
-        $mappings['dynamic_templates'][] = [
-            'number.*' => [
-                'path_match' => 'number.*',
-                'mapping' => $analyzer + [
-                    'copy_to' => 'number',
-                ]
-            ]
-        ];
-
-        $mappings['properties']['number'] = $analyzer;
+    public function map(array & $document) {
+        $document['number.' . $this->type()][] = $this->__get('value')->value();
     }
 
     protected static function initFormats() {
