@@ -15,7 +15,7 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\MultiField;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Organisme.
@@ -82,12 +82,12 @@ class Organisation extends MultiField {
         return $result;
     }
 
-    public function map(array & $doc) {
-        $doc['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('organisation')->text()->filter()->suggest(); // stemming sur les noms d'organismes
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['organisation'] = self::stdIndexFilterAndSuggest(); // stemming sur les noms d'organismes
+    public function map(array & $document) {
+        $document['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
     }
 
     protected static function initFormats() {
