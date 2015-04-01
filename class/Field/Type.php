@@ -17,13 +17,14 @@ namespace Docalist\Biblio\Field;
 use Docalist\Biblio\Type\String;
 use Docalist\Forms\Select;
 use Docalist\Biblio\Reference;
-use Docalist\Schema\Field;
+use Docalist\Search\MappingBuilder;
+use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le type de la notice.
  */
 class Type extends String {
-    // Remarque (pour editForm et map) : on n'utilise pas le bon libellé
+    // Remarque (pour editForm et format) : on n'utilise pas le bon libellé
     // le libellé utilisé est celui qui figure dans le schéma par défaut
     // du type.
     // Il faudrait utiliser le libellé définit pour le TypeSettings qui figure
@@ -42,18 +43,12 @@ class Type extends String {
         return $field;
     }
 
-    public function map(array & $doc) {
-        $types = Reference::types();
-        $type = $this->value();
-        if (isset($types[$type])) {
-            $class = $types[$type];
-            $type = $class::defaultSchema()->label();
-        }
-        $doc['type'] = $type;
+    public function mapping(MappingBuilder $mapping) {
+        $mapping->field('type')->text()->filter();
     }
 
-    public static function ESmapping(array & $mappings, Field $schema) {
-        $mappings['properties']['type'] = self::stdIndexAndFilter();
+    public function map(array & $document) {
+        $document['type'] = $this->format();
     }
 
     public function format() {
