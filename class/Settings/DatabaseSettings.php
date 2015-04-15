@@ -42,7 +42,7 @@ class DatabaseSettings extends Object {
             'fields' => [
                 'name' => [
                     'label' => __('Nom de la base de données', 'docalist-biblio'),
-                    'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
+                    'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules, chiffres et tiret autorisés.", 'docalist-biblio'),
                 ],
 
                 'slug' => [
@@ -91,11 +91,11 @@ class DatabaseSettings extends Object {
      * @throws Exception
      */
     public function validate() {
-        if (!preg_match('~^[a-z-]{1,14}$~', $this->name())) {
+        if (!preg_match('~^[a-z][a-z0-9-]{1,13}$~', $this->name())) {
             throw new Exception(__("Le nom de la base est invalide.", 'docalist-biblio'));
         }
 
-        if (! preg_match('~^[a-z-]+$~', $this->slug())) {
+        if (! preg_match('~^[a-z0-9-]+$~', $this->slug())) {
             throw new Exception(__('Le slug de la base est incorrect.', 'docalist-biblio'));
         }
 
