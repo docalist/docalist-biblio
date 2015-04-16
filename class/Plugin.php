@@ -14,8 +14,6 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Table\TableManager;
-use Docalist\Table\TableInfo;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
@@ -41,6 +39,9 @@ class Plugin {
      */
     protected $databases;
 
+    /**
+     * Initialise le plugin.
+     */
     public function __construct() {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
