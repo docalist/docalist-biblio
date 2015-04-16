@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -58,9 +58,6 @@ class Plugin {
                 $this->databases[$database->postType()] = $database;
             }
         });
-
-        // Enregistre les tables prédéfinies
-        add_action('docalist_register_tables', array($this, 'registerTables'));
 
         // Crée la page Réglages » Docalist-Biblio
         add_action('admin_menu', function () {
@@ -136,160 +133,6 @@ class Plugin {
 
         $database = $this->databases[$type]; /* @var $database Database */
         return is_null($grid) ? $database->loadRaw($id) : $database->load($id, $grid);
-    }
-
-    /**
-     * Enregistre les tables prédéfinies.
-     *
-     * @param TableManager $tableManager
-     */
-    public function registerTables(TableManager $tableManager) {
-        //return;
-        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tables'  . DIRECTORY_SEPARATOR;
-
-        // Etiquettes de rôles
-        $tableManager->register(new TableInfo([
-            'name' => 'marc21-relators_fr',
-            'path' => $dir . 'relators/marc21-relators_fr.txt',
-            'label' => __('Etiquettes de rôles marc21 en français', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'marc21-relators_en',
-            'path' => $dir . 'relators/marc21-relators_en.txt',
-            'label' => __('Etiquettes de rôles marc21 en anglais', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'relators_unimarc-to-marc21',
-            'path' => $dir . 'relators/relators_unimarc-to-marc21.txt',
-            'label' => __('Table de conversion des codes de fonction Unimarc en relators code Marc21.', 'docalist-core'),
-            'format' => 'conversion',
-            'type' => 'roles',
-            'user' => false,
-        ]));
-
-        // Exemple de thesaurus
-        $tableManager->register(new TableInfo([
-            'name' => 'thesaurus-example',
-            'path' => $dir . 'thesaurus-example.txt',
-            'label' => __('Exemple de table thesaurus', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'thesaurus',
-            'user' => false,
-        ]));
-
-        // Supports
-        $tableManager->register(new TableInfo([
-            'name' => 'medias',
-            'path' => $dir . 'medias.txt',
-            'label' => __('Supports de documents', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'medias',
-            'user' => false,
-        ]));
-
-        // Genres
-        $tableManager->register(new TableInfo([
-            'name' => 'genres',
-            'path' => $dir . 'genres.txt',
-            'label' => __('Genres de documents', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'genres',
-            'user' => false,
-        ]));
-
-        // Numbers (types de numéros)
-        $tableManager->register(new TableInfo([
-            'name' => 'numbers',
-            'path' => $dir . 'numbers.txt',
-            'label' => __('Types de numéros', 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'numbers',
-            'user' => false,
-        ]));
-
-        // Extent (types de pagination)
-        $tableManager->register(new TableInfo([
-            'name' => 'extent',
-            'path' => $dir . 'extent.txt',
-            'label' => __('Types de pagination', 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'extent',
-            'user' => false,
-        ]));
-
-        // Format (étiquettes de collation)
-        $tableManager->register(new TableInfo([
-            'name' => 'format',
-            'path' => $dir . 'format.txt',
-            'label' => __('Etiquettes de format', 'docalist-biblio'),
-            'format' => 'thesaurus',
-            'type' => 'format',
-            'user' => false,
-        ]));
-
-        // Dates
-        $tableManager->register(new TableInfo([
-            'name' => 'dates',
-            'path' => $dir . 'dates.txt',
-            'label' => __('Types de dates', 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'dates',
-            'user' => false,
-        ]));
-
-        // Anciennes tables
-        $tableManager->register(new TableInfo([
-            'name' => 'titles',
-            'path' => $dir . 'titles.txt',
-            'label' => __("Types de titres", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'titles',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'topics',
-            'path' => $dir . 'topics.php',
-            'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'topics',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'content',
-            'path' => $dir . 'content.txt',
-            'label' => __("Contenu", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'content',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'links',
-            'path' => $dir . 'links.txt',
-            'label' => __("Types de liens", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'links',
-            'user' => false,
-        ]));
-
-        $tableManager->register(new TableInfo([
-            'name' => 'relations',
-            'path' => $dir . 'relations.txt',
-            'label' => __("Types de relations", 'docalist-biblio'),
-            'format' => 'table',
-            'type' => 'relations',
-            'user' => false,
-        ]));
     }
 
     /**
