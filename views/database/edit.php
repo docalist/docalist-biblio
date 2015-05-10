@@ -69,8 +69,11 @@ use Docalist\Forms\Form;
         $form->textarea('notes')->attribute('rows', 10)->attribute('class', 'large-text');
         $form->input('creation')->attribute('disabled', true);
         $form->input('lastupdate')->attribute('disabled', true);
-        
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
+
+        $assets=$form->assets();
+        $assets->add(Themes::assets('wordpress'));
+        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
 
         !isset($database->creation) && $database->creation = date_i18n('Y/m/d H:i:s');
         !isset($database->lastupdate) && $database->lastupdate = date_i18n('Y/m/d H:i:s');
