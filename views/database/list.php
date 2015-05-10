@@ -47,7 +47,7 @@ div.dbdesc{
             <th><?= __('Slug', 'docalist-biblio') ?></th>
             <th><?= __('Types de notices', 'docalist-biblio') ?></th>
             <th><?= __('Nombre de notices', 'docalist-biblio') ?></th>
-            <th><?= __('Description / notes', 'docalist-biblio') ?></th>
+            <th><?= __('Description', 'docalist-biblio') ?></th>
         </tr>
     </thead>
 

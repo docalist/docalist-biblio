@@ -32,6 +32,7 @@ use Exception;
  * indexés par nom.
  * @property String $creation Date de création de la base.
  * @property String $lastupdate Date de dernière modification des paramètres de la base.
+ * @property String $notes Notes et historique de la base.
  */
 class DatabaseSettings extends Object {
     static protected function loadSchema() {
@@ -54,10 +55,10 @@ class DatabaseSettings extends Object {
                 ],
 
                 'description' => [
-                    'label' => __('Description, notes, remarques', 'docalist-biblio'),
-                    'description' => __("Vous pouvez utiliser cette zone pour stocker toute information utile : historique, modifications apportées, etc.", 'docalist-biblio'),
+                    'label' => __('Description', 'docalist-biblio'),
+                    'description' => __("Description de la base en quelques mots.", 'docalist-biblio'),
                 ],
-
+                
                 'stemming' => [
                     'label' => __('Stemming', 'docalist-biblio'),
                     'description' => __("Définit le stemming qui sera appliqué aux champs textes des notices.", 'docalist-biblio'),
@@ -80,6 +81,11 @@ class DatabaseSettings extends Object {
                     'type' => 'string',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __("Date/heure de dernière modification des paramètres de la base.", 'docalist-biblio'),
+                ],
+
+                'notes' => [
+                    'label' => __('Notes et historique', 'docalist-biblio'),
+                    'description' => __("Vous pouvez utiliser cette zone pour stocker toute information qui vous est utile : historique, modifications apportées, etc.", 'docalist-biblio'),
                 ],
             ]
         ];

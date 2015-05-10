@@ -56,13 +56,14 @@ use Docalist\Forms\Form;
         $form->input('name')->attribute('class', 'regular-text');
         $form->input('slug')->attribute('class', 'regular-text');
         $form->input('label')->attribute('class', 'large-text');
-        $form->textarea('description')->attribute('rows', 10)->attribute('class', 'large-text');
+        $form->textarea('description')->attribute('rows', 2)->attribute('class', 'large-text');
 
         $form
             ->select('stemming')
             ->attribute('class', 'regular-text')
             ->firstOption(__('(Pas de stemming)', 'docalist-biblio'))
             ->options($analyzers);
+        $form->textarea('notes')->attribute('rows', 10)->attribute('class', 'large-text');
         $form->input('creation')->attribute('disabled', true);
         $form->input('lastupdate')->attribute('disabled', true);
         
