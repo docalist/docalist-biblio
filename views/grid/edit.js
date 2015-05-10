@@ -1,10 +1,15 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
+ *
+ * @package     Docalist
+ * @subpackage  Biblio
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     $Id$
  */
 /*
  * Gère la liste des champs pour un type de notice.
@@ -30,7 +35,7 @@
      * Met à jour le titre de la postbox lorsque le libellé d'un champ est
      * modifié.
      */
-    $(document).on('input propertychange', '.label', function() {
+    $(document).on('input propertychange', '.label,.labelspec', function() {
         // event input : le seul nécessaire en html3
         // propertychange : pour ie
         // ajouter keyup et paste ? (cf SO ci dessous)
@@ -41,7 +46,7 @@
         var input = $(this); // le input.label qui a changé
         var postbox = input.parents('.postbox') // la postbox parent
         var title = $('h3 span', postbox); // le titre de la box
-        title.text(input.val() || $('input.name', postbox).val());
+        title.text(input.val() || input.attr('placeholder') || $('input.name', postbox).val());
     });
     
     /**
