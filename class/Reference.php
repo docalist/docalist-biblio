@@ -620,6 +620,7 @@ class Reference extends Entity {
         $format = null; // Le format du groupe en cours
         $fields = [];   // Les champs générés par le groupe en cours
         $result = '';   // Le résultat final
+        $hasGroupCap = null; // True si l'utilisateur a la cap requise pour le groupe en cours
 
         // Si la grille ne commence pas par un groupe, créé un groupe par défaut
         if (current($this->schema()->fields())->type !== 'Docalist\Biblio\Type\Group') {
@@ -628,6 +629,7 @@ class Reference extends Entity {
                 'format' => '<p><b>%label : </b>%content</p>',
             ]);
             $format = $group->format;
+            $hasGroupCap = true;
         }
 
         // Construit la notice
@@ -643,7 +645,18 @@ class Reference extends Entity {
                     $fields = [];
                 }
 
+                // Teste si on a les droits requis pour le nouveau groupe
+                $cap = $field->capability();
+
+                if ($cap && ! current_user_can($cap)) {
+                    $hasGroupCap = false;
+                    unset($group); // secu : $group n'existe pas si $hasGroupCap est à false
+
+                    continue;
+                }
+
                 // Nouveau groupe en cours
+                $hasGroupCap = true;
                 $group = $field;
                 $format = $group->format;
                 continue;
@@ -651,17 +664,34 @@ class Reference extends Entity {
 
             // C'est un champ
 
+            // Si on n'a pas la cap du groupe en cours, on ne va pas plus loin
+            if (! $hasGroupCap) {
+                continue;
+            }
+
             // Un groupe sans format n'affiche rien, inutile d'aller plus loin
-            if (empty($format)) continue;
+            if (empty($format)) {
+                continue;
+            }
 
             // Si le champ est vide, passe au suivant
-            if (! isset($this->value[$name])) continue;
+            if (! isset($this->value[$name])) {
+                continue;
+            }
+
+            // Si on n'a pas la cap du champ, inutile d'aller plus loins
+            $cap = $field->capability();
+            if ($cap && ! current_user_can($cap)) {
+                continue;
+            }
 
             // Formatte le contenu du champ
             $content = $this->value[$name]->format();
 
             // Champ renseigné mais format() n'a rien retourné, passe au suivant
-            if (empty($content)) continue;
+            if (empty($content)) {
+                continue;
+            }
 
             // format() nous a retourné soit un tableau de champs (vue éclatée)
             // soit une simple chaine avec le contenu formatté du champ.
@@ -683,6 +713,7 @@ class Reference extends Entity {
             $result .= $group->after;
         }
 
+        // Ok
         return $result;
     }
 }
