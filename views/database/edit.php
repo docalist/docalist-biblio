@@ -16,6 +16,8 @@ namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Forms\Form;
+use Docalist\Forms\Themes;
+use Docalist\Utils;
 
 /**
  * Edite les paramètres d'un base de données.
@@ -24,6 +26,8 @@ use Docalist\Forms\Form;
  * @param int $dbindex L'index de la base.
  * @param string $error Erreur éventuelle à afficher.
  */
+/* @var $database DatabaseSettings */
+
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
