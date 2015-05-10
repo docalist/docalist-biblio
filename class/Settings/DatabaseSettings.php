@@ -118,6 +118,81 @@ class DatabaseSettings extends Object {
         return get_post_type_archive_link($this->postType());
     }
 
+    /**
+     * Retourne toutes les capacités liées à la base de données.
+     *
+     * Utilise get_post_type_capabilities() pour laisser WordPress générer les
+     * droits standards.
+     *
+     * @return array Retourne un tableau de capacités dans le format attendu
+     * par register_post_type().
+     */
+    public function capabilities() {
+        $cap = $this->capabilitySuffix();
+        return (array) get_post_type_capabilities((object) [
+            'capability_type' => [$cap, "{$cap}s"],
+            'map_meta_cap' => true,
+            'capabilities' => [
+                // Par défaut, tout le monde peut voir les notices.
+                // On crée un droit spécifique pour pouvoir avoir des bases
+                // privées ou réservées à certains rôles.
+                //'read_post' => "read_{$cap}",
+                'read' => "read_{$cap}",
+
+                // Par défaut, create_posts est simplement mappé vers edit_posts
+                // On fait le mappage nous mêmes pour disposer d'un droit spécifique.
+                //'create_posts' => "create_{$cap}s",
+                /*
+                 * En fait, ne marche pas : pour un CPT, on ne peut pas distinguer
+                 * edit_post de create_post.
+                 *
+                 * C'est un bug WordPress :
+                 * http://herbmiller.me/2014/09/21/wordpress-capabilities-restrict-add-new-allowing-edit/
+                 * https://core.trac.wordpress.org/ticket/29714
+                 * https://core.trac.wordpress.org/ticket/22895
+                 *
+                 * Dans user_can_access_admin_page(), wordpress teste si
+                 * l'utilisateur encours a le droits d'accéder à la page du menu.
+                 * Mais quand il teste la page edit.php?post_type=dbprisme
+                 * il utilise $pagenow qui vaut edit.php tout court.
+                 * Donc il teste si on a le droit indiqué (edit_posts) et comme
+                 * ce n'est pas le cas, il nous refuse.
+                 * Le bug, c'est que pagenow ne contient pas le bon truc...
+                 */
+
+                // Droit supplémentaire : importer des notices dans la base
+                'import' => "import_{$cap}s"
+            ],
+
+        ]);
+    }
+
+    /**
+     * Retourne le suffixe utilisé pour les droits spécifiques à cette base.
+     *
+     * Tous les droits spécifiques à une base contiennent le nom de cette
+     * base suivi du suffixe 'ref' ou 'refs' (exemple : create_dbprisme_refs).
+     * - Les "primary caps" finissent par "_refs" (au pluriel)
+     * - Les "meta caps" finissent par "_ref" (au singulier)
+     *
+     * Dans la gestion des rôles et des droits, seuls des primary caps doivent
+     * être accordées. Les meta caps sont des pseudo droits qui sont mappés en
+     * fonction de la notice à laquelle ils sont appliqués.
+     *
+     * Le suffixe retourné par la méthode est le préfixe utilisé pour les
+     * meta capabilities (au singulier donc).
+     *
+     * Il suffit d'ajouter un "s" pour obtenir le suffixe utilisé pour les
+     * "primary capabilities".
+     *
+     * @return string
+     */
+    public function capabilitySuffix() {
+        // TODO : en attendant que "dclref" soit remplacé partout par "db"
+        return 'db' . $this->name() . '_ref';
+        // return $this->postType() . '_ref';
+    }
+
     private function now() {
         return new DateTime;
     }
