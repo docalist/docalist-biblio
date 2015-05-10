@@ -40,6 +40,11 @@ trait BiblioFieldTrait {
              ->attribute('rows', 2)
              ->label(__('Description', 'docalist-biblio'))
              ->description(__("Description du champ : rôle, particularités, format, etc. Le texte indiqué ici sera utilisé comme texte d'aide par défaut dans la grille de saisie.", 'docalist-biblio'));
+        $form->input('capability')
+            ->attribute('id', $name . '-capability')
+            ->attribute('class', 'capability regular-text')
+            ->label(__('Droit requis', 'docalist-biblio'))
+            ->description(__("Par défaut (vide), le champ sera toujours affiché. Si vous indiquez un droit (capability), seuls les utilisateurs qui disposent de ce droit verront le champ. Utilisez un plugin WordPress de gestion des droits pour donner ce droit aux groupes et utilisateurs qui en ont besoin.", 'docalist-biblio'));
 
         return $form;
     }
@@ -71,6 +76,12 @@ trait BiblioFieldTrait {
              ->attribute('placeholder', $this->schema->description ?: __('(pas de description)', 'docalist-biblio'))
              ->label(__('Aide à la saisie', 'docalist-biblio'))
              ->description(__("Texte qui sera affiché pour indiquer à l'utilisateur comment saisir le champ. Par défaut, c'est la description du champ qui figure dans la grille de base qui est utilisée.", 'docalist-biblio'));
+        $form->input('capabilityspec')
+            ->attribute('id', $name . '-label')
+            ->attribute('class', 'capabilityspec regular-text')
+            ->attribute('placeholder', $this->schema->capability ?: __('(toujours visible)', 'docalist-biblio'))
+            ->label(__('Droit requis', 'docalist-biblio'))
+            ->description(__("Droit requis pour que ce champ apparaissent dans le formulaire. Par défaut, c'est le droit du champ qui figure dans la grille de base qui est utilisé.", 'docalist-biblio'));
 
         $default = $this->editForm()->name('default');
 
@@ -114,8 +125,7 @@ trait BiblioFieldTrait {
      * select.
      */
     protected function tablesOfType($type) {
-        /* @var $tableManager TableManager */
-        $tableManager = docalist('table-manager');
+        $tableManager = docalist('table-manager'); /* @var $tableManager TableManager */
 
         $tables = [];
         foreach($tableManager->tables($type) as $table) { /* @var $tableInfo TableInfo */
@@ -235,6 +245,12 @@ trait BiblioFieldTrait {
              ->attribute('placeholder', $this->schema->label ?: __('(aucun libellé)', 'docalist-biblio'))
              ->label(__('Libellé', 'docalist-biblio'))
              ->description(__("Libellé affiché avant le champ. Par défaut, c'est le même que dans la grille de saisie mais vous pouvez saisir un nouveau texte si vous voulez un libellé différent.", 'docalist-biblio'));
+        $form->input('capabilityspec')
+            ->attribute('id', $name . '-label')
+            ->attribute('class', 'capabilityspec regular-text')
+            ->attribute('placeholder', $this->schema->capability ?: __('(toujours visible)', 'docalist-biblio'))
+            ->label(__('Droit requis', 'docalist-biblio'))
+            ->description(__("Droit requis pour afficher ce champ. Par défaut, c'est le droit du champ qui figure dans la grille de base qui est utilisé.", 'docalist-biblio'));
         $form->input('before')
              ->attribute('id', $name . '-before')
              ->attribute('class', 'before regular-text')
