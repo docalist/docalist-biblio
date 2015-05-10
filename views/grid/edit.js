@@ -30,23 +30,41 @@
     $(document).on('click', '.postbox h3, .postbox .handlediv', function() {
         $(this).parent('.postbox').toggleClass('closed');
     });
+
+    /*
+     * Remarque pour le code qui suit : pour détecter en temps réel les 
+     * modifications faites dans un input, on utilise les événements "input" et 
+     * "propertychange".
+     * - input est le seul nécessaire en html5
+     * - mais pour IE, on est obligé d'ajouter propertychange.
+     * Il faudrait éventuellement ajouter keyup et paste :
+     * - http://stackoverflow.com/a/9042710
+     * - http://www.greywyvern.com/?post=282
+     */
     
     /**
      * Met à jour le titre de la postbox lorsque le libellé d'un champ est
      * modifié.
      */
     $(document).on('input propertychange', '.label,.labelspec', function() {
-        // event input : le seul nécessaire en html3
-        // propertychange : pour ie
-        // ajouter keyup et paste ? (cf SO ci dessous)
-        
-        // @see http://stackoverflow.com/a/9042710
-        // @see http://www.greywyvern.com/?post=282
-        
         var input = $(this); // le input.label qui a changé
         var postbox = input.parents('.postbox') // la postbox parent
         var title = $('h3 span', postbox); // le titre de la box
         title.text(input.val() || input.attr('placeholder') || $('input.name', postbox).val());
+    });
+    
+    /**
+     * Met à jour l'icone "champ restreint" lorsque le champ "capability" est 
+     * modifié.
+     */
+    $(document).on('input propertychange', '.capability,.capabilityspec', function() {
+        var input = $(this); // le input.label qui a changé
+        var postbox = input.parents('.postbox') // la postbox parent
+        if (input.val() || input.attr('placeholder')) {
+            postbox.addClass('has-cap');
+        } else {
+            postbox.removeClass('has-cap');
+        }
     });
     
     /**
