@@ -24,6 +24,7 @@ use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
 use Docalist\Schema\Field;
 use Docalist\Type\Collection;
+use WP_Role;
 
 /**
  * Gestion des bases de données.
@@ -219,6 +220,19 @@ class AdminDatabases extends AdminPage {
 
                 $this->settings->save(); // refreshKeys
 
+                // Attribue au groupe Administrateurs tous les droits sur cette base
+                if ($dbindex === '') { // nouvelle base
+                    $this->setupCapacities($database, true);
+                }
+
+                // TODO : modifier les droits si le nom a changé ?
+                // elseif ($name !== $dbindex) {
+                // - Faire un tableau de conversion "ancienne cap" => "new cap"
+                // - parcourir tous les rôles (et les utilisateurs ?)
+                // - mettre à jour les caps
+                // }
+                // Ou alors : afficher une alerte/une info à l'administrateur ?
+
                 // Met à jour les rewrite rules si le slug a changé
                 if ($oldSlug !== $database->slug()) {
                     return $this->redirect($this->url('RewriteRules'), 303);
@@ -236,6 +250,44 @@ class AdminDatabases extends AdminPage {
             'dbindex' => $dbindex,
             'error' => $error
         ]);
+    }
+
+    /**
+     * Accorde ou enlève les droits sur la base au groupe Administrateurs.
+     *
+     * @param DatabaseSettings $database La base pour laquelle il faut accorder
+     * les droits.
+     * @param bool $grant true : ajoute les droits, false : les supprime
+     */
+    private function setupCapacities(DatabaseSettings $database, $grant = true) {
+        // Récupère la liste des droits à attribuer
+        $capabilities = $database->capabilities();
+
+        // Détermine les rôles auxquels on va accorder ou enlever ces droits
+        $roles = ['administrator'];
+
+        // Récupère le suffixe utilisé pour les primary capabilities
+        $primary = $database->capabilitySuffix() . 's';
+
+        /*
+         * Explication :
+         * On ne veut changer que les capacités propres à docalist-biblio (par
+         * exemple, on ne veut pas modifier le droit standard "read" de WP), et
+         * uniquement celles qui sont des "primitive capacities" (il ne faut
+         * pas attribuer une "meta capability" directement à un rôle).
+         * Pour cela, on ne traiter que celles qui se terminent par le préfixe
+         * des primary capabilities (par exemple "*dbprisme_refs").
+         */
+
+        // Attribue les droits à tous les rôles indiqués
+        foreach ($roles as $role) {
+            $role = get_role($role); /* @var $role WP_Role */
+            foreach($capabilities as $capability) {
+                if (substr($capability, -strlen($primary)) === $primary) {
+                    $grant ? $role->add_cap($capability) : $role->remove_cap($capability);
+                }
+            }
+        }
     }
 
     /**
@@ -266,6 +318,11 @@ class AdminDatabases extends AdminPage {
         $this->settings->save();
 
         //TODO : supprimer séquences
+
+        // Supprime les droits accordés lors de la création de la base
+        // NB : Si l'utilisateur a ensuite accordé les droits à d'autres groupes
+        // ou à d'autres utilisateurs, il doit les supprimer manuellement.
+        $this->setupCapacities($database, false);
 
         // Met à jour les rewrite rules
         return $this->redirect($this->url('RewriteRules'), 303);
