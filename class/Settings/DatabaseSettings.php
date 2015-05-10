@@ -32,6 +32,7 @@ use Exception;
  * indexés par nom.
  * @property String $creation Date de création de la base.
  * @property String $lastupdate Date de dernière modification des paramètres de la base.
+ * @property String $icon Icône à utiliser pour cette base.
  * @property String $notes Notes et historique de la base.
  */
 class DatabaseSettings extends Object {
@@ -81,6 +82,20 @@ class DatabaseSettings extends Object {
                     'type' => 'string',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __("Date/heure de dernière modification des paramètres de la base.", 'docalist-biblio'),
+                ],
+
+                'icon' => [
+                    'label' => __('Icône', 'docalist-biblio'),
+                    'default' => 'dashicons-feedback',
+                    'description' => sprintf(
+                        __('Icône à utiliser dans le menu de WordPress. Par exemple %s pour obtenir l\'icône %s.<br />
+                            Pour choisir une icône, allez sur le site %s, faites votre voix et recopiez le nom de l\'icône.<br />
+                            Remarque : vous pouvez également indiquer l\'url complète d\'une image, mais dans ce cas celle-ci ne s\'adaptera pas automatiquement au thème WordPress.',
+                            'docalist-biblio'),
+                        '<code>dashicons-book</code>',
+                        '<span class="dashicons dashicons-book"></span>',
+                        '<a href="https://developer.wordpress.org/resource/dashicons/#book" target="_blank">WordPress dashicons</a>'
+                    ),
                 ],
 
                 'notes' => [

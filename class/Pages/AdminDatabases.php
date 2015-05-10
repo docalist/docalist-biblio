@@ -193,6 +193,7 @@ class AdminDatabases extends AdminPage {
                 $database->description = $_POST['description'];
                 $database->slug = $_POST['slug'];
                 $database->stemming = $_POST['stemming'];
+                $database->icon = $_POST['icon'];
                 $database->notes = $_POST['notes'];
                 empty($database->creation) && $database->creation = date_i18n('Y/m/d H:i:s');
                 $database->lastupdate = date_i18n('Y/m/d H:i:s');

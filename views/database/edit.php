@@ -63,12 +63,18 @@ use Docalist\Forms\Form;
             ->attribute('class', 'regular-text')
             ->firstOption(__('(Pas de stemming)', 'docalist-biblio'))
             ->options($analyzers);
+        $form->input('icon')->attribute('class', 'medium-text');
         $form->textarea('notes')->attribute('rows', 10)->attribute('class', 'large-text');
         $form->input('creation')->attribute('disabled', true);
         $form->input('lastupdate')->attribute('disabled', true);
         
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
 
+        !isset($database->creation) && $database->creation = date_i18n('Y/m/d H:i:s');
+        !isset($database->lastupdate) && $database->lastupdate = date_i18n('Y/m/d H:i:s');
+        !isset($database->stemming) && $database->stemming = 'fr-text';
+        !isset($database->icon) && $database->icon = 'dashicons-list-view';
+        
         $form->bind($database)->render('wordpress');
     ?>
 </div>
@@ -92,6 +98,13 @@ use Docalist\Forms\Form;
         $(document).on('input propertychange', '#name', function() {
             noslug && $('#slug').val($(this).val());
         });
+
+        $(document).on('input propertychange', '#icon', function() {
+            $('#icon-preview').remove();
+            $('#icon').after('<span id="icon-preview" class="dashicons ' + $('#icon').val() + '" style="padding-left: 10px;font-size: 30px;"></span>');
+        });
+        $('#icon').trigger('input');
+
     });
 }(jQuery));
 </script>
