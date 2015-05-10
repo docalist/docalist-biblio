@@ -40,11 +40,11 @@ use Docalist\Biblio\Reference;
 /* @var $grid Schema */
 
 
-wp_enqueue_script(
+wp_enqueue_script( // TODO : déclarer dans les register et indiquer seulement le handle ici
     'docalist-biblio-grid-edit',
     plugins_url('docalist-biblio/views/grid/edit.js'),
     array( 'jquery-ui-sortable'),
-    '20140725',
+    '20150510',
     true
 );
 
