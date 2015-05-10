@@ -63,7 +63,9 @@ use Docalist\Forms\Form;
             ->attribute('class', 'regular-text')
             ->firstOption(__('(Pas de stemming)', 'docalist-biblio'))
             ->options($analyzers);
-
+        $form->input('creation')->attribute('disabled', true);
+        $form->input('lastupdate')->attribute('disabled', true);
+        
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio'));
 
         $form->bind($database)->render('wordpress');

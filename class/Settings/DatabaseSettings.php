@@ -31,6 +31,7 @@ use Exception;
  * @property TypeSettings[] $types Types de notices gérés dans cette base,
  * indexés par nom.
  * @property String $creation Date de création de la base.
+ * @property String $lastupdate Date de dernière modification des paramètres de la base.
  */
 class DatabaseSettings extends Object {
     static protected function loadSchema() {
@@ -73,6 +74,12 @@ class DatabaseSettings extends Object {
                     'type' => 'string',
                     'label' => __('Date de création', 'docalist-biblio'),
                     'description' => __("Date/heure de création de la base.", 'docalist-biblio'),
+                ],
+
+                'lastupdate' => [
+                    'type' => 'string',
+                    'label' => __('Dernière modification', 'docalist-biblio'),
+                    'description' => __("Date/heure de dernière modification des paramètres de la base.", 'docalist-biblio'),
                 ],
             ]
         ];
