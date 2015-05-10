@@ -64,7 +64,7 @@ use Docalist\Forms\Form;
         $form = new Form('', 'post');
         $form->input('name')->attribute('class', 'regular-text');
         $form->input('slug')->attribute('class', 'regular-text')->description($slugDescription);
-        $form->input('label')->attribute('class', 'large-text');
+        $form->input('label')->attribute('class', 'regular-text');
         $form->textarea('description')->attribute('rows', 2)->attribute('class', 'large-text');
         $form->checkbox('thumbnail');
         $form->checkbox('revisions');
@@ -126,6 +126,7 @@ use Docalist\Forms\Form;
         });
         $('#icon').trigger('input');
 
+        $('#name').focus();
     });
 }(jQuery));
 </script>
