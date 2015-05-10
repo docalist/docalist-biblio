@@ -141,7 +141,7 @@ class DatabaseSettings extends Object {
             throw new Exception(__("Le nom de la base est invalide.", 'docalist-biblio'));
         }
 
-        if (! preg_match('~^[a-z0-9-]+$~', $this->slug())) {
+        if (! preg_match('~^[a-z0-9-]+(?:/[a-z0-9-]+)*$~', $this->slug())) {
             throw new Exception(__('Le slug de la base est incorrect.', 'docalist-biblio'));
         }
 
