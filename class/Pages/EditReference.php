@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -475,33 +475,75 @@ class EditReference {
      * @return Fragment[] Un tableau de la forme id metabox => form fragment
      */
     protected function metaboxes(Reference $ref, $ignoreDefaults = false) {
+
         // Charge la grille "edit" correspondant au type de la notice
         $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
 
-        $metaboxes = [];
-        foreach($schema->fields() as $name => $field) { /* @var $field Field */
-            if ($field->type() === 'Docalist\Biblio\Type\Group') {
-                $box = new Fragment();
-                $box->label($field->label())
-                    ->description($field->description())
-                    ->attribute('id', $name);
+        // Récupère la liste des champs
+        $fields = $schema->fields();
 
-                $metaboxes[] = $box;
-            } else {
-                if (empty($metaboxes)){
-//                     var_dump($ref->schema());
-//                     throw new \Exception('le type ne commence pas par un groupe');
-                    $box = new Fragment();
-                    $box->label('')
-                        ->attribute('id', 'defaultgroup');
-                    $metaboxes[] = $box;
-                }
-
-                $ignoreDefaults && $field->__set('default', null);
-                $box->add($ref->$name->editForm());
-            }
+        // Crée un groupe par défaut si la liste ne commence pas par un groupe
+        if (reset($fields)->type()) {
+            $box = new Fragment();
+            $box->label('')->attribute('id', 'defaultgroup');
+            $hasBoxCap = true;
         }
 
+        // Balaie les champs et crée les boites au fur et à mesure
+        $metaboxes = [];
+        foreach($fields as $name => $field) { /* @var $field Field */
+            // Nouveau champ
+            if ($field->type() !== 'Docalist\Biblio\Type\Group') {
+
+                // Si on n'a pas la cap de la boite en cours, inutile de créer le champ
+                if (! $hasBoxCap) {
+                    continue;
+                }
+
+                // Si on n'a pas la cap du champ, inutile de créer le champ
+                $cap = $field->capability();
+                if ($cap && ! current_user_can($cap)) {
+                    continue;
+                }
+
+                // Ok, on a tous les droits requis, crée le champ
+                $ignoreDefaults && $field->__set('default', null);
+                $box->add($ref->$name->editForm());
+
+                // Au suivant
+                continue;
+            }
+
+            // Nouveau groupe de champ, sauvegarde la boite en cours si nécessaire
+            if (isset($box) && !empty($box->fields())) {
+                $metaboxes[] = $box;
+            }
+
+            // Remarque box=null si on n'a pas les droits sur la boite en cours
+            // et fields=null si on a deux groupes à se suivre dans la grille.
+
+            // Si on n'a pas la cap requise pour la nouvelle boite, inutile de la créer
+            $cap = $field->capability();
+            if ($cap && ! current_user_can($cap)) {
+                $hasBoxCap = false;
+                unset($box); // secu : $box n'existe pas si hasBoxCap est à false
+                continue;
+            }
+
+            // Ok, on a les droits, crée la nouvelle boite
+            $hasBoxCap = true;
+            $box = new Fragment();
+            $box->label($field->label())
+                ->description($field->description())
+                ->attribute('id', $name);
+        }
+
+        // Sauvegarde la dernière boite créée si nécessaire
+        if (isset($box) && !empty($box->fields())) {
+            $metaboxes[] = $box;
+        }
+
+        // Ok
         return $metaboxes;
     }
 
