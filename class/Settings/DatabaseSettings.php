@@ -16,9 +16,6 @@ namespace Docalist\Biblio\Settings;
 
 use Docalist\Type\Object;
 use Docalist\Type\String;
-use Docalist\Type\Integer;
-use Docalist\Schema\Schema;
-use DateTime;
 use Exception;
 
 /**
@@ -33,7 +30,7 @@ use Exception;
  * @property String $stemming Stemming / analyseur par défaut.
  * @property TypeSettings[] $types Types de notices gérés dans cette base,
  * indexés par nom.
- * @property Integer $creation Date de création de la base.
+ * @property String $creation Date de création de la base.
  */
 class DatabaseSettings extends Object {
     static protected function loadSchema() {
@@ -73,9 +70,10 @@ class DatabaseSettings extends Object {
                 ],
 
                 'creation' => [
-                    'type' => 'int',
-                    'label' => __('Date/heure de création de la base', 'docalist-biblio'),
-                ]
+                    'type' => 'string',
+                    'label' => __('Date de création', 'docalist-biblio'),
+                    'description' => __("Date/heure de création de la base.", 'docalist-biblio'),
+                ],
             ]
         ];
         // @formatter:on
