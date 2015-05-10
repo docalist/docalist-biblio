@@ -192,8 +192,4 @@ class DatabaseSettings extends Object {
         return 'db' . $this->name() . '_ref';
         // return $this->postType() . '_ref';
     }
-
-    private function now() {
-        return new DateTime;
-    }
 }
