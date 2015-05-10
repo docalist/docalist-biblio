@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -79,6 +79,14 @@ wp_enqueue_style('docalist-biblio-edit-reference');
         -webkit-font-smoothing: antialiased;
         padding-right: .5em;
         color: #777;
+    }
+    #fields li.has-cap h3:after {
+        font-family: "dashicons";
+        content: "\f112";
+        vertical-align: text-bottom;
+        -webkit-font-smoothing: antialiased;
+        padding-left: .5em;
+        color: #800;
     }
     #fields li.group {
         margin-top: 6px;
@@ -185,8 +193,19 @@ function createBox(Field $schema, $gridname) {
 }
 
 function renderBox(Fragment $form, Field $schema, $closed = true) { ?>
-    <?php $type = $schema->collection() ?: $schema->type() ?>
-    <li id="<?= $schema->name() ?>" class="postbox <?= $closed ? 'closed' : '' ?> <?= $type === 'Docalist\Biblio\Type\Group' ? 'group' : $schema->name() ?>">
+    <?php
+        $type = $schema->collection() ?: $schema->type();
+        $class = ['postbox'];
+        $closed && $class[] = 'closed';
+        if ($type === 'Docalist\Biblio\Type\Group') {
+            $class[] = 'group';
+        } else {
+            $class[] = $schema->name();
+        }
+        $schema->capability() && $class[] = 'has-cap';
+        $class = implode(' ', $class);
+     ?>
+    <li id="<?= $schema->name() ?>" class="<?=$class ?>">
         <div class="handlediv"></div>
         <h3 class="hndle"><span><?= $schema->label() ?: $schema->name() ?></span></h3>
         <div class="inside">
