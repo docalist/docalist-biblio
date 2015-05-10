@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -692,6 +692,7 @@ class AdminDatabases extends AdminPage {
             $dst->table2 = $dst->table2spec ?: $src->table2;
             $dst->label  = $dst->labelspec  ?: $src->label;
             $dst->description  = $dst->descriptionspec  ?: $src->description;
+            $dst->capability  = $dst->capabilityspec  ?: $src->capability;
         }
     }
 
@@ -713,6 +714,7 @@ class AdminDatabases extends AdminPage {
             $dst->table2default = $src->table2;
             $dst->labeldefault  = $src->label;
             $dst->descriptiondefault  = $src->description;
+            $dst->capabilitydefault  = $src->capability;
         }
     }
 
