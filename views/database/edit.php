@@ -52,9 +52,18 @@ use Docalist\Forms\Form;
             }
         }
 
+        $slugDescription = sprintf(
+            __('
+                Votre base sera accessible à l\'adresse <code>%1$s</code> et les références auront un permalien de la forme <code>%1$s12345/</code>.
+                <br />Au moins un caractère, lettres minuscules, chiffres, tiret et slash autorisés.',
+                'docalist-biblio'
+            ),
+            sprintf('%s/<span class="display-slug">%s</span>/', home_url(), $database->slug())
+        );
+
         $form = new Form('', 'post');
         $form->input('name')->attribute('class', 'regular-text');
-        $form->input('slug')->attribute('class', 'regular-text');
+        $form->input('slug')->attribute('class', 'regular-text')->description($slugDescription);
         $form->input('label')->attribute('class', 'large-text');
         $form->textarea('description')->attribute('rows', 2)->attribute('class', 'large-text');
         $form->checkbox('thumbnail');
@@ -104,7 +113,11 @@ use Docalist\Forms\Form;
         $(document).on('keydown', '#slug', update);
 
         $(document).on('input propertychange', '#name', function() {
-            noslug && $('#slug').val($(this).val());
+            noslug && $('#slug').val($(this).val()).trigger('input');
+        });
+
+        $(document).on('input propertychange', '#slug', function() {
+            $('.display-slug').text($('#slug').val());
         });
 
         $(document).on('input propertychange', '#icon', function() {
