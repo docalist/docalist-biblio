@@ -117,12 +117,11 @@ trait BiblioFieldTrait {
         /* @var $tableManager TableManager */
         $tableManager = docalist('table-manager');
 
-        /* @var $tableInfo TableInfo */
         $tables = [];
-        foreach($tableManager->info(null, $type) as $name => $tableInfo) {
-            if ($tableInfo->format() !== 'conversion') {
-                $key = $tableInfo->format() . ':' . $name;
-                $tables[$key] = sprintf('%s (%s)', $tableInfo->label(), $name);
+        foreach($tableManager->tables($type) as $table) { /* @var $tableInfo TableInfo */
+            if ($table->format() !== 'conversion') {
+                $key = $table->format() . ':' . $table->name();
+                $tables[$key] = sprintf('%s (%s)', $table->label(), $table->name());
             }
         }
 
