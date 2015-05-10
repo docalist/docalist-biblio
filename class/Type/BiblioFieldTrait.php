@@ -79,7 +79,7 @@ trait BiblioFieldTrait {
         $form->input('capabilityspec')
             ->attribute('id', $name . '-label')
             ->attribute('class', 'capabilityspec regular-text')
-            ->attribute('placeholder', $this->schema->capability ?: __('(toujours visible)', 'docalist-biblio'))
+            ->attribute('placeholder', $this->schema->capability ?: '')
             ->label(__('Droit requis', 'docalist-biblio'))
             ->description(__("Droit requis pour que ce champ apparaissent dans le formulaire. Par défaut, c'est le droit du champ qui figure dans la grille de base qui est utilisé.", 'docalist-biblio'));
 
@@ -248,7 +248,7 @@ trait BiblioFieldTrait {
         $form->input('capabilityspec')
             ->attribute('id', $name . '-label')
             ->attribute('class', 'capabilityspec regular-text')
-            ->attribute('placeholder', $this->schema->capability ?: __('(toujours visible)', 'docalist-biblio'))
+            ->attribute('placeholder', $this->schema->capability ?: '')
             ->label(__('Droit requis', 'docalist-biblio'))
             ->description(__("Droit requis pour afficher ce champ. Par défaut, c'est le droit du champ qui figure dans la grille de base qui est utilisé.", 'docalist-biblio'));
         $form->input('before')
