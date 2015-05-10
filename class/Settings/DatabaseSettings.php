@@ -34,6 +34,9 @@ use Exception;
  * @property String $lastupdate Date de dernière modification des paramètres de la base.
  * @property String $icon Icône à utiliser pour cette base.
  * @property String $notes Notes et historique de la base.
+ * @property Boolean $thumnbail Indique si les notices peuvent avoir une image à la une.
+ * @property Boolean $revisions Indique si les modifications des notices font l'objet de révisions.
+ * @property Boolean $comments Indique si les notices peuvent avoir des commentaires.
  */
 class DatabaseSettings extends Object {
     static protected function loadSchema() {
@@ -101,6 +104,24 @@ class DatabaseSettings extends Object {
                 'notes' => [
                     'label' => __('Notes et historique', 'docalist-biblio'),
                     'description' => __("Vous pouvez utiliser cette zone pour stocker toute information qui vous est utile : historique, modifications apportées, etc.", 'docalist-biblio'),
+                ],
+
+                'thumbnail' => [
+                    'type' => 'boolean',
+                    'label' => __('Image à la une', 'docalist-biblio'),
+                    'description' => __("Permet au notices d'avoir une image à la une.", 'docalist-biblio'),
+                ],
+
+                'revisions' => [
+                    'type' => 'boolean',
+                    'label' => __('Activer les révisions', 'docalist-biblio'),
+                    'description' => __("Lorsque les révisions sont activées, les modifications apportées aux notices sont journalisées, ce qui vous permet de comparer différentes versions, de voir les modifications apportées et de revenir en arrière.", 'docalist-biblio'),
+                ],
+
+                'comments' => [
+                    'type' => 'boolean',
+                    'label' => __('Activer les commentaires', 'docalist-biblio'),
+                    'description' => __("Permettre aux utilisateurs de laisser des commentaires sur les notices.", 'docalist-biblio'),
                 ],
             ]
         ];

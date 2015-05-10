@@ -57,7 +57,9 @@ use Docalist\Forms\Form;
         $form->input('slug')->attribute('class', 'regular-text');
         $form->input('label')->attribute('class', 'large-text');
         $form->textarea('description')->attribute('rows', 2)->attribute('class', 'large-text');
-
+        $form->checkbox('thumbnail');
+        $form->checkbox('revisions');
+        $form->checkbox('comments');
         $form
             ->select('stemming')
             ->attribute('class', 'regular-text')
@@ -74,7 +76,10 @@ use Docalist\Forms\Form;
         !isset($database->lastupdate) && $database->lastupdate = date_i18n('Y/m/d H:i:s');
         !isset($database->stemming) && $database->stemming = 'fr-text';
         !isset($database->icon) && $database->icon = 'dashicons-list-view';
-        
+        !isset($database->thumbnail) && $database->thumbnail = true;
+        !isset($database->revisions) && $database->revisions = true;
+        !isset($database->comments) && $database->comments = false;
+
         $form->bind($database)->render('wordpress');
     ?>
 </div>
