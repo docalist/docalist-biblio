@@ -23,13 +23,12 @@ use Exception;
  *
  * Une base est essentiellement une liste de types.
  *
- * @property String $name Identifiant de la base.
+ * @property String $name Nom de la base de données.
  * @property String $slug Slug de la base de données.
  * @property String $label Libellé de la base.
  * @property String $description Description de la base.
  * @property String $stemming Stemming / analyseur par défaut.
- * @property TypeSettings[] $types Types de notices gérés dans cette base,
- * indexés par nom.
+ * @property TypeSettings[] $types Types de notices gérés dans cette base, indexés par nom.
  * @property String $creation Date de création de la base.
  * @property String $lastupdate Date de dernière modification des paramètres de la base.
  * @property String $icon Icône à utiliser pour cette base.
@@ -50,7 +49,7 @@ class DatabaseSettings extends Object {
 
                 'slug' => [
                     'label' => __('Slug de la base', 'docalist-biblio'),
-                    'description' => __("Votre base sera accessible à l'adresse <code>http://votre-site/<b>slug</b></code> et les références auront une url de la forme <code>http://votre-site/<b>slug</b>/ref</code>. Au moins un caractère, lettres minuscules et tiret autorisés.", 'docalist-biblio'),
+                    'description' => __("Page d'accueil de la base.", 'docalist-biblio'),
                 ],
 
                 'label' => [
@@ -62,7 +61,7 @@ class DatabaseSettings extends Object {
                     'label' => __('Description', 'docalist-biblio'),
                     'description' => __("Description de la base en quelques mots.", 'docalist-biblio'),
                 ],
-                
+
                 'stemming' => [
                     'label' => __('Stemming', 'docalist-biblio'),
                     'description' => __("Définit le stemming qui sera appliqué aux champs textes des notices.", 'docalist-biblio'),
