@@ -103,10 +103,8 @@ class Plugin {
             return $formats;
         }, 10, 2);
 
-        // Déclare les JS et les CSS prédéfinis inclus dans docalist-biblio
-        add_action('init', function() {
-            $this->registerAssets(); // TODO fichier externe + faire un répertoire /assets/lib
-        });
+        // Déclare nos assets
+        require_once dirname(__DIR__) . '/assets/register.php';
     }
 
     /**
@@ -155,20 +153,5 @@ class Plugin {
 
         $database = $this->databases[$type]; /* @var $database Database */
         return is_null($grid) ? $database->loadRaw($id) : $database->load($id, $grid);
-    }
-
-    /**
-     * Déclare les scripts et styles standard de docalist-biblio.
-     */
-    protected function registerAssets() {
-        $url = plugins_url('docalist-biblio/assets');
-
-        // Css pour EditReference (également utilisé dans le paramétrage de la grille de saisie)
-        wp_register_style(
-            'docalist-biblio-edit-reference',
-            "$url/edit-reference.css",
-            ['wp-admin'],
-            '140927'
-        );
     }
 }
