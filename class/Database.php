@@ -303,56 +303,100 @@ class Database extends PostTypeRepository {
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
      */
     private function registerPostType() {
-        $supports = [
-         // 'title', // les notices utilisent le champ post_title natif de wp
-         // 'editor',
-            'author',
-            'thumbnail',
-         // 'excerpt',
-            'revisions',
-            'trackbacks',
-         // 'custom-fields',
-            'comments',
-         // 'page-attributes',
-         // 'post-formats'
-        ];
+        $type = $this->postType();
 
-        // @formatter:off
-        register_post_type($this->postType(), array(
-            'labels' => $this->postTypeLabels(),
-            'public' => true, // cf. remarque ci-dessous
-            'show_ui'              => true,
-            'show_in_menu'         => true,
-            'show_in_nav_menus'    => true,
-            'show_in_admin_bar'    => true,
-            'menu_icon' => 'dashicons-feedback',
-//             'menu_icon' => 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMzZweCIgaGVpZ2h0PSIzNnB4IiB2aWV3Qm94PSI2IDYgMzYgMzYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgNiA2IDM2IDM2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8Zz4NCgkJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yNCw5LjYzQzE2LjA3Nyw5LjYzLDkuNjMxLDE2LjA3Nyw5LjYzMSwyNHM2LjQ0NiwxNC4zNjgsMTQuMzcsMTQuMzY4DQoJCQkJYzcuOTIzLDAsMTQuMzY4LTYuNDQ1LDE0LjM2OC0xNC4zNjhTMzEuOTI0LDkuNjMsMjQsOS42M3ogTTI3LjQ4MSwzMC45NjRsLTYuNDIxLTYuMzg1bC0wLjA0MywwLjA0NHY2LjM0MWgtMS41MDl2LTE0LjI5aDEuNTA5DQoJCQkJdjUuOTI5bDYuMDI5LTUuOTI5aDIuMDcybC03LjAwNyw2Ljg5M2w3LjQxNiw3LjM5N0gyNy40ODF6Ii8+DQoJCTwvZz4NCgk8L2c+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTI0LDZDMTQuMDU5LDYsNiwxNC4wNTksNiwyNGMwLDkuOTQsOC4wNTksMTgsMTgsMThjOS45NCwwLDE4LTguMDU5LDE4LTE4UzMzLjk0MSw2LDI0LDZ6IE0yNCw0MC4wOQ0KCQkJCWMtOC44NzMsMC0xNi4wOS03LjIxOC0xNi4wOS0xNi4wOWMwLTguODczLDcuMjE4LTE2LjA5MSwxNi4wOS0xNi4wOTFTNDAuMDksMTUuMTI3LDQwLjA5LDI0QzQwLjA5LDMyLjg3MiwzMi44NzIsNDAuMDksMjQsNDAuMDkNCgkJCQl6Ii8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==',
-//             'menu_icon' => 'http://www.femixsports.fr/templates/rt_oculus/images/icons/icon-home.png',
-//             'menu_icon' => 'http://upload.wikimedia.org/wikipedia/commons/a/a3/Report.svg',
+        // Compatibilité avec les bases antérieures (à supprimer une fois que le .net sera à jour)
+        !isset($this->settings->icon)       && $this->settings->icon = 'dashicons-list-view';
+        !isset($this->settings->thumbnail)  && $this->settings->thumbnail = true;
+        !isset($this->settings->revisions)  && $this->settings->revisions = true;
+        !isset($this->settings->comments)   && $this->settings->revisions = false;
 
-// http://melchoyce.github.io/dashicons/
-// http://mannieschumpert.com/blog/using-wordpress-3-8-icons-custom-post-types-admin-menu/
-// https://icomoon.io/
-            'rewrite' => array(
-                'slug' => $this->settings->slug(),
-                'with_front' => false,
-            ),
-            'hierarchical' => false, // wp inutilisable si on met à true (cache de la hiérarchie ?)
-            'capability_type' => 'post',
-            'supports' => $supports,
-            'has_archive' => true,
-            'show_in_nav_menus' => false,
-            'delete_with_user' => false,
-        ));
-        // @formatter:on
+        // Détermine les fonctionnalités qu'il faut activer
+        $supports = ['author'];
+        $this->settings->thumbnail() && $supports[] = 'thumbnail';
+        $this->settings->revisions() && $supports[] = 'revisions';
+        $this->settings->comments()  && $supports[] = 'comments'; // + 'trackbacks'
+
+        register_post_type($type, [
+            'labels'                => $this->postTypeLabels(),
+            'description'           => $this->settings->description(),
+            'public'                => true,  //
+            'hierarchical'          => false, // WP est inutilisable si on met à true (cache de la hiérarchie)
+            'exclude_from_search'   => true,  // Inutile que WP recherche avec du like dans nos milliers de notices
+            'publicly_queryable'    => true,  // Permet d'avoir des query dclrefbase=xxx
+            'show_ui'               => true,  // Laisse WP générer l'interface
+            'show_in_menu'          => true,  // Afficher dans le menu wordpress
+            'show_in_nav_menus'     => false, // Gestionnaire de menus inutilisable si true : charge tout
+            'show_in_admin_bar'     => true,  // Afficher dans la barre d'outils admin
+            'menu_position'         => 20,    // En dessous de "Pages", avant "commentaires"
+            'menu_icon'             => $this->settings->icon(),
+            'capability_type'       => ["{$type}_reference", "{$type}_references"], // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
+            'capabilities'          => $this->settings->capabilities(),
+            'map_meta_cap'          => true,  // Doit être à true pour que WP traduise correctement nos droits
+            'supports'              => $supports,
+            'register_meta_box_cb'  => null,
+            'taxonomies'            => [],    // Aucune pour le moment
+            'has_archive'           => false, // On gère nous même la page d'accueil
+            'rewrite'               => false, // On gère nous-mêmes les rewrite rules (cf. ci-dessous)
+            'query_var'             => true,  // Laisse WP créer la QV dclrefbase=xxx
+            'can_export'            => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
+            'delete_with_user'      => false, // On ne veut pas supprimer
+        ]);
+
+        // Vérifie que le CPT est déclaré correctement
+        // var_dump(get_post_type_object($type)); die();
 
         /*
-         * remarque :
-         * on met public à false pour empêcher wp de générer un "permalink sample"
-         * (cf edit-form-advanced, lignes 450 et suivantes).
-         * du coup on met tous les autres show_xx à true
-         * Update : en fait c'est génant de mettre à false car dans ce cas, on
-         * n'a plus les liens "afficher la notice" quand on est dans le back-office.
+            Crée les rewrite-rules dont on a besoin
+
+            On ne laisse pas WordPress générer lui-même les rewrite rules car
+            on veut garder la possibilité d'utiliser une page existante comme
+            slug de la base. Pour cela, il faut pouvoir faire la différence
+            entre "base/12" (une notice) et "base/help" (une page) mais par
+            défaut, WordPress utilise une regexp trop large pour le rewrite tag
+            qu'il génère (en gros : ".*"). Pour gérer ça nous-même, on indique
+            à WordPress "pas de rewrite" (dans l'appel à register_post_type) et
+            on crée nous-mêmes le rewrite_tag et la permastruct de notre base.
+         */
+        add_rewrite_tag("%$type%", '(\d+)', "$type=");
+        add_permastruct( $type, $this->settings->slug() . "/%$type%", [
+            'with_front' => false,
+            'ep_mask' => EP_NONE,
+            'paged' => false,
+            'feed' => false,
+            'forcomments' => false,
+            'walk_dirs' => false,
+            'endpoints' => false,
+        ] );
+
+        /*
+            Remarque : bien qu'on indique EP_NONE, WordPress génère tout de même
+            les rewrite rules liées aux endpoints (trackback, feed, comments,
+            page...) Bug ?
+            Actuellement, les règles générées par WordPress pour une base qui
+            a "mabase" comme slug sont les suivantes :
+
+            // Attachment sur une notice, trackback/feed/comment sur cet attachment
+             1  mabase/\d+/attachment/([^/]+)/?$                                index.php?attachment=$1
+             2  mabase/\d+/attachment/([^/]+)/trackback/?$                      index.php?attachment=$1&tb=1
+             3  mabase/\d+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$  index.php?attachment=$1&feed=$2
+             4  mabase/\d+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$       index.php?attachment=$1&feed=$2
+             5  mabase/\d+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$       index.php?attachment=$1&cpage=$2
+
+            // Trackback sur une notice
+             6  mabase/(\d+)/trackback/?$                                       index.php?dclrefprisme=$1&tb=1
+
+            // Pagination d'une notice (balise <!––nextpage––>)
+             7  mabase/(\d+)(/[0-9]+)?/?$                                       index.php?dclrefprisme=$1&page=$2
+
+             8  mabase/\d+/([^/]+)/?$                                           index.php?attachment=$1
+             9  mabase/\d+/([^/]+)/trackback/?$                                 index.php?attachment=$1&tb=1
+            10  mabase/\d+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$             index.php?attachment=$1&feed=$2
+            11  mabase/\d+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$                  index.php?attachment=$1&feed=$2
+            12  mabase/\d+/([^/]+)/comment-page-([0-9]{1,})/?$                  index.php?attachment=$1&cpage=$2
+
+            Seule la règle 7 (sans la pagination) nous intéresse. Idéalement, on devrait uniquement avoir :
+                mabase/(\d+)/?$                                                 index.php?dclrefprisme=$1
          */
     }
 
@@ -390,20 +434,21 @@ class Database extends PostTypeRepository {
         $notfound = sprintf($notfound, $label);
 
         // @formatter:off
+        // cf. wp-includes/post.php:get_post_type_labels()
         return array(
             'name' => $label,
             'singular_name' => $singular,
-            'menu_name' => $label,
-            'all_items' => $all,
             'add_new' => $new,
             'add_new_item' => $new,
             'edit_item' => $edit,
             'new_item' => $new,
             'view_item' => $view,
-            'items_archive' => $all,
             'search_items' => $search,
             'not_found' => $notfound,
             'not_found_in_trash' => $notfound,
+            'parent_item_colon' => '', // not used
+            'all_items' => $all,
+            'menu_name' => $label,
             'name_admin_bar' => $singular,
         );
         // @formatter:on
