@@ -15,6 +15,7 @@
 namespace Docalist\Biblio;
 
 use Docalist\Type\Entity;
+use Docalist\Type\Collection; // uniquement pour filter()
 use Docalist\Repository\Repository;
 use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
