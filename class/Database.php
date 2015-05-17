@@ -79,8 +79,8 @@ class Database extends PostTypeRepository {
         $this->registerPostType();
 
         // Indique à docalist-search que cette base est indexable
-        add_filter('docalist_search_get_types', function (array $types) use ($type) {
-            $types[$type] = $this->settings->label();
+        add_filter('docalist_search_get_types', function (array $types) {
+            $types[$this->settings->postType()] = $this->settings->label();
 
             return $types;
         });
@@ -89,6 +89,11 @@ class Database extends PostTypeRepository {
         add_filter("docalist_search_get_{$type}_indexer", function(TypeIndexer $indexer = null) {
             return new DatabaseIndexer($this);
         });
+
+        // Retourne le filtre standard de recherche pour cette base
+        add_filter("docalist_search_get_{$type}_filter", function($filter, $type) {
+            return docalist('docalist-search-engine')->defaultFilter($type);
+        }, 10, 2);
 
         // Déclare nos facettes
         $this->docalistSearchFacets();
@@ -341,6 +346,15 @@ class Database extends PostTypeRepository {
             'query_var'             => true,  // Laisse WP créer la QV dclrefbase=xxx
             'can_export'            => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
             'delete_with_user'      => false, // On ne veut pas supprimer
+
+            // Pour réactiver les archives :
+
+            'has_archive'           => true,
+            'rewrite' => [
+                'slug' => $this->settings->slug(),
+                'with_front' => false,
+            ],
+
         ]);
 
         // Vérifie que le CPT est déclaré correctement
