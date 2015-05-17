@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -326,7 +326,7 @@ class ImportPage extends AdminPage {
         $request = new SearchRequest($args);
 
         // Si la requête est vide, demande à l'utilisateur de saisir une équation
-        if (0 === count($request->search())) {
+        if (empty($args)) {
             return $this->view('docalist-biblio:export/choose-refs', [
                 'database' => $this->database,
                 'format' => $format,
