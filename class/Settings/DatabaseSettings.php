@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Settings;
 
 use Docalist\Type\Object;
 use Docalist\Type\String;
+use Docalist\Type\Integer;
 use Exception;
 
 /**
@@ -24,7 +25,7 @@ use Exception;
  * Une base est essentiellement une liste de types.
  *
  * @property String $name Nom de la base de données.
- * @property String $slug Slug de la base de données.
+ * @property Integer $homepage ID de la page d'accueil de la base de données.
  * @property String $label Libellé de la base.
  * @property String $description Description de la base.
  * @property String $stemming Stemming / analyseur par défaut.
@@ -38,17 +39,24 @@ use Exception;
  * @property Boolean $comments Indique si les notices peuvent avoir des commentaires.
  */
 class DatabaseSettings extends Object {
+    // supprime l'ancienne propriété slug  à enlever une fois les bases .net migrées
+    public function assign($value) {
+        if (isset($value['slug'])) {
+            unset($value['slug']);
+        }
+        parent::assign($value);
+    }
+
     static protected function loadSchema() {
-        // @formatter:off
         return [
             'fields' => [
                 'name' => [
                     'label' => __('Nom de la base de données', 'docalist-biblio'),
                     'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules, chiffres et tiret autorisés.", 'docalist-biblio'),
                 ],
-
-                'slug' => [
-                    'label' => __('Slug de la base', 'docalist-biblio'),
+                'homepage' => [
+                    'type' => 'int',
+                    'label' => __("Page d'accueil", 'docalist-biblio'),
                     'description' => __("Page d'accueil de la base.", 'docalist-biblio'),
                 ],
 
@@ -124,7 +132,6 @@ class DatabaseSettings extends Object {
                 ],
             ]
         ];
-        // @formatter:on
     }
 
     /**
@@ -141,10 +148,6 @@ class DatabaseSettings extends Object {
             throw new Exception(__("Le nom de la base est invalide.", 'docalist-biblio'));
         }
 
-        if (! preg_match('~^[a-z0-9-]+(?:/[a-z0-9-]+)*$~', $this->slug())) {
-            throw new Exception(__('Le slug de la base est incorrect.', 'docalist-biblio'));
-        }
-
         $this->label = strip_tags($this->label());
         $this->label() === '' && $this->label = $this->name;
 
@@ -156,12 +159,21 @@ class DatabaseSettings extends Object {
     }
 
     /**
+     * Retourne le slug de la page d'accueil de la base.
+     *
+     * @return string
+     */
+    public function slug() {
+        return get_page_uri($this->homepage());
+    }
+
+    /**
      * Retourne l'url de la page d'accueil de la base.
      *
      * @return string
      */
     public function url() {
-        return get_post_type_archive_link($this->postType());
+        return get_permalink($this->homepage());
     }
 
     /**
