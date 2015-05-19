@@ -18,6 +18,7 @@ use Docalist\Forms\Fragment;
 use Docalist\Forms\Themes;
 use Docalist\Utils;
 use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchResults;
 
 class ExportWidget extends WP_Widget {
     public function __construct() {
@@ -64,6 +65,12 @@ class ExportWidget extends WP_Widget {
         // Si on n'a pas de recherche en cours, terminé
         $request = docalist('docalist-search-engine')->request(); /* @var $request SearchRequest */
         if (is_null($request) || ! $request->isSearch()) {
+            return;
+        }
+
+        // Si on n'a pas de hits, terminé
+        $results = docalist('docalist-search-engine')->results(); /* @var $results SearchResults */
+        if ($results->total() === 0) {
             return;
         }
 
