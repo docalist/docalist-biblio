@@ -305,6 +305,26 @@ class Database extends PostTypeRepository {
     }
 
     /**
+     * Retourne l'ID de la page "accueil" indiquée dans les paramètres de la
+     * base.
+     *
+     * @return int
+     */
+    public function homePage() {
+        return $this->settings->homepage();
+    }
+
+    /**
+     * Retourne l'ID de la page "liste des réponses" indiquée dans les
+     * paramètres de la base.
+     *
+     * @return int
+     */
+    public function searchPage() {
+        return $this->settings->searchpage();
+    }
+
+    /**
      * Crée un custom post type wordpress pour la base documentaire.
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
@@ -375,14 +395,14 @@ class Database extends PostTypeRepository {
             // Pages "liste des réponses" et "accueil" en mode 'page' ou 'search'
             if ($query->is_page && $page = $query->get_queried_object_id()) {
                 // Page liste des réponses
-                if ($page === $this->settings->searchpage()) {
+                if ($page === $this->searchPage()) {
                     $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
                     $request->isSearch(true);
                     // on fait une recherche et on affiche les réponses
                 }
 
                 // Page d'accueil
-                elseif ($page === $this->settings->homepage()) {
+                elseif ($page === $this->homePage()) {
                     $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
                     $request->isSearch($this->settings->homemode() === 'search');
                     // en mode 'page', on fait une recherche mais on laisse wp afficher la page
