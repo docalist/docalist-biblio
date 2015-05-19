@@ -88,7 +88,7 @@ class ExportWidget extends WP_Widget {
         echo '<ul>';
 
         // Détermine l'url de la page "export"
-        $exportPage = '/export/';
+        $exportPage = get_permalink(docalist('docalist-biblio-export')->settings()->exportpage());
 
         // Lien "Exporter"
         $label = $settings['file'];
