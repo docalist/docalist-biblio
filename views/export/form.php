@@ -1,0 +1,121 @@
+<?php
+/**
+ * This file is part of the "Docalist Biblio Export" plugin.
+ *
+ * Copyright (C) 2015-2015 Daniel Ménard
+ *
+ * For copyright and license information, please view the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * @package     Docalist\Biblio\Export
+ * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @version     SVN: $Id$
+ */
+namespace Docalist\Biblio\Export\Views;
+
+/**
+ * Affiche le formulaire d'export.
+ *
+ * @param array $types Types des notices (libellé => count)
+ * @param int $total Nombre total de hits obtenus (notices à exporter).
+ * @param int $max Nombre maximum de notices exportables.
+ * @param array $formats Liste des formats d'export disponibles.
+ * @param string $format Format d'export actuellement sélectionner.
+ * @param boolean $mail Envoyer par mail.
+ * @param boolean $zip Compresser le fichier.
+ */
+
+// Crée le détail par type des notices qui seront exportées
+if (count($types) === 1) {
+    $detail = lcfirst(key($types));
+} else {
+    $detail = [];
+    foreach ($types as $label => $count) {
+        $detail[] = sprintf(__('%s : %d', 'docalist-biblio-export'), lcfirst($label), $count);
+    }
+    $detail = implode(', ', $detail);
+}
+?>
+<style>
+    .export label {
+        display: inline; /* because of bootstrap : display block */
+    }
+    .export table {
+        width: 98%;
+    }
+    .export table td {
+        vertical-align: top;
+    }
+    .export table th {
+        width: 2em;
+        vertical-align: top;
+    }
+</style>
+
+<form class="export">
+    <p>
+        <?php
+            $limit = '';
+            if ($total > $max) {
+                $limit = sprintf(__(', seules les %d premières notices seront exportées', 'docalist-biblio-export'), $max);
+            }
+            printf(
+                __('Votre sélection contient <abbr title="%s">%d notice(s)</abbr>%s.', 'docalist-biblio-export'),
+                $detail, $total, $limit
+            );
+        ?>
+    </p>
+
+    <h3><?=__('Format', 'docalist-biblio-export')?></h3>
+    <table>
+        <?php foreach($formats as $name => $fmt):?>
+        <tr>
+            <th>
+                <input type="radio" name="format" id="format-<?=$name?>" value="<?=$name?>" <?php checked($format, $name)?> />
+                &nbsp;
+            </th>
+            <td>
+                <p>
+                    <label for="format-<?=$name?>">
+                        <?=$name . ' - ' . $fmt['label']?>
+                    </label>
+                    <br />
+                    <?=$fmt['converter'] . ' - ' . $fmt['exporter']?>
+                </p>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <h3><?=__('Options', 'docalist-biblio-export')?></h3>
+    <table>
+        <tr>
+            <th>
+                <input type="checkbox" name="mail" id="mail" value="1" <?php checked($mail, true)?> />&nbsp;
+            </th>
+            <td>
+                <p>
+                    <label for="mail">
+                        <?=__('Envoyez-moi le fichier par messagerie', 'docalist-biblio-export')?>
+                    </label>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <input type="checkbox" name="zip" id="zip" value="1" <?php checked($zip, true)?> />&nbsp;
+            </th>
+            <td>
+                <p>
+                    <label for="zip">
+                        <?=__('Compresser le fichier (zip)', 'docalist-biblio-export')?>
+                    </label>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <h3>
+        <button class="btn" type="submit"><?=__("Lancer l'export...", 'docalist-biblio-export')?></button>
+    </h3>
+</form>
