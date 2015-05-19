@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -44,7 +44,7 @@ div.dbdesc{
     <thead>
         <tr>
             <th><?= __('Nom de la base', 'docalist-biblio') ?></th>
-            <th><?= __('Slug', 'docalist-biblio') ?></th>
+            <th><?= __('Page d\'accueil', 'docalist-biblio') ?></th>
             <th><?= __('Types de notices', 'docalist-biblio') ?></th>
             <th><?= __('Nombre de notices', 'docalist-biblio') ?></th>
             <th><?= __('Description', 'docalist-biblio') ?></th>
