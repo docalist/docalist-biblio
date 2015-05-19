@@ -87,7 +87,7 @@ class ExportWidget extends WP_Widget {
         $link = '<li class="%s" style="%s" title="%s"><a href="%s">%s</a></li>';
         echo '<ul>';
 
-        // Détermine l'url de la page "afficher le panier
+        // Détermine l'url de la page "export"
         $exportPage = '/export/';
 
         // Lien "Exporter"

@@ -63,7 +63,7 @@ class SettingsPage extends AdminPage {
     }
 
     /**
-     * Paramètres du panier.
+     * Paramètres de l'export.
      */
     public function actionExportSettings() {
         if ($this->isPost()) {
