@@ -373,9 +373,7 @@ class Database extends PostTypeRepository {
             }
 
             // Pages "liste des réponses" et "accueil" en mode 'page' ou 'search'
-            if ($query->is_page) {
-                $page = $query->get_queried_object_id();
-
+            if ($query->is_page && $page = $query->get_queried_object_id()) {
                 // Page liste des réponses
                 if ($page === $this->settings->searchpage()) {
                     $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
