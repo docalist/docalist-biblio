@@ -51,9 +51,10 @@ class DatabaseSettings extends Object {
         return [
             'fields' => [
                 'name' => [
-                    'label' => __('Nom de la base de données', 'docalist-biblio'),
-                    'description' => __("Nom de code utilisé en interne pour gérer la base de données, de 1 à 14 caractères, lettres minuscules, chiffres et tiret autorisés.", 'docalist-biblio'),
+                    'label' => __('Nom de la base', 'docalist-biblio'),
+                    'description' => __("Nom de code interne de la base de données.", 'docalist-biblio'),
                 ],
+
                 'homepage' => [
                     'type' => 'int',
                     'label' => __("Page d'accueil", 'docalist-biblio'),
@@ -67,12 +68,12 @@ class DatabaseSettings extends Object {
 
                 'description' => [
                     'label' => __('Description', 'docalist-biblio'),
-                    'description' => __("Description de la base en quelques mots.", 'docalist-biblio'),
+                    'description' => __("Description de la base.", 'docalist-biblio'),
                 ],
 
                 'stemming' => [
                     'label' => __('Stemming', 'docalist-biblio'),
-                    'description' => __("Définit le stemming qui sera appliqué aux champs textes des notices.", 'docalist-biblio'),
+                    'description' => __("Stemming qui sera appliqué aux champs textes des notices.", 'docalist-biblio'),
                     'default' => 'fr',
                 ],
 
@@ -97,38 +98,30 @@ class DatabaseSettings extends Object {
                 'icon' => [
                     'label' => __('Icône', 'docalist-biblio'),
                     'default' => 'dashicons-feedback',
-                    'description' => sprintf(
-                        __('Icône à utiliser dans le menu de WordPress. Par exemple %s pour obtenir l\'icône %s.<br />
-                            Pour choisir une icône, allez sur le site %s, faites votre voix et recopiez le nom de l\'icône.<br />
-                            Remarque : vous pouvez également indiquer l\'url complète d\'une image, mais dans ce cas celle-ci ne s\'adaptera pas automatiquement au thème WordPress.',
-                            'docalist-biblio'),
-                        '<code>dashicons-book</code>',
-                        '<span class="dashicons dashicons-book"></span>',
-                        '<a href="https://developer.wordpress.org/resource/dashicons/#book" target="_blank">WordPress dashicons</a>'
-                    ),
+                    'description' => __("Nom de la dashicon affichée dans les menus WordPress.", 'docalist-biblio'),
                 ],
 
                 'notes' => [
                     'label' => __('Notes et historique', 'docalist-biblio'),
-                    'description' => __("Vous pouvez utiliser cette zone pour stocker toute information qui vous est utile : historique, modifications apportées, etc.", 'docalist-biblio'),
+                    'description' => __("Notes pour les administrateurs.", 'docalist-biblio'),
                 ],
 
                 'thumbnail' => [
                     'type' => 'boolean',
                     'label' => __('Image à la une', 'docalist-biblio'),
-                    'description' => __("Permet au notices d'avoir une image à la une.", 'docalist-biblio'),
+                    'description' => __("Les références peuvent avoir une image à la une.", 'docalist-biblio'),
                 ],
 
                 'revisions' => [
                     'type' => 'boolean',
                     'label' => __('Activer les révisions', 'docalist-biblio'),
-                    'description' => __("Lorsque les révisions sont activées, les modifications apportées aux notices sont journalisées, ce qui vous permet de comparer différentes versions, de voir les modifications apportées et de revenir en arrière.", 'docalist-biblio'),
+                    'description' => __("Journaliser les modifications apportées aux références.", 'docalist-biblio'),
                 ],
 
                 'comments' => [
                     'type' => 'boolean',
                     'label' => __('Activer les commentaires', 'docalist-biblio'),
-                    'description' => __("Permettre aux utilisateurs de laisser des commentaires sur les notices.", 'docalist-biblio'),
+                    'description' => __("Les références peuvent avoir des commentaires.", 'docalist-biblio'),
                 ],
             ]
         ];
