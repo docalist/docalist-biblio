@@ -23,7 +23,7 @@ class Plugin {
      *
      * @var Settings
      */
-    protected $settings;
+//     protected $settings;
 
     public function __construct() {
         // Charge les fichiers de traduction du plugin
@@ -38,9 +38,9 @@ class Plugin {
 //         });
 
         // Déclare le widget "Export notices"
-//         add_action('widgets_init', function() {
-//             register_widget('Docalist\Biblio\Export\ExportWidget');
-//         });
+        add_action('widgets_init', function() {
+            register_widget('Docalist\Biblio\Export\ExportWidget');
+        });
 
         // Déclare nos assets
 //         require_once dirname(__DIR__) . '/assets/register.php';
