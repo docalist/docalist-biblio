@@ -17,14 +17,14 @@ use Docalist\Biblio\Export\Settings;
 use Docalist\Forms\Form;
 
 /**
- * Paramètres du panier.
+ * Paramètres de l'export.
  *
- * @param Settings $settings Les paramètres du panier.
+ * @param Settings $settings Les paramètres pour l'export.
  */
 ?>
 <div class="wrap">
     <?= screen_icon() ?>
-    <h2><?= __("Paramètres du panier", 'docalist-biblio-export') ?></h2>
+    <h2><?= __("Export et bibliographies", 'docalist-biblio-export') ?></h2>
 
     <p class="description"><?php
         echo __(
