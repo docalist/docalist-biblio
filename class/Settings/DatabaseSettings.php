@@ -27,6 +27,7 @@ use Exception;
  * @property String $name Nom de la base de données.
  * @property Integer $homepage ID de la page d'accueil de la base de données.
  * @property String $homemode Mode de fonctionnement de la page d'accueil (page, archive ou search).
+ * @property Integer $searchpage ID de la page liste des réponses.
  * @property String $label Libellé de la base.
  * @property String $description Description de la base.
  * @property String $stemming Stemming / analyseur par défaut.
@@ -65,6 +66,12 @@ class DatabaseSettings extends Object {
                 'homemode' => [
                     'label' => __("Mode accueil", 'docalist-biblio'),
                     'description' => __("Mode de fonctionnement de la page d'accueil.", 'docalist-biblio'),
+                ],
+
+                'searchpage' => [
+                    'type' => 'int',
+                    'label' =>__('Page liste des réponses', 'docalist-search'),
+                    'description' => __("Page WordPress sur laquelle sont affichées les recherches dans cette base.", 'docalist-search'),
                 ],
 
                 'label' => [

@@ -75,6 +75,9 @@ use Docalist\Utils;
              ])
              ->firstOption(false)
              ->description(__("Choisissez ce qui doit être affiché lorsque vous visitez la page d'accueil de votre base.", 'docalist-biblio'));
+        $form->select('searchpage')
+             ->options(pagesList())
+             ->firstOption(false);
 
         $form->tag('h3.title', __('Fonctionnalités', 'docalist-biblio'))
              ->description(__('Options et fonctionnalités disponibles pour cette base.', 'docalist-biblio'));

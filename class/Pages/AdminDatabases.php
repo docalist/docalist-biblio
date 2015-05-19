@@ -194,6 +194,7 @@ class AdminDatabases extends AdminPage {
                 $database->description = $_POST['description'];
                 $database->homepage = (int) $_POST['homepage'];
                 $database->homemode = $_POST['homemode'];
+                $database->searchpage = (int) $_POST['searchpage'];
                 $database->stemming = $_POST['stemming'];
                 $database->icon = $_POST['icon'];
                 $database->notes = $_POST['notes'];
