@@ -45,4 +45,13 @@ class Plugin {
         // Déclare nos assets
 //         require_once dirname(__DIR__) . '/assets/register.php';
     }
+
+    /**
+     * Retourne les paramètres du plugin.
+     *
+     * @return Settings
+     */
+    public function settings() {
+        return $this->settings;
+    }
 }
