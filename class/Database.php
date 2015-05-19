@@ -14,15 +14,17 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Repository\PostTypeRepository;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\DatabaseSettings;
-use Docalist\Repository\PostTypeRepository;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
 use Docalist\Search\Indexer;
 use Docalist\Search\TypeIndexer;
+use Docalist\Search\SearchRequest;
 use WP_Post;
+use WP_Query;
 use InvalidArgumentException;
 
 /**
@@ -322,7 +324,8 @@ class Database extends PostTypeRepository {
         $this->settings->revisions() && $supports[] = 'revisions';
         $this->settings->comments()  && $supports[] = 'comments'; // + 'trackbacks'
 
-        register_post_type($type, [
+        // Détermine les paramètres du custom post type
+        $args = [
             'labels'                => $this->postTypeLabels(),
             'description'           => $this->settings->description(),
             'public'                => true,  //
@@ -346,16 +349,39 @@ class Database extends PostTypeRepository {
             'query_var'             => true,  // Laisse WP créer la QV dclrefbase=xxx
             'can_export'            => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
             'delete_with_user'      => false, // On ne veut pas supprimer
+        ];
 
-            // Pour réactiver les archives :
+        // Active les archives si homemode=archive
+        if ($this->settings->homemode() === 'archive') {
+            $args = [
+                'has_archive'       => true,
+                'rewrite' => [
+                    'slug' => $this->settings->slug(),
+                    'with_front' => false,
+                ],
+            ] + $args;
+        }
 
-            'has_archive'           => true,
-            'rewrite' => [
-                'slug' => $this->settings->slug(),
-                'with_front' => false,
-            ],
+        // Déclare le CPT
+        register_post_type($type, $args);
 
-        ]);
+        // Crée une requête quand on est sur la page d'accueil
+        add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
+            if (is_null($request) &&
+                (
+                    ($query->is_page && $query->get_queried_object_id() === $this->settings->homepage())) ||
+                    ($this->settings->homemode() === 'archive' && $query->is_post_type_archive && $query->get('post_type') === $this->postType)
+                )
+            {
+                $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
+                if ($this->settings->homemode() === 'search') {
+                    $request->isSearch(true);
+                }
+            }
+
+            return $request;
+        }, 10, 2);
+
 
         // Vérifie que le CPT est déclaré correctement
         // var_dump(get_post_type_object($type)); die();
@@ -373,7 +399,7 @@ class Database extends PostTypeRepository {
             on crée nous-mêmes le rewrite_tag et la permastruct de notre base.
          */
         add_rewrite_tag("%$type%", '(\d+)', "$type=");
-        add_permastruct( $type, $this->settings->slug() . "/%$type%", [
+        add_permastruct($type, $this->settings->slug() . "/%$type%", [
             'with_front' => false,
             'ep_mask' => EP_NONE,
             'paged' => false,
