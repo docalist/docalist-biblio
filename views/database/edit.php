@@ -46,28 +46,27 @@ use Docalist\Utils;
     <?php
         // Charge la liste des analyseurs disponibles
         $settings = apply_filters('docalist_search_get_index_settings', []);
-        $analyzers = $settings['settings']['analysis']['analyzer'];
-        $analyzers = array_keys($analyzers);
 
         // Ne conserve que les analyseurs "texte"
-        foreach($analyzers as $key => $analyzer) {
-            if (strpos($analyzer, 'text') === false) {
-                unset($analyzers[$key]);
+        $analyzers = [];
+        foreach(array_keys($settings['settings']['analysis']['analyzer']) as $analyzer) {
+            if (strpos($analyzer, 'text') !== false) {
+                $analyzers[] = $analyzer;
             }
         }
 
-        $slugDescription = sprintf(
-            __('
-                Votre base sera accessible à l\'adresse <code>%1$s</code> et les références auront un permalien de la forme <code>%1$s12345/</code>.
-                <br />Au moins un caractère, lettres minuscules, chiffres, tiret et slash autorisés.',
+        $homePageDescription = sprintf(
+            __("
+                Choisissez la page d'accueil de votre base.
+                Les références auront un permalien de la forme <code>%s/votre/page/12345/</code>.",
                 'docalist-biblio'
             ),
-            sprintf('%s/<span class="display-slug">%s</span>/', home_url(), $database->slug())
+            home_url()
         );
 
         $form = new Form('', 'post');
         $form->input('name')->attribute('class', 'regular-text');
-        $form->input('slug')->attribute('class', 'regular-text')->description($slugDescription);
+        $form->select('homepage')->options(pagesList())->firstOption(false)->description($homePageDescription);
         $form->input('label')->attribute('class', 'regular-text');
         $form->textarea('description')->attribute('rows', 2)->attribute('class', 'large-text');
         $form->checkbox('thumbnail');
@@ -105,25 +104,6 @@ use Docalist\Utils;
      * Si la base n'a pas de slug, change le slug quand on tape le nom
      */
     $(document).ready(function () {
-        var noslug;
-
-        var update = function() {
-            var slug = $('#slug').val(), name = $('#name').val();
-            noslug = slug === '' || slug === name;
-        };
-
-        update();
-
-        $(document).on('keydown', '#slug', update);
-
-        $(document).on('input propertychange', '#name', function() {
-            noslug && $('#slug').val($(this).val()).trigger('input');
-        });
-
-        $(document).on('input propertychange', '#slug', function() {
-            $('.display-slug').text($('#slug').val());
-        });
-
         $(document).on('input propertychange', '#icon', function() {
             $('#icon-preview').remove();
             $('#icon').after('<span id="icon-preview" class="dashicons ' + $('#icon').val() + '" style="padding-left: 10px;font-size: 30px;"></span>');
@@ -134,3 +114,18 @@ use Docalist\Utils;
     });
 }(jQuery));
 </script>
+<?php
+/**
+ * Retourne la liste hiérarchique des pages sous la forme d'un tableau
+ * utilisable dans un select.
+ *
+ * @return array Un tableau de la forme PageID => PageTitle
+ */
+function pagesList() {
+    $pages = ['…'];
+    foreach(get_pages() as $page) { /* @var $page \WP_Post */
+        $pages[$page->ID] = str_repeat('   ', count($page->ancestors)) . $page->post_title;
+    }
+
+    return $pages;
+}
