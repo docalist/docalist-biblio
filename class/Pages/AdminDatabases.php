@@ -183,6 +183,7 @@ class AdminDatabases extends AdminPage {
         $error = '';
         if ($this->isPost()) {
             $oldHome = $database->homepage();
+            $oldMode = $database->homemode();
 
             // TODO: supprimer sequences si le nom a changé ?
             // ou plutôt : renommer ?
@@ -192,6 +193,7 @@ class AdminDatabases extends AdminPage {
                 $database->label = $_POST['label'];
                 $database->description = $_POST['description'];
                 $database->homepage = (int) $_POST['homepage'];
+                $database->homemode = $_POST['homemode'];
                 $database->stemming = $_POST['stemming'];
                 $database->icon = $_POST['icon'];
                 $database->notes = $_POST['notes'];
@@ -241,7 +243,7 @@ class AdminDatabases extends AdminPage {
                 // Ou alors : afficher une alerte/une info à l'administrateur ?
 
                 // Met à jour les rewrite rules si la homepage a changé
-                if ($oldHome !== $database->homepage()) {
+                if ($oldHome !== $database->homepage() || $oldMode != $database->homemode()) {
                     return $this->redirect($this->url('RewriteRules'), 303);
                 }
 

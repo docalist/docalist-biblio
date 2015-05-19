@@ -66,6 +66,15 @@ use Docalist\Utils;
              ->options(pagesList())
              ->firstOption(false)
              ->description(__("Choisissez la page d'accueil de votre base. Les références auront un permalien de la forme <code>/votre/page/12345/</code>.", 'docalist-biblio'));
+        $form->select('homemode')
+             ->label(__("La page d'accueil affiche", 'docalist-biblio'))
+             ->options([
+                 'page'     => __('Le contenu de la page WordPress', 'docalist-biblio'),
+                 'archive'  => __('Une archive WordPress de toutes les références', 'docalist-biblio'),
+                 'search'   => __('Une recherche docalist-search "*"', 'docalist-biblio')
+             ])
+             ->firstOption(false)
+             ->description(__("Choisissez ce qui doit être affiché lorsque vous visitez la page d'accueil de votre base.", 'docalist-biblio'));
 
         $form->tag('h3.title', __('Fonctionnalités', 'docalist-biblio'))
              ->description(__('Options et fonctionnalités disponibles pour cette base.', 'docalist-biblio'));

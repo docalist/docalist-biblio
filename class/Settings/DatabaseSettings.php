@@ -26,6 +26,7 @@ use Exception;
  *
  * @property String $name Nom de la base de données.
  * @property Integer $homepage ID de la page d'accueil de la base de données.
+ * @property String $homemode Mode de fonctionnement de la page d'accueil (page, archive ou search).
  * @property String $label Libellé de la base.
  * @property String $description Description de la base.
  * @property String $stemming Stemming / analyseur par défaut.
@@ -59,6 +60,11 @@ class DatabaseSettings extends Object {
                     'type' => 'int',
                     'label' => __("Page d'accueil", 'docalist-biblio'),
                     'description' => __("Page d'accueil de la base.", 'docalist-biblio'),
+                ],
+
+                'homemode' => [
+                    'label' => __("Mode accueil", 'docalist-biblio'),
+                    'description' => __("Mode de fonctionnement de la page d'accueil.", 'docalist-biblio'),
                 ],
 
                 'label' => [
