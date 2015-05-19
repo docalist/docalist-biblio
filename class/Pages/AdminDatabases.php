@@ -122,8 +122,8 @@ class AdminDatabases extends AdminPage {
      * Met à jour les rewrite rules wordpress et retourne une redirection
      * vers l'action DatabasesList.
      *
-     * Lorqu'une base de données est créée ou supprimée ou lorsque son slug
-     * change, il faut mettre à jour les rewrite rules wordpress.
+     * Lorqu'une base de données est créée ou supprimée ou lorsque sa page
+     * d'accueil change, il faut mettre à jour les rewrite rules wordpress.
      *
      * Malheureusement, si une action appelle directement flush_rewrite_rules()
      * après avoir modifié les paramètres des bases, ça n'aura aucun effet car
@@ -137,7 +137,7 @@ class AdminDatabases extends AdminPage {
      * 'unregister_post_type" pour toutes les bases, puis les recréer, etc.)
      *
      * Pour régler le problème simplement, on passe par une redirection :
-     * - Lorsqu'un slug est créé, modifié ou supprimé (actionDatabaseAdd,
+     * - Lorsqu'un base est créée, modifiée ou supprimée (actionDatabaseAdd,
      *   actionDatabaseEdit ou actionDatabaseDelete), on retourne une
      *   redirection vers actionRewriteRules().
      * - Lorsque actionRewriteRules() s'exécute, les "bons" settings sont relus,
@@ -182,7 +182,7 @@ class AdminDatabases extends AdminPage {
         // Requête POST : enregistre les paramètres de la base
         $error = '';
         if ($this->isPost()) {
-            $oldSlug = $database->slug();
+            $oldHome = $database->homepage();
 
             // TODO: supprimer sequences si le nom a changé ?
             // ou plutôt : renommer ?
@@ -191,7 +191,7 @@ class AdminDatabases extends AdminPage {
                 $database->name = $_POST['name'];
                 $database->label = $_POST['label'];
                 $database->description = $_POST['description'];
-                $database->slug = $_POST['slug'];
+                $database->homepage = (int) $_POST['homepage'];
                 $database->stemming = $_POST['stemming'];
                 $database->icon = $_POST['icon'];
                 $database->notes = $_POST['notes'];
@@ -203,8 +203,8 @@ class AdminDatabases extends AdminPage {
 
                 $database->validate();
 
-                // vérifie unicité nom/slug (https://github.com/daniel-menard/prisme/issues/181)
-                foreach ($this->settings->databases as $name => $db) {
+                // vérifie unicité nom/homepage (https://github.com/daniel-menard/prisme/issues/181)
+                foreach ($this->settings->databases as $name => $db) { /* @var $db Database */
                     if ($name === $dbindex) {
                         continue;
                     }
@@ -214,9 +214,9 @@ class AdminDatabases extends AdminPage {
                         throw new Exception(sprintf($msg, $db->name()));
                     }
 
-                    if ($database->slug() === $db->slug()) {
-                        $msg = __('Il existe déjà une base avec le slug "%s"', 'docalist-biblio');
-                        throw new Exception(sprintf($msg, $db->slug()));
+                    if ($database->homepage() === $db->homepage()) {
+                        $msg = __('La page d\'accueil indiquée est déjà utilisée par "%s"', 'docalist-biblio');
+                        throw new Exception(sprintf($msg, $db->label()));
                     }
 
                     if (trim(strtolower($database->label())) === trim(strtolower($db->label()))) {
@@ -240,8 +240,8 @@ class AdminDatabases extends AdminPage {
                 // }
                 // Ou alors : afficher une alerte/une info à l'administrateur ?
 
-                // Met à jour les rewrite rules si le slug a changé
-                if ($oldSlug !== $database->slug()) {
+                // Met à jour les rewrite rules si la homepage a changé
+                if ($oldHome !== $database->homepage()) {
                     return $this->redirect($this->url('RewriteRules'), 303);
                 }
 
@@ -364,7 +364,7 @@ class AdminDatabases extends AdminPage {
         // Requête POST : enregistre les paramètres de la base
         if ($this->isPost()) {
             $settings = json_decode(wp_unslash($settings), true);
-            if (! is_array($settings) || ! isset($settings['slug'])) {
+            if (! is_array($settings) || ! isset($settings['name'])) {
                 return $this->view('docalist-core:error', [
                     'h2' => __('Importer des paramètres', 'docalist-biblio'),
                     'h3' => __("Paramètres incorrects", 'docalist-biblio'),
