@@ -367,16 +367,35 @@ class Database extends PostTypeRepository {
 
         // Crée une requête quand on est sur la page d'accueil
         add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
-            if (is_null($request) &&
-                (
-                    ($query->is_page && $query->get_queried_object_id() === $this->settings->homepage())) ||
-                    ($this->settings->homemode() === 'archive' && $query->is_post_type_archive && $query->get('post_type') === $this->postType)
-                )
-            {
-                $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
-                if ($this->settings->homemode() === 'search') {
+            // Si quelqu'un a déjà créé une requête, on le laisse gérer
+            if ($request) {
+                return $request;
+            }
+
+            // Pages "liste des réponses" et "accueil" en mode 'page' ou 'search'
+            if ($query->is_page) {
+                $page = $query->get_queried_object_id();
+
+                // Page liste des réponses
+                if ($page === $this->settings->searchpage()) {
+                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
                     $request->isSearch(true);
+                    // on fait une recherche et on affiche les réponses
                 }
+
+                // Page d'accueil
+                elseif ($page === $this->settings->homepage()) {
+                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
+                    $request->isSearch($this->settings->homemode() === 'search');
+                    // en mode 'page', on fait une recherche mais on laisse wp afficher la page
+                    // en mode 'search', on affiche les réponses obtenues
+                }
+            }
+
+            // Page d'accueil - mode 'archive'
+            elseif ($query->is_post_type_archive && $query->get('post_type') === $this->postType) {
+                $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
+                // on fait une recherche, mais on laisse wp afficher les archives
             }
 
             return $request;
