@@ -41,11 +41,19 @@ class Json extends Exporter {
         foreach($references as $reference) {
             $first ? ($first = false) : print($comma);
             $data = $this->converter->convert($reference);
+            $data = $this->removeEmpty($data);
             echo json_encode($data, $options);
             $pretty && print("\n");
         }
         echo ']';
         $pretty && print("\n");
+    }
+
+    protected function removeEmpty($data) {
+        return array_filter($data, function ($value) {
+            is_array($value) && $value = $this->removeEmpty($value);
+            return ! ($value === '' | $value === null | $value === []);
+        });
     }
 
     public function label() {
