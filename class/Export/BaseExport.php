@@ -163,7 +163,7 @@ abstract class BaseExport {
      *
      * @return Fragment
      */
-    public static function settingsForm() {
+    public function settingsForm() {
         return null;
     }
 
@@ -181,19 +181,19 @@ abstract class BaseExport {
      *
      * @return array Les settings validés.
      */
-    public static function validateSettings(array $settings) {
+    public function validateSettings(array $settings) {
         return $settings;
     }
 
-    public static function label() {
+    public function label() {
         return strtolower(substr(strrchr(get_called_class(), '\\'), 1));
     }
 
-    public static function description() {
-        return 'description';
+    public function description() {
+        return '';
     }
 
-    public static function id() {
+    public function id() {
         return strtolower(strtr(get_called_class(), '\\', '-'));
     }
 }

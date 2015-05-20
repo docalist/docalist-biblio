@@ -33,8 +33,4 @@ class Converter extends BaseExport {
     public function convert(Reference $reference) {
         return $reference->value();
     }
-
-    public static function label() {
-        return get_called_class() === __CLASS__ ? 'docalist' : parent::label();
-    }
 }

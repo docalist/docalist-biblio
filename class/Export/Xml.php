@@ -21,7 +21,7 @@ use XMLWriter;
  */
 class Xml extends Exporter {
     protected static $defaultSettings = [
-        // Surcharge des paramètres hérités
+        // Surcharge les paramètres hérités
         'mime-type' => 'application/xml',
         'extension' => '.xml',
 
@@ -82,11 +82,11 @@ class Xml extends Exporter {
         }
     }
 
-    public static function label() {
+    public function label() {
         return 'XML';
     }
 
-    public static function description() {
+    public function description() {
         return __('<a href="http://fr.wikipedia.org/wiki/Extensible_Markup_Language">Extensible Markup Language</a> : fichier texte dans lequel les données sont encadrées par des &lt;balises&gt;.', 'docalist-biblio');
     }
 }
