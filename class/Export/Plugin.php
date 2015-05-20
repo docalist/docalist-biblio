@@ -39,6 +39,46 @@ class Plugin {
      */
     const TRANSIENT = 'docalist-biblio-export-last-request';
 
+    /**
+     * La requête docalist-search contenant les notices à exporter.
+     *
+     * Initialisé par checkParams().
+     *
+     * @var SearchRequest
+     */
+    protected $request;
+
+    /**
+     * Le format d'export à utiliser.
+     *
+     * Initialisé par checkParams().
+     *
+     * @var Format
+     */
+    protected $format;
+
+    /**
+     * Indique s'il faut compresser le fichier généré.
+     *
+     * Initialisé par checkParams().
+     *
+     * @var boolean
+     */
+    protected $zip;
+
+    /**
+     * Indique s'il faut envoyer le fichier par e-mail.
+     *
+     * Initialisé par checkParams().
+     *
+     * @var boolean
+     */
+    protected $mail;
+
+
+    /**
+     * Initialise le plugin.
+     */
     public function __construct() {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio-export', false, 'docalist-biblio-export/languages');
@@ -56,22 +96,31 @@ class Plugin {
             register_widget('Docalist\Biblio\Export\ExportWidget');
         });
 
+        // Stocke la dernière requête exécutée par docalist-search dans un
+        // transient. On utilise une priorité haute pour laisser la possibilité
+        // à tous les autres plugins de créer la requête.
+        // On en profite pour tester si on est sur la page "export" (c'est plus
+        // simple de le faire içi plutôt que d'intercepter parse_query et ça
+        // fait un filtre en moins) et si c'est le cas, on vérifie les
+        // paramètres indiqués et on déclenche l'export.
         add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
-            // Stocke la dernière requête exécutée par docalist-search
+            // Stocke la SearchRequest
             if ($request && $request->isSearch()) {
-                set_transient(self::TRANSIENT, $request, 3600); // 10min
+                set_transient(self::TRANSIENT, $request, 24 * HOUR_IN_SECONDS);
             }
 
             // Déclenche l'export si on est sur la page "export"
             if ($query->is_main_query() && $query->is_page && $query->get_queried_object_id() === $this->exportPage()) {
-                $this->export();
+                $view = $this->checkParams(); // true si ok, une View sinon
+                if ($view === true) {
+                    $this->export();
+                } else {
+                    $this->showView($view);
+                }
             }
 
             return $request;
-        }, 9999, 2); // priorité haute pour être le dernier
-
-        // Déclare nos assets
-//         require_once dirname(__DIR__) . '/assets/register.php';
+        }, 9999, 2);
     }
 
     /**
@@ -93,40 +142,13 @@ class Plugin {
     }
 
     /**
-     * Gère l'export.
+     * Teste si on a tous les paramètres requis pour pouvoir lancer l'export.
      *
-     * Teste si on a tous les paramètres requis, affiche le formulaire si ce
-     * n'est pas le cas, lance l'export sinon.
+     * @return true|ViewResponse Retourne true si on a tout ce qu'il faut et
+     * que tout est ok, sinon retourne une vue contenant le formulaire "choix
+     * du format d'export" ou un message à afficher à l'utilisateur.
      */
-    public function export() {
-        $ok = isset($_REQUEST['go']);
-        if ($ok) {
-            die('export généré');
-        }
-        add_filter('the_content', [$this, 'injectForm'], 9999); // priorité très haute pour ignorer wp_autop et cie.
-        add_filter('the_excerpt', [$this, 'injectForm'], 9999); // priorité très haute pour ignorer wp_autop et cie.
-
-    }
-
-    /**
-     * Injecte le formulaire d'export dans le contenu ou l'extrait passé en
-     * paramètre.
-     *
-     * Cete méthode est appellée via the_content()/the_excerpt().
-     *
-     * @param string $content Le contenu de la page "export".
-     *
-     * @return string Le contenu de la page "export" si on n'a rien à exporter,
-     * le formulaire d'export sinon.
-     */
-    public function injectForm($content) {
-        global $post;
-
-        // Vérifie que c'est bien notre page
-        if ($post->ID !== $this->exportPage()) {
-            return $content;
-        }
-
+    protected function checkParams() {
         // Affiche un message si on n'a aucune requête en cours
         $request = get_transient(self::TRANSIENT); /* @var $request SearchRequest */
         if ($request === false) {
@@ -135,6 +157,7 @@ class Plugin {
 
         // Exécute la requête
         $request->facet('_type', 100);
+        $request->size(2);
         $results = $request->execute('count'); /* @var $results SearchResults */
 
         // Affiche un message si on a aucune réponse
@@ -160,15 +183,27 @@ class Plugin {
             ]);
         }
 
-        // Initialise les options
+        // Récupère les options transmises en paramètres
         $mail = isset($_REQUEST['mail']) && $_REQUEST['mail'] === '1';
         $zip  = isset($_REQUEST['zip']) && $_REQUEST['zip'] === '1';
         $format = isset($_REQUEST['format']) ? $_REQUEST['format'] : null;
-        !isset($formats[$format]) && $format = null; // vérifie que le format existe
-        is_null($format) && $format=key($formats);
+        $go  = isset($_REQUEST['go']) && $_REQUEST['go'] === '1';
 
-        // Affiche le texte d'introduction (nb de hits, types, limites, etc.)
-        $content = $this->view('docalist-biblio-export:form', [
+        // Vérifie que le format indiqué figure dans la liste des formats possibles
+        isset($format) && !isset($formats[$format]) && $format = null;
+
+        // Si tout est ok, retourne true
+        if (isset($format) && $go) {
+            $this->request = $request;
+            $this->mail = $mail;
+            $this->zip = $zip;
+            $this->format = $formats[$format];
+
+            return true;
+        }
+
+        // Sinon, affiche le formulaire "choix du format"
+        return $this->view('docalist-biblio-export:form', [
             'types' => $countByType,
             'total' => $results->total(),
             'max' => 100,
@@ -177,10 +212,61 @@ class Plugin {
             'mail' => $mail,
             'zip' => $zip,
         ]);
-
-        return $content;
     }
 
+    /**
+     * Injecte le contenu généré par la vue passée en paramètres dans la page
+     * "export".
+     *
+     * @param ViewResponse $view La vue à exécutr.
+     */
+    protected function showView(ViewResponse $view) {
+        $injectView = function ($content) use ($view) {
+            global $post;
+
+            // Vérifie que c'est bien notre page
+            if ($post->ID !== $this->exportPage()) {
+                return $content;
+            }
+
+            // Exécute la vue et retourne le contenu généré
+            return $view->getContent();
+        };
+
+        // On ne sait pas si le thème utilise the_content() ou the_excerpt()
+        // donc on intercepte les deux, en utilisant une priorité très haute
+        // pour court-circuiter wp_autop et compagnie.
+        add_filter('the_content', $injectView, 9999);
+        add_filter('the_excerpt', $injectView, 9999);
+    }
+
+    /**
+     * Lance l'export.
+     *
+     * Teste si on a tous les paramètres requis, affiche le formulaire si ce
+     * n'est pas le cas, lance l'export sinon.
+     */
+    protected function export() {
+        // Permet au script de s'exécuter longtemps
+        set_time_limit(3600);
+
+        $mode='display'; // TODO
+        $disposition = ($mode==='display') ? 'inline' : 'attachment';
+
+        $this->format->export($this->request, $disposition);
+
+        die('export généré');
+    }
+
+    /**
+     * Retourne la liste des formats disponibles pour les types indiqués.
+     *
+     * @param array $types La liste des types.
+     *
+     * @throws RuntimeException
+     *
+     * @return Format[]
+     */
     protected function formats(array $types) {
         // Dans une table 'export-formats', on aura :
         // 'formats' => liste des formats définis = ['name', 'converter', 'converter-settings', 'exporter', 'exporter-settings']
@@ -191,11 +277,9 @@ class Plugin {
         // TODO : depuis la table
         $formats = apply_filters('docalist_biblio_get_export_formats', []);
         if (empty($formats)) {
-            throw new \RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio'));
+            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio'));
         }
-
-        // on récupère un tableau de la forme
-        // $formats['code-format'] = ['label' => ..., 'converter' => ..., 'exporter' => ... ]
+        // on récupère un tableau de la forme 'format' => params
 
         // Liste des formats autorisés pour chaque type
         // TODO : depuis les settings
@@ -207,7 +291,7 @@ class Plugin {
             ],
             'page' => [
                 'docalist-json-pretty',
-//                 'docalist-xml-pretty',
+                'docalist-xml-pretty',
             ],
             'dclrefprisme' => [
                 'docalist-json',
@@ -225,6 +309,7 @@ class Plugin {
             ],
         ];
 
+        // Conserve uniquement les formats qui sont communs à tous les types qu'on a
         foreach($types as $type) {
             if (! isset($formatsByType[$type])) {
                 $formats = [];
@@ -233,19 +318,26 @@ class Plugin {
             $formats = array_intersect_key($formats, array_flip($formatsByType[$type]));
         }
 
+        // Instancie les formats qui restent
+        foreach($formats as $name => & $format) {
+            $format = new Format($name, $format);
+        }
+
+        // Ok
         return $formats;
     }
 
     /**
-     * Exécute la vue indiquée et retourne le contenu généré
+     * Exécute la vue indiquée et retourne le contenu généré.
+     *
      * @param string $view Nom de la vue.
      * @param array $viewArgs Paramètres à passer à la vue.
+     *
+     * @return string
      */
     protected function view($view, array $viewArgs = []){
         !isset($viewArgs['this']) && $viewArgs['this'] = $this;
 
-        $view = new ViewResponse($view, $viewArgs);
-
-        return $view->getContent();
+        return new ViewResponse($view, $viewArgs);
     }
 }
