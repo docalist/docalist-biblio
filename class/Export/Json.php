@@ -46,6 +46,6 @@ class Json extends Exporter {
     }
 
     public function description() {
-        return __('Fichier texte contenant des données structurées au format <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">Javascript Object Notation</a>.', 'docalist-biblio');
+        return __('Fichier texte contenant des données structurées au format <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">Javascript Object Notation</a>.', 'docalist-biblio-export');
     }
 }

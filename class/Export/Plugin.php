@@ -277,7 +277,7 @@ class Plugin {
         // TODO : depuis la table
         $formats = apply_filters('docalist_biblio_get_export_formats', []);
         if (empty($formats)) {
-            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio'));
+            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio-export'));
         }
         // on récupère un tableau de la forme 'format' => params
 

@@ -72,7 +72,7 @@ class Format {
 
         // Vérifie que le format indique le nom de l'exporter à utiliser
         if (!isset($format['exporter'])) {
-            $msg = sprintf(__("Aucune exporteur indiqué dans le format %s.", 'docalist-biblio'), $name);
+            $msg = sprintf(__("Aucune exporteur indiqué dans le format %s.", 'docalist-biblio-export'), $name);
             throw new InvalidArgumentException($msg);
         }
 
