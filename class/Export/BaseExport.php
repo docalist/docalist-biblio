@@ -185,14 +185,29 @@ abstract class BaseExport {
         return $settings;
     }
 
+    /**
+     * Retourne le libellé de l'objet.
+     *
+     * @return string
+     */
     public function label() {
         return strtolower(substr(strrchr(get_called_class(), '\\'), 1));
     }
 
+    /**
+     * Retourne la description de l'objet.
+     *
+     * @return string
+     */
     public function description() {
         return '';
     }
 
+    /**
+     * Retourne l'identifiant de l'objet
+     *
+     * @return string
+     */
     public function id() {
         return strtolower(strtr(get_called_class(), '\\', '-'));
     }
