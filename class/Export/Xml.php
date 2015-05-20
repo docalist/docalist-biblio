@@ -71,6 +71,9 @@ class Xml extends Exporter {
      */
     protected function outputArray(XMLWriter $xml, array $data) {
         foreach ($data as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
             is_int($key) && $key = 'item';
             $xml->startElement($key);
             if (is_scalar($value)) {
