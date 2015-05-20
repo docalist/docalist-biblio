@@ -34,11 +34,18 @@ class Json extends Exporter {
         $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         $pretty && $options |= JSON_PRETTY_PRINT;
 
+        $first = true;
+        echo '[';
+        $pretty && print("\n");
+        $comma = $pretty ? ",\n" : ',';
         foreach($references as $reference) {
+            $first ? ($first = false) : print($comma);
             $data = $this->converter->convert($reference);
             echo json_encode($data, $options);
-            $pretty && print("\n\n");
+            $pretty && print("\n");
         }
+        echo ']';
+        $pretty && print("\n");
     }
 
     public function label() {
