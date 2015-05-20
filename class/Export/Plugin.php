@@ -255,7 +255,7 @@ class Plugin {
 
         $this->format->export($this->request, $disposition);
 
-        die('export généré');
+        die();
     }
 
     /**
