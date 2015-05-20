@@ -160,8 +160,8 @@ class Format {
 
         // Génère les entêtes http
         header('Content-Type: ' . $exporter->contentType());
-        header('Content-disposition: ' . $exporter->contentDisposition($disposition));
-        header('X-Content-Type-Options: ' . 'nosniff');
+        header('Content-Disposition: ' . $exporter->contentDisposition($disposition));
+        header('X-Content-Type-Options: nosniff');
 
         // Lance l'export
         $this->exporter()->export($iterator);
