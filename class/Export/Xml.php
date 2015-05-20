@@ -26,7 +26,7 @@ class Xml extends Exporter {
         'extension' => '.xml',
 
         // Taille de l'indentation ou zéro ou false pour générer un code compact
-        'indent' => 4,
+        'indent' => 0,
         'binary' => true,
     ];
 
