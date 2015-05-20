@@ -19,7 +19,7 @@ namespace Docalist\Biblio\Export\Views;
  * @param array $types Types des notices (libellé => count)
  * @param int $total Nombre total de hits obtenus (notices à exporter).
  * @param int $max Nombre maximum de notices exportables.
- * @param array $formats Liste des formats d'export disponibles.
+ * @param Format[] $formats Liste des formats d'export disponibles.
  * @param string $format Format d'export actuellement sélectionner.
  * @param boolean $mail Envoyer par mail.
  * @param boolean $zip Compresser le fichier.
@@ -37,9 +37,6 @@ if (count($types) === 1) {
 }
 ?>
 <style>
-    .export label {
-        display: inline; /* because of bootstrap : display block */
-    }
     .export table {
         width: 98%;
     }
@@ -50,6 +47,31 @@ if (count($types) === 1) {
         width: 2em;
         vertical-align: top;
     }
+    .export label {
+        display: inline; /* because of bootstrap : display block */
+    }
+    .export-description {
+        font-style: italic;
+    }
+    .export-details {
+        display: none;
+    }
+    .export-more {
+        color: #aaa;
+        background-color: #eee;
+        display: inline-block;
+        text-align: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+    }
+    .export-more:hover, .export-more.export-active {
+        text-decoration: none !important;
+        background-color: #f4f4f4;
+        color: #444;
+        font-weight: bold;
+    }
+
 </style>
 
 <form class="export">
@@ -68,20 +90,23 @@ if (count($types) === 1) {
 
     <h3><?=__('Format', 'docalist-biblio-export')?></h3>
     <table>
-        <?php foreach($formats as $name => $fmt):?>
+        <?php foreach($formats as $name => $fmt): /* @var $fmt Format */ ?>
         <tr>
             <th>
                 <input type="radio" name="format" id="format-<?=$name?>" value="<?=$name?>" <?php checked($format, $name)?> />
                 &nbsp;
             </th>
             <td>
-                <p>
-                    <label for="format-<?=$name?>">
-                        <?=$name . ' - ' . $fmt['label']?>
-                    </label>
-                    <br />
-                    <?=$fmt['converter'] . ' - ' . $fmt['exporter']?>
+                <p class="export-label">
+                    <label for="format-<?=$name?>"><?=$fmt->label()?></label>
                 </p>
+                <p class="export-description">
+                    <?=$fmt->description()?> <a class="export-more" href="#">+</a>
+                </p>
+                <ul class="export-details">
+                    <li><?=$fmt->converter()->label() . ' : ' . lcfirst($fmt->converter()->description())?></li>
+                    <li><?=$fmt->exporter()->label() . ' : ' . lcfirst($fmt->exporter()->description())?></li>
+                </ul>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -118,4 +143,30 @@ if (count($types) === 1) {
     <h3>
         <button class="btn" type="submit"><?=__("Lancer l'export...", 'docalist-biblio-export')?></button>
     </h3>
+    <input type="hidden" name="go" value="1" />
 </form>
+
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function () {
+        $(document).on('click', '.export-more', function(e) {
+            var details = $(this).parent().next('ul');
+
+            if ($(this).is('.export-active')) {
+                $('.export-more').removeClass('export-active');
+                $('.export-details').slideUp();
+            } else {
+                $('.export-more').not(this).removeClass('export-active');
+                $('.export-details').not(details).slideUp();
+
+                $(this).addClass('export-active');
+                $(details).slideDown();
+            }
+
+            e.preventDefault();
+
+            return false;
+        });
+    });
+}(jQuery));
+</script>
