@@ -69,16 +69,18 @@ class Plugin {
         add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 2);
 
         // Liste des exporteurs définis dans ce plugin
-        add_filter('docalist_biblio_get_export_formats', function(array $formats, Database $database) {
+        add_filter('docalist_biblio_get_export_formats', function(array $formats) {
             $formats['docalist-json'] = [
-                'label' => 'Compact',
-                'converter' => 'Docalist\Biblio\Export\Converter',
+                'label' => 'Docalist JSON',
+                'description' => 'Fichier JSON compact, notices en format natif de Docalist.',
+                'converter' => 'Docalist\Biblio\Export\Docalist',
                 'exporter' => 'Docalist\Biblio\Export\Json',
             ];
 
             $formats['docalist-json-pretty'] = [
-                'label' => 'Indenté',
-                'converter' => 'Docalist\Biblio\Export\Converter',
+                'label' => 'Docalist JSON formatté',
+                'description' => 'Fichier JSON formatté et indenté, notices en format natif de Docalist.',
+                'converter' => 'Docalist\Biblio\Export\Docalist',
                 'exporter' => 'Docalist\Biblio\Export\Json',
                 'exporter-settings' => [
                     'pretty' => true,
@@ -86,14 +88,16 @@ class Plugin {
             ];
 
             $formats['docalist-xml'] = [
-                'label' => 'Compact',
-                'converter' => 'Docalist\Biblio\Export\Converter',
+                'label' => 'Docalist XML',
+                'description' => 'Fichier XML compact, notices en format natif de Docalist.',
+                'converter' => 'Docalist\Biblio\Export\Docalist',
                 'exporter' => 'Docalist\Biblio\Export\Xml',
             ];
 
             $formats['docalist-xml-pretty'] = [
-                'label' => 'Indenté',
-                'converter' => 'Docalist\Biblio\Export\Converter',
+                'label' => 'Docalist XML formatté',
+                'description' => 'Fichier XML formatté et indenté, notices en format natif de Docalist.',
+                'converter' => 'Docalist\Biblio\Export\Docalist',
                 'exporter' => 'Docalist\Biblio\Export\Xml',
                 'exporter-settings' => [
                     'indent' => 4,
@@ -101,7 +105,7 @@ class Plugin {
             ];
 
             return $formats;
-        }, 10, 2);
+        }, 10);
 
         // Déclare nos assets
         require_once dirname(__DIR__) . '/assets/register.php';
