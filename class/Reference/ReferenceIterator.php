@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -63,16 +63,33 @@ class ReferenceIterator implements Iterator, Countable {
     protected $grid;
 
     /**
+     * Nombre maximum de notices à itérer.
+     *
+     * @var int
+     */
+    protected $limit;
+
+    /**
+     * Nombre de hits déjà itérés.
+     *
+     * @var int
+     */
+    protected $count;
+
+    /**
      * Construit l'itérateur.
      *
      * @param SearchRequest $request
      * @param boolean $grid Le nom de la grille à utiliser (base, edit...) pour
      * que l'itérateur retourne des objets Reference ou null pour qu'il retourne
      * un tableau contenant les données brutes de la notice.
+     * @param int $limit Nombre maximum de notices à itérer.
      */
-    public function __construct(SearchRequest $request, $grid = null) {
+    public function __construct(SearchRequest $request, $grid = null, $limit = null) {
         $this->request = $request;
         $this->grid = $grid;
+        $this->limit = $limit;
+        $this->count = 0;
     }
 
     public function rewind() {
@@ -80,7 +97,15 @@ class ReferenceIterator implements Iterator, Countable {
     }
 
     public function valid() {
-        return $this->current < count($this->hits);
+        if ($this->current >= count($this->hits)) {
+            return false;
+        }
+
+        if ($this->limit && $this->count >= $this->limit) {
+            return false;
+        }
+
+        return true;
     }
 
     public function current() {
@@ -93,6 +118,7 @@ class ReferenceIterator implements Iterator, Countable {
 
     public function next() {
         ++$this->current;
+        ++$this->count;
         if (! $this->valid()) {
             $this->loadPage($this->request->page() + 1);
         }
