@@ -217,7 +217,7 @@ class AdminDatabases extends AdminPage {
                         throw new Exception(sprintf($msg, $db->name()));
                     }
 
-                    if ($database->homepage() === $db->homepage()) {
+                    if ($database->homepage() && $database->homepage() === $db->homepage()) {
                         $msg = __('La page d\'accueil indiquée est déjà utilisée par "%s"', 'docalist-biblio');
                         throw new Exception(sprintf($msg, $db->label()));
                     }
