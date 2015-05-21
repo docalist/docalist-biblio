@@ -403,7 +403,7 @@ class Database extends PostTypeRepository {
 
                 // Page d'accueil
                 elseif ($page === $this->homePage()) {
-                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
+                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType, true);
                     $request->isSearch($this->settings->homemode() === 'search');
                     // en mode 'page', on fait une recherche mais on laisse wp afficher la page
                     // en mode 'search', on affiche les réponses obtenues
@@ -412,7 +412,7 @@ class Database extends PostTypeRepository {
 
             // Page d'accueil - mode 'archive'
             elseif ($query->is_post_type_archive && $query->get('post_type') === $this->postType) {
-                $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
+                $request = docalist('docalist-search-engine')->defaultRequest($this->postType, true);
                 // on fait une recherche, mais on laisse wp afficher les archives
             }
 
