@@ -15,6 +15,8 @@ namespace Docalist\Biblio\Export\Views;
 
 use Docalist\Biblio\Export\Settings;
 use Docalist\Forms\Form;
+use Docalist\Forms\Themes;
+use Docalist\Utils;
 
 /**
  * Paramètres de l'export.
@@ -22,6 +24,9 @@ use Docalist\Forms\Form;
  * @param Settings $settings Les paramètres pour l'export.
  */
 ?>
+<style>
+.field-table.limit         { width: auto; }
+</style>
 <div class="wrap">
     <?= screen_icon() ?>
     <h2><?= __("Export et bibliographies", 'docalist-biblio-export') ?></h2>
@@ -35,8 +40,24 @@ use Docalist\Forms\Form;
 
     <?php
         $form = new Form();
-        $form->select('exportpage')->options(pagesList())->firstOption(false);
+
+        $form->select('exportpage')
+             ->options(pagesList())
+             ->firstOption(false);
+
+        $form->table('limit')
+             ->addClass('limit')
+             ->select('role')
+                ->options(userRoles())
+                ->parent()
+             ->input('limit')
+                ->attribute('type', 'number');
+
         $form->submit(__('Enregistrer les modifications', 'docalist-biblio-export'));
+
+        $assets=$form->assets();
+        $assets->add(Themes::assets('wordpress'));
+        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
 
         $form->bind($settings)->render('wordpress');
     ?>
@@ -56,4 +77,15 @@ function pagesList() {
     }
 
     return $pages;
+}
+
+/**
+ * Retourne la liste de rôles WordPress
+ *
+ * @return array role => label
+ */
+function userRoles() {
+    global $wp_roles;
+
+    return  array_map('translate_user_role', $wp_roles->get_names());
 }
