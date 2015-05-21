@@ -366,7 +366,7 @@ class Database extends PostTypeRepository {
             'show_in_menu'          => true,  // Afficher dans le menu wordpress
             'show_in_nav_menus'     => false, // Gestionnaire de menus inutilisable si true : charge tout
             'show_in_admin_bar'     => true,  // Afficher dans la barre d'outils admin
-            'menu_position'         => 20,    // En dessous de "Pages", avant "commentaires"
+         // 'menu_position'         => 20,    // En dessous de "Pages", avant "commentaires"
             'menu_icon'             => $this->settings->icon(),
             'capability_type'       => ["{$type}_reference", "{$type}_references"], // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
             'capabilities'          => $this->settings->capabilities(),
