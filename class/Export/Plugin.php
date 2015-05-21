@@ -294,6 +294,9 @@ class Plugin {
                 'docalist-xml-pretty',
             ],
             'dclrefprisme' => [
+                'prisme2014-delimited',
+                'prisme2012-delimited',
+                'prisme2011-delimited',
                 'docalist-json',
                 'docalist-json-pretty',
                 'docalist-xml',
