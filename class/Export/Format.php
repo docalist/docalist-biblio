@@ -150,10 +150,10 @@ class Format {
      *
      * @param SearchRequest $request La requête contenant les notices à exporter.
      */
-    public function export(SearchRequest $request, $disposition = 'inline') {
+    public function export(SearchRequest $request, $disposition = 'inline', $limit = null) {
         // Crée l'itérateur
         $grid = isset($this->format['grid']) ? $this->format['grid'] : 'base';
-        $iterator = new ReferenceIterator($request, $grid);
+        $iterator = new ReferenceIterator($request, $grid, $limit);
 
         // Crée l'exporteur
         $exporter = $this->exporter();
