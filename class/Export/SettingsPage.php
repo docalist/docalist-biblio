@@ -70,6 +70,7 @@ class SettingsPage extends AdminPage {
             try {
                 $_POST = wp_unslash($_POST);
                 $this->settings->exportpage = (int) $_POST['exportpage'];
+                $this->settings->limit = $_POST['limit'];
 
                 // $settings->validate();
                 $this->settings->save();

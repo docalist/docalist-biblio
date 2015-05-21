@@ -33,6 +33,12 @@ class Settings extends TypeSettings {
                     'description' => __("Page WordPress sur laquelle l'export sera disponible.", 'docalist-biblio-export'),
                     'default' => 0,
                 ],
+                'limit' => [
+                    'type' => 'LimitSettings',
+                    'label' =>__("Limites de l'export", 'docalist-biblio-export'),
+                    'description' => __("Liste des rôles autorisés à exporter des notices et nombre maximum de notices exportables par rôle.", 'docalist-biblio-export'),
+                    'key' => 'role',
+                ],
             ]
         ];
     }
