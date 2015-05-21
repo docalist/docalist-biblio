@@ -325,6 +325,16 @@ class Database extends PostTypeRepository {
     }
 
     /**
+     * Retourne l'URL de la page "liste des réponses" indiquée dans les
+     * paramètres de la base.
+     *
+     * @return string
+     */
+    public function searchPageUrl() {
+        return get_permalink($this->settings->searchpage());
+    }
+
+    /**
      * Crée un custom post type wordpress pour la base documentaire.
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
@@ -415,6 +425,9 @@ class Database extends PostTypeRepository {
                 $request = docalist('docalist-search-engine')->defaultRequest($this->postType, true);
                 // on fait une recherche, mais on laisse wp afficher les archives
             }
+
+            // Si on a créé une requête, indique la page de recherche
+            $request && $request->searchPageUrl($this->searchPageUrl());
 
             return $request;
         }, 10, 2);
