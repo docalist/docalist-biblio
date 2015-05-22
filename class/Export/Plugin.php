@@ -253,7 +253,7 @@ class Plugin {
         $mode='display'; // TODO
         $disposition = ($mode==='display') ? 'inline' : 'attachment';
 
-        $this->format->export($this->request, $disposition);
+        $this->format->export($this->request, $disposition, 1000); // TODO from settings
 
         die();
     }
