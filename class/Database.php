@@ -32,7 +32,7 @@ use InvalidArgumentException;
  */
 class Database extends PostTypeRepository {
     protected static $fieldMap = [
-     // 'post_author'           => '',
+        'post_author'           => 'createdBy',
         'post_date'             => 'creation',
      // 'post_date_gmt'         => '',
      // 'post_content'          => '',

@@ -31,6 +31,7 @@ use Exception;
  * @property Docalist\Biblio\Field\Title $title
  * @property Docalist\Biblio\Field\Status $status
  * @property Docalist\Biblio\Field\Creation $creation
+ * @property Docalist\Biblio\Field\CreatedBy $createdBy
  * @property Docalist\Biblio\Field\LastUpdate $lastupdate
  * @property Docalist\Biblio\Type\String $password
  * @property Docalist\Biblio\Field\PostType $posttype
@@ -170,7 +171,7 @@ class Reference extends Entity {
 
         $fields = array_keys($schema['fields']);
         $hidden = ['title', 'posttype', 'password', 'parent', 'slug', 'imported', 'errors'];
-        $last = ['owner', 'status', 'creation', 'lastupdate', 'ref'];
+        $last = ['owner', 'status', 'creation', 'createdBy', 'lastupdate', 'ref'];
         $fields = array_diff($fields, $hidden, $last);
 
         $group1 = [ 'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'before' => '<dl>', 'format' => '<dt>%label</dt><dd>%content</dd>', 'after' => '</dl>' ] ];
@@ -267,6 +268,11 @@ class Reference extends Entity {
                     'type' => 'Docalist\Biblio\Field\Creation',
                     'label' => __('Création', 'docalist-biblio'),
                     'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
+                ],
+                'createdBy' => [      // Alias de post_author
+                    'type' => 'Docalist\Biblio\Field\CreatedBy',
+                    'label' => __('Créé par', 'docalist-biblio'),
+                    'description' => __('Auteur de la notice.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
                     'type' => 'Docalist\Biblio\Field\LastUpdate',
