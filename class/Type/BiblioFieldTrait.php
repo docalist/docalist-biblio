@@ -204,7 +204,9 @@ trait BiblioFieldTrait {
      * pas dans la table, retourne le code.
      */
     public function lookup($code, $table2 = false, $search = 'code', $return = 'label') {
-        return $this->table($table2)->find($return, "$search='$code'") ?: $code;
+        $table = $this->table($table2);
+
+        return $table->find($return, $search . '=' . $table->quote($code)) ?: $code;
     }
 
     /*

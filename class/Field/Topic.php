@@ -17,6 +17,7 @@ namespace Docalist\Biblio\Field;
 use Docalist\Biblio\Type\MultiField;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInfo;
+use Docalist\Table\TableInterface;
 use Docalist\Search\MappingBuilder;
 
 /**
@@ -68,18 +69,18 @@ class Topic extends MultiField {
 
             // Récupère la table qui contient la liste des vocabulaires
             $tableName = explode(':', $parent->schema->table())[1];
-            $table = $tables->get($tableName); /* @var $table TableInfo */
+            $table = $tables->get($tableName); /* @var $table TableInterface */
 
             // Détermine la source qui correspond au type du topic
-            $source = $table->find('source', 'code="'. $topic->type() .'"');
+            $source = $table->find('source', 'code='. $table->quote($topic->type()));
             if ($source !== false) { // type qu'on n'a pas dans la table topics
                 list($type, $tableName) = explode(':', $source);
 
                 // Si la source est une table, on traduit les termes
                 if ($type === 'table' || $type === 'thesaurus') {
-                    $table = $tables->get($tableName); /* @var $table TableInfo */
+                    $table = $tables->get($tableName); /* @var $table TableInterface */
                     foreach ($terms as & $term) {
-                        $result = $table->find('label', "code=\"$term\"");
+                        $result = $table->find('label', 'code=' . $table->quote($term));
                         $result !== false && $term = $result;
                     }
                 }

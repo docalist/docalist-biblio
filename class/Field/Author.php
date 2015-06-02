@@ -79,7 +79,8 @@ class Author extends MultiField {
             $t = [];
             isset($aut->firstname) && $t[] = $aut->firstname();
             isset($aut->name) && $t[] = $aut->name();
-            isset($aut->role) && $t[] =  '(' . ( $parent->table()->find('label', sprintf('code="%s"', $aut->role())) ?: $aut->role()) . ')';
+            isset($aut->role) && $t[] =  '(' . self::formatRole($parent, $aut->role()) . ')';
+
             return implode(' ', $t); // espace insécable
         });
 
@@ -94,7 +95,8 @@ class Author extends MultiField {
             $t = [];
             isset($aut->name) && $t[] = $aut->name();
             isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
-            isset($aut->role) && $t[] =  '/' . $parent->table()->find('label', sprintf('code="%s"', $aut->role())) ?: $aut->role();
+            isset($aut->role) && $t[] =  '/' . self::formatRole($parent, $aut->role());
+
             return implode(' ', $t); // espace insécable
         });
 
@@ -104,6 +106,12 @@ class Author extends MultiField {
             isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
             return implode(' ', $t); // espace insécable
         });
+    }
+
+    protected static function formatRole(Authors $parent, $role) {
+        $roles = $parent->table();
+
+        return $roles->find('label', 'code=' . $roles->quote($role)) ?: $role;
     }
 
     public function filterEmpty($strict = true) {
