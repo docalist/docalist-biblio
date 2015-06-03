@@ -23,17 +23,20 @@
 # 24/11/14, DM Ajout des codes : nnt et diploma-no.
 #              Ajuste la description de official-number.
 #              https://github.com/daniel-menard/prisme/issues/209
+# 03/06/15, DM Harmonise la casse des libellés, typo dans la description de 
+#              "isbn", format incorrect pour "official-number".
+#              https://github.com/daniel-menard/prisme/issues/284
 # ------------------------------------------------------------------------------
 code;type;format;label;description
 # ------------------------------------------------------------------------------
 # Numéros de fascicule, de supplément...
 # ------------------------------------------------------------------------------
-issue-no;issue;nº %s;Fascicule nº;Numéro de fascicule du périodique (nº xxx, fasc. xxx, etc.)
-supplement;issue;suppl. %s;Supplément;Supplément non numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
-supplement-no;issue;suppl. nº %s;Supplément nº;Numéro d'un supplément numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
-supplement-to;issue;suppl. au nº %s;Supplément au nº;Supplément à un fascicule numéroté (tiré à part)
-special-issue;issue;hors-série %s;Hors-série;Hors-série ou numéro spécial non numéroté.
-special-issue-no;issue;hors-série nº %s;Hors-série nº;Numéro d'un hors-série ou d'un numéro spécial.
+issue-no;issue;nº %s;fascicule nº;Numéro de fascicule du périodique (nº xxx, fasc. xxx, etc.)
+supplement;issue;suppl. %s;supplément;Supplément non numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
+supplement-no;issue;suppl. nº %s;supplément nº;Numéro d'un supplément numéroté (supplément, supplément gratuit, supplément trimestriel, etc.)
+supplement-to;issue;suppl. au nº %s;supplément au nº;Supplément à un fascicule numéroté (tiré à part)
+special-issue;issue;hors-série %s;hors-série;Hors-série ou numéro spécial non numéroté.
+special-issue-no;issue;hors-série nº %s;hors-série nº;Numéro d'un hors-série ou d'un numéro spécial.
 # ------------------------------------------------------------------------------
 # Numéros de volume, de tome, etc.
 # ------------------------------------------------------------------------------
@@ -45,13 +48,13 @@ serial-no;vol;%sème série;nº série;Numéro de la série (par exemple "3ème 
 # divers
 # ------------------------------------------------------------------------------
 disc-no;;disque %s;disque nº;Numéro du disque (nº du CD-ROM, nº du DVD, etc.)
-other-no;;%s (autre nº);Autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
+other-no;;%s (autre nº);autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
 # ------------------------------------------------------------------------------
 # Numéros et identifiants relevant d'un standard ou faisant l'objet d'une norme
 # ------------------------------------------------------------------------------
 doi;std;doi:%s;DOI;Digital Object Identifier (identifiant d'un document numérique). Exemple : 10.4000/cybergeo.23737
 isbn;std;ISBN %s;ISBN;International Standard Book Number (identifiant du livre) composé de 13 chiffres (10 pour les ouvrages anciens). Exemple : 978-1-2345-6789-7
-issn;std;ISSN %s;ISSN;International Standard Serial Number (identifiant du périodique). EXemple : 1234-567X.
+issn;std;ISSN %s;ISSN;International Standard Serial Number (identifiant du périodique). Exemple : 1234-567X.
 isrn;std;IRSN %s;ISRN;International standard technical report number (identifiant du rapport). Exemple : I3S/RR-2013-05-FRA 
 ismn;std;ISMN %s;ISMN;International Standard Music Number (identifiant de la partition). Exemple : 979-0-2600-0043-8
 isan;std;ISAN %s;ISAN;International Standard Audiovisual Number (identifiant d'une œuvre audiovisuelle). Exemple : 0000-0001-8947-0000-8-0000-0000-D
@@ -60,9 +63,9 @@ istc;std;ISTC %s;ISTC;International Standard Text Code (code normalisé pour un
 ean;std;EAN %s;EAN;International Article Number (numéro de produit, code barres). Exemple : 9782123456803
 coden;std;CODEN %s;CODEN;Code à 6 caractères identifiant un titre de publication périodique ou non-périodique. Exemples : TEREAU, 66HYAL, USXXDP, etc.
 nor;std;NOR %s;NOR;Numéro normalisé pour un texte officiel publié en France (12 caractères : 4 lettres, 7 chiffres, une lettre). Exemple : RDFB1420014D.
-official-number;std;nº ;Numéro officiel;Numéro officiel attribué au document par un organisme gouvernemental. Utiliser de préférence NOR pour un texte officiel et NNT pour une thèse.
+official-number;std;nº %s;numéro officiel;Numéro officiel attribué au document par un organisme gouvernemental. Utiliser de préférence NOR pour un texte officiel et NNT pour une thèse.
 # ------------------------------------------------------------------------------
 # Thèses et diplômes
 # ------------------------------------------------------------------------------
-nnt;diploma;NNT %s;NNT - Numéro National de Thèse;En France, numéro de thèse géré par l'ABES et attribué par l'établissement de soutenance (12 caractères : 4 chiffres pour l'année, code de 4 lettres identifiant l'établissement de soutenance, séquence numérique ou alphanumérique de 4 caractères attribuée par la bibliothèque de l'établissement de soutenance). Exemple : 2012PEST1049.
-diploma-no;diploma;diplôme nº %s;Numéro de diplôme;Numéro du diplôme (pour une thèse, utiliser NNT - Numéro National de Thèse).
+nnt;diploma;NNT %s;NNT;Numéro National de Thèse. En France, numéro de thèse géré par l'ABES et attribué par l'établissement de soutenance (12 caractères : 4 chiffres pour l'année, code de 4 lettres identifiant l'établissement de soutenance, séquence numérique ou alphanumérique de 4 caractères attribuée par la bibliothèque de l'établissement de soutenance). Exemple : 2012PEST1049.
+diploma-no;diploma;diplôme nº %s;numéro de diplôme;Numéro du diplôme (pour une thèse, utiliser NNT - Numéro National de Thèse).
