@@ -310,6 +310,23 @@ class Plugin {
                 'prisme2014-uppercase-xml',
                 'prisme2014-uppercase-xml-pretty'
             ],
+            'dclreftests' => [
+                'prisme2014-delimited',
+                'prisme2012-delimited',
+                'prisme2011-delimited',
+                'docalist-json',
+                'docalist-json-pretty',
+                'docalist-xml',
+                'docalist-xml-pretty',
+                'prisme2014-json',
+                'prisme2014-json-pretty',
+                'prisme2014-uppercase-json',
+                'prisme2014-uppercase-json-pretty',
+                'prisme2014-xml',
+                'prisme2014-xml-pretty',
+                'prisme2014-uppercase-xml',
+                'prisme2014-uppercase-xml-pretty'
+            ],
         ];
 
         // Conserve uniquement les formats qui sont communs à tous les types qu'on a
