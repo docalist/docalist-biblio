@@ -250,7 +250,7 @@ class Plugin {
         // Permet au script de s'exécuter longtemps
         set_time_limit(3600);
 
-        $mode='display'; // TODO
+        $mode='attachment'; // TODO
         $disposition = ($mode==='display') ? 'inline' : 'attachment';
 
         $this->format->export($this->request, $disposition, 1000); // TODO from settings
