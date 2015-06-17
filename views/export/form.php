@@ -111,7 +111,7 @@ if (count($types) === 1) {
         </tr>
         <?php endforeach; ?>
     </table>
-
+<!--
     <h3><?=__('Options', 'docalist-biblio-export')?></h3>
     <table>
         <tr>
@@ -139,7 +139,7 @@ if (count($types) === 1) {
             </td>
         </tr>
     </table>
-
+ -->
     <h3>
         <button class="btn" type="submit"><?=__("Lancer l'export...", 'docalist-biblio-export')?></button>
     </h3>
