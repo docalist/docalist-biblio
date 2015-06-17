@@ -15,15 +15,19 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Type\String;
-use Docalist\Forms\Input;
+// use Docalist\Forms\Input;
 use Docalist\Search\MappingBuilder;
+use Docalist\Forms\TableLookup;
 
 /**
  * Un titre de périodique.
  */
 class Journal extends String {
     public function editForm() {
-        $field = new Input($this->schema->name());
+//         $field = new Input($this->schema->name());
+//         $field->addClass('large-text');
+
+        $field = new TableLookup('journal', 'index:journal');
         $field->addClass('large-text');
 
         return $field;
