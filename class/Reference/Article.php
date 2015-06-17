@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -47,7 +47,6 @@ class Article extends Reference {
         // Supprime les champs qu'on n'utilise pas
         unset($fields['editor']);
         unset($fields['collection']);
-        unset($fields['event']);
 
         // Personnalise les tables, les libellés, les description, etc.
         // todo
@@ -77,6 +76,7 @@ class Article extends Reference {
                 'title',
                 'othertitle',
                 'translation',
+                'event',
 
                 // Auteurs
                 'group3' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Auteurs', 'docalist-biblio') ],
