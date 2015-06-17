@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -72,6 +72,20 @@ use Docalist\Forms\Form;
         <h3 class="title"><?=__('Options', 'docalist-biblio') ?></h3>
 
         <ul>
+            <li>
+                <label>
+                    Statut des notices importées :
+                    <select name="options[status]">
+                    <?php
+                        $statuses = get_post_stati(['show_in_admin_all_list' => true], 'objects');
+                        unset($statuses['future']);
+                    ?>
+                    <?php foreach ($statuses as $name => $status): ?>
+                        <option value="<?=esc_attr($name)?>"<?=selected('pending', $name, false)?>><?=esc_html($status->label)?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </label>
+            </li>
             <li>
                 <label>
                     <input type="checkbox" name="options[simulate]" value="1" checked="checked" />
