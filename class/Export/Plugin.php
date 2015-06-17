@@ -273,75 +273,62 @@ class Plugin {
         // Dans les settings, on aura pour chaque type indexé par docalist-search :
         // 'formats' => liste des formats autorisés pour ce type = ['format1', 'format2', ...]
 
-        // Récupère la liste des formats d'export définis
-        // TODO : depuis la table
-        $formats = apply_filters('docalist_biblio_get_export_formats', []);
-        if (empty($formats)) {
-            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio-export'));
-        }
-        // on récupère un tableau de la forme 'format' => params
-
         // Liste des formats autorisés pour chaque type
         // TODO : depuis les settings
         $formatsByType = [
+            'dclrefprisme' => [
+                'prisme2014-delimited',
+                'prisme2014-uppercase-delimited',
+                'prisme2011-delimited',
+                'prisme2011-uppercase-delimited',
+                'docalist-json-pretty',
+                'docalist-xml-pretty',
+            ],
+            'dclreftests' => [
+                'prisme2014-delimited',
+                'prisme2014-uppercase-delimited',
+                'prisme2011-delimited',
+                'prisme2011-uppercase-delimited',
+                'docalist-json-pretty',
+                'docalist-xml-pretty',
+            ],
             'post' => [
                 'docalist-json-pretty',
-                'docalist-xml',
                 'docalist-xml-pretty',
             ],
             'page' => [
                 'docalist-json-pretty',
                 'docalist-xml-pretty',
             ],
-            'dclrefprisme' => [
-                'prisme2014-delimited',
-                'prisme2012-delimited',
-                'prisme2011-delimited',
-                'docalist-json',
-                'docalist-json-pretty',
-                'docalist-xml',
-                'docalist-xml-pretty',
-                'prisme2014-json',
-                'prisme2014-json-pretty',
-                'prisme2014-uppercase-json',
-                'prisme2014-uppercase-json-pretty',
-                'prisme2014-xml',
-                'prisme2014-xml-pretty',
-                'prisme2014-uppercase-xml',
-                'prisme2014-uppercase-xml-pretty'
-            ],
-            'dclreftests' => [
-                'prisme2014-delimited',
-                'prisme2012-delimited',
-                'prisme2011-delimited',
-                'docalist-json',
-                'docalist-json-pretty',
-                'docalist-xml',
-                'docalist-xml-pretty',
-                'prisme2014-json',
-                'prisme2014-json-pretty',
-                'prisme2014-uppercase-json',
-                'prisme2014-uppercase-json-pretty',
-                'prisme2014-xml',
-                'prisme2014-xml-pretty',
-                'prisme2014-uppercase-xml',
-                'prisme2014-uppercase-xml-pretty'
-            ],
         ];
 
-        // Conserve uniquement les formats qui sont communs à tous les types qu'on a
+        // Crée la liste des formats communs à tous les types qu'on a
+        $formats = null;
         foreach($types as $type) {
             if (! isset($formatsByType[$type])) {
                 $formats = [];
                 break;
             }
-            $formats = array_intersect_key($formats, array_flip($formatsByType[$type]));
+            $f = array_flip($formatsByType[$type]);
+            $formats = empty($formats) ? $f : array_intersect_key($formats, $f);
         }
 
-        // Instancie les formats qui restent
-        foreach($formats as $name => & $format) {
-            $format = new Format($name, $format);
+        // Récupère la liste des formats d'export définis
+        // TODO : depuis la table
+        $allFormats = apply_filters('docalist_biblio_get_export_formats', []);
+        if (empty($allFormats)) {
+            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio-export'));
         }
+        // on récupère un tableau de la forme 'format' => params
+
+        // Instancie les formats
+        foreach($formats as $name => & $format) {
+            if (!isset($allFormats[$name])) {
+                throw new RuntimeException("Le format $name n'existe pas");
+            }
+            $format = new Format($name, $allFormats[$name]);
+        }
+        unset($format); // juste pour éviter warning "var not used"
 
         // Ok
         return $formats;
