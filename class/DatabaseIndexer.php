@@ -61,7 +61,7 @@ class DatabaseIndexer extends PostIndexer {
         if ($post instanceof Reference) {
             $ref = $post;
         } else {
-            $ref = $this->database->fromPost($post);
+            $ref = $this->database->fromPost($post, 'content');
         }
 
         // Mappe la notice
