@@ -56,9 +56,12 @@ class Topic extends MultiField {
         $mapping->template('topic.*')->idem('topic')->copyTo('topic');
     }
 
-    public function map(array & $document) {
-        $document['topic.' . $this->type()][] = $this->__get('term')->value();
-    }
+    /*
+     * Non utilisé, c'est Topics::map() qui fait le boulot
+     */
+//     public function map(array & $document) {
+//         $document['topic.' . $this->type()][] = $this->__get('term')->value();
+//     }
 
     protected static function initFormats() {
         self::registerFormat('v', 'Mots-clés', function(Topic $topic, Topics $parent) {
