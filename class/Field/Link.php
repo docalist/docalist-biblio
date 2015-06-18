@@ -84,6 +84,8 @@ class Link extends MultiField {
                 $format = '<a href="%1$s">%2$s</a>';
             }
 
+            $url = self::correctLink($url);
+
             $url = esc_attr($url);
             $title = esc_attr($title);
             $label = esc_html($label);
@@ -103,6 +105,8 @@ class Link extends MultiField {
                 $title .= sprintf(__(' (lien consulté le %s)', 'docalist-biblio'), $link->date());
             }
 
+            $url = self::correctLink($url);
+
             $url = esc_attr($url);
             $title = esc_attr($title);
             $label = esc_html($label);
@@ -119,6 +123,7 @@ class Link extends MultiField {
             global $wp_embed;
 
             $url = $link->url();
+            $url = self::correctLink($url);
 
             $sav = $wp_embed->return_false_on_fail;
             $wp_embed->return_false_on_fail = true;
@@ -149,6 +154,24 @@ class Link extends MultiField {
             $link = self::callFormat('link', $link, $parent);
             return  $type . ' : ' . $link;
         });
+    }
+
+    protected static function correctLink($link) {
+        // adresse e-mail
+        if (strpos($link, '@') !== false) {
+            if (substr($link, 0, 7) !== 'mailto:') {
+                $link = 'mailto:' . $link;
+            }
+        }
+
+        // url
+        else {
+            if (!preg_match('~^(?:f|ht)tps?://~i', $link)) {
+                $link = 'http://' . $link;
+            }
+        }
+
+        return $link;
     }
 
     public function filterEmpty($strict = true) {
