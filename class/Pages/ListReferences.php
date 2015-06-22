@@ -122,7 +122,7 @@ class ListReferences{
                     printf('%s<br/><a href="%s">%s</a>',
                         $this->formatDate($date),
                         esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
-                        $author->display_name
+                        $author ? $author->display_name : 'n/a'
                     );
                     break;
 
@@ -135,7 +135,7 @@ class ListReferences{
                             printf('%s<br/><a href="%s">%s</a>',
                                 $this->formatDate($date),
                                 esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
-                                $author->display_name
+                                $author ? $author->display_name : 'n/a'
                             );
                         }
                     }
