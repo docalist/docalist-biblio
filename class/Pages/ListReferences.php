@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012, 2013 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -18,6 +18,7 @@ use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use WP_Post;
 use DateTime, DateInterval;
+use Exception;
 
 /**
  * Page "Liste des notices" d'une base
@@ -91,7 +92,11 @@ class ListReferences{
             global $post;
 
             if (is_null($ref) || $ref->id() !== $post_id) {
-                $ref = $this->database->load($post_id);
+                try {
+                    $ref = $this->database->load($post_id);
+                } catch (Exception $e) {
+                    return;
+                }
             }
 
             switch ( $column ) {
@@ -116,7 +121,7 @@ class ListReferences{
                     $author = get_user_by('id', $post->post_author); /* @var $author WP_User */
                     printf('%s<br/><a href="%s">%s</a>',
                         $this->formatDate($date),
-                        esc_url(add_query_arg(['author' => $author->ID])),
+                        esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
                         $author->display_name
                     );
                     break;
@@ -129,7 +134,7 @@ class ListReferences{
                             $author = get_user_by('id', $id); /* @var $author WP_User */
                             printf('%s<br/><a href="%s">%s</a>',
                                 $this->formatDate($date),
-                                esc_url(add_query_arg(['author' => $author->ID])),
+                                esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
                                 $author->display_name
                             );
                         }
