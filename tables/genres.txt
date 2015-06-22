@@ -10,6 +10,8 @@
 # 2014-12-11 Ajout de HDR et ajout d'un "voir aussi" vers hdr pour thesis, 
 #            mémoire et professional-practices. 
 #            (https://github.com/daniel-menard/prisme/issues/219)
+# 2015-06-22 Ajout de association-website 
+#            (https://github.com/daniel-menard/prisme/issues/232)
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HN
 #
@@ -175,3 +177,4 @@ event-website;Site événementiel;;;;;Site web ou mini-site créé à l'occasion
 corporate-website;Site institutionnel;;;;;Site web dont le but principal est de promouvoir l'image d'une entreprise, d'une marque ou d'une organisation auprès du grand public, des médias, des clients potentiels, des fournisseurs, des actionnaires ou de tout autre partenaire potentiel.;website;
 online-shop;Site marchand;;;;;Site web dont l'activité principale est le commerce en ligne (e-commerce).;website;
 showcase-website;Site vitrine;;;;;Site web proposant des informations sur une entreprise, les produits et les services proposés (c'est en quelque sorte une plaquette commerciale sur internet).;website;
+association-website;Site associatif;;;;;Site web présentant les activités et les services d'une association.;website;
