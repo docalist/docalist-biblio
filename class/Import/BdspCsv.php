@@ -3,7 +3,6 @@
 * @package     Prisme
 * @subpackage  modules
 * @author      Daniel Ménard <daniel.menard.35@gmail.com>
-* @version     SVN: $Id$
 */
 namespace Docalist\Biblio\Import;
 

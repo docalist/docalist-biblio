@@ -9,7 +9,6 @@
  * @package     Docalist
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     $Id$
  */
 /*
  * Gère la liste des champs pour un type de notice.
