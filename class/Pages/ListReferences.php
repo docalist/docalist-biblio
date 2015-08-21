@@ -366,7 +366,7 @@ class ListReferences{
      * - label : le libellé du type (par exemple "Article de périodique").
      */
     protected function countTypes() {
-        static $cache;
+        static $cache = null;
 
         global $wpdb;
 
@@ -423,7 +423,7 @@ class ListReferences{
      * - count : le nombre de notices créé pour cette année,
      */
     protected function countYears() {
-        static $cache;
+        static $cache = null;
 
         global $wpdb;
 
