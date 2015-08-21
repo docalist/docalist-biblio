@@ -75,9 +75,9 @@ class ListReferences{
 
                 $customColumns = [
                     'cb' => $columns['cb'],
-                    'ref' => __('Ref', 'docalist-biblio'),
-                    'type' => __('Type', 'docalist-biblio'),
                     'title' => $columns['title'],
+                    'type' => __('Type', 'docalist-biblio'),
+                    'ref' => __('Ref', 'docalist-biblio'),
                     'creation' => __('Création', 'docalist-biblio'),
                     'lastupdate' => __('Mise à jour', 'docalist-biblio'),
     //                 'author' => $columns['author'],
