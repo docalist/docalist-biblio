@@ -81,9 +81,13 @@ class ListReferences{
                     'creation' => __('Création', 'docalist-biblio'),
                     'lastupdate' => __('Mise à jour', 'docalist-biblio'),
     //                 'author' => $columns['author'],
-                    'comments' => $columns['comments'],
     //                 'date' => $columns['date'],
                 ];
+
+                // La colonne 'comments' n'existe que si les commentaires sont actifs
+                if (post_type_supports($this->postType, 'comments')) {
+                    $customColumns['comments'] = $columns['comments'];
+                }
             }
 
             // Ok
