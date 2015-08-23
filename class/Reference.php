@@ -473,7 +473,20 @@ class Reference extends Entity {
 
         // Sinon, alloue un numéro à la notice
         else {
-            $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
+            // On n'alloue un n° de ref qu'au notices publiées (#322)
+            if ($this->status() === 'publish') {
+                $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
+            }
+
+            // Remarque : dans wp_insert_post, WP fait le test suivant :
+            // if ( !in_array( $post_status, array( 'draft', 'pending', 'auto-draft' ) ) )
+            //
+            // Autre solution : tester si la notice a un statut public
+            // $publicStatuses = get_post_stati(['public' => true], 'names')
+            // if (isset($publicStatuses[$this->status()])) { /* alloc ref */ }
+            //
+            // Remarque : ne fonctionne pas pour un post 'future' car beforeSave
+            // n'est pas rappellée dans ce cas.
         }
 
         // Alloue une slug à la notice
