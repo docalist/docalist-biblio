@@ -38,6 +38,11 @@ class EditReference {
     const NONCE = 'dcl_nonce';
 
     /**
+     * Le nom du champ parent de tous les champs de la notice.
+     */
+    const FORM_NAME = 'dbref';
+
+    /**
      * La base de données documentaire.
      *
      * @var Database
@@ -272,6 +277,10 @@ class EditReference {
             // binde le formulaire
             $form->bind($ref);
 
+            // Regroupe tous les champs dans un champ parent 'dbref'
+            // Cela évite que wp interfére avec nos champs (#250, #335 par exemple)
+            $form->name(self::FORM_NAME);
+
             // Envoie les assets requis
             $assets->add($form->assets());
 
@@ -351,14 +360,21 @@ class EditReference {
         if ($debug) {
             header('content-type: text/html; charset=UTF8');
             echo '<style>code{color: darkblue;font-weight: bold;}</style>';
+            echo '<h1>Données de $postarr</h1>';
+            var_dump($postarr);
             echo '<h1>Données de $data</h1>';
             var_dump($data);
+        }
+
+        // Tous les champs sont dans un champ parent 'dbref' (cf. edit)
+        if (! isset($postarr[self::FORM_NAME])) {
+            die('Aucune donnée transmise dans '. self::FORM_NAME . '[]');
         }
 
         // Wordpress considère que "content" est un alias de "post_content"
         // Du coup, on récupère dans $data.post_content le champ docalist
         // "content" (un tableau donc comme le champ est un objet multivalué)
-        $data['post_content'] = '';
+        // $data['post_content'] = ''; Inutile maintenant qu'on le champ parent dbref
 
         /*
          * Etape 1
@@ -393,7 +409,7 @@ class EditReference {
          * Met à jour la référence avec les données des metaboxes.
          */
         foreach($this->metaboxes($ref) as $metabox) {
-            $metabox->bind($postarr);
+            $metabox->bind($postarr[self::FORM_NAME]);
             foreach($metabox->data() as $key => $value) {
                 $ref->$key = $value;
             }
