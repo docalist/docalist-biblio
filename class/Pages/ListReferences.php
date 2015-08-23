@@ -61,25 +61,37 @@ class ListReferences{
     protected function setupColumns() {
         // Définit la liste des colonnes à afficher
         add_filter("manage_{$this->postType}_posts_columns", function($columns) {
-            echo
-                '<style type="text/css">
-                    .widefat .column-ref  { width: 3em; text-align: right }
-                    .column-type { width: 5em }
-                    .column-creation { width: 9em }
-                    .column-lastupdate { width: 9em }
-                </style>';
+            static $customColumns = null;
 
-            return [
-                'cb' => $columns['cb'],
-                'ref' => __('Ref', 'docalist-biblio'),
-                'type' => __('Type', 'docalist-biblio'),
-                'title' => $columns['title'],
-                'creation' => __('Création', 'docalist-biblio'),
-                'lastupdate' => __('Mise à jour', 'docalist-biblio'),
-//                 'author' => $columns['author'],
-                'comments' => $columns['comments'],
-//                 'date' => $columns['date'],
-            ];
+            // On peut être appellé plusieurs fois, init au 1er appel
+            if (is_null($customColumns)) {
+                echo
+                    '<style type="text/css">
+                        .widefat .column-ref  { width: 3em; text-align: right }
+                        .column-type { width: 5em }
+                        .column-creation { width: 9em }
+                        .column-lastupdate { width: 9em }
+                    </style>';
+
+                $customColumns = [
+                    'cb' => $columns['cb'],
+                    'title' => $columns['title'],
+                    'type' => __('Type', 'docalist-biblio'),
+                    'ref' => __('Ref', 'docalist-biblio'),
+                    'creation' => __('Création', 'docalist-biblio'),
+                    'lastupdate' => __('Mise à jour', 'docalist-biblio'),
+    //                 'author' => $columns['author'],
+    //                 'date' => $columns['date'],
+                ];
+
+                // La colonne 'comments' n'existe que si les commentaires sont actifs
+                if (post_type_supports($this->postType, 'comments')) {
+                    $customColumns['comments'] = $columns['comments'];
+                }
+            }
+
+            // Ok
+            return $customColumns;
         });
 
         // Fournit le contenu des colonnes personnalisées pour chaque notice
@@ -354,7 +366,7 @@ class ListReferences{
      * - label : le libellé du type (par exemple "Article de périodique").
      */
     protected function countTypes() {
-        static $cache;
+        static $cache = null;
 
         global $wpdb;
 
@@ -411,7 +423,7 @@ class ListReferences{
      * - count : le nombre de notices créé pour cette année,
      */
     protected function countYears() {
-        static $cache;
+        static $cache = null;
 
         global $wpdb;
 
