@@ -70,11 +70,13 @@ use Docalist\Forms\Form;
 
         <h3 class="title"><?=__('Options', 'docalist-biblio') ?></h3>
 
-        <ul>
-            <li>
-                <label>
-                    Statut des notices importées :
-                    <select name="options[status]">
+        <table class="form-table">
+            <tr>
+                <th scope="row">
+                    <label for="status"><?=__('Statut des notices', 'docalist-biblio')?></label>
+                </th>
+                <td>
+                    <select name="options[status]" id="status">
                     <?php
                         $statuses = get_post_stati(['show_in_admin_all_list' => true], 'objects');
                         unset($statuses['future']);
@@ -83,15 +85,32 @@ use Docalist\Forms\Form;
                         <option value="<?=esc_attr($name)?>"<?=selected('pending', $name, false)?>><?=esc_html($status->label)?></option>
                     <?php endforeach; ?>
                     </select>
-                </label>
-            </li>
-            <li>
-                <label>
-                    <input type="checkbox" name="options[simulate]" value="1" checked="checked" />
-                    <?=__("Simuler l'import (ne pas créer de notices)", 'docalist-biblio') ?>
-                </label>
-            </li>
-        </ul>
+                    <p class="description">
+                        <?=__('Par défaut, les notices importées seront créées avec le statut "en attente".', 'docalist-biblio')?>
+                        <?=__('Choisissez l\'une des options proposées dans la liste pour leur affecter un statut différent.', 'docalist-biblio')?>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="importref"><?=__('N° de référence existant', 'docalist-biblio')?></label>
+                </th>
+                <td>
+                    <select name="options[importref]" id="importref">
+                        <option value="0" selected="selected">
+                            <?=__('Ignorer', 'docalist-biblio')?>
+                        </option>
+                        <option value="1">
+                            <?=__('Importer', 'docalist-biblio')?>
+                        </option>
+                    </select>
+                    <p class="description">
+                        <?=__('Par défaut, docalist ne tient pas compte du numéro de référence éventuel (REF) qui figurent dans les notices importées et un nouveau numéro de référence sera attribué aux notices lorsque celles-ci seront publiées.', 'docalist-biblio')?>
+                        <?=__('Choisissez l\'option "importer" si vous souhaitez conserver tel quel le numéro de référence qui figure dans le fichier d\'import.', 'docalist-biblio')?>
+                    </p>
+                </td>
+            </tr>
 
         <div class="submit buttons">
             <button type="submit"
