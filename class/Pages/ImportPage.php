@@ -120,6 +120,7 @@ class ImportPage extends AdminPage {
         $options['simulate'] = isset($options['simulate']);
         !isset($options['status']) && $options['status'] = 'pending';
         $options['importref'] = isset($options['importref']) && $options['importref'] === '1';
+        $options['limit'] = isset($options['limit']) ? (int) $options['limit'] : 0;
 
         // On retourne une réponse de type "callback" qui lance l'import
         // lorsqu'elle est générée (import_start, error, progress, done)

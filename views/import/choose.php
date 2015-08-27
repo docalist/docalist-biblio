@@ -125,6 +125,21 @@ use Docalist\Forms\Form;
                     </p>
                 </td>
             </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="limit"><?=__('Limite de l\'import', 'docalist-biblio')?></label>
+                </th>
+                <td>
+                    <input name="options[limit]" type="number" min="0" id="limit" placeholder="<?=__('Toutes les', 'docalist-biblio')?>" />
+                    <?=__('notices.', 'docalist-biblio')?>
+                    <p class="description">
+                        <?=__('Utilisez cette option pour limiter le nombre de notices importées.', 'docalist-biblio')?>
+                        <?=__('Par défaut, toutes les notices présentes dans le fichier seront importées.', 'docalist-biblio')?>
+                        <?=__('Si vous souhaitez faire un test d\'import (par exemple pour valider le fichier à importer), indiquez un nombre pour traiter seulement les n premières notices du fichier.', 'docalist-biblio')?>
+                    </p>
+                </td>
+            </tr>
         </table>
 
         <div class="submit buttons">
