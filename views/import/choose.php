@@ -73,6 +73,20 @@ use Docalist\Forms\Form;
         <table class="form-table">
             <tr>
                 <th scope="row">
+                    <label for="simulate"><?=__("Simuler l'import", 'docalist-biblio')?></label>
+                </th>
+                <td>
+                    <input type="checkbox" name="options[simulate]" value="1" checked="checked" id="simulate" />
+                    <label for="simulate"><?=__("Ne pas créer de notices", 'docalist-biblio') ?></label>
+                    <p class="description">
+                        <?=__('Utilisez cette option pour valider votre fichier et vérifier que les notices peuvent être converties au format docalist.', 'docalist-biblio')?>
+                        <?=__('Décochez la case pour lancer réellement l\'import.', 'docalist-biblio')?>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
                     <label for="status"><?=__('Statut des notices', 'docalist-biblio')?></label>
                 </th>
                 <td>
@@ -111,6 +125,7 @@ use Docalist\Forms\Form;
                     </p>
                 </td>
             </tr>
+        </table>
 
         <div class="submit buttons">
             <button type="submit"
