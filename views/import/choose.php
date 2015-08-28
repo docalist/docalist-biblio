@@ -87,6 +87,21 @@ use Docalist\Forms\Form;
 
             <tr>
                 <th scope="row">
+                    <label for="limit"><?=__('Limite de l\'import', 'docalist-biblio')?></label>
+                </th>
+                <td>
+                    <input name="options[limit]" type="number" min="0" id="limit" placeholder="<?=__('Toutes les', 'docalist-biblio')?>" />
+                    <?=__('notices.', 'docalist-biblio')?>
+                    <p class="description">
+                        <?=__('Utilisez cette option pour limiter le nombre de notices importées.', 'docalist-biblio')?>
+                        <?=__('Par défaut, toutes les notices présentes dans le fichier seront importées.', 'docalist-biblio')?>
+                        <?=__('Si vous souhaitez faire un test d\'import (par exemple pour valider le fichier à importer), indiquez un nombre pour traiter seulement les n premières notices du fichier.', 'docalist-biblio')?>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
                     <label for="status"><?=__('Statut des notices', 'docalist-biblio')?></label>
                 </th>
                 <td>
@@ -122,21 +137,6 @@ use Docalist\Forms\Form;
                     <p class="description">
                         <?=__('Par défaut, docalist ne tient pas compte du numéro de référence éventuel (REF) qui figurent dans les notices importées et un nouveau numéro de référence sera attribué aux notices lorsque celles-ci seront publiées.', 'docalist-biblio')?>
                         <?=__('Choisissez l\'option "importer" si vous souhaitez conserver tel quel le numéro de référence qui figure dans le fichier d\'import.', 'docalist-biblio')?>
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <th scope="row">
-                    <label for="limit"><?=__('Limite de l\'import', 'docalist-biblio')?></label>
-                </th>
-                <td>
-                    <input name="options[limit]" type="number" min="0" id="limit" placeholder="<?=__('Toutes les', 'docalist-biblio')?>" />
-                    <?=__('notices.', 'docalist-biblio')?>
-                    <p class="description">
-                        <?=__('Utilisez cette option pour limiter le nombre de notices importées.', 'docalist-biblio')?>
-                        <?=__('Par défaut, toutes les notices présentes dans le fichier seront importées.', 'docalist-biblio')?>
-                        <?=__('Si vous souhaitez faire un test d\'import (par exemple pour valider le fichier à importer), indiquez un nombre pour traiter seulement les n premières notices du fichier.', 'docalist-biblio')?>
                     </p>
                 </td>
             </tr>
