@@ -371,6 +371,9 @@ class EditReference {
             die('Aucune donnée transmise dans '. self::FORM_NAME . '[]');
         }
 
+        // Supprime les espaces de début et de fin partout (docalist/docalist#327)
+        $postarr[self::FORM_NAME] = $this->deepTrim($postarr[self::FORM_NAME]);
+
         // Wordpress considère que "content" est un alias de "post_content"
         // Du coup, on récupère dans $data.post_content le champ docalist
         // "content" (un tableau donc comme le champ est un objet multivalué)
@@ -460,6 +463,19 @@ class EditReference {
         // Retourne le résultat à Wordpress, en "slashant" les données
         $debug && die();
         return wp_slash($data);
+    }
+
+    /**
+     * Trim récursif.
+     *
+     * @param array $data
+     *
+     * @return $data
+     */
+    protected function deepTrim(array $data) {
+        return array_map(function($data) {
+            return is_scalar($data) ? trim($data) : $this->deepTrim($data);
+        }, $data);
     }
 
     /**
