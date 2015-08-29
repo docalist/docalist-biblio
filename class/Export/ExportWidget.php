@@ -70,7 +70,7 @@ class ExportWidget extends WP_Widget {
 
         // Si on n'a pas de hits, terminé
         $results = docalist('docalist-search-engine')->results(); /* @var $results SearchResults */
-        if ($results->total() === 0) {
+        if (is_null($results) || $results->total() === 0) {
             return;
         }
 
