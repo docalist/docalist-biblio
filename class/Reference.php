@@ -203,8 +203,10 @@ class Reference extends Entity {
         $show1 = [
             'group1' => [ 'label' => __('Source du document', 'docalist-biblio'), 'before' => '<p>', 'format' => '%content', 'after' => '.</p>', 'type' => 'Docalist\Biblio\Type\Group' ],
             'type',
-            'author' => [ 'before' => ' de ', 'limit' => 1, 'format' => 'f n' ],
+        //    'author' => [ 'before' => ' de ', 'limit' => 1, 'format' => 'f n' ],
         ];
+        // author ne figure pas dans la grille PeriodicalIssue (#305)
+        in_array('author', $fields) && $show1['author'] =  [ 'before' => ' de ', 'limit' => 1, 'format' => 'f n' ];
 
         if (in_array('journal', $fields)) {
             $show2 = [
@@ -219,10 +221,13 @@ class Reference extends Entity {
                 'date' => [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ],
             ];
         } else {
-            $show2 = [
-                'othertitle' => [ 'before' => ', ', 'limit' => 1 ],
-                'date' => [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ],
-            ];
+//             $show2 = [
+//                 'othertitle' => [ 'before' => ', ', 'limit' => 1 ],
+//                 'date' => [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ],
+//             ];
+            $show2 = []; // othertitle ne figure pas les grilles Metting/PeriodicalIssue/Report (#305)
+            in_array('othertitle', $fields) && $show2['othertitle'] = [ 'before' => ', ', 'limit' => 1 ];
+            $show2['date'] = [ 'format' => 'year', 'before' => ', ', 'limit' => 1 ];
         }
 
         $show3= [
