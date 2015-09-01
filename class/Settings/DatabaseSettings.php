@@ -196,32 +196,62 @@ class DatabaseSettings extends Object {
             'capability_type' => [$cap, "{$cap}s"],
             'map_meta_cap' => true,
             'capabilities' => [
-                // Par défaut, tout le monde peut voir les notices.
-                // On crée un droit spécifique pour pouvoir avoir des bases
-                // privées ou réservées à certains rôles.
-                //'read_post' => "read_{$cap}",
-                'read' => "read_{$cap}",
-
+                // Droit "LIRE" :
+                // --------------
+                // Par défaut, tout le monde peut voir les notices car :
+                // - 'read_post' est mappé vers 'read_{$cap}' et dans la
+                //   fonction map_meta_cap (wp_includes/capabilities.php,
+                //   case 'read_post' autour de la ligne 1234), wordpress teste
+                //   si l'utilisateur dispose de la capacité 'read'.
+                // - 'read' est mappé vers 'read' par défaut, donc tous ceux
+                //   qui ont ce droit peuvent voir les notices de la base.
+                //
+                // On pourrait vouloir limiter la consultation des notices à
+                // certaines personnes. Dans ce cas, on pourrait :
+                // - créer un droit générique 'read_{$cap}s' qu'il faudrait
+                //   attribuer aux personnes qui ont le droit de voir les refs
+                // - mapper le droit standard 'read' vers 'read_{$cap}s'
+                //
+                // Dans le back-office, cela fonctionner : en mode 'détail',
+                // seules les personnes qui ont le droit peuvent voir le résumé
+                // des notices (cependant, wpfront ne reconnaît pas cette cap
+                // comme une cap standard wp et l'affiche en "other caps").
+                //
+                // Par contre, ce n'est testé nulle part ailleurs : en front
+                // office, les thèmes ne testent pas si on a le droit 'read', et
+                // donc on a de toute façon accès aux notices : page d'archives,
+                // une recherche, affichage long, etc.
+                //
+                // Au final, on ne crée donc aucun droit spécifique, et on
+                // laisse WP faire son mappage par défaut, à savoir :
+                // 'read_post' => "read_{$cap}", // par défaut
+                // 'read' => 'read'
+                //
+                // Droit "CRER UNE REF" :
+                // ----------------------
                 // Par défaut, create_posts est simplement mappé vers edit_posts
-                // On fait le mappage nous mêmes pour disposer d'un droit spécifique.
-                //'create_posts' => "create_{$cap}s",
-                /*
-                 * En fait, ne marche pas : pour un CPT, on ne peut pas distinguer
-                 * edit_post de create_post.
-                 *
-                 * C'est un bug WordPress :
-                 * http://herbmiller.me/2014/09/21/wordpress-capabilities-restrict-add-new-allowing-edit/
-                 * https://core.trac.wordpress.org/ticket/29714
-                 * https://core.trac.wordpress.org/ticket/22895
-                 *
-                 * Dans user_can_access_admin_page(), wordpress teste si
-                 * l'utilisateur encours a le droits d'accéder à la page du menu.
-                 * Mais quand il teste la page edit.php?post_type=dbprisme
-                 * il utilise $pagenow qui vaut edit.php tout court.
-                 * Donc il teste si on a le droit indiqué (edit_posts) et comme
-                 * ce n'est pas le cas, il nous refuse.
-                 * Le bug, c'est que pagenow ne contient pas le bon truc...
-                 */
+                // On pourrait faire le mappage nous mêmes pour disposer d'un
+                // droit spécifique, différent de 'edit_post' (i.e. certains
+                // peuvent créer mais pas éditer, certains peuvent éditer mais
+                // pas créer, etc.) :
+                // 'create_posts' => "create_{$cap}s",
+                //
+                // Mais en fait, ça ne marche pas car pour un CPT, on ne peut
+                // pas distinguer 'edit_post' de 'create_post' : si on a l'un,
+                // on a l'autre.
+                //
+                // C'est un bug WordPress connu :
+                // http://herbmiller.me/2014/09/21/wordpress-capabilities-restrict-add-new-allowing-edit/
+                // https://core.trac.wordpress.org/ticket/29714
+                // https://core.trac.wordpress.org/ticket/22895
+                //
+                // Dans user_can_access_admin_page(), wordpress teste si
+                // l'utilisateur encours a le droits d'accéder à la page du menu.
+                // Mais quand il teste la page edit.php?post_type=dbprisme
+                // il utilise $pagenow qui vaut edit.php tout court.
+                // Donc il teste si on a le droit indiqué (edit_posts) et comme
+                // ce n'est pas le cas, il nous refuse.
+                // Le bug, c'est que pagenow ne contient pas le bon truc...
 
                 // Droit supplémentaire : importer des notices dans la base
                 'import' => "import_{$cap}s"
