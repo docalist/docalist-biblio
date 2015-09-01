@@ -367,7 +367,7 @@ class Database extends PostTypeRepository {
             'show_in_admin_bar'     => true,  // Afficher dans la barre d'outils admin
          // 'menu_position'         => 20,    // En dessous de "Pages", avant "commentaires"
             'menu_icon'             => $this->settings->icon(),
-            'capability_type'       => ["{$type}_reference", "{$type}_references"], // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
+            'capability_type'       => $this->settings->capabilitySuffix(), // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
             'capabilities'          => $this->settings->capabilities(),
             'map_meta_cap'          => true,  // Doit être à true pour que WP traduise correctement nos droits
             'supports'              => $supports,
