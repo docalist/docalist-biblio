@@ -37,7 +37,7 @@ class Plugin {
      *
      * @var string
      */
-    const TRANSIENT = 'docalist-biblio-export-last-request';
+    const TRANSIENT = 'docalist-biblio-export-last-request-%d';
 
     /**
      * La requête docalist-search contenant les notices à exporter.
@@ -105,8 +105,8 @@ class Plugin {
         // paramètres indiqués et on déclenche l'export.
         add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
             // Stocke la SearchRequest
-            if ($request && $request->isSearch()) {
-                set_transient(self::TRANSIENT, $request, 24 * HOUR_IN_SECONDS);
+            if ($request && $request->isSearch() && is_user_logged_in()) {
+                set_transient($this->transient(), $request, 24 * HOUR_IN_SECONDS);
             }
 
             // Déclenche l'export si on est sur la page "export"
@@ -121,6 +121,15 @@ class Plugin {
 
             return $request;
         }, 9999, 2);
+    }
+
+    /**
+     * Retourne le nom du transient utilisé pour l'utilisateur en cours.
+     *
+     * @return string
+     */
+    public function transient() {
+        return sprintf(self::TRANSIENT, get_current_user_id());
     }
 
     /**
@@ -150,7 +159,7 @@ class Plugin {
      */
     protected function checkParams() {
         // Affiche un message si on n'a aucune requête en cours
-        $request = get_transient(self::TRANSIENT); /* @var $request SearchRequest */
+        $request = get_transient($this->transient()); /* @var $request SearchRequest */
         if ($request === false) {
             return $this->view('docalist-biblio-export:norequest');
         }
