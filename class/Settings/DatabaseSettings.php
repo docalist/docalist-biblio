@@ -13,9 +13,10 @@
  */
 namespace Docalist\Biblio\Settings;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
+use Docalist\Type\Composite;
+use Docalist\Type\Text;
 use Docalist\Type\Integer;
+use Docalist\Type\Boolean;
 use Exception;
 
 /**
@@ -23,23 +24,23 @@ use Exception;
  *
  * Une base est essentiellement une liste de types.
  *
- * @property String $name Nom de la base de données.
+ * @property Text $name Nom de la base de données.
  * @property Integer $homepage ID de la page d'accueil de la base de données.
- * @property String $homemode Mode de fonctionnement de la page d'accueil (page, archive ou search).
+ * @property Text $homemode Mode de fonctionnement de la page d'accueil (page, archive ou search).
  * @property Integer $searchpage ID de la page liste des réponses.
- * @property String $label Libellé de la base.
- * @property String $description Description de la base.
- * @property String $stemming Stemming / analyseur par défaut.
+ * @property Text $label Libellé de la base.
+ * @property Text $description Description de la base.
+ * @property Text $stemming Stemming / analyseur par défaut.
  * @property TypeSettings[] $types Types de notices gérés dans cette base, indexés par nom.
- * @property String $creation Date de création de la base.
- * @property String $lastupdate Date de dernière modification des paramètres de la base.
- * @property String $icon Icône à utiliser pour cette base.
- * @property String $notes Notes et historique de la base.
- * @property Boolean $thumnbail Indique si les notices peuvent avoir une image à la une.
+ * @property Text $creation Date de création de la base.
+ * @property Text $lastupdate Date de dernière modification des paramètres de la base.
+ * @property Text $icon Icône à utiliser pour cette base.
+ * @property Text $notes Notes et historique de la base.
+ * @property Boolean $thumbnail Indique si les notices peuvent avoir une image à la une.
  * @property Boolean $revisions Indique si les modifications des notices font l'objet de révisions.
  * @property Boolean $comments Indique si les notices peuvent avoir des commentaires.
  */
-class DatabaseSettings extends Object {
+class DatabaseSettings extends Composite {
     // supprime l'ancienne propriété slug  à enlever une fois les bases .net migrées
     public function assign($value) {
         if (isset($value['slug'])) {
@@ -57,7 +58,7 @@ class DatabaseSettings extends Object {
                 ],
 
                 'homepage' => [
-                    'type' => 'int',
+                    'type' => 'Docalist\Type\Integer',
                     'label' => __("Page d'accueil", 'docalist-biblio'),
                     'description' => __("Page d'accueil de la base.", 'docalist-biblio'),
                 ],
@@ -68,7 +69,7 @@ class DatabaseSettings extends Object {
                 ],
 
                 'searchpage' => [
-                    'type' => 'int',
+                    'type' => 'Docalist\Type\Integer',
                     'label' =>__('Page liste des réponses', 'docalist-search'),
                     'description' => __("Page WordPress sur laquelle sont affichées les recherches dans cette base.", 'docalist-search'),
                 ],
@@ -90,19 +91,17 @@ class DatabaseSettings extends Object {
                 ],
 
                 'types' => [
-                    'type' => 'TypeSettings*',
+                    'type' => 'Docalist\Biblio\Settings\TypeSettings*',
                     'key' => 'name',
                     'label' => __('Types de notices gérés dans cette base', 'docalist-biblio'),
                 ],
 
                 'creation' => [
-                    'type' => 'string',
                     'label' => __('Date de création', 'docalist-biblio'),
                     'description' => __("Date/heure de création de la base.", 'docalist-biblio'),
                 ],
 
                 'lastupdate' => [
-                    'type' => 'string',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __("Date/heure de dernière modification des paramètres de la base.", 'docalist-biblio'),
                 ],
@@ -119,19 +118,19 @@ class DatabaseSettings extends Object {
                 ],
 
                 'thumbnail' => [
-                    'type' => 'boolean',
+                    'type' => 'Docalist\Type\Boolean',
                     'label' => __('Image à la une', 'docalist-biblio'),
                     'description' => __("Les références peuvent avoir une image à la une.", 'docalist-biblio'),
                 ],
 
                 'revisions' => [
-                    'type' => 'boolean',
+                    'type' => 'Docalist\Type\Boolean',
                     'label' => __('Activer les révisions', 'docalist-biblio'),
                     'description' => __("Journaliser les modifications apportées aux références.", 'docalist-biblio'),
                 ],
 
                 'comments' => [
-                    'type' => 'boolean',
+                    'type' => 'Docalist\Type\Boolean',
                     'label' => __('Activer les commentaires', 'docalist-biblio'),
                     'description' => __("Les références peuvent avoir des commentaires.", 'docalist-biblio'),
                 ],
@@ -159,6 +158,11 @@ class DatabaseSettings extends Object {
         return true;
     }
 
+    /**
+     * Retourne le nom du "custom post type" WordPress de cette base.
+     *
+     * @return string
+     */
     public function postType() {
         return 'dclref' . $this->name();
     }
