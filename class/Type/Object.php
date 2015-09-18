@@ -18,7 +18,7 @@ use Docalist\Schema\Schema;
 /**
  * Type de base pour tous les champs structurés
  */
-class Object extends \Docalist\Type\Object implements BiblioField {
+class Object extends \Docalist\Type\Composite implements BiblioField {
     use BiblioFieldTrait;
 
     /**

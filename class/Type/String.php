@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -18,7 +18,7 @@ use Docalist\Forms\Input;
 /**
  * Type de base pour tous les champs texte
  */
-class String extends \Docalist\Type\String implements BiblioField {
+class String extends \Docalist\Type\Text implements BiblioField {
     use BiblioFieldTrait;
 
     public function editForm() {
