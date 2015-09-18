@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -20,7 +20,7 @@ use Docalist\Forms\Table;
  * Une collection de relations.
  */
 class Relations extends Repeatable {
-    static protected $type = 'Relation';
+    static protected $type = 'Docalist\Biblio\Field\Relation';
 
     public function editForm() {
         $field = new Table($this->schema->name());

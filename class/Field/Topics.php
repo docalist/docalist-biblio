@@ -22,7 +22,7 @@ use Docalist\Table\TableInterface;
  * Une collection de topics d'indexation.
  */
 class Topics extends Repeatable {
-    static protected $type = 'Topic';
+    static protected $type = 'Docalist\Biblio\Field\Topic';
 
     public function editForm() {
         return new TopicsInput($this->schema->name(), $this->schema->table());
