@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,8 +13,8 @@
  */
 namespace Docalist\Biblio\Settings;
 
-use Docalist\Type\Object;
-use Docalist\Type\String;
+use Docalist\Type\Composite;
+use Docalist\Type\Text;
 use Docalist\Schema\Schema;
 
 /**
@@ -27,12 +27,12 @@ use Docalist\Schema\Schema;
  * La grille de saisie a un nom particulier 'edit'. Toutes les autres
  * grilles sont des formats d'affichage.
  *
- * @property String $name Nom du type (article, book, degree...)
- * @property String $label Libellé.
- * @property String $description Description.
+ * @property Text $name Nom du type (article, book, degree...)
+ * @property Text $label Libellé.
+ * @property Text $description Description.
  * @property Schema[] $grids Grilles de saisie et d'affichage.
  */
-class TypeSettings extends Object {
+class TypeSettings extends Composite {
     static protected function loadSchema() {
         return [
             'fields' => [
@@ -59,7 +59,7 @@ class TypeSettings extends Object {
                     'key' => 'name', // edit, display-full, display-short, ...
                     'label' => __('Grilles et formulaires', 'docalist-biblio'),
                     'description' => __("Grilles de saisie et d'affichage pour ce type.", 'docalist-biblio'),
-]
+                ]
             ]
         ];
     }
