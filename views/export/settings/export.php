@@ -9,27 +9,24 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export\Views;
 
 use Docalist\Biblio\Export\Settings;
 use Docalist\Forms\Form;
-use Docalist\Forms\Themes;
-use Docalist\Utils;
 
 /**
  * Paramètres de l'export.
  *
- * @param Settings $settings Les paramètres pour l'export.
+ * @var SettingsPage $this
+ * @var Settings     $settings Les paramètres pour l'export.
  */
 ?>
 <style>
-.field-table.limit         { width: auto; }
+.limit table.field-table { width: auto; }
 </style>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= __("Export et bibliographies", 'docalist-biblio-export') ?></h2>
+    <h1><?= __('Export et bibliographies', 'docalist-biblio-export') ?></h1>
 
     <p class="description"><?php
         echo __(
@@ -42,24 +39,17 @@ use Docalist\Utils;
         $form = new Form();
 
         $form->select('exportpage')
-             ->options(pagesList())
-             ->firstOption(false);
+             ->setOptions(pagesList())
+             ->setFirstOption(false);
 
-        $form->table('limit')
-             ->addClass('limit')
-             ->select('role')
-                ->options(userRoles())
-                ->parent()
-             ->input('limit')
-                ->attribute('type', 'number');
+        $form->table('limit')->addClass('limit')->setRepeatable()
+                ->select('role')->setOptions(userRoles())->getParent()
+                ->input('limit')->setAttribute('type', 'number');
 
-        $form->submit(__('Enregistrer les modifications', 'docalist-biblio-export'));
+        $form->submit(__('Enregistrer les modifications', 'docalist-biblio-export'))
+             ->addClass('button button-primary');
 
-        $assets=$form->assets();
-        $assets->add(Themes::assets('wordpress'));
-        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
-
-        $form->bind($settings)->render('wordpress');
+        $form->bind($settings)->display();
     ?>
 </div>
 
@@ -70,9 +60,10 @@ use Docalist\Utils;
  *
  * @return array Un tableau de la forme PageID => PageTitle
  */
-function pagesList() {
+function pagesList()
+{
     $pages = ['…'];
-    foreach(get_pages() as $page) { /* @var $page \WP_Post */
+    foreach (get_pages() as $page) { /* @var $page \WP_Post */
         $pages[$page->ID] = str_repeat('   ', count($page->ancestors)) . $page->post_title;
     }
 
@@ -80,12 +71,13 @@ function pagesList() {
 }
 
 /**
- * Retourne la liste de rôles WordPress
+ * Retourne la liste de rôles WordPress.
  *
  * @return array role => label
  */
-function userRoles() {
+function userRoles()
+{
     global $wp_roles;
 
-    return  array_map('translate_user_role', $wp_roles->get_names());
+    return array_map('translate_user_role', $wp_roles->get_names());
 }
