@@ -9,19 +9,18 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export;
 
 use WP_Widget;
-use Docalist\Forms\Fragment;
-use Docalist\Forms\Themes;
-use Docalist\Utils;
 use Docalist\Search\SearchRequest;
 use Docalist\Search\SearchResults;
+use Docalist\Forms\Container;
 
-class ExportWidget extends WP_Widget {
-    public function __construct() {
+class ExportWidget extends WP_Widget
+{
+    public function __construct()
+    {
         $id = 'docalist-biblio-export';
         parent::__construct(
             // Base ID. Inutile de préfixer avec "widget", WordPress le fait
@@ -56,7 +55,8 @@ class ExportWidget extends WP_Widget {
      *
      * @see http://codex.wordpress.org/Function_Reference/register_sidebar
      */
-    public function widget($context, $settings) {
+    public function widget($context, $settings)
+    {
         // Seuls les utilisateurs loggués peuvent exporter
         if (! is_user_logged_in()) {
             return;
@@ -112,7 +112,7 @@ class ExportWidget extends WP_Widget {
         $label && printf($link,
             'export-print',
             '',
-            __("Génére une bibliographie", 'docalist-biblio-export'),
+            __('Génére une bibliographie', 'docalist-biblio-export'),
             $exportPage,
             $label
         );
@@ -139,24 +139,25 @@ class ExportWidget extends WP_Widget {
      *
      * @return Fragment
      */
-    protected function settingsForm() {
-        $form = new Fragment();
+    protected function settingsForm()
+    {
+        $form = new Container();
 
         $form->input('title')
-            ->attribute('id', $this->get_field_id('title')) // pour que le widget affiche le bon titre en backoffice. cf widgets.dev.js, fonction appendTitle(), L250
-            ->label(__('<b>Titre du widget</b>', 'docalist-biblio-export'))
+            ->setAttribute('id', $this->get_field_id('title')) // pour que le widget affiche le bon titre en backoffice. cf widgets.dev.js, fonction appendTitle(), L250
+            ->setLabel(__('<b>Titre du widget</b>', 'docalist-biblio-export'))
             ->addClass('widefat');
 
         $form->input('file')
-            ->label(__('<b>Exporter</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Exporter</b>', 'docalist-biblio-export'))
             ->addClass('widefat');
 
         $form->input('print')
-            ->label(__('<b>Créer une bibliographie</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Créer une bibliographie</b>', 'docalist-biblio-export'))
             ->addClass('widefat');
 
         $form->input('mail')
-            ->label(__('<b>Envoyer par messagerie</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Envoyer par messagerie</b>', 'docalist-biblio-export'))
             ->addClass('widefat');
 
         return $form;
@@ -167,12 +168,13 @@ class ExportWidget extends WP_Widget {
      *
      * @return array
      */
-    protected function defaultSettings() {
+    protected function defaultSettings()
+    {
         return [
             'title' => __('Export', 'docalist-biblio-export'),
-            'file'  => __('Générer un fichier', 'docalist-biblio-export'),
+            'file' => __('Générer un fichier', 'docalist-biblio-export'),
             'print' => __('Créer une bibliographie', 'docalist-biblio-export'),
-            'mail'  => __('Envoyer par messagerie', 'docalist-biblio-export'),
+            'mail' => __('Envoyer par messagerie', 'docalist-biblio-export'),
         ];
     }
 
@@ -181,7 +183,8 @@ class ExportWidget extends WP_Widget {
      *
      * @see WP_Widget::form()
      */
-    public function form($instance) {
+    public function form($instance)
+    {
         // Récupère le formulaire à afficher
         $form = $this->settingsForm();
 
@@ -196,17 +199,10 @@ class ExportWidget extends WP_Widget {
         // Pour que les facettes soient orrectement clonées, le champ facets
         // définit explicitement repeatLevel=2 (cf. settingsForm)
         $name = 'widget-' . $this->id_base . '[' . $this->number . ']';
-        $form->name($name);
-
-        // Envoie les assets requis par ce formulaire
-        // Comme le début de la page a déjà été envoyé, les assets vont
-        // être ajoutés en fin de page. On n'a pas de FOUC car le formulaire
-        // ne sera affiché que lorsque l'utilisateur le demandera.
-        $theme = 'base';
-        Utils::enqueueAssets(Themes::assets($theme)->add($form->assets()));
+        $form->setName($name);
 
         // Affiche le formulaire
-        $form->render($theme);
+        $form->display();
     }
 
     /**
@@ -220,8 +216,9 @@ class ExportWidget extends WP_Widget {
      *
      * @return array La version corrigée des paramètres.
      */
-    public function update($new, $old) {
-        $settings = $this->settingsForm()->bind($new)->data();
+    public function update($new, $old)
+    {
+        $settings = $this->settingsForm()->bind($new)->getData();
 
         // TODO validation
 
