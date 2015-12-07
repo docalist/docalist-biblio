@@ -9,11 +9,9 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     $Id: Converter.php 1916 2015-01-05 10:25:19Z daniel.menard.35@gmail.com $
  */
 namespace Docalist\Biblio\Export;
 
-use Docalist\Forms\Fragment;
 use Docalist\Biblio\Reference;
 
 /**
@@ -22,7 +20,8 @@ use Docalist\Biblio\Reference;
  * Un convertisseur se charge de transformer une Reference Docalist dans
  * un autre format.
  */
-class Converter extends BaseExport {
+class Converter extends BaseExport
+{
     /**
      * Convertit une notice docalist.
      *
@@ -30,7 +29,8 @@ class Converter extends BaseExport {
      *
      * @return array Un tableau contenant les données à exporter.
      */
-    public function convert(Reference $reference) {
+    public function convert(Reference $reference)
+    {
         return $reference->value();
     }
 }

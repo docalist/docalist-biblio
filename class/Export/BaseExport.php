@@ -9,11 +9,8 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     $Id: BaseExport.php 1915 2015-01-05 10:23:28Z daniel.menard.35@gmail.com $
  */
 namespace Docalist\Biblio\Export;
-
-use Docalist\Forms\Fragment;
 
 /**
  * Classe de base pour les convertisseurs et les exporteurs.
@@ -85,7 +82,8 @@ use Docalist\Forms\Fragment;
  * à ses paramètres en utilisant la méthode get() qui permet de récupérer une
  * option de configuration.
  */
-abstract class BaseExport {
+abstract class BaseExport
+{
     /**
      * Les paramètres par défaut pour ce type d'objet.
      *
@@ -105,11 +103,12 @@ abstract class BaseExport {
     protected $settings;
 
     /**
-     * Initialise l'objet
+     * Initialise l'objet.
      *
      * @param array $settings Les paramètres de l'objet.
      */
-    public function __construct(array $settings = []) {
+    public function __construct(array $settings = [])
+    {
         $this->settings = array_merge(static::defaultSettings(), $settings);
     }
 
@@ -122,7 +121,8 @@ abstract class BaseExport {
      *
      * @return array
      */
-    public static function defaultSettings() {
+    public static function defaultSettings()
+    {
         $parent = get_parent_class(get_called_class());
 
         if ($parent === false) {
@@ -137,7 +137,8 @@ abstract class BaseExport {
      *
      * @return array
      */
-    public function settings() {
+    public function settings()
+    {
         return $this->settings;
     }
 
@@ -150,7 +151,8 @@ abstract class BaseExport {
      *
      * @return mixed
      */
-    public function get($setting, $default = null) {
+    public function get($setting, $default = null)
+    {
         if (array_key_exists($setting, $this->settings)) {
             return $this->settings[$setting];
         }
@@ -163,8 +165,9 @@ abstract class BaseExport {
      *
      * @return Fragment
      */
-    public function settingsForm() {
-        return null;
+    public function settingsForm()
+    {
+        return;
     }
 
     /**
@@ -181,7 +184,8 @@ abstract class BaseExport {
      *
      * @return array Les settings validés.
      */
-    public function validateSettings(array $settings) {
+    public function validateSettings(array $settings)
+    {
         return $settings;
     }
 
@@ -190,7 +194,8 @@ abstract class BaseExport {
      *
      * @return string
      */
-    public function label() {
+    public function label()
+    {
         return strtolower(substr(strrchr(get_called_class(), '\\'), 1));
     }
 
@@ -199,16 +204,18 @@ abstract class BaseExport {
      *
      * @return string
      */
-    public function description() {
+    public function description()
+    {
         return '';
     }
 
     /**
-     * Retourne l'identifiant de l'objet
+     * Retourne l'identifiant de l'objet.
      *
      * @return string
      */
-    public function id() {
+    public function id()
+    {
         return strtolower(strtr(get_called_class(), '\\', '-'));
     }
 }

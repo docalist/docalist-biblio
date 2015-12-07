@@ -9,12 +9,10 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     $Id: Exporter.php 1917 2015-01-05 10:28:00Z daniel.menard.35@gmail.com $
  */
 namespace Docalist\Biblio\Export;
 
 use Docalist\Biblio\Reference\ReferenceIterator;
-use Docalist\Forms\Fragment;
 use Docalist\Biblio\Reference;
 
 /**
@@ -26,7 +24,8 @@ use Docalist\Biblio\Reference;
  * Pour chacune des notices, il appelle la méthode convert() du convertisseur
  * et écrit les données obtenus dans le format de fichier attendu.
  */
-class Exporter extends BaseExport {
+class Exporter extends BaseExport
+{
     // Paramétres communs à tous les exporteurs
     protected static $defaultSettings = [
         // Disposition du fichier d'export généré ('inline' ou 'attachment')
@@ -63,7 +62,8 @@ class Exporter extends BaseExport {
      *
      * @param array $settings Les paramètres de l'exporteur.
      */
-    public function __construct(Converter $converter = null, array $settings = []) {
+    public function __construct(Converter $converter = null, array $settings = [])
+    {
         parent::__construct($settings);
         $this->converter = $converter;
     }
@@ -74,8 +74,9 @@ class Exporter extends BaseExport {
      * @param ReferenceIterator $references Un itérateur contenant les
      * notices à exporter.
      */
-    public function export(ReferenceIterator $references) {
-        foreach($references as $reference) { /* var $ref Reference */
+    public function export(ReferenceIterator $references)
+    {
+        foreach ($references as $reference) { /* var $ref Reference */
             $data = $this->converter->convert($reference);
             var_export($data);
             echo "\n\n";
@@ -92,7 +93,8 @@ class Exporter extends BaseExport {
      * @return string Par défaut, retourne la chaine
      * "text/plain; charset=utf-8"
      */
-    public final function contentType() {
+    final public function contentType()
+    {
         return sprintf('%s; charset=%s', $this->get('mime-type'), $this->get('charset'));
     }
 
@@ -106,7 +108,8 @@ class Exporter extends BaseExport {
      * @return string Par défaut, retourne la chaine
      * "inline; filename=export.txt"
      */
-    public final function contentDisposition($disposition = null) {
+    final public function contentDisposition($disposition = null)
+    {
         is_null($disposition) && $disposition = $this->get('disposition');
         $extension = '.' . trim($this->get('extension'), '. ');
         $filename = $this->get('filename');
