@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the "Docalist Biblio Export" plugin.
  *
@@ -9,7 +10,6 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export;
 
@@ -23,7 +23,8 @@ use RuntimeException;
  * Extension pour Docalist Biblio : génère des fichiers d'export et des
  * bibliographies.
  */
-class Plugin {
+class Plugin
+{
     /**
      * Les paramètres du plugin.
      *
@@ -62,7 +63,7 @@ class Plugin {
      *
      * Initialisé par checkParams().
      *
-     * @var boolean
+     * @var bool
      */
     protected $zip;
 
@@ -71,7 +72,7 @@ class Plugin {
      *
      * Initialisé par checkParams().
      *
-     * @var boolean
+     * @var bool
      */
     protected $mail;
 
@@ -79,7 +80,8 @@ class Plugin {
     /**
      * Initialise le plugin.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio-export', false, 'docalist-biblio-export/languages');
 
@@ -87,12 +89,12 @@ class Plugin {
         $this->settings = new Settings(docalist('settings-repository'));
 
         // Crée la page de réglages du plugin
-        add_action('admin_menu', function() {
+        add_action('admin_menu', function () {
             new SettingsPage($this->settings);
         });
 
         // Déclare le widget "Export notices"
-        add_action('widgets_init', function() {
+        add_action('widgets_init', function () {
             register_widget('Docalist\Biblio\Export\ExportWidget');
         });
 
@@ -103,7 +105,7 @@ class Plugin {
         // simple de le faire içi plutôt que d'intercepter parse_query et ça
         // fait un filtre en moins) et si c'est le cas, on vérifie les
         // paramètres indiqués et on déclenche l'export.
-        add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
+        add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
             // Stocke la SearchRequest
             if ($request && $request->isSearch() && is_user_logged_in()) {
                 set_transient($this->transient(), $request, 24 * HOUR_IN_SECONDS);
@@ -128,7 +130,8 @@ class Plugin {
      *
      * @return string
      */
-    public function transient() {
+    public function transient()
+    {
         return sprintf(self::TRANSIENT, get_current_user_id());
     }
 
@@ -137,7 +140,8 @@ class Plugin {
      *
      * @return Settings
      */
-    public function settings() {
+    public function settings()
+    {
         return $this->settings;
     }
 
@@ -146,7 +150,8 @@ class Plugin {
      *
      * @return int
      */
-    public function exportPage() {
+    public function exportPage()
+    {
         return $this->settings->exportpage();
     }
 
@@ -157,7 +162,8 @@ class Plugin {
      * que tout est ok, sinon retourne une vue contenant le formulaire "choix
      * du format d'export" ou un message à afficher à l'utilisateur.
      */
-    protected function checkParams() {
+    protected function checkParams()
+    {
         // Affiche un message si on n'a aucune requête en cours
         $request = get_transient($this->transient()); /* @var $request SearchRequest */
         if ($request === false) {
@@ -176,7 +182,7 @@ class Plugin {
 
         // Détermine la liste des types de notices qu'on va exporter
         $countByType = $types = [];
-        foreach($results->facet('_type')->terms as $term) {
+        foreach ($results->facet('_type')->terms as $term) {
             $types[] = $term->term;
             $label = apply_filters('docalist_search_get_facet_label', $term->term, '_type');
             $countByType[$label] = $term->count;
@@ -194,9 +200,9 @@ class Plugin {
 
         // Récupère les options transmises en paramètres
         $mail = isset($_REQUEST['mail']) && $_REQUEST['mail'] === '1';
-        $zip  = isset($_REQUEST['zip']) && $_REQUEST['zip'] === '1';
+        $zip = isset($_REQUEST['zip']) && $_REQUEST['zip'] === '1';
         $format = isset($_REQUEST['format']) ? $_REQUEST['format'] : null;
-        $go  = isset($_REQUEST['go']) && $_REQUEST['go'] === '1';
+        $go = isset($_REQUEST['go']) && $_REQUEST['go'] === '1';
 
         // Vérifie que le format indiqué figure dans la liste des formats possibles
         isset($format) && !isset($formats[$format]) && $format = null;
@@ -229,7 +235,8 @@ class Plugin {
      *
      * @param ViewResponse $view La vue à exécutr.
      */
-    protected function showView(ViewResponse $view) {
+    protected function showView(ViewResponse $view)
+    {
         $injectView = function ($content) use ($view) {
             global $post;
 
@@ -255,12 +262,13 @@ class Plugin {
      * Teste si on a tous les paramètres requis, affiche le formulaire si ce
      * n'est pas le cas, lance l'export sinon.
      */
-    protected function export() {
+    protected function export()
+    {
         // Permet au script de s'exécuter longtemps
         set_time_limit(3600);
 
-        $mode='attachment'; // TODO
-        $disposition = ($mode==='display') ? 'inline' : 'attachment';
+        $mode = 'attachment'; // TODO
+        $disposition = ($mode === 'display') ? 'inline' : 'attachment';
 
         $this->format->export($this->request, $disposition, 1000); // TODO from settings
 
@@ -276,7 +284,8 @@ class Plugin {
      *
      * @return Format[]
      */
-    protected function formats(array $types) {
+    protected function formats(array $types)
+    {
         // Dans une table 'export-formats', on aura :
         // 'formats' => liste des formats définis = ['name', 'converter', 'converter-settings', 'exporter', 'exporter-settings']
         // Dans les settings, on aura pour chaque type indexé par docalist-search :
@@ -313,7 +322,7 @@ class Plugin {
 
         // Crée la liste des formats communs à tous les types qu'on a
         $formats = null;
-        foreach($types as $type) {
+        foreach ($types as $type) {
             if (! isset($formatsByType[$type])) {
                 $formats = [];
                 break;
@@ -331,7 +340,7 @@ class Plugin {
         // on récupère un tableau de la forme 'format' => params
 
         // Instancie les formats
-        foreach($formats as $name => & $format) {
+        foreach ($formats as $name => & $format) {
             if (!isset($allFormats[$name])) {
                 throw new RuntimeException("Le format $name n'existe pas");
             }
@@ -351,7 +360,8 @@ class Plugin {
      *
      * @return string
      */
-    protected function view($view, array $viewArgs = []){
+    protected function view($view, array $viewArgs = [])
+    {
         !isset($viewArgs['this']) && $viewArgs['this'] = $this;
 
         return new ViewResponse($view, $viewArgs);

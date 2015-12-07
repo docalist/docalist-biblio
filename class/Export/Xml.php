@@ -9,7 +9,6 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     $Id: Xml.php 1919 2015-01-05 10:30:57Z daniel.menard.35@gmail.com $
  */
 namespace Docalist\Biblio\Export;
 
@@ -19,7 +18,8 @@ use XMLWriter;
 /**
  * Un exporteur au format XML.
  */
-class Xml extends Exporter {
+class Xml extends Exporter
+{
     protected static $defaultSettings = [
         // Surcharge les paramètres hérités
         'mime-type' => 'application/xml',
@@ -30,7 +30,8 @@ class Xml extends Exporter {
         'binary' => true,
     ];
 
-    public function export(ReferenceIterator $references) {
+    public function export(ReferenceIterator $references)
+    {
         $xml = new XMLWriter();
         $xml->openURI('php://output');
 
@@ -39,18 +40,17 @@ class Xml extends Exporter {
             $xml->setIndent(true);
         }
         $xml->startDocument('1.0', 'utf-8', 'yes');
-        //  $xml->writeComment('test');
-            $xml->startElement('references');
-            $xml->writeAttribute('count', $references->count());
-            $xml->writeAttribute('datetime', date('Y-m-d H:i:s'));
-            $xml->writeAttribute('query', $references->searchRequest()->asEquation());
-            foreach($references as $reference) {
-                $data = $this->converter->convert($reference);
-                $xml->startElement('reference');
-                    $this->outputArray($xml, $data);
-                $xml->endElement();
-            }
+        $xml->startElement('references');
+        $xml->writeAttribute('count', $references->count());
+        $xml->writeAttribute('datetime', date('Y-m-d H:i:s'));
+        $xml->writeAttribute('query', $references->searchRequest()->asEquation());
+        foreach ($references as $reference) {
+            $data = $this->converter->convert($reference);
+            $xml->startElement('reference');
+            $this->outputArray($xml, $data);
             $xml->endElement();
+        }
+        $xml->endElement();
         $xml->endDocument();
 
         $xml->flush();
@@ -69,7 +69,8 @@ class Xml extends Exporter {
      * @param XMLWriter $xml
      * @param array $data
      */
-    protected function outputArray(XMLWriter $xml, array $data) {
+    protected function outputArray(XMLWriter $xml, array $data)
+    {
         foreach ($data as $key => $value) {
             if (empty($value)) {
                 continue;
@@ -85,11 +86,13 @@ class Xml extends Exporter {
         }
     }
 
-    public function label() {
+    public function label()
+    {
         return 'XML';
     }
 
-    public function description() {
+    public function description()
+    {
         return __('<a href="http://fr.wikipedia.org/wiki/Extensible_Markup_Language">Extensible Markup Language</a> : fichier texte dans lequel les données sont encadrées par des &lt;balises&gt;.', 'docalist-biblio-export');
     }
 }
