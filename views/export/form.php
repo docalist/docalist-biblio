@@ -9,20 +9,22 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export\Views;
+
+use Docalist\Biblio\Export\Plugin;
 
 /**
  * Affiche le formulaire d'export.
  *
- * @param array $types Types des notices (libellé => count)
- * @param int $total Nombre total de hits obtenus (notices à exporter).
- * @param int $max Nombre maximum de notices exportables.
- * @param Format[] $formats Liste des formats d'export disponibles.
- * @param string $format Format d'export actuellement sélectionner.
- * @param boolean $mail Envoyer par mail.
- * @param boolean $zip Compresser le fichier.
+ * @var Plugin   $this
+ * @var array    $types     Types des notices (libellé => count)
+ * @var int      $total     Nombre total de hits obtenus (notices à exporter).
+ * @var int      $max       Nombre maximum de notices exportables.
+ * @var Format[] $formats   Liste des formats d'export disponibles.
+ * @var string   $format    Format d'export actuellement sélectionner.
+ * @var boolean  $mail      Envoyer par mail.
+ * @var boolean  $zip       Compresser le fichier.
  */
 
 // Crée le détail par type des notices qui seront exportées

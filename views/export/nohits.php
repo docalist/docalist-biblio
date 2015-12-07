@@ -9,9 +9,10 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export\Views;
+
+use Docalist\Biblio\Export\Plugin;
 
 /**
  * Affiche le message "aucune réponse".
@@ -19,6 +20,8 @@ namespace Docalist\Biblio\Export\Views;
  * Cette vue est affichée quand la dernière requête exécutée ne donne aucune
  * réponses.
  * Par défaut, on se contente d'afficher la vue "norequest".
+ *
+ * @var Plugin $this
  */
 echo $this->view('docalist-biblio-export:norequest');
 ?>

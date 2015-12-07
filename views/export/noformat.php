@@ -9,16 +9,18 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export\Views;
+
+use Docalist\Biblio\Export\Plugin;
 
 /**
  * Affiche un message "aucun format disponible"
  *
- * @param array $types Types des notices (libellé => count)
- * @param int $total Nombre total de hits obtenus (notices à exporter).
- * @param int $max Nombre maximum de notices exportables.
+ * @var Plugin  $this
+ * @var array   $types Types des notices (libellé => count)
+ * @var int     $total Nombre total de hits obtenus (notices à exporter).
+ * @var int     $max   Nombre maximum de notices exportables.
  */
 
 // Crée le détail par type des notices qui seront exportées

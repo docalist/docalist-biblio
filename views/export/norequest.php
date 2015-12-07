@@ -9,14 +9,17 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export\Views;
+
+use Docalist\Biblio\Export\Plugin;
 
 /**
  * Affiche le message "aucune requête en cours".
  *
  * Cette vue est affichée quand on n'a aucun transient ou que celui-ci a expiré.
+ *
+ * @var Plugin  $this
  */
 $searchPage = get_permalink(docalist('docalist-search-engine')->searchPage());
 $basketPage = docalist('basket-controller')->basketPageUrl();
