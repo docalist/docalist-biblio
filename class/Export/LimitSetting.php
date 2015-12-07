@@ -9,32 +9,36 @@
  *
  * @package     Docalist\Biblio\Export
  * @author      Daniel Ménard <daniel.menard@laposte.net>
- * @version     SVN: $Id$
  */
 namespace Docalist\Biblio\Export;
 
-use Docalist\Type\Object;
+use Docalist\Type\Composite;
+use Docalist\Type\Text;
+use Docalist\Type\Integer;
 
 /**
  * Options de configuration du plugin.
  *
- * @property Integer $exportpage ID de la page "export".
+ * @property Text       $role   Rôle Wordpress.
+ * @property Integer    $limit  Limite pour ce rôle.
  */
-class LimitSetting extends Object {
-    static protected function loadSchema() {
+class LimitSetting extends Composite
+{
+    protected static function loadSchema()
+    {
         return [
             'fields' => [
                 'role' => [
-                    'type' => 'string',
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Rôle WordPress', 'docalist-biblio-export'),
                     'description' => __("Nom du groupe d'utilisateurs", 'docalist-biblio-export'),
                 ],
                 'limit' => [
-                    'type' => 'int',
+                    'type' => 'Docalist\Type\Integer',
                     'label' => __('Limite pour ce rôle', 'docalist-biblio-export'),
-                    'description' => __("Nombre maximum de notices exportables pour ce rôle (0 = pas de limite).", 'docalist-biblio-export'),
-                ]
-            ]
+                    'description' => __('Nombre maximum de notices exportables pour ce rôle (0 = pas de limite).', 'docalist-biblio-export'),
+                ],
+            ],
         ];
     }
 }
