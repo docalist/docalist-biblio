@@ -25,7 +25,7 @@ class Settings extends TypeSettings
 {
     protected $id = 'docalist-biblio-export';
 
-    protected static function loadSchema()
+    static public function loadSchema()
     {
         return [
             'fields' => [

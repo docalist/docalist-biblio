@@ -24,7 +24,7 @@ use Docalist\Type\Integer;
  */
 class LimitSetting extends Composite
 {
-    protected static function loadSchema()
+    static public function loadSchema()
     {
         return [
             'fields' => [
