@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,23 +13,24 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Database;
 
 /**
  * Permet à l'utilisateur de choisir le type de notice à créer.
  *
- * @param Database $database Base de données en cours.
+ * @var EditReference $this
+ * @var Database $database Base de données en cours.
  */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
     <?php
         $title = sprintf(__('%1$s - %2$s', 'docalist-search'),
             $database->settings()->label(),
             get_post_type_object($database->postType())->labels->add_new_item
         );
     ?>
-    <h2><?= $title ?></h2>
+    <h1><?= $title ?></h1>
 
     <p class="description">
         <?= __("Choisissez le type de notice à créer.", 'docalist-biblio') ?>

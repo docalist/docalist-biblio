@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,20 +13,20 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
-use Docalist\Forms\Form;
 
 /**
  * Exporte (affiche) les paramètres d'une base.
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param string $dbindex L'index de la base.
- * @param bool $pretty Code indenté ou pas.
+ * @var AdminDatabases $this
+ * @var DatabaseSettings $database La base à éditer.
+ * @var string $dbindex L'index de la base.
+ * @var bool $pretty Code indenté ou pas.
  */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - exporter les paramètres de la base', 'docalist-biblio'), $database->label()) ?></h2>
+    <h1><?= sprintf(__('%s - exporter les paramètres de la base', 'docalist-biblio'), $database->label()) ?></h1>
 
     <p class="description">
         <?= __('Recopiez le code ci-dessous pour faire une sauvegarde des paramètres de la base ou transférer les paramètres vers une autre base.', 'docalist-biblio') ?>

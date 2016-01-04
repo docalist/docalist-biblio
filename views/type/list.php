@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,22 +13,20 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
-use Docalist\Schema\Schema;
 
 /**
  * Liste des types d'une base de données.
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param int $dbindex L'index de la base.
+ * @var AdminDatabases $this
+ * @var DatabaseSettings $database La base à éditer.
+ * @var int $dbindex L'index de la base.
  */
-
-/* @var $database DatabaseSettings */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s : types de notices', 'docalist-biblio'), $database->label()) ?></h2>
+    <h1><?= sprintf(__('%s : types de notices', 'docalist-biblio'), $database->label()) ?></h1>
 
     <p class="description">
         <?= __('Votre base de données contient les types de notices suivants :', 'docalist-biblio') ?>
@@ -52,6 +50,7 @@ use Docalist\Schema\Schema;
         $edit = esc_url($this->url('TypeEdit', $dbindex, $typeindex));
         $delete = esc_url($this->url('TypeDelete', $dbindex, $typeindex));
         $listGrids = esc_url($this->url('GridList', $dbindex, $typeindex));
+        $recreate = esc_url($this->url('TypeRecreate', $dbindex, $typeindex));
 
         $nb++;
     ?>
@@ -75,6 +74,12 @@ use Docalist\Schema\Schema;
                 <span class="delete">
                     <a href="<?= $delete ?>">
                         <?= __('Supprimer ce type', 'docalist-biblio') ?>
+                    </a>
+                </span>
+                |
+                <span class="recreate">
+                    <a href="<?= $recreate ?>">
+                        <?= __('debug : recréer', 'docalist-biblio') ?>
                     </a>
                 </span>
             </div>
