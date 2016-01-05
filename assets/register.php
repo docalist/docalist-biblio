@@ -14,21 +14,30 @@
 namespace Docalist\Biblio;
 
 // Les scripts suivants ne sont dispos que dans le back-office
-add_action('admin_init', function() {
-    $url = plugins_url('docalist-biblio/assets');
+add_action('admin_init', function () {
+    $url = plugins_url('docalist-biblio');
 
     // Css pour EditReference (également utilisé dans le paramétrage de la grille de saisie)
     wp_register_style(
         'docalist-biblio-edit-reference',
-        "$url/edit-reference.css",
+        "$url/assets/edit-reference.css",
         ['wp-admin'],
         '140927'
     );
+
+    // Editeur de grille
+    wp_register_script(
+        'docalist-biblio-grid-edit',
+        "$url/views/grid/edit.js",
+        ['jquery', 'jquery-ui-sortable'],
+        '20150510',
+        true
+    );
+
+    wp_register_style(
+        'docalist-biblio-grid-edit',
+        "$url/views/grid/edit.css",
+        [],
+        '20150510'
+    );
 });
-
-// Scripts dispos en front et en back
-// add_action('init', function() {
-//     $url = plugins_url('docalist-biblio/assets');
-
-//     // ...
-// });
