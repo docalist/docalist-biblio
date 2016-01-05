@@ -16,8 +16,7 @@ namespace Docalist\Biblio\Pages;
 use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use Docalist\AdminPage;
-use Docalist\Schema\Field;
-use Docalist\Utils;
+use Docalist\Schema\Schema;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
 use Docalist\Search\SearchRequest;
@@ -272,14 +271,14 @@ class ImportPage extends AdminPage {
             __('Répétable', 'docalist-biblio')
         );
 
-        $this->doc($schema->fields(), 0, $maxlevel);
+        $this->doc($schema->getFields(), 0, $maxlevel);
         echo '</table>';
     }
 
     protected function doc(array $fields, $level, $maxlevel) {
         // var_dump($schema);
 
-        /* @var $field Field */
+        /* @var Schema $field */
         foreach($fields as $field) {
             echo '<tr>';
 
@@ -289,7 +288,6 @@ class ImportPage extends AdminPage {
             }
 
             $repeat = $field->repeatable() ? __('<b>Répétable</b>', 'docalist-biblio') : __('Monovalué', 'docalist-biblio');
-            $type = $field->entity() ? Utils::classname($field->entity()) : $field->type();
             $msg = '<th colspan="%1$d"><h%2$d style="margin: 0">%3$s</h%2$d></th><td class="row-title">%4$s</td><td><i>%5$s</i></td><td>%6$s</td><td>%7$s</td>';
             printf($msg,
                 $maxlevel - $level,     // %1
@@ -297,13 +295,13 @@ class ImportPage extends AdminPage {
                 $field->name(),         // %3
                 $field->label(),        // %4
                 $field->description(),  // %5
-                $type,         // %6
+                $field->type(),         // %6
                 $repeat // %7
             );
 
             echo '</tr>';
 
-            $subfields = $field->fields();
+            $subfields = $field->getFields();
             $subfields && $this->doc($subfields, $level + 1, $maxlevel);
         }
     }
@@ -406,15 +404,14 @@ class ImportPage extends AdminPage {
 
         // Crée le convertisseur
         $settings = isset($format['converter-settings']) ? $format['converter-settings'] : [];
-        $converter = new $converter($settings); /* @var $converter Converter */
+        $converter = new $converter($settings); /* @var Converter $converter */
 
         // Crée l'exporteur
         $settings = isset($format['exporter-settings']) ? $format['exporter-settings'] : [];
-        $exporter = new $exporter($converter, $settings); /* @var $exporter Exporter */
+        $exporter = new $exporter($converter, $settings); /* @var Exporter $exporter */
 
         // Crée l'itérateur
-        $grid = isset($format['grid']) ? $format['grid'] : 'base';
-        $iterator = new ReferenceIterator($request, $grid);
+        $iterator = new ReferenceIterator($request);
 
         // Crée une réponse de type "callback" qui lancera l'export
         $response = new CallbackResponse(function() use($exporter, $iterator) {
