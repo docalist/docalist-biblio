@@ -13,101 +13,120 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
-use Docalist\Schema\Field;
-use Docalist\Forms\Fragment;
-use Docalist\Forms\Assets;
-use Docalist\Forms\Themes;
-use Docalist\Utils;
-use Docalist\Biblio\Reference;
+use Docalist\Forms\Metabox;
+use Docalist\Forms\Container;
+use Docalist\Biblio\Type\Group;
 
 /**
  * Edite une grille.
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param int $dbindex L'index de la base.
- * @param TypeSettings $type Le type à éditer.
- * @param int $typeindex L'index du type.
- * @param Schema $grid La grille à éditer.
- * @param string $gridname L'index de la grille.
+ * Cette vue prend en entrée les paramètres suivant :
+ *
+ * @var AdminDatabases      $this
+ * @var DatabaseSettings    $database   La base à éditer.
+ * @var int                 $dbindex    L'index de la base.
+ * @var TypeSettings        $type       Le type à éditer.
+ * @var int                 $typeindex  L'index du type.
+ * @var Schema              $grid       La grille à éditer.
+ * @var string              $gridname   L'index de la grille.
  */
 
-/* @var $database DatabaseSettings */
-/* @var $type TypeSettings */
-/* @var $grid Schema */
+/**
+ * Crée récursivement le formulaire de paramétrage de la grille, des champs, des sous-champs, etc.
+ *
+ * @param Schema $schema
+ * @param Schema $grid
+ * @param string $method
+ *
+ * @return Metabox
+ */
+function createForm(Schema $schema, Schema $grid, $method = 'getSettingsForm')
+{
+    static $level = 0;
+    static $prefix = '';
 
+    ++$level;
+    $savPrefix = $prefix;
 
-wp_enqueue_script( // TODO : déclarer dans les register et indiquer seulement le handle ici
-    'docalist-biblio-grid-edit',
-    plugins_url('docalist-biblio/views/grid/edit.js'),
-    array( 'jquery-ui-sortable'),
-    '20150510',
-    true
-);
+    // Récupère le formulaire de saisie des propriétés du champ
+    $type = $schema->collection() ?: $schema->type() ?: 'Docalist\Type\Composite';
+    $fieldType = new $type($type::getClassDefault(), $schema);
+    $form = $fieldType->$method(); /* @var Container $form */
 
-$boxes = [];
-$assets = new Assets();
-foreach($grid->fields as $field) {
-    $box = createBox($field, $gridname);
-    $boxes[] = $box;
-    $assets->add($box->assets());
-}
-$assets->add(Themes::assets('wordpress'));
-Utils::enqueueAssets($assets);
-wp_enqueue_style('docalist-biblio-edit-reference');
+    // Détermine le nom de la metabox (vide au premier niveau, nom du champ/sous-champ ensuite)
+    $name = '';
+    if ($level > 1) {
+        $name = $grid->name() ;
+        $prefix = ltrim($prefix . '.' . $name, '.');
+    }
 
-?>
-<style type="text/css">
-    <?php if ($gridname !== 'base') :?>
-        #fields li {
-            margin-left: 3em;
+    // Détermine le titre de la metabox
+    $label = $prefix ?: $grid->label();
+    $label = sprintf('%s - <span class="label">%s</span>', $prefix, $grid->label() ?: $schema->label());
+    $label = sprintf('<span>%s</span>', $grid->label() ?: $schema->label());
+    $prefix && ($grid->type() !== 'Docalist\Biblio\Type\Group') && $label .= " <small>($prefix)</small>";
+
+    // Détermine les classes CSS à appliquer à la metabox
+    $type = $schema->type() ?: 'Docalist\Type\Composite';
+    $type = strtolower(substr($type, strrpos($type, '\\') + 1));
+    $class = $type . ' ' . $grid->name() . ' level' . $level . ($level > 1 ? ' closed' : '');
+
+    // Crée la metabox et ajoute tous les champs du formulaire
+    $metabox = new Metabox($name);
+    $metabox->setLabel($label)->setAttribute('class', $class)->addItems($form->getItems());
+
+    // Valeur par défaut
+    if ($level > 1 && $method !== 'getFormatSettingsForm' && $type !== 'Docalist\Biblio\Type\Group') {
+        $default = $fieldType->getEditorForm($grid)
+            ->setName('default')
+            ->setLabel(__('Valeur par défaut', 'docalist-biblio'));
+        $metabox->add($default);
+    }
+    // TODO : ça devrait être getSettingsForm/getEditorSettingsForm qui se charge d'insérer l'éditeur
+    // dans le formulaire. ça permettrait de dire qu'on en veut pour les grilles base/edit et chaque
+    // champ pourrait choisir (par exemple, on ne veut pas de valeur par défaut pour les champs de gestion
+    // comme post_type ou date).
+
+    // Crée une "sous-metabox" pour chacun des sous-champs, dans l'ordre choisi par l'utilisateur
+    $fields = $grid->getFields();
+    if ($fields) {
+        $form = $metabox->container('fields')
+            ->setLabel(__('Champs', 'docalist-biblio'))
+            ->addClass('meta-box-sortables');
+        foreach($fields as $name => $field) {
+            // si c'est un groupe, il n'est que dans la grille, pas dans le schéma, on prend le schéma du groupe
+            $fieldSchema = $schema->hasField($name) ? $schema->getField($name) : $field;
+            $form->add(createForm($fieldSchema, $field, $method));
         }
-    <?php endif; ?>
-    #fields li {
-        margin-bottom: 10px;
     }
-    #fields li.closed {
-        margin-bottom: 0px;
-    }
-    #fields li h3:before {
-        font-family: "dashicons";
-        content: "\f464";
-        vertical-align: text-bottom;
-        -webkit-font-smoothing: antialiased;
-        padding-right: .5em;
-        color: #777;
-    }
-    #fields li.has-cap h3:after {
-        font-family: "dashicons";
-        content: "\f112";
-        vertical-align: text-bottom;
-        -webkit-font-smoothing: antialiased;
-        padding-left: .5em;
-        color: #800;
-    }
-    #fields li.group {
-        margin-top: 6px;
-        margin-left: 0;
-        background-color: #f9f9f9;
-    }
-    #fields li.group:first-child {
-        margin-top: 0px;
-    }
-    #fields li.group.closed {
-    }
-    #fields li.group h3:before {
-        content: "\f203";
-    }
-    #fields li.group h3 span {
-        font-weight: bold;
-    }
-</style>
 
+    $prefix = $savPrefix;
+    --$level;
+
+    return $metabox;
+}
+
+// Méthode à utiliser pour créer le formulaire en fonction du type de la grille
+$methods = [
+    'base'    => 'getSettingsForm',
+    'edit'    => 'getEditorSettingsForm',
+    'content' => 'getFormatSettingsForm',
+    'excerpt' => 'getFormatSettingsForm',
+];
+
+// Crée le formulaire
+$form = createForm($type->grids['base'], $grid, $methods[$grid->gridtype()]);
+$form->bind($grid->value());
+
+wp_styles()->enqueue(['docalist-biblio-edit-reference', 'docalist-biblio-grid-edit']);
+wp_scripts()->enqueue(['docalist-biblio-grid-edit']);
+?>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - %s - %s', 'docalist-biblio'), $database->label(), $type->label(), $grid->label()) ?></h2>
+    <h1><?= sprintf(__('%s - %s - %s', 'docalist-biblio'), $database->label(), $type->label(), $grid->label()) ?></h1>
 
     <p class="description">
         <?= __('L\'écran ci-dessous vous permet de personnaliser la grille.', 'docalist-biblio') ?>
@@ -115,119 +134,55 @@ wp_enqueue_style('docalist-biblio-edit-reference');
         <?= __('Utilisez le bouton "Ajouter un groupe" pour créer un nouveau groupe de champs.', 'docalist-biblio') ?>
         <?= __('Vous pouvez également modifier l\'ordre des champs et les déplacer d\'un groupe à un autre en faisant un glisser/déposer.', 'docalist-biblio') ?>
     </p>
-
     <form action ="" method="post">
-        <?php buttons($gridname) ?>
-        <ul id="fields" class="metabox-holder meta-box-sortables">
-            <?php
-                $i = 0;
-                foreach($grid->fields as $field) {
-                    renderBox($boxes[$i], $field, true);
-                    $i++;
-                }
-            ?>
-        </ul>
-        <?php buttons($gridname) ?>
+        <div id="poststuff">
+            <div id="post-body" class="metabox-holder columns-2">
+
+                <div id="post-body-content" style="position: relative;">
+                    <div class="grid <?=$gridname?> metabox-holder">
+                        <?php $form->display('wordpress') ?>
+                    </div>
+                </div>
+
+                <div id="postbox-container-1" class="postbox-container">
+                    <div class="stuffbox">
+                        <h3 class="hndle">Enregistrer</h3>
+                        <div class="inside">
+                            <p class="buttons">
+                                <button type="submit" class="button button-primary">
+                                    <?= __('Enregistrer les modifications', 'docalist-biblio') ?>
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                    <?php if ($gridname !== 'base') :?>
+                        <div class="stuffbox">
+                            <h3 class="hndle">Outils</h3>
+                            <div class="inside">
+                                <button type="button" class="button add-group">
+                                    <?= __('Ajouter un groupe de champs', 'docalist-biblio') ?>
+                                </button>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
     </form>
 
     <!-- Template utilisé pour créer de nouveaux groupes. -->
-    <script type="text/html" id="group-template">
-        <?php
-            $field = new Field([
-                'name' => 'group{group-number}',
+    <script type="text/html" id="group-template"><?php // Pas d'espace avant le début du formulaire sinon on a un warning jqueryMigrate "$.html() must start with '<'"
+            $schema = new Schema([
                 'type' => 'Docalist\Biblio\Type\Group',
+                'name' => 'group{group-number}',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
-                'newgroup' => true, // utilisé par Group::editForm() et MakeBox
                 'state' => '', // = normal
             ]);
 
-            $box = createBox($field, $gridname);
-            renderBox($box, $field, false);
-        ?>
-    </script>
+            $group = createForm($schema, $schema, $methods[$gridname]);
+            $group->removeClass('level1')->addClass('level2')->setName($schema->name()); // au level 1, createForm ne génère pas de nom
+
+            $form->get('fields')->add($group); // pour que les champs aient le bon nom
+            $group->display('wordpress')
+    ?></script>
 </div>
-
-<?php
-/**
- * Génère le formulaire permettant de paramètrer un champ (ou un groupe).
- *
- * Notre page est un gros formulaire, composé de chacun des "bouts de
- * formulaire" propre à chaque champ. Lorsque la page est enregistrée, tous les
- * champs sont transmis dans l'ordre de la page, ce qui fait qu'on n'a pas à
- * gérer nous-mêmes le tri des champs.
- *
- * @param Field $field
- * @param boolean $closed
- */
-function createBox(Field $schema, $gridname) {
-    $type = $schema->collection() ?: $schema->type();
-    $field = new $type(null, $schema);
-    switch($gridname) { /* @var $form Fragment */
-        case 'base':
-            $form = $field->baseSettings(); // paramètres de base
-            break;
-        case 'edit':
-            $form = $field->editSettings(); // paramètres de saisie
-            break;
-        default:
-            $form = $field->displaySettings(); // paramètres d'affichage
-            break;
-    }
-
-    // pour les nouveaux groupes il faut absolument avoir le type, sinon le groupe Field est créé comme un string (type par défaut)
-    if ($schema->newgroup) {
-        $form->hidden('type');
-    }
-
-    // On veut que les champs aient un nom de la forme champ[label]
-    // Pour cela, on insère le formulaire dans un fragment parent qui contient
-    // le nom du champ. Par contre, on fait le bind sur $form (sinon on ne
-    // peut pas récupérer les libellés/desc par défaut).
-    $parent = new Fragment($form->name());
-    $form->name('');
-    $parent->add($form);
-    $form->bind($schema->toArray());
-
-    return $form;
-}
-
-function renderBox(Fragment $form, Field $schema, $closed = true) { ?>
-    <?php
-        $type = $schema->collection() ?: $schema->type();
-        $class = ['postbox'];
-        $closed && $class[] = 'closed';
-        if ($type === 'Docalist\Biblio\Type\Group') {
-            $class[] = 'group';
-        } else {
-            $class[] = $schema->name();
-        }
-        $schema->capability() && $class[] = 'has-cap';
-        $class = implode(' ', $class);
-     ?>
-    <li id="<?= $schema->name() ?>" class="<?=$class ?>">
-        <div class="handlediv"></div>
-        <h3 class="hndle"><span><?= $schema->label() ?: $schema->name() ?></span></h3>
-        <div class="inside">
-            <?php $form->render('wordpress') ?>
-        </div>
-    </li><?php
-}
-
-/**
- * Génère les boutons "Ajouter une groupe" et "Enregistrer les modifications".
- *
- * Sous forme de fonction pour permettre de répéter les boutons en haut et en
- * bas de page.
- */
-function buttons($gridname) { ?>
-    <p class="buttons" style="text-align: right">
-        <?php if ($gridname !== 'base') :?>
-            <button type="button" class="button add-group">
-                <?= __('Ajouter un groupe', 'docalist-biblio') ?>
-            </button>
-        <?php endif;?>
-        <button type="submit" class="button-primary ">
-            <?= __('Enregistrer les modifications', 'docalist-biblio') ?>
-        </button>
-    </p><?php
-}?>
