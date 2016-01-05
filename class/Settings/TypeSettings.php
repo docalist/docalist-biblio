@@ -32,35 +32,40 @@ use Docalist\Schema\Schema;
  * @property Text $description Description.
  * @property Schema[] $grids Grilles de saisie et d'affichage.
  */
-class TypeSettings extends Composite {
-    static protected function loadSchema() {
+class TypeSettings extends Composite
+{
+    public static function loadSchema()
+    {
         return [
             'fields' => [
                 'name' => [ // article, book, etc.
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Nom du type', 'docalist-biblio'),
-                    'description' => __("Nom de code utilisé en interne pour désigner le type.", 'docalist-biblio'),
+                    'description' => __('Nom de code utilisé en interne pour désigner le type.', 'docalist-biblio'),
                 ],
 
                 'label' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Libellé du type', 'docalist-biblio'),
                     'description' => __('Libellé utilisé pour désigner ce type.', 'docalist-biblio'),
                 ],
 
                 'description' => [
+                    'type' => 'Docalist\Type\LargeText',
                     'label' => __('Description', 'docalist-biblio'),
-                    'description' => __("Description du type.", 'docalist-biblio'),
+                    'description' => __('Description du type.', 'docalist-biblio'),
                 ],
 
                 // helpurl -> lien vers page qui décrit le type
                 // droits ?
 
                 'grids' => [
-                    'type' => 'Docalist\Schema\Schema*',
+                    'type' => 'Docalist\Biblio\Grid*',
                     'key' => 'name', // edit, display-full, display-short, ...
                     'label' => __('Grilles et formulaires', 'docalist-biblio'),
                     'description' => __("Grilles de saisie et d'affichage pour ce type.", 'docalist-biblio'),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

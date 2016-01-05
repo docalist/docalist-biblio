@@ -18,18 +18,20 @@ namespace Docalist\Biblio\Settings;
  *
  * @property DatabaseSettings[] $databases Liste des bases.
  */
-class Settings extends \Docalist\Type\Settings {
+class Settings extends \Docalist\Type\Settings
+{
     protected $id = 'docalist-biblio-settings';
 
-    static protected function loadSchema() {
+    public static function loadSchema()
+    {
         return [
             'fields' => [
                 'databases' => [
                     'type' => 'Docalist\Biblio\Settings\DatabaseSettings*',
                     'key' => 'name',
                     'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }
