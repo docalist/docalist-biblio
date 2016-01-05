@@ -57,7 +57,7 @@ use Docalist\Schema\Schema;
  * - a une périodicité
  */
 class Periodical extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

@@ -107,7 +107,7 @@ use Docalist\Schema\Schema;
  * - pas d'auteur personne physique
  */
 class Meeting extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

@@ -39,7 +39,7 @@ use Docalist\Schema\Schema;
  * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
  */
 class Degree extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

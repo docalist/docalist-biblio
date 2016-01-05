@@ -29,7 +29,7 @@ use Docalist\Schema\Schema;
  * - a un parent de type Periodical
  */
 class PeriodicalIssue extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

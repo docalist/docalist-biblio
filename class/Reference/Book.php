@@ -38,7 +38,7 @@ use Docalist\Schema\Schema;
  * - pagination de type "nombre de pages"
  */
 class Book extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

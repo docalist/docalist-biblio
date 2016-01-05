@@ -40,7 +40,7 @@ use Docalist\Schema\Schema;
 
 // TODO : ne pas appeller ça "rapport". Ce que ça désigne, c'est une monographie non éditée (pas d'isbn)
 class Report extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
