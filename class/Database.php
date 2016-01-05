@@ -19,7 +19,6 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
-use Docalist\Search\Indexer;
 use Docalist\Search\TypeIndexer;
 use Docalist\Search\SearchRequest;
 use WP_Post;
@@ -148,10 +147,13 @@ class Database extends PostTypeRepository {
             // cela fonctionne.
 
             // Charge la notice en mode "affichage court"
-            $ref = $this->load($post->ID, 'excerpt');
+            $ref = $this->load($post->ID);
+
+            // Charge la grille
+            $grid = $this->settings->types[$ref->type()]->grids['excerpt'];
 
             // Formatte la notice
-            return $ref->format();
+            return $ref->getFormattedValue($grid);
         }, 9999); // priorité très haute pour ignorer wp_autop et cie.
 
         add_filter('the_content', function($content) {
@@ -162,18 +164,24 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
-            // Charge la notice en mode "affichage long" (court si archive)
-            $ref = $this->load($post->ID, is_archive() ? 'excerpt' : 'content');
+            // Charge la notice
+            $ref = $this->load($post->ID);
+
+            // Détermine la grille à utiliser : "affichage long" par défaut, "affichage court" si archive
+            $grid = is_archive() ? 'excerpt' : 'content';
+
+            // Charge la grille
+            $grid = $this->settings->types[$ref->type()]->grids[$grid];
 
             // Formatte la notice
-            return $ref->format();
+            return $ref->getFormattedValue($grid);
         }, 9999); // priorité très haute pour ignorer wp_autop et cie.
     }
 
     /**
      * @return Reference
      */
-    public function load($id, $context = null) {
+    public function load($id) {
         // Vérifie que l'ID est correct
         $id = $this->checkId($id);
 
@@ -181,7 +189,7 @@ class Database extends PostTypeRepository {
         $post = $this->loadData($id);
 
         // Crée la référence
-        return $this->fromPost($post, $context);
+        return $this->fromPost($post);
     }
 
     /**
@@ -191,7 +199,7 @@ class Database extends PostTypeRepository {
      * @throws InvalidArgumentException
      * @return Reference
      */
-    public function fromPost($post, $context = null) {
+    public function fromPost($post) {
         // Si on nous passé un objet WP_Post, on le convertit en tableau
         if (is_object($post)) {
             $post = (array) $post;
@@ -206,92 +214,102 @@ class Database extends PostTypeRepository {
         $data = $this->decode($post, $id);
 
         // Récupère le type de la notice
-        if (isset($data['type'])) {
-            $type = $data['type'];
+        if (!isset($data['type'])) {
+            throw new InvalidArgumentException("No type found in reference");
+        }
+        $type = $data['type'];
+
+        // Vérifie que ce type de notice figure dans la base
+        if (! isset($this->settings->types[$type])) {
+            $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
+            $msg = sprintf($msg, $type);
+            throw new InvalidArgumentException($msg);
         }
 
-        // Si la notice n'a pas de type (erreur interne), impossible d'utiliser un contexte
-        else {
-            if ($context === 'edit') {
-                add_action('admin_notices', function() {
-                    printf('<div class="error"><p>%s %s</p></div>',
-                        __('Aucun type de notice indiqué dans cette référence.', 'docalist-biblio'),
-                        __('Chargement de la grille par défaut.', 'docalist-biblio')
-                    );
-                });
-            }
-            $context = null;
+        // Debug - vérifie que la grille 'base' existe
+        if (! isset($this->settings->types[$type]->grids['base'])) {
+            $msg = __("La grille de base n'existe pas pour le type %s.", 'docalist-biblio');
+            throw new InvalidArgumentException(sprintf($msg, $type));
         }
 
-        // Détermine le schéma à utiliser en fonction du contexte demandé
-        if (is_null($context)) {
-            $schema = null; // reference brute sans schéma personnalisé
-        } else {
-            if (! isset($this->settings->types[$type])) {
-                // erreur : on a une notice dont le type ne figure pas dans les settings de la base
-                $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
-                $msg = sprintf($msg, $type);
-                if ($context === 'edit') {
-                    add_action('admin_notices', function() use ($msg) {
-                        printf('<div class="error"><p>%s %s</p></div>',
-                            $msg,
-                            __('Chargement de la grille par défaut.', 'docalist-biblio')
-                        );
-                    });
-                    // schéma = null = grille par défaut
-                } else {
-                    throw new InvalidArgumentException($msg);
-                }
-            } else {
-                if (! isset($this->settings->types[$type]->grids[$context])) {
-                    $msg = __("La grille %s n'existe pas pour le type %s.", 'docalist-biblio');
-                    throw new InvalidArgumentException(sprintf($msg, $context, $type));
-                } else {
-                    $schema = $this->settings->types[$type]->grids[$context];
-                }
-            }
-        }
+        // Ok
+        $schema = $this->settings->types[$type]->grids['base'];
 
         // Crée la référence avec le schéma demandé
-        $type = $this->type; // Reference
+        $type = $this->type; // Type
         return new $type($data, $schema, $id);
     }
 
     /**
-     * Affiche une notice.
+     * Crée une notice du type indiqué.
      *
-     * @param string $format Nom du format d'affichage (correspond au nom de la
-     * vue qui sera utilisée : docalist-biblio:format/$format).
-     * @param null|int|Reference $ref La notice à formatter.
+     * Par défaut la notice est initialisée avec les valeurs par défaut qui figurent dans le schéma
+     * du type (grille 'base'). Si on indique une grille, il doit s'agit d'un formulaire de saisie
+     * ('edit') et dans ce cas, ce sont les valeurs par défaut indiquées pour le formualaire qui
+     * seront appliquées.
      *
-     * @throws InvalidArgumentException Si Ref invalide ou erreur dans la vue
+     * @param string $type Nom du type de notice à créer.
+     * @param array  $data Optionnel, données initiales de la notice. Si null, utilise la valeur par défaut.
+     * @param string $grid Optionnel, nom du formulaire de saisie à utiliser pour initialiser la valeur par défaut.
+     * N'est utilisé que si $data vaut null.
+     *
+     * @throws InvalidArgumentException
      */
-    protected function display($format = 'content', $ref = null) {
-        // Aucune ref passée en paramètre
-        if (is_null($ref)) {
-            global $post;
+    public function createReference($type, array $data = null, $grid = null) {
+        // Remarque : valeur par défaut / données initiales de la notice
+        // - Si $data a été transmis (non null), ce sont ces données qu'on va utiliser pour initialiser la notice.
+        // - Si $data est null, Any va initialiser la notice avec la valeur par défaut du schéma qu'on lui passe
+        // - Si un formulaire a été indiqué et que $data est null, c'est la valeur par défaut du formulaire qui
+        //   sera utilisée
 
-            $ref = $this->load($post->ID);
+        // Vérifie que le type indiqué figure dans la base
+        if (! isset($this->settings->types[$type])) {
+            throw new InvalidArgumentException("Type '$type' does not exist in database");
         }
 
-        // On nous a passé un numéro de référence
-        elseif (is_scalar($ref)) {
-            $ref = $this->load($ref);
+        // Vérifie que la grille de base (schéma) existe (debug / sanity check)
+        if (! isset($this->settings->types[$type]->grids['base'])) {
+            throw new InvalidArgumentException("Grid 'base' does not exist for type '$type'");
         }
 
-        // On nous a passé un objet Reference
-        elseif ($ref instanceof Reference) {
-            // ok
+        // Ok, on a le schéma
+        $schema = $this->settings->types[$type]->grids['base'];
+
+        // Si une grille a été indiquée, vérifie qu'elle existe et que c'est bien un formulaire
+        if (is_null($data) && ! is_null($grid)) {
+            // La grille doit exister
+            if (! isset($this->settings->types[$type]->grids[$grid])) {
+                throw new InvalidArgumentException("Grid '$grid' does not exist for type '$type'");
+            }
+            $grid = $this->settings->types[$type]->grids[$grid];
+
+            // La grille doit être du type 'edit'
+            if ($grid->gridtype() !== 'edit') {
+                throw new InvalidArgumentException("Grid '$grid' is not an edit form");
+            }
+
+            // Si on n'a pas de données, on utilise la valeur par défaut du formulaire
+            if (is_null($data)) {
+                $data = $grid->getDefaultValue();   // peut retourner []
+                empty($data) && $data = null;       // dans ce cas, utilise la valeur par défaut du schéma
+            }
         }
 
-        // Erreur
-        else {
-            throw new InvalidArgumentException('invalid ref');
+        // Détermine le nom de la classe php correspondant au type de notice
+        $types = apply_filters('docalist_biblio_get_types', []);
+        if (! isset($types[$type])) {
+            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
+            // qui fournissait ces types.
+            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
         }
+        $class = $types[$type];
 
-        // Exécute la vue
-        $view = "docalist-biblio:format/$format";
-        docalist('views')->display($view, ['this' => $this, 'ref' => $ref]);
+        // Ok, crée la notice
+        $ref = new $class($data, $schema);
+
+        $ref->type = $type;
+
+        return $ref;
     }
 
     /**
