@@ -14,40 +14,11 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Schema\Schema;
-use Exception;
-
 /**
  * Une référence documentaire.
  */
 class Reference extends Type
 {
-    /**
-     * Crée une notice du type indiqué.
-     *
-     * @param string $type
-     * @param array $value
-     * @param Schema $schema
-     * @param string $id
-     *
-     * @return Reference
-     * @throws Exception
-     */
-    public static function create($type, array $value = null, Schema $schema = null, $id = null)
-    {
-        $types = apply_filters('docalist_biblio_get_types', []);
-        if (! isset($types[$type])) {
-            throw new Exception("Type de notice inexistant : $type");
-        }
-        $class = $types[$type];
-
-        $ref = new $class($value, $schema, $id); /* @var $ref Reference */
-        $ref->type = $type;
-
-        return $ref;
-    }
-
-
     public static function loadSchema()
     {
         return [
