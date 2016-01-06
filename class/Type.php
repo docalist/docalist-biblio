@@ -24,7 +24,7 @@ use Docalist\Forms\Container;
 /**
  * Référence documentaire.
  *
- * @property Docalist\Biblio\Field\PostType $posttype
+ * @property Docalist\Biblio\Type\PostType $posttype
  * @property Docalist\Biblio\Field\Status $status
  * @property Docalist\Biblio\Field\Creation $creation
  * @property Docalist\Biblio\Field\CreatedBy $createdBy
@@ -44,7 +44,7 @@ class Type extends Entity
             'description' => __('Type de base docalist-biblio.', 'docalist-biblio'),
             'fields' => [
                 'posttype' => [  // Alias de post_type
-                    'type' => 'Docalist\Biblio\Field\PostType',
+                    'type' => 'Docalist\Biblio\Type\PostType',
                     'label' => __('Post Type', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
