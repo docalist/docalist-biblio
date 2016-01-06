@@ -39,24 +39,38 @@ use Docalist\Schema\Schema;
  * - pagination de type "page de début - page de fin"
  */
 class Article extends Reference {
-    static protected function loadSchema() {
-        // Récupère les champs d'une référence standard
-        $fields = parent::loadSchema()['fields'];
-
-        // Supprime les champs qu'on n'utilise pas
-        unset($fields['editor']);
-        unset($fields['collection']);
-
-        // Personnalise les tables, les libellés, les description, etc.
-        // todo
-
-        // Contruit notre schéma
+    static public function loadSchema() {
         return [
             'name' => 'article',
             'label' => __('Article de périodique', 'docalist-biblio'),
             'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
-            'fields' => $fields,
+            'fields' => [
+                'editor' => [
+                    'unused' => true
+                ],
+                'collection' => [
+                    'unused' => true
+                ],
+            ],
         ];
+
+//         // Récupère les champs d'une référence standard
+//         $fields = parent::loadSchema()['fields'];
+
+//         // Supprime les champs qu'on n'utilise pas
+//         unset($fields['editor']);
+//         unset($fields['collection']);
+
+//         // Personnalise les tables, les libellés, les description, etc.
+//         // todo
+
+//         // Contruit notre schéma
+//         return [
+//             'name' => 'article',
+//             'label' => __('Article de périodique', 'docalist-biblio'),
+//             'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
+//             'fields' => $fields,
+//         ];
     }
 
     static public function editGrid() {
