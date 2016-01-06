@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Integer;
 use Docalist\MappingBuilder;
@@ -19,7 +19,7 @@ use Docalist\MappingBuilder;
 /**
  * Le numéro de référence de la notice.
  */
-class Ref extends Integer
+class RefNumber extends Integer
 {
     public function setupMapping(MappingBuilder $mapping)
     {

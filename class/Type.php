@@ -31,7 +31,7 @@ use Docalist\Forms\Container;
  * @property Docalist\Biblio\Type\PostModified  $lastupdate
  * @property Docalist\Type\Text $password
  * @property Docalist\Type\Integer $parent
- * @property Docalist\Biblio\Field\Ref $ref
+ * @property Docalist\Biblio\Type\RefNumber     $ref
  * @property Docalist\Type\Text $slug
  * @property Docalist\Biblio\Field\Type $type
  */
@@ -82,7 +82,7 @@ class Type extends Entity
                     'label' => __('Slug de la fiche', 'docalist-biblio'),
                 ],
                 'ref' => [
-                    'type' => 'Docalist\Biblio\Field\Ref',
+                    'type' => 'Docalist\Biblio\Type\RefNumber',
                     'label' => __('Numéro de fiche', 'docalist-biblio'),
                     'description' => __('Numéro unique identifiant la fiche.', 'docalist-biblio'),
                 ],
