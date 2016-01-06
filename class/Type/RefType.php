@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
 use Docalist\Forms\Select;
@@ -20,7 +20,7 @@ use Docalist\MappingBuilder;
 /**
  * Le type de la notice.
  */
-class Type extends Text
+class RefType extends Text
 {
     // Remarque :
     // Pour getFormattedValue et getEditorForm, on n'utilise pas le bon libellé.
