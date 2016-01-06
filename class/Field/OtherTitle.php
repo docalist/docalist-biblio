@@ -13,27 +13,29 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Autre titre.
  *
- * @property String $type
- * @property String $value
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\Text $value
  *
  */
 class OtherTitle extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // @formatter:off
         return [
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:titles',
                     'label' => __('Type de titre', 'docalist-biblio'),
                 ],
                 'value' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Autre titre', 'docalist-biblio'),
                 ]
             ]
@@ -41,35 +43,40 @@ class OtherTitle extends MultiField {
         // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('othertitle')->text();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('othertitle')->text();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['othertitle'][] = $this->__get('value')->value();
     }
 
-    protected static function initFormats() {
-        self::registerFormat('v', 'Titre', function(OtherTitle $title) {
-            return $title->__get('value')->value();
-        });
+    public function getAvailableFormats()
+    {
+        return [
+            'v' => __('Titre', 'docalist-biblio'),
+            't : v' => __('Type : Titre', 'docalist-biblio'),
+            't: v' => __('Type: Titre', 'docalist-biblio'),
+            'v (t)' => __('Titre (Type)', 'docalist-biblio'),
+        ];
+    }
 
-        self::registerFormat('t : v', 'Type : Titre', function(OtherTitle $title, OtherTitles $parent) {
-            return $parent->lookup($title->type()) . ' : ' . $title->__get('value')->value();
-            // espace insécable avant le ':'
-        });
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-        self::registerFormat('t: v', 'Type: Titre', function(OtherTitle $title, OtherTitles $parent) {
-            return $parent->lookup($title->type()) . ': ' . $title->__get('value')->value();
-        });
+        $type = $this->formatField('type', $options);
+        $title = $this->formatField('value', $options);
 
-        self::registerFormat('v (t)', 'Titre (Type)', function(OtherTitle $title, OtherTitles $parent) {
-            $result = $title->__get('value')->value();
-            isset($title->type) && $result .= ' (' . $parent->lookup($title->type()) . ')';
-            // espace insécable avant '('
+        switch ($format) {
+            case 'v':       return $title;
+            case 't : v':   return $type . ' : ' . $title; // espace insécable avant le ':'
+            case 't: v':    return $type . ': ' . $title;
+            case 'v (t)':   return empty($type) ? $title : $title . ' ('  . $type . ')'; // espace insécable avant '('
+        }
 
-            return $result;
-        });
+        throw new InvalidArgumentException("Invalid OtherTitle format '$format'");
     }
 
     public function filterEmpty($strict = true) {

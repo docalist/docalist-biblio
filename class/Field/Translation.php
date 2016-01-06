@@ -13,26 +13,28 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Une traduction du titre original du document.
  *
- * @property String $language
- * @property String $title
+ * @property Docalist\Type\TableEntry $language
+ * @property Docalist\Type\Text $title
  */
 class Translation extends MultiField {
-    static protected $groupkey = 'language';
-
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // @formatter:off
         return [
             'fields' => [
                 'language' => [
+                    'type' => 'Docalist\Type\TableEntry',
                     'label' => __('Langue', 'docalist-biblio'),
+                    'table' => 'table:ISO-639-2_alpha3_EU_fr',
                 ],
                 'title' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Titre traduit', 'docalist-biblio'),
                 ]
             ]
@@ -40,35 +42,45 @@ class Translation extends MultiField {
         // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('translation')->text();
+    protected function getCategoryField()
+    {
+        return 'language';
     }
 
-    public function map(array & $document) {
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('translation')->text();
+    }
+
+    public function mapData(array & $document) {
         $document['translation'][] = $this->title();
     }
 
-    protected static function initFormats() {
-        self::registerFormat('t', 'Traduction', function(Translation $title) {
-            return $title->title();
-        });
+    public function getAvailableFormats()
+    {
+        return [
+            't' => 'Traduction',
+            'l : t' => 'langue : Traduction',
+            'l: t' => 'langue : Traduction',
+            't (l)' => 'Traduction (langue)',
+        ];
+    }
 
-        self::registerFormat('l : t', 'langue : Traduction', function(Translation $title, Translations $parent) {
-            return $parent->lookup($title->language()) . ' : ' . $title->title();
-            // espace insécable avant le ':'
-        });
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-        self::registerFormat('l: t', 'langue : Traduction', function(Translation $title, Translations $parent) {
-            return $parent->lookup($title->language()) . ': ' . $title->title();
-        });
+        $language = $this->formatField('language', $options);
+        $title = $this->formatField('title', $options);
 
-        self::registerFormat('t (l)', 'Traduction (langue)', function(Translation $title, Translations $parent) {
-            $result = $title->title();
-            isset($title->language) && $result .= ' (' . $parent->lookup($title->language()) . ')';
-            // espace insécable avant '('
+        switch ($format) {
+            case 't':       return $title;
+            case 'l : t':   return $language . ' : ' . $title; // espace insécable avant le ':'
+            case 'l: t':    return $language . ': ' . $title;
+            case 't (l)':   return empty($language) ? $title : $title . ' ('  . $language . ')'; // espace insécable avant '('
+        }
 
-            return $result;
-        });
+        throw new InvalidArgumentException("Invalid Translation format '$format'");
     }
 
     public function filterEmpty($strict = true) {

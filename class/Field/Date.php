@@ -13,79 +13,70 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Date.
  *
- * @property String $type
- * @property String $value
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\Text $value
  */
 class Date extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:dates',
                     'label' => __('Type de date', 'docalist-biblio'),
     //                 'description' => __('Date', 'docalist-biblio'),
                 ],
                 'value' => [
+                    'type' => 'Docalist\Type\FuzzyDate',
                     'label' => __('Date', 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('date')->date();
-        $mapping->template('date.*')->idem('date')->copyTo('date');
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('date')->date();
+        $mapping->addTemplate('date.*')->copyFrom('date')->copyDataTo('date');
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['date.' . $this->type()][] = $this->__get('value')->value();
     }
 
-    // TODO : créer un Type date
-    // en attentant, la méthode est publique pour permettre à Event d'y accéder
-    public static function formatDate($date) {
-        if (strlen($date) < 4) {
-            return $date;
-        }
-
-        $year = substr($date, 0, 4);
-        $month = (strlen($date) < 6) ? '' : substr($date, 4, 2);
-        $day = (strlen($date) < 8) ? '' : substr($date, 6, 2);
-
-        $h = $year;
-        $month && $h = $month . '/' . $h;
-        $day && $h = $day . '/' . $h;
-
-        return $h;
+    public function getAvailableFormats()
+    {
+        return [
+            'date'          => 'Date uniquement',
+            'date (type)'   => 'Date (type)',
+        ];
     }
 
-    protected static function initFormats() {
-        self::registerFormat('date (type)', 'JJ/MM/AAAA (type)', function(Date $date, Dates $parent) {
-            return self::formatDate($date->__get('value')->value(), '') .
-                   ' (' . $parent->lookup($date->type()) . ')';
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
+        $date = $this->formatField('value', $options);
+        switch ($format) {
+            case 'date':
+            case 'month/year': // format dispo avant, à virer
+            case 'year': // format dispo avant, à virer
+                return $date;
 
-        });
-
-        self::registerFormat('date', 'JJ/MM/AAAA', function(Date $date) {
-            return self::formatDate($date->__get('value')->value(), '');
-        });
-
-        self::registerFormat('month/year', 'MM/AAAA', function(Date $date, Dates $parent) {
-            return substr(self::callFormat('date', $date, $parent), 3);
-        });
-
-        self::registerFormat('year', 'AAAA', function(Date $date, Dates $parent) {
-            return substr(self::callFormat('date', $date, $parent), -4);
-        });
+            case 'date (type)':
+                if (isset($this->type)) {
+                    $date && $date .= ' '; // espace insécable avant '('
+                    $date .= '(' . $this->formatField('type', $options) . ')';
+                }
+                return $date;
+        }
+        throw new InvalidArgumentException("Invalid Date format '$format'");
     }
 
     public function filterEmpty($strict = true) {

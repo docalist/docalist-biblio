@@ -13,11 +13,12 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
+use Docalist\Type\LargeText;
 
 /**
  * La source d'une notice importée.
  */
-class Imported extends String {
+class Imported extends LargeText
+{
     // map : champ non indexé
 }

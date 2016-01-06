@@ -13,42 +13,41 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
 
 /**
  * Relation
  *
- * @property String $type
- * @property Integer[] $ref
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\Integer[] $ref
  */
 class Relation extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:relations',
                     'label' => __('Type', 'docalist-biblio'),
                     'description' => __('Type de relation', 'docalist-biblio'),
                 ],
                 'ref' => [
-                    'type' => 'int*',
+                    'type' => 'Docalist\Type\Integer*',
                     'label' => __('Notices liées', 'docalist-biblio'),
                     'description' => __('Numéro de référence des notices (Ref)', 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('relation')->long();
-        $mapping->template('relation.*')->idem('relation')->copyTo('relation');
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('relation')->integer();
+        $mapping->addTemplate('relation.*')->copyFrom('relation')->copyDataTo('relation');
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['relation.' . $this->type()][] = $this->ref();
     }
 

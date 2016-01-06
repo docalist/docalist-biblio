@@ -13,25 +13,28 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Composite;
+use Docalist\MappingBuilder;
 
 /**
  * Collection et numéro au sein de la collection.
  *
- * @property String $name
- * @property String $number
+ * @property Docalist\Type\Text $name Name of the collection.
+ * @property Docalist\Type\Text $number Number in the collection.
  */
-class Collection extends Object {
-    static protected function loadSchema() {
+class Collection extends Composite {
+    static public function loadSchema() {
         // @formatter:off
         return [
+            'editor' => 'table',
             'fields' => [
                 'name' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __("Nom", 'docalist-biblio'),
                     'description' => __('Nom de la collection ou de la sous-collection.', 'docalist-biblio'),
                 ],
                 'number' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Numéro', 'docalist-biblio'),
                     'description' => __('Numéro au sein de la collection ou de la sous-collection.', 'docalist-biblio'),
                 ]
@@ -40,11 +43,12 @@ class Collection extends Object {
         // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('collection')->text();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('collection')->text();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['collection'][] = $this->name();
     }
 

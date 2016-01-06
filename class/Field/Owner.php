@@ -13,18 +13,21 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 
 /**
  * Un producteur.
  */
-class Owner extends String {
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('owner')->text()->filter();
+class Owner extends Text
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('owner')->text()->filter();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         $document['owner'] = $this->value();
     }
 }

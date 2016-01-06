@@ -13,18 +13,21 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\StringTable;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\TableEntry;
+use Docalist\MappingBuilder;
 
 /**
  * Un support de document.
  */
-class Media extends StringTable {
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('media')->text()->filter();
+class Media extends TableEntry
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('media')->text()->filter();
     }
 
-    public function map(array & $document) {
-        $document['media'][] = $this->label();
+    public function mapData(array & $document)
+    {
+        $document['media'][] = $this->getEntryLabel();
     }
 }
