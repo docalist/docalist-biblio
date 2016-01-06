@@ -114,8 +114,7 @@ function createForm(Schema $schema, Schema $grid, $method = 'getSettingsForm')
 $methods = [
     'base'    => 'getSettingsForm',
     'edit'    => 'getEditorSettingsForm',
-    'content' => 'getFormatSettingsForm',
-    'excerpt' => 'getFormatSettingsForm',
+    'display' => 'getFormatSettingsForm',
 ];
 
 // Crée le formulaire
@@ -179,7 +178,7 @@ wp_scripts()->enqueue(['docalist-biblio-grid-edit']);
                 'state' => '', // = normal
             ]);
 
-            $group = createForm($schema, $schema, $methods[$gridname]);
+            $group = createForm($schema, $schema, $methods[$grid->gridtype()]);
             $group->removeClass('level1')->addClass('level2')->setName($schema->name()); // au level 1, createForm ne génère pas de nom
 
             $form->get('fields')->add($group); // pour que les champs aient le bon nom
