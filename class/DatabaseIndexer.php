@@ -14,12 +14,13 @@
 namespace Docalist\Biblio;
 
 use Docalist\Search\PostIndexer;
-use Docalist\Search\MappingBuilder;
+use Docalist\MappingBuilder;
 
 /**
-  * Un indexeur pour les notices d'une base documentaire.
+ * Un indexeur pour les notices d'une base documentaire.
  */
-class DatabaseIndexer extends PostIndexer {
+class DatabaseIndexer extends PostIndexer
+{
     /**
      * La base de données indexée.
      *
@@ -32,12 +33,14 @@ class DatabaseIndexer extends PostIndexer {
      *
      * @param Database $database La base à indexer.
      */
-    public function __construct(Database $database) {
+    public function __construct(Database $database)
+    {
         parent::__construct($database->postType());
         $this->database = $database;
     }
 
-    public function mapping() {
+    public function getMapping()
+    {
         // Crée une référence vide
         $type = $this->database->type();
         $ref = new $type(); /* @var $ref Reference */
@@ -46,28 +49,26 @@ class DatabaseIndexer extends PostIndexer {
         $defaultAnalyzer = $this->database->settings()->stemming();
 
         // Construit le mapping
-        $mappingBuilder = new MappingBuilder($defaultAnalyzer);
-        foreach($ref->schema()->fieldNames() as $field) {
-            $ref->$field->mapping($mappingBuilder, $this);
-        }
+        $mapping = docalist('mapping-builder'); /* @var MappingBuilder $mapping */
+        $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
+        $ref->setupMapping($mapping);
 
         // Ok
-        return $mappingBuilder->mapping();
+        return $mapping->getMapping();
     }
 
-    public function map($post) {
+    public function map($post)
+    {
         // Crée la référence à partir des données du post passé en paramètre
         if ($post instanceof Reference) {
             $ref = $post;
         } else {
-            $ref = $this->database->fromPost($post, 'content');
+            $ref = $this->database->fromPost($post);
         }
 
         // Mappe la notice
         $document = [];
-        foreach($ref->fields() as $field) { /* @var $field BiblioField */
-            $field->map($document, $this);
-        }
+        $ref->mapData($document);
 
         return $document;
     }
