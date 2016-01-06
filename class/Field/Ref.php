@@ -13,26 +13,21 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Integer;
-use Docalist\Forms\Input;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Integer;
+use Docalist\MappingBuilder;
 
 /**
  * Le numéro de référence de la notice.
  */
-class Ref extends Integer {
-    public function editForm() {
-        $field = new Input($this->schema->name());
-        $field->attribute('type', 'number');
-
-        return $field;
+class Ref extends Integer
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('ref')->integer();
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('ref')->long();
-    }
-
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         $document['ref'] = $this->value();
     }
 }

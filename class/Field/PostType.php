@@ -13,19 +13,22 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le PostType WordPress de la notice.
  */
-class PostType extends String {
-    public function mapping(MappingBuilder $mapping) {
+class PostType extends Text
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
         DatabaseIndexer::standardMapping('post_type', $mapping);
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         DatabaseIndexer::standardMap('post_type', $this->value(), $document);
     }
 }

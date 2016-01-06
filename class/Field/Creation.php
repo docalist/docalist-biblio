@@ -13,19 +13,20 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\DateTime;
+use Docalist\Type\DateTime;
 use Docalist\Biblio\DatabaseIndexer;
-use Docalist\Search\MappingBuilder;
+use Docalist\MappingBuilder;
 
 /**
  * La date de création de la notice.
  */
 class Creation extends DateTime {
-    public function mapping(MappingBuilder $mapping) {
+    public function setupMapping(MappingBuilder $mapping)
+    {
         DatabaseIndexer::standardMapping('post_date', $mapping);
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         DatabaseIndexer::standardMap('post_date', $this->value(), $document);
     }
 }

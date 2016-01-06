@@ -13,50 +13,53 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
+use Docalist\Type\Text;
 use Docalist\Forms\Select;
-use Docalist\Biblio\Reference;
-use Docalist\Search\MappingBuilder;
-use Docalist\Biblio\DatabaseIndexer;
+use Docalist\MappingBuilder;
 
 /**
  * Le type de la notice.
  */
-class Type extends String {
-    // Remarque (pour editForm et format) : on n'utilise pas le bon libellé
-    // le libellé utilisé est celui qui figure dans le schéma par défaut
-    // du type.
-    // Il faudrait utiliser le libellé définit pour le TypeSettings qui figure
-    // dans la base.
+class Type extends Text
+{
+    // Remarque :
+    // Pour getFormattedValue et getEditorForm, on n'utilise pas le bon libellé.
+    // Le libellé utilisé est celui qui figure dans le schéma par défaut du
+    // type alors qu'il faudrait utiliser le libellé définit pour le
+    // TypeSettings qui figure dans la base.
     // Problème : comment le champ peut-il savoir dans quelle base il est et
     // comment peut-il accéder aux settings correspondants ?
-    public function editForm() {
-        $types = [];
-        foreach(Reference::types() as $type => $class) {
-            $types[$type] = $class::defaultSchema()->label() . " ($type)";
+
+    public function getFormattedValue($options = null)
+    {
+        $types = apply_filters('docalist_biblio_get_types', []);
+        $type = $this->value();
+        if (isset($types[$type])) {
+            $type = $types[$type]::getDefaultSchema()->label();
+        }
+        return $type;
+    }
+
+    public function getEditorForm($options = null)
+    {
+        $types = apply_filters('docalist_biblio_get_types', []);
+        foreach ($types as $type => $class) {
+            $types[$type] = $class::getDefaultSchema()->label() . " ($type)";
         }
 
         $field = new Select($this->schema->name());
-        $field->options($types);
+        $field->setOptions($types);
 
         return $field;
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('type')->text()->filter();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('type')->text()->filter();
     }
 
-    public function map(array & $document) {
-        $document['type'] = $this->format();
-    }
-
-    public function format() {
-        $types = Reference::types();
-        $type = $this->value();
-        if (isset($types[$type])) {
-            $class = $types[$type];
-            $type = $class::defaultSchema()->label();
-        }
-        return $type;
+    public function mapData(array & $document)
+    {
+        $document['type'] = $this->getFormattedValue();
     }
 }

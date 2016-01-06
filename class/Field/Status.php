@@ -13,19 +13,22 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le statut wordpress de la notice.
  */
-class Status extends String {
-    public function mapping(MappingBuilder $mapping) {
+class Status extends Text
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
         DatabaseIndexer::standardMapping('post_status', $mapping);
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         DatabaseIndexer::standardMap('post_status', $this->value(), $document);
     }
 }
