@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio UserData" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
  * Copyright (C) 2015-2015 Daniel Ménard
  *
