@@ -24,11 +24,11 @@ use Docalist\Forms\Container;
 /**
  * Référence documentaire.
  *
- * @property Docalist\Biblio\Type\PostType $posttype
- * @property Docalist\Biblio\Type\PostStatus $status
- * @property Docalist\Biblio\Type\PostDate $creation
+ * @property Docalist\Biblio\Type\PostType      $posttype
+ * @property Docalist\Biblio\Type\PostStatus    $status
+ * @property Docalist\Biblio\Type\PostDate      $creation
  * @property Docalist\Biblio\Field\CreatedBy $createdBy
- * @property Docalist\Biblio\Field\LastUpdate $lastupdate
+ * @property Docalist\Biblio\Type\PostModified  $lastupdate
  * @property Docalist\Type\Text $password
  * @property Docalist\Type\Integer $parent
  * @property Docalist\Biblio\Field\Ref $ref
@@ -63,7 +63,7 @@ class Type extends Entity
                     'description' => __('Auteur de la fiche.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
-                    'type' => 'Docalist\Biblio\Field\LastUpdate',
+                    'type' => 'Docalist\Biblio\Type\PostModified',
                     'label' => __('Dernière modification', 'docalist-biblio'),
                     'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
                 ],

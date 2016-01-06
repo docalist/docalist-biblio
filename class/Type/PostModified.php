@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\DateTime;
 use Docalist\Biblio\DatabaseIndexer;
@@ -20,7 +20,7 @@ use Docalist\MappingBuilder;
 /**
  * La date de dernière modification de la notice.
  */
-class LastUpdate extends DateTime {
+class PostModified extends DateTime {
     public function setupMapping(MappingBuilder $mapping)
     {
         DatabaseIndexer::standardMapping('post_modified', $mapping);
