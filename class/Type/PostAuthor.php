@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
 use Docalist\MappingBuilder;
@@ -21,7 +21,7 @@ use WP_User;
 /**
  * L'auteur WordPress de la notice (login).
  */
-class CreatedBy extends Text
+class PostAuthor extends Text
 {
     public function setupMapping(MappingBuilder $mapping)
     {
