@@ -142,7 +142,7 @@ class Reference extends Type
                     'table' => 'table:content',
                 ],
                 'link' => [
-                    'type' => 'Docalist\Biblio\Field\Link*',
+                    'type' => 'Docalist\Biblio\Type\Link*',
                     'label' => __('Liens internet', 'docalist-biblio'),
                     'description' => __("Liens associés au document : site de l'auteur, accès au texte intégral, site de l'éditeur...", 'docalist-biblio'),
                     'table' => 'table:links',

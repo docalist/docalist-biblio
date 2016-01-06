@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\MultiField;
 use Docalist\MappingBuilder;
@@ -24,8 +24,6 @@ use InvalidArgumentException;
  * @property Docalist\Type\Url $url
  * @property Docalist\Type\Text $label
  * @property Docalist\Type\DateTime $date
- * @property Docalist\Type\DateTime $lastcheck
- * @property Docalist\Type\Text $checkstatus
  */
 class Link extends MultiField {
     static public function loadSchema() {
