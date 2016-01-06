@@ -26,7 +26,7 @@ use Docalist\Forms\Container;
  *
  * @property Docalist\Biblio\Type\PostType $posttype
  * @property Docalist\Biblio\Type\PostStatus $status
- * @property Docalist\Biblio\Field\Creation $creation
+ * @property Docalist\Biblio\Type\PostDate $creation
  * @property Docalist\Biblio\Field\CreatedBy $createdBy
  * @property Docalist\Biblio\Field\LastUpdate $lastupdate
  * @property Docalist\Type\Text $password
@@ -53,7 +53,7 @@ class Type extends Entity
                     'description' => __('Statut de la fiche.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
-                    'type' => 'Docalist\Biblio\Field\Creation',
+                    'type' => 'Docalist\Biblio\Type\PostDate',
                     'label' => __('Création', 'docalist-biblio'),
                     'description' => __('Date/heure de création de la fiche.', 'docalist-biblio'),
                 ],
