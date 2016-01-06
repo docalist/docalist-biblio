@@ -53,6 +53,7 @@ class Link extends MultiField {
                     'label' => __('Accédé le', 'docalist-biblio'),
                     'description' => __('Date', 'docalist-biblio'),
                 ],
+/*
                 'lastcheck' => [
                     'type' => 'Docalist\Type\DateTime',
                     'label' => __('Lien vérifié le', 'docalist-biblio'),
@@ -63,6 +64,7 @@ class Link extends MultiField {
                     'label' => __('Statut', 'docalist-biblio'),
                     'description' => __('Statut du lien lors de la dernière vérification.', 'docalist-biblio'),
                 ]
+*/
             ]
         ];
     }
