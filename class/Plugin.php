@@ -46,10 +46,9 @@ class Plugin {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
 
-        // Charge la configuration du plugin
-        $this->settings = new Settings(docalist('settings-repository'));
-
         add_action('init', function() {
+            // Charge la configuration du plugin
+            $this->settings = new Settings(docalist('settings-repository'));
 
             // Crée les bases de données définies par l'utilisateur
             $this->databases = array();
