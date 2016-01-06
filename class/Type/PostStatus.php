@@ -11,7 +11,7 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
 use Docalist\MappingBuilder;
@@ -20,7 +20,7 @@ use Docalist\Biblio\DatabaseIndexer;
 /**
  * Le statut wordpress de la notice.
  */
-class Status extends Text
+class PostStatus extends Text
 {
     public function setupMapping(MappingBuilder $mapping)
     {

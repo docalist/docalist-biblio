@@ -25,7 +25,7 @@ use Docalist\Forms\Container;
  * Référence documentaire.
  *
  * @property Docalist\Biblio\Type\PostType $posttype
- * @property Docalist\Biblio\Field\Status $status
+ * @property Docalist\Biblio\Type\PostStatus $status
  * @property Docalist\Biblio\Field\Creation $creation
  * @property Docalist\Biblio\Field\CreatedBy $createdBy
  * @property Docalist\Biblio\Field\LastUpdate $lastupdate
@@ -48,19 +48,19 @@ class Type extends Entity
                     'label' => __('Post Type', 'docalist-biblio'),
                 ],
                 'status' => [      // Alias de post_status
-                    'type' => 'Docalist\Biblio\Field\Status',
+                    'type' => 'Docalist\Biblio\Type\PostStatus',
                     'label' => __('Statut', 'docalist-biblio'),
-                    'description' => __('Statut de la notice.', 'docalist-biblio'),
+                    'description' => __('Statut de la fiche.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
                     'type' => 'Docalist\Biblio\Field\Creation',
                     'label' => __('Création', 'docalist-biblio'),
-                    'description' => __('Date/heure de création de la notice.', 'docalist-biblio'),
+                    'description' => __('Date/heure de création de la fiche.', 'docalist-biblio'),
                 ],
                 'createdBy' => [      // Alias de post_author
                     'type' => 'Docalist\Biblio\Field\CreatedBy',
                     'label' => __('Créé par', 'docalist-biblio'),
-                    'description' => __('Auteur de la notice.', 'docalist-biblio'),
+                    'description' => __('Auteur de la fiche.', 'docalist-biblio'),
                 ],
                 'lastupdate' => [  // Alias de post_modified
                     'type' => 'Docalist\Biblio\Field\LastUpdate',
@@ -70,26 +70,26 @@ class Type extends Entity
                 'password' => [  // Alias de post_password
                     'type' => 'Docalist\Type\Text',
                     'label' => __('Mot de passe', 'docalist-biblio'),
-                    'description' => __('Mot de passe de la notice.', 'docalist-biblio'),
+                    'description' => __('Mot de passe de la fiche.', 'docalist-biblio'),
                 ],
                 'parent' => [      // Alias de post_parent
                     'type' => 'Docalist\Type\Integer',
                     'label' => __('Notice parent', 'docalist-biblio'),
-                    'description' => __('Numéro de référence de la notice parent.', 'docalist-biblio'),
+                    'description' => __('Numéro de référence de la fiche parent.', 'docalist-biblio'),
                 ],
                 'slug' => [  // Alias de post_name
                     'type' => 'Docalist\Type\Text',
-                    'label' => __('Slug de la notice', 'docalist-biblio'),
+                    'label' => __('Slug de la fiche', 'docalist-biblio'),
                 ],
                 'ref' => [
                     'type' => 'Docalist\Biblio\Field\Ref',
-                    'label' => __('Numéro de référence', 'docalist-biblio'),
-                    'description' => __('Numéro unique identifiant la notice.', 'docalist-biblio'),
+                    'label' => __('Numéro de fiche', 'docalist-biblio'),
+                    'description' => __('Numéro unique identifiant la fiche.', 'docalist-biblio'),
                 ],
                 'type' => [
                     'type' => 'Docalist\Biblio\Field\Type',
-                    'label' => __('Type de notice', 'docalist-biblio'),
-                    'description' => __('Code indiquant le type de notice.', 'docalist-biblio'),
+                    'label' => __('Type de fiche', 'docalist-biblio'),
+                    'description' => __('Code indiquant le type de fiche.', 'docalist-biblio'),
                 ],
             ],
         ];
