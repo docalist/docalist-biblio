@@ -36,4 +36,37 @@ class Topics extends Collection
     {
         return new TopicsInput($this->schema->name(), $this->schema->table());
     }
+
+// TODO : à porter vers nouveau système + choix de la table dans les settings
+//     public function map(array & $document) {
+//         $tables = docalist('table-manager'); /* @var $tables TableManager */
+
+//         foreach($this->value as $topic) { /* @var $topic Topic */
+
+//             // Récupère la liste des termes
+//             $terms = $topic->term();
+
+//             // Récupère la table qui contient la liste des vocabulaires
+//             $tableName = explode(':', $this->schema->table())[1];
+//             $table = $tables->get($tableName); /* @var $table TableInterface */
+
+//             // Détermine la source qui correspond au type du topic
+//             $source = $table->find('source', 'code='. $table->quote($topic->type()));
+//             if ($source !== false) { // type qu'on n'a pas dans la table topics
+//                 list($type, $tableName) = explode(':', $source);
+
+//                 // Si la source est une table, on traduit les termes
+//                 if ($type === 'table' || $type === 'thesaurus') {
+//                     $table = $tables->get($tableName); /* @var $table TableInterface */
+//                     foreach ($terms as & $term) {
+//                         $result = $table->find('label', 'code=' . $table->quote($term));
+//                         $result !== false && $term = $result;
+//                     }
+//                 }
+//                 // Sinon, on indexe les codes
+//             }
+
+//             $document['topic.' . $topic->type()][] = $terms;
+//         }
+
 }
