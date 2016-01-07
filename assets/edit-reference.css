@@ -11,6 +11,7 @@
 /* Réduit un peu la largeur des th (label) dans le formulaire (200px par défaut) */
 .form-table th {
     width: 120px;
+    min-width: 120px;
 }
 .form-table th, .form-table td {
     padding: 30px 0 0 0;

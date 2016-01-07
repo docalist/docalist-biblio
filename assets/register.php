@@ -22,7 +22,7 @@ add_action('admin_init', function () {
         'docalist-biblio-edit-reference',
         "$url/assets/edit-reference.css",
         ['wp-admin'],
-        '140927'
+        '160106'
     );
 
     // Editeur de grille
