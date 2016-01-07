@@ -13,70 +13,76 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Un numéro propre au document (ISSN, ISBN, Volume, Fascicule...)
  *
- * @property String $type
- * @property String $value
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\Text $value
  */
 class Number extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:numbers',
                     'label' => __('Type', 'docalist-biblio'),
                     'description' => __('Type de numéro', 'docalist-biblio'),
                 ],
                 'value' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Numéro', 'docalist-biblio'),
                     'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('number')->string();
-        $mapping->template('number.*')->idem('number')->copyTo('number');
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('number')->literal();
+        $mapping->addTemplate('number.*')->copyFrom('number')->copyDataTo('number');
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['number.' . $this->type()][] = $this->__get('value')->value();
     }
 
-    protected static function initFormats() {
-        self::registerFormat('format', "Format indiqué dans la table d'autorité", function(Number $number, Numbers $parent) {
-            $format = $parent->lookup($number->type(), false, 'code', 'format');
-            return trim(sprintf($format, $number->__get('value')->value()));
-        });
+    public function getAvailableFormats()
+    {
+        return [
+            'format'    => __("Format indiqué dans la table d'autorité", 'docalist-biblio'),
+            'label'     => __("Libellé indiqué dans la table suivi du numéro", 'docalist-biblio'),
+            'v'         => __('Numéro uniquement, sans aucune mention', 'docalist-biblio'),
+            'v (t)'     => __('Numéro suivi du type entre parenthèses', 'docalist-biblio'),
+        ];
+    }
 
-        self::registerFormat('label', "Libellé indiqué dans la table suivi du numéro", function(Number $number, Numbers $parent) {
-            $label = $parent->lookup($number->type());
-            return trim($label . ' ' . $number->__get('value')->value());
-        });
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
+        $number = $this->formatField('value', $options);
+        switch ($format) {
+            case 'format':
+                $format = $this->type->getEntry('format') ?: $this->type() . ' %s';
+                return trim(sprintf($format, $number));
+            case 'label': // mal nommé, plutôt 't v'
+                return trim($this->formatField('type', $options) . ' ' . $number); // insécable
+            case 'v':
+                return $number;
+            case 'v (t)':
+                if (isset($this->type)) {
+                    $number && $number .= ' '; // espace insécable avant '('
+                    $number .= '(' . $this->formatField('type', $options) . ')';
+                }
+                return $number;
+        }
 
-        self::registerFormat('v', 'Numéro uniquement, sans aucune mention', function(Number $number) {
-            return $number->__get('value')->value();
-        });
-
-        self::registerFormat('v (t)', 'Numéro suivi du type entre parenthèses', function(Number $number, Numbers $parent) {
-            $result = $number->__get('value')->value();
-            if (isset($number->type)) {
-                $result && $result .= ' '; // espace insécable avant '('
-                $result .= '(' . $parent->lookup($number->type()) . ')';
-            }
-
-            return $result;
-        });
-
-        // TODO : return Number exemple ou array(Number, Number...)
+        throw new InvalidArgumentException("Invalid Number format '$format'");
     }
 
     public function filterEmpty($strict = true) {

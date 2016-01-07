@@ -11,44 +11,28 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
-use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
-/**
- * Date.
- *
- * @property Docalist\Type\TableEntry $type
- * @property Docalist\Type\Text $value
- */
-class Date extends MultiField {
+class TypedFuzzyDate extends TypedText
+{
     static public function loadSchema() {
         return [
+            'label' => __('Date', 'docalist-core'),
+            'description' => __('Date et type de date.', 'docalist-core'),
             'fields' => [
                 'type' => [
-                    'type' => 'Docalist\Type\TableEntry',
                     'table' => 'table:dates',
-                    'label' => __('Type de date', 'docalist-biblio'),
-    //                 'description' => __('Date', 'docalist-biblio'),
+                    'description' => __('Type de date', 'docalist-core'),
                 ],
                 'value' => [
                     'type' => 'Docalist\Type\FuzzyDate',
-                    'label' => __('Date', 'docalist-biblio'),
+                    'label' => __('Date', 'docalist-core'),
+                    'description' => __('Date au format AAAAMMJJ', 'docalist-core'),
                 ]
             ]
         ];
-    }
-
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('date')->date();
-        $mapping->addTemplate('date.*')->copyFrom('date')->copyDataTo('date');
-    }
-
-    public function mapData(array & $document) {
-        $document['date.' . $this->type()][] = $this->__get('value')->value();
     }
 
     public function getAvailableFormats()
@@ -77,18 +61,5 @@ class Date extends MultiField {
                 return $date;
         }
         throw new InvalidArgumentException("Invalid Date format '$format'");
-    }
-
-    public function filterEmpty($strict = true) {
-        // Supprime les éléments vides
-        $empty = parent::filterEmpty();
-
-        // Si tout est vide ou si on est en mode strict, terminé
-        if ($empty || $strict) {
-            return $empty;
-        }
-
-        // Retourne true si on n'a que le type et pas de date
-        return $this->filterEmptyProperty('value');
     }
 }

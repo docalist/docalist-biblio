@@ -13,45 +13,50 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
+use Docalist\Type\Text;
+use Docalist\Type\Composite;
 use Docalist\Forms\Table;
-use Docalist\Search\MappingBuilder;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Description d'un événement (colloque, réunion, soutenance, etc.)
  *
- * @property String $title
- * @property String $date
- * @property String $place
- * @property String $number
+ * @property Text $title
+ * @property Text $date
+ * @property Text $place
+ * @property Text $number
  */
-class Event extends Object {
-    static protected function loadSchema() {
-        // @formatter:off
+class Event extends Composite {
+    static public function loadSchema() {
         return [
             'fields' => [
                 'title' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Titre', 'docalist-biblio'),
                     'description' => __("Titre du congrès, nom de la réunion, etc.", 'docalist-biblio'),
                 ],
                 'date' => [
+                    'type' => 'Docalist\Type\FuzzyDate',
                     'label' => __('Date', 'docalist-biblio'),
                     'description' => __("Date de l'évènement.", 'docalist-biblio'),
                 ],
                 'place' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Lieu', 'docalist-biblio'),
                     'description' => __("Lieu de l'événement (ville et/ou pays).", 'docalist-biblio'),
                 ],
                 'number' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Numéro', 'docalist-biblio'),
                     'description' => __("Numéro éventuel associé à l'évènement.", 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function editForm() {
+    public function getEditorForm($options = null)
+    {
         $field = new Table($this->schema->name());
         $field->input('title')->addClass('event-title');
         $field->input('date')->addClass('event-date');
@@ -61,22 +66,36 @@ class Event extends Object {
         return $field;
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('event')->text();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('event')->text();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
     }
 
-    public function format() {
-        $h = $this->title();
-        isset($this->number) && $h .= ' (' . $this->number() . ')';
-        isset($this->place) && $h .= ', ' . $this->place();
-        isset($this->date) && $h .= ', ' . Date::formatDate($this->date());
-        // TODO : créer un type date avec une méthode format()
-        // utilisable également pour d'autres champs (date.value, par exemple)
+    public function getAvailableFormats()
+    {
+        return [
+            'default'   => __("Format par défaut", 'docalist-biblio'),
+        ];
+    }
 
-        return $h;
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
+        switch ($format) {
+            case 'default':
+                $h = $this->formatField('title', $options);
+                isset($this->number) && $h .= ' (' . $this->formatField('number', $options) . ')';
+                isset($this->place) && $h .= ', ' . $this->formatField('place', $options);
+                isset($this->date) && $h .= ', ' . $this->formatField('date', $options);
+
+                return $h;
+
+        }
+
+        throw new InvalidArgumentException("Invalid Event format '$format'");
     }
 }

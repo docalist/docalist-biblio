@@ -13,6 +13,7 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
@@ -45,10 +46,9 @@ class Plugin {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
 
-        // Charge la configuration du plugin
-        $this->settings = new Settings(docalist('settings-repository'));
-
         add_action('init', function() {
+            // Charge la configuration du plugin
+            $this->settings = new Settings(docalist('settings-repository'));
 
             // Crée les bases de données définies par l'utilisateur
             $this->databases = array();
@@ -64,8 +64,27 @@ class Plugin {
             new AdminDatabases($this->settings);
         });
 
+        // Déclare la liste des types définis dans ce plugin
+        add_filter('docalist_biblio_get_types', function(array $types) {
+            $types += [
+                'article'           => 'Docalist\Biblio\Reference\Article',
+                'book'              => 'Docalist\Biblio\Reference\Book',
+                'book-chapter'      => 'Docalist\Biblio\Reference\BookChapter',
+                'degree'            => 'Docalist\Biblio\Reference\Degree',
+                'film'              => 'Docalist\Biblio\Reference\Film',
+                'legislation'       => 'Docalist\Biblio\Reference\Legislation',
+                'meeting'           => 'Docalist\Biblio\Reference\Meeting',
+                'periodical'        => 'Docalist\Biblio\Reference\Periodical',
+                'periodical-issue'  => 'Docalist\Biblio\Reference\PeriodicalIssue',
+                'report'            => 'Docalist\Biblio\Reference\Report',
+                'website'           => 'Docalist\Biblio\Reference\WebSite',
+            ];
+
+            return $types;
+        });
+
         // Nos filtres
-        add_filter('docalist_biblio_get_reference', array($this, 'getReference'), 10, 2);
+        add_filter('docalist_biblio_get_reference', array($this, 'getReference'));
 
         // Liste des exporteurs définis dans ce plugin
         add_filter('docalist_biblio_get_export_formats', function(array $formats) {
@@ -137,15 +156,13 @@ class Plugin {
      * Implémentation du filtre 'docalist_biblio_get_reference'.
      *
      * @param string $id POST_ID de la référence à charger.
-     * @param string|null $grid Grille à utiliser ou null pour retourner un
-     * tableau contenant les données brutes.
      *
-     * @return Reference|array Retourne un objet Reference si une grille a été
+     * @return Reference Retourne un objet Reference si une grille a été
      * indiquée ; un tableau contenant les données de la notice sinon.
      *
      * @throws Exception
      */
-    public function getReference($id = null, $grid = null) {
+    public function getReference($id = null) {
         is_null($id) && $id = get_the_ID();
         $type = get_post_type($id);
 
@@ -155,6 +172,6 @@ class Plugin {
         }
 
         $database = $this->databases[$type]; /* @var $database Database */
-        return is_null($grid) ? $database->loadRaw($id) : $database->load($id, $grid);
+        return $database->load($id);
     }
 }

@@ -34,7 +34,7 @@ use Docalist\Schema\Schema;
  * - a une pagination de type "page de début - page de fin"
  */
 class BookChapter extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

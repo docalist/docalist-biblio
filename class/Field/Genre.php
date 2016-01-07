@@ -13,18 +13,21 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\StringTable;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\TableEntry;
+use Docalist\MappingBuilder;
 
 /**
  * Un genre de document.
  */
-class Genre extends StringTable {
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('genre')->text()->filter();
+class Genre extends TableEntry
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('genre')->text()->filter();
     }
 
-    public function map(array & $document) {
-        $document['genre'][] = $this->label();
+    public function mapData(array & $document)
+    {
+        $document['genre'][] = $this->getEntryLabel();
     }
 }

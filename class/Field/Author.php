@@ -13,47 +13,44 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Auteur personne physique.
  *
- * @property String $name
- * @property String $firstname
- * @property String $role
+ * @property Docalist\Type\Text $name
+ * @property Docalist\Type\Text $firstname
+ * @property Docalist\Type\TableEntry $role
  */
 class Author extends MultiField {
-    static protected $groupkey = 'role';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
             'fields' => [
                 'name' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Nom', 'docalist-biblio'),
                     'description' => __("Nom de la personne", 'docalist-biblio'),
                 ],
                 'firstname' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Prénom', 'docalist-biblio'),
                     'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
                 ],
                 'role' => [
+                    'type' => 'Docalist\Type\TableEntry',
                     'label' => __('Rôle', 'docalist-biblio'),
                     'description' => __('Fonction', 'docalist-biblio'),
+                    'table' => 'thesaurus:marc21-relators_fr',
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function __toString() {
-        $result = $this->name();
-
-        isset($this->firstname) && $result .= ' (' . $this->firstname() . ')';
-        isset($this->role) && $result .= ' / ' . $this->role();
-
-        return $result;
+    protected function getCategoryField()
+    {
+        return 'role';
     }
 
     /**
@@ -63,54 +60,57 @@ class Author extends MultiField {
     public static function etal() {
         return new self(['name' => 'et al.']);
     }
-
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('author')->string()->filter()->suggest();
+/*
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('author')->literal()->filter()->suggest();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
+        echo __METHOD__, '<br />';
         $document['author'][] = $this->name() . '¤' . $this->firstname();
     }
-
-    protected static function initFormats() {
-        self::registerFormat('f n (r)', 'Charlie Chaplin (Acteur)', function(Author $aut, Authors $parent) {
-            //self::callFormat('f n', $aut, $parent);
-            $t = [];
-            isset($aut->firstname) && $t[] = $aut->firstname();
-            isset($aut->name) && $t[] = $aut->name();
-            isset($aut->role) && $t[] =  '(' . self::formatRole($parent, $aut->role()) . ')';
-
-            return implode(' ', $t); // espace insécable
-        });
-
-        self::registerFormat('f n', 'Charlie Chaplin', function(Author $aut, Authors $parent) {
-            $t = [];
-            isset($aut->firstname) && $t[] = $aut->firstname();
-            isset($aut->name) && $t[] = $aut->name();
-            return implode(' ', $t); // espace insécable
-        });
-
-        self::registerFormat('n (f) / r', 'Chaplin (Charlie) / Acteur', function(Author $aut, Authors $parent) {
-            $t = [];
-            isset($aut->name) && $t[] = $aut->name();
-            isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
-            isset($aut->role) && $t[] =  '/' . self::formatRole($parent, $aut->role());
-
-            return implode(' ', $t); // espace insécable
-        });
-
-        self::registerFormat('n (f)', 'Chaplin (Charlie) / Acteur', function(Author $aut, Authors $parent) {
-            $t = [];
-            isset($aut->name) && $t[] = $aut->name();
-            isset($aut->firstname) && $t[] = '(' . $aut->firstname() . ')';
-            return implode(' ', $t); // espace insécable
-        });
+*/
+    public function getAvailableFormats()
+    {
+        return [
+            'f n (r)'   => 'Charlie Chaplin (Acteur)',
+            'f n'       => 'Charlie Chaplin',
+            'n (f) / r' => 'Chaplin (Charlie) / Acteur',
+            'n (f)'     => 'Chaplin (Charlie) / Acteur',
+        ];
     }
 
-    protected static function formatRole(Authors $parent, $role) {
-        $roles = $parent->table();
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-        return $roles->find('label', 'code=' . $roles->quote($role)) ?: $role;
+        $t = [];
+        switch ($format) {
+            case 'f n (r)':
+                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);
+                isset($this->name) && $t[] = $this->formatField('name', $options);
+                isset($this->role) && $t[] =  '(' . $this->formatField('role', $options) . ')';
+                break;
+            case 'f n':
+                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);;
+                isset($this->name) && $t[] = $this->formatField('name', $options);
+                break;
+            case 'n (f) / r':
+                isset($this->name) && $t[] = $this->formatField('name', $options);
+                isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
+                isset($this->role) && $t[] =  '/ ' . $this->formatField('role', $options); // espace insécable après le slash
+                break;
+            case 'n (f)':
+                isset($this->name) && $t[] = $this->formatField('name', $options);
+                isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
+                break;
+            default:
+                throw new InvalidArgumentException("Invalid Author format '$format'");
+        }
+
+        return implode(' ', $t); // espace insécable
     }
 
     public function filterEmpty($strict = true) {

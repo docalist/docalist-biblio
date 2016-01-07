@@ -13,40 +13,44 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Content.
  *
- * @property String $type
- * @property String $value
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\LargeText $value
  */
 class Content extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
+            'label' => 'Textes (Content)',
+            'description' => 'Textes de présentation (Content)',
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:content',
                     'label' => __('Type', 'docalist-biblio'),
     //                 'description' => __('Nature de la note', 'docalist-biblio'),
                 ],
                 'value' => [
+                    'type' => 'Docalist\Type\LargeText',
                     'label' => __('Contenu', 'docalist-biblio'),
                     'description' => __('Résumé, notes et remarques sur le contenu.', 'docalist-biblio'),
+                    'editor' => 'textarea',
                 ]
             ]
         ];
-        // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('content')->text();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('content')->text();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['content'][] = $this->__get('value')->value();
     }
 
@@ -77,22 +81,58 @@ class Content extends MultiField {
         return $content;
     }
 
-    protected static function initFormats() {
-        self::registerFormat('v', 'Contenu', function(Content $content, Contents $parent) {
-            $text = $content->__get('value')->value();
-            return self::prepareText($text, $parent);
-        });
+    public function getAvailableFormats()
+    {
+        return [
+            'v'     => __('Contenu', 'docalist-biblio'),
+            't : v' => __('Type : Contenu', 'docalist-biblio'),
+            't: v'  => __('Type: Contenu', 'docalist-biblio'),
+        ];
+    }
 
-        self::registerFormat('t : v', 'Type : Contenu', function(Content $content, Contents $parent) {
-            $text = self::callFormat('v', $content, $parent);
-            return $parent->lookup($content->type()) . ' : ' . $text;
-            // espace insécable avant le ':'
-        });
+/*
+    TODO : à porter vers le nouveau système / transférer dans LargeText
 
-        self::registerFormat('t: v', 'Type: Contenu', function(Content $content, Contents $parent) {
-            $text = self::callFormat('v', $content, $parent);
-            return $parent->lookup($content->type()) . ': ' . $text;
-        });
+    public function displaySettings() {
+        $name = $this->schema->name();
+
+        $form = parent::displaySettings();
+
+        $form->input('newlines')
+            ->attribute('id', $name . '-newlines')
+            ->attribute('class', 'newlines regular-text')
+            ->label(__("Remplacer les CR/LF par", 'docalist-biblio'))
+            ->description(__("Indiquez par quoi remplacer les retours chariots (par exemple : <code>&lt;br/&gt;</code>), ou videz le champ pour les laisser inchangés.", 'docalist-biblio'));
+
+        $form->input('maxlen')
+            ->attribute('id', $name . '-maxlen')
+            ->attribute('class', 'maxlen small-text')
+            ->label(__("Couper à x caractères", 'docalist-biblio'))
+            ->description(__("Coupe les textes trop longs pour qu'ils ne dépassent pas la limite indiquée, ajoute une ellipse (...) si le texte a été tronqué.", 'docalist-biblio'));
+
+        return $this->addTableSelect($form, 'content', __("Table des types de contenus", 'docalist-biblio'), true);
+    }
+*/
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
+        $content = $this->formatField('value', $options);
+        switch ($format) {
+            case 'v':
+                return $content;
+            case 't : v':
+                if (isset($this->type)) {
+                    $content = $this->formatField('type', $options) . ' : '. $content; // insécable avant
+                }
+                return $content;
+            case 't: v':
+                if (isset($this->type)) {
+                    $content = $this->formatField('type', $options) . ': '. $content;
+                }
+                return $content;
+        }
+
+        throw new InvalidArgumentException("Invalid Content format '$format'");
     }
 
     public function filterEmpty($strict = true) {

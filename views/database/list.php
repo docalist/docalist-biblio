@@ -13,14 +13,15 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
-use Docalist\Schema\Schema;
 
 /**
  * Affiche la liste des bases de données existantes.
  *
- * @param DatabaseSettings[] $databases Liste des bases de données.
+ * @var AdminDatabases $this
+ * @var DatabaseSettings[] $databases Liste des bases de données.
  */
 ?>
 <style>
@@ -31,8 +32,7 @@ div.dbdesc{
 }
 </style>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= __('Gestion des bases documentaires', 'docalist-biblio') ?></h2>
+    <h1><?= __('Gestion des bases documentaires', 'docalist-biblio') ?></h1>
 
     <p class="description">
         <?= __('Voici la liste de vos bases de données :', 'docalist-biblio') ?>
@@ -52,9 +52,7 @@ div.dbdesc{
 
     <?php
     $nb = 0;
-    foreach($databases as $dbindex => $database) {
-        /* @var $database DatabaseSettings */
-
+    foreach($databases as $dbindex => $database) { /* @var $database DatabaseSettings */
         $edit = esc_url($this->url('DatabaseEdit', $dbindex));
         $delete = esc_url($this->url('DatabaseDelete', $dbindex));
         $listTypes = esc_url($this->url('TypesList', $dbindex));
@@ -130,8 +128,8 @@ div.dbdesc{
             <td colspan="4">
                 <em><?= __('Aucune base définie.', 'docalist-biblio') ?></em>
             </td>
-        </tr>
-    <?php endif; ?>
+        </tr><?php
+    endif; ?>
 
     </table>
 

@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,24 +13,23 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Schema\Schema;
 
 /**
  * Choisit un type de notice à ajouter dans la base.
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param int $dbindex L'index de la base.
- * @param Schema[] $types Liste des types disponibles.
+ * @var AdminDatabases $this
+ * @var DatabaseSettings $database La base à éditer.
+ * @var int $dbindex L'index de la base.
+ * @var Schema[] $types Liste des types disponibles.
  *
  */
-
 $back = $this->url('TypesList', $dbindex);
-/* @var $database DatabaseSettings */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s : ajouter un type de notice', 'docalist-biblio'), $database->label()) ?></h2>
+    <h1><?= sprintf(__('%s : ajouter un type de notice', 'docalist-biblio'), $database->label()) ?></h1>
 
     <p class="description">
         <?= __('Sélectionnez les types de notice à ajouter dans la base :', 'docalist-biblio') ?>
@@ -40,12 +39,12 @@ $back = $this->url('TypesList', $dbindex);
         <ul>
             <?php foreach($types as $type) : /* @var $type Schema */ ?>
                 <li>
-                    <h3>
+                    <h2>
                         <label>
                             <input type="checkbox" name="name[]" value="<?= $type->name() ?>" />
                             <?= $type->label() ?> (<?= $type->name() ?>)
                         </label>
-                    </h3>
+                    </h2>
                     <p class="description"><?= $type->description() ?></p>
                 </li>
             <?php endforeach ?>

@@ -13,38 +13,42 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
 
 /**
  * Editeur
  *
- * @property String $name
- * @property String $city
- * @property String $country
- * @property String $role
+ * @property Docalist\Type\Text $name
+ * @property Docalist\Type\Text $city
+ * @property Docalist\Type\TableEntry $country
+ * @property Docalist\Type\TableEntry $role
  */
 class Editor extends MultiField {
-    static protected $groupkey = 'role';
-    static protected $table2ForGroupkey = true;
-
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // @formatter:off
         return [
+            'category-field' => 'role', // voir si ça marche, enlever getCategoryField() si c'est le cas
             'fields' => [
                 'name' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Nom', 'docalist-biblio'),
                     'description' => __("Nom de l'éditeur", 'docalist-biblio'),
                 ],
                 'city' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Ville', 'docalist-biblio'),
                     'description' => __("Ville de l'éditeur", 'docalist-biblio'),
                 ],
                 'country' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:ISO-3166-1_alpha2_fr',
                     'label' => __('Pays', 'docalist-biblio'),
                     'description' => __("Pays d'édition", 'docalist-biblio'),
                 ],
                 'role' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'thesaurus:marc21-relators_fr',
                     'label' => __('Rôle', 'docalist-biblio'),
                     'description' => __('Fonction', 'docalist-biblio'),
                 ]
@@ -53,27 +57,17 @@ class Editor extends MultiField {
         // @formatter:on
     }
 
-    public function __toString() {
-        $result = $this->name();
-
-        if (isset($this->city) || isset($this->country)) {
-            $result .= ' (';
-            isset($this->city) && $result .= $this->city();
-            if (isset($this->country)) {
-                isset($this->city) && $result .= ', ';
-                $result .= $this->country();
-            }
-            $result .= ')';
-        }
-
-        return $result;
+    protected function getCategoryField()
+    {
+        return 'role';
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('editor')->text()->filter()->suggest(); // stemming sur les noms d'organismes
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('editor')->text()->filter()->suggest(); // stemming sur les noms d'organismes
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['editor'][] = $this->name() . '¤' . $this->city() . '¤' . $this->country();
     }
 

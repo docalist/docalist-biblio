@@ -13,48 +13,42 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
+use Docalist\Type\MultiField;
 use Docalist\Table\TableManager;
-use Docalist\Table\TableInfo;
 use Docalist\Table\TableInterface;
-use Docalist\Search\MappingBuilder;
+use Docalist\MappingBuilder;
 
 /**
  * Une liste de mots-clés d'un certain type.
  *
- * @property String $type
- * @property String[] $term
+ * @property Docalist\Type\TableEntry $type
+ * @property Docalist\Type\Text[] $term
  */
 class Topic extends MultiField {
-    static protected $groupkey = 'type';
-
-    static protected function loadSchema() {
-        // @formatter:off
+    static public function loadSchema() {
         return [
             'fields' => [
                 'type' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:topics',
                     'label' => __('Type', 'docalist-biblio'),
     //                 'description' => __('Type des mots-clés (nom du thesaurus ou de la liste)', 'docalist-biblio'),
                 ],
-                'term' => [ // @todo : au pluriel ?
-                    'repeatable' => true,
+                'term' => [
+                    'type' => 'Docalist\Type\Text*',
                     'label' => __('Termes', 'docalist-biblio'),
     //                 'description' => __('Liste des mots-clés.', 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
     }
-
-    public function __toString() {
-        return $this->type() . ' : ' . implode(', ', $this->term());
+/*
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('topic')->text()->filter()->suggest();
+        $mapping->addTemplate('topic.*')->copyFrom('topic')->copyDataTo('topic');
     }
-
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('topic')->text()->filter()->suggest();
-        $mapping->template('topic.*')->idem('topic')->copyTo('topic');
-    }
-
+*/
     /*
      * Non utilisé, c'est Topics::map() qui fait le boulot
      */

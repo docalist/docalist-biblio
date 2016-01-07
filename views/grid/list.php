@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,21 +13,19 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
-use Docalist\Schema\Schema;
 
 /**
  * Liste les grilles et les formulaires disponibles pour un type.
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param int $dbindex L'index de la base.
- * @param TypeSettings $type Le type à éditer.
- * @param int $typeindex L'index du type.
+ * @var AdminDatabases      $this
+ * @var DatabaseSettings    $database   La base à éditer.
+ * @var int                 $dbindex    L'index de la base.
+ * @var TypeSettings        $type       Le type à éditer.
+ * @var int                 $typeindex  L'index du type.
  */
-
-/* @var $database DatabaseSettings */
-/* @var $type TypeSettings */
 ?>
 <style>
 .grid-label{
@@ -42,8 +40,7 @@ use Docalist\Schema\Schema;
 </style>
 
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('%s - %s - grilles et formulaires', 'docalist-biblio'), $database->label(), $type->label()) ?></h2>
+    <h1><?= sprintf(__('%s - %s - grilles et formulaires', 'docalist-biblio'), $database->label(), $type->label()) ?></h1>
 
     <p class="description">
         <?= __("L'écran ci-dessous affiche la liste des grilles disponibles pour ce type de notice.", 'docalist-biblio') ?>

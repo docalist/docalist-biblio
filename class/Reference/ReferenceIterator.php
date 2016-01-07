@@ -15,15 +15,14 @@ namespace Docalist\Biblio\Reference;
 
 use Docalist\Search\SearchRequest;
 use Docalist\Search\SearchResults;
-use Iterator, Countable;
-use Docalist\Biblio\Reference;
+use Iterator;
+use Countable;
 
 /**
  * Un itérateur de références (pour l'export).
- *
  */
-class ReferenceIterator implements Iterator, Countable {
-
+class ReferenceIterator implements Iterator, Countable
+{
     /**
      * La requête en cours.
      *
@@ -46,20 +45,11 @@ class ReferenceIterator implements Iterator, Countable {
     protected $hits;
 
     /**
-     * L'index du hit en cours
+     * L'index du hit en cours.
      *
      * @var int
      */
     protected $current;
-
-    /**
-     * Indique la grille à utiliser pour charger les notices.
-     *
-     * @var string|null Le nom de la grille à utiliser (base, edit...) pour que
-     * l'itérateur retourne des objets Reference ou null pour qu'il retourne
-     * un tableau contenant les données brutes de la notice.
-     */
-    protected $grid;
 
     /**
      * Nombre maximum de notices à itérer.
@@ -79,23 +69,22 @@ class ReferenceIterator implements Iterator, Countable {
      * Construit l'itérateur.
      *
      * @param SearchRequest $request
-     * @param boolean $grid Le nom de la grille à utiliser (base, edit...) pour
-     * que l'itérateur retourne des objets Reference ou null pour qu'il retourne
-     * un tableau contenant les données brutes de la notice.
      * @param int $limit Nombre maximum de notices à itérer.
      */
-    public function __construct(SearchRequest $request, $grid = null, $limit = null) {
+    public function __construct(SearchRequest $request, $limit = null)
+    {
         $this->request = $request;
-        $this->grid = $grid;
         $this->limit = $limit;
         $this->count = 0;
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         $this->loadPage(1);
     }
 
-    public function valid() {
+    public function valid()
+    {
         if ($this->current >= count($this->hits)) {
             return false;
         }
@@ -107,15 +96,18 @@ class ReferenceIterator implements Iterator, Countable {
         return true;
     }
 
-    public function current() {
-        return docalist('docalist-biblio')->getReference($this->key(), $this->grid);
+    public function current()
+    {
+        return docalist('docalist-biblio')->getReference($this->key());
     }
 
-    public function key() {
+    public function key()
+    {
         return $this->hits[$this->current]->_id;
     }
 
-    public function next() {
+    public function next()
+    {
         ++$this->current;
         ++$this->count;
         if (! $this->valid()) {
@@ -128,7 +120,8 @@ class ReferenceIterator implements Iterator, Countable {
      *
      * @param int $page La page à charger.
      */
-    protected function loadPage($page) {
+    protected function loadPage($page)
+    {
         $this->request->page($page);
         $this->results = $this->request->execute();
         $this->hits = $this->results->hits();
@@ -140,7 +133,8 @@ class ReferenceIterator implements Iterator, Countable {
      *
      * @return SearchRequest
      */
-    public function searchRequest() {
+    public function searchRequest()
+    {
         return $this->request;
     }
 
@@ -149,8 +143,10 @@ class ReferenceIterator implements Iterator, Countable {
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         is_null($this->results) && $this->rewind();
+
         return $this->results->total();
     }
 }

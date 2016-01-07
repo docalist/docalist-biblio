@@ -30,7 +30,7 @@ class ReferenceTest extends EntityTestCase {
         $this->checkIs($ref, 'abstract'     , 'Docalist\Biblio\Field\AbstractField*');
         $this->checkIs($ref, 'topic'        , 'Docalist\Biblio\Field\Topic*');
         $this->checkIs($ref, 'note'         , 'Docalist\Biblio\Field\Note*');
-        $this->checkIs($ref, 'link'         , 'Docalist\Biblio\Field\Link*');
+        $this->checkIs($ref, 'link'         , 'Docalist\Biblio\Type\Link*');
         $this->checkIs($ref, 'doi'          , 'string');
         $this->checkIs($ref, 'relations'    , 'Docalist\Biblio\Field\Relation*');
         $this->checkIs($ref, 'owner'        , 'string*');

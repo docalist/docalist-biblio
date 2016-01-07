@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2015 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,38 +13,29 @@
  */
 namespace Docalist\Biblio\Views;
 
+use Docalist\Biblio\Pages\AdminDatabases;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
-use Docalist\Schema\Field;
-use Docalist\Forms\Fragment;
-use Docalist\Biblio\Reference;
 
 /**
  * grid to php
  *
- * @param DatabaseSettings $database La base à éditer.
- * @param int $dbindex L'index de la base.
- * @param TypeSettings $type Le type à éditer.
- * @param int $typeindex L'index du type.
- * @param Schema $grid La grille à éditer.
- * @param string $gridname L'index de la grille.
- * @param Schema $base La grille à éditer.
- * @param bool $diffonly Mode de comparaison (grille complète / différences uniquement).
+ * @var AdminDatabases      $this
+ * @var DatabaseSettings    $database   La base à éditer.
+ * @var int                 $dbindex    L'index de la base.
+ * @var TypeSettings        $type       Le type à éditer.
+ * @var int                 $typeindex  L'index du type.
+ * @var Schema              $grid       La grille à éditer.
+ * @var string              $gridname   L'index de la grille.
+ * @var Schema              $base       La grille à éditer.
+ * @var bool                $diffonly   Mode de comparaison (grille complète / différences uniquement).
  */
-
-/* @var $database DatabaseSettings */
-/* @var $type TypeSettings */
-/* @var $grid Schema */
-/* @var $diffonly boolean */
-
 $urlfull = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $gridname));
 $urldiff = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $gridname, true));
-
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
-    <h2><?= sprintf(__('Code PHP de la grille "%s" pour le type "%s"', 'docalist-biblio'), $gridname, $typeindex) ?></h2>
+    <h1><?= sprintf(__('Code PHP de la grille "%s" pour le type "%s"', 'docalist-biblio'), $gridname, $typeindex) ?></h1>
 
 	<p class="description">
         <?= __("Le code PHP ci-dessous peut être utilisé pour générer une grille identique.", 'docalist-biblio') ?>
@@ -95,9 +86,9 @@ echo "return new Schema([\n";
         }
 
         // Supprime les propriétés qui ont la valeur par défaut (dans base)
-        if ($base->has($name)) {
+        if ($base->hasField($name)) {
             foreach ($properties as $key => $value) {
-                if ($value == $base->field($name)->$key) {
+                if ($value == $base->getField($name)->$key) {
                     unset($properties[$key]);
                 }
                 if (isset($properties[$key . 'spec'])) { // exemple : si on a labelspec, label est juste une copie

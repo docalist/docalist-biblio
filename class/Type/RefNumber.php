@@ -13,12 +13,21 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Type\Integer;
+use Docalist\MappingBuilder;
+
 /**
- * Une date/heure stockée sous forme de chaine au format 'yyyy-MM-dd HH:mm:ss'.
- *
- * Exemple : "2014-09-02 11:19:24"
+ * Le numéro de référence de la notice.
  */
-class DateTime extends String {
-//     public function editForm() { // @todo : générer un date/time picker
-//     }
+class RefNumber extends Integer
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('ref')->integer();
+    }
+
+    public function mapData(array & $document)
+    {
+        $document['ref'] = $this->value();
+    }
 }

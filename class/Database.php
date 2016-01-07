@@ -14,12 +14,10 @@
 namespace Docalist\Biblio;
 
 use Docalist\Repository\PostTypeRepository;
-use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
-use Docalist\Search\Indexer;
 use Docalist\Search\TypeIndexer;
 use Docalist\Search\SearchRequest;
 use WP_Post;
@@ -29,34 +27,34 @@ use InvalidArgumentException;
 /**
  * Une base de données documentaire.
  */
-class Database extends PostTypeRepository {
+class Database extends PostTypeRepository
+{
     protected static $fieldMap = [
-        'post_author'           => 'createdBy',
-        'post_date'             => 'creation',
+        'post_author' => 'createdBy',
+        'post_date' => 'creation',
      // 'post_date_gmt'         => '',
      // 'post_content'          => '',
-        'post_title'            => 'title',
+        'post_title' => 'title',
      // 'post_excerpt'          => '',
-        'post_status'           => 'status',
+        'post_status' => 'status',
      // 'comment_status'        => '',
      // 'ping_status'           => '',
-        'post_password'         => 'password',
-        'post_name'             => 'slug',
+        'post_password' => 'password',
+        'post_name' => 'slug',
      // 'to_ping'               => '',
      // 'pinged'                => '',
-        'post_modified'         => 'lastupdate',
+        'post_modified' => 'lastupdate',
      // 'post_modified_gmt'     => '',
      // 'post_content_filtered' => '',
-        'post_parent'           => 'parent',
+        'post_parent' => 'parent',
      // 'guid'                  => '',
      // 'menu_order'            => '',
-        'post_type'             => 'posttype',
+        'post_type' => 'posttype',
      // 'post_mime_type'        => 'type',
      // 'comment_count'         => '',
     ];
 
     /**
-     *
      * @var DatabaseSettings
      */
     protected $settings;
@@ -66,7 +64,8 @@ class Database extends PostTypeRepository {
      *
      * @param DatabaseSettings $settings Paramètres de la base.
      */
-    public function __construct(DatabaseSettings $settings) {
+    public function __construct(DatabaseSettings $settings)
+    {
         // Récupère le post_type de cette base
         $type = $settings->postType();
 
@@ -87,12 +86,12 @@ class Database extends PostTypeRepository {
         });
 
         // Retourne l'indexeur à utiliser pour indexer les notices de cette base
-        add_filter("docalist_search_get_{$type}_indexer", function(TypeIndexer $indexer = null) {
+        add_filter("docalist_search_get_{$type}_indexer", function (TypeIndexer $indexer = null) {
             return new DatabaseIndexer($this);
         });
 
         // Retourne le filtre standard de recherche pour cette base
-        add_filter("docalist_search_get_{$type}_filter", function($filter, $type) {
+        add_filter("docalist_search_get_{$type}_filter", function ($filter, $type) {
             return docalist('docalist-search-engine')->defaultFilter($type);
         }, 10, 2);
 
@@ -107,7 +106,7 @@ class Database extends PostTypeRepository {
             && isset($_POST['data']['wp_autosave']['post_type'])
             && $_POST['data']['wp_autosave']['post_type'] === $this->postType
         ) {
-            add_filter('wp_insert_post_data', function(array $data) {
+            add_filter('wp_insert_post_data', function (array $data) {
                 unset($data['post_excerpt']);
                 unset($data['post_name']);
 
@@ -132,7 +131,7 @@ class Database extends PostTypeRepository {
             new ImportPage($this);
         });
 
-        add_filter('the_excerpt', function($content) {
+        add_filter('the_excerpt', function ($content) {
             global $post;
 
             // Vérifie que c'est une de nos notices
@@ -148,13 +147,16 @@ class Database extends PostTypeRepository {
             // cela fonctionne.
 
             // Charge la notice en mode "affichage court"
-            $ref = $this->load($post->ID, 'excerpt');
+            $ref = $this->load($post->ID);
+
+            // Charge la grille
+            $grid = $this->settings->types[$ref->type()]->grids['excerpt'];
 
             // Formatte la notice
-            return $ref->format();
+            return $ref->getFormattedValue($grid);
         }, 9999); // priorité très haute pour ignorer wp_autop et cie.
 
-        add_filter('the_content', function($content) {
+        add_filter('the_content', function ($content) {
             global $post;
 
             // Vérifie que c'est une de nos notices
@@ -162,18 +164,25 @@ class Database extends PostTypeRepository {
                 return $content;
             }
 
-            // Charge la notice en mode "affichage long" (court si archive)
-            $ref = $this->load($post->ID, is_archive() ? 'excerpt' : 'content');
+            // Charge la notice
+            $ref = $this->load($post->ID);
+
+            // Détermine la grille à utiliser : "affichage long" par défaut, "affichage court" si archive
+            $grid = is_archive() ? 'excerpt' : 'content';
+
+            // Charge la grille
+            $grid = $this->settings->types[$ref->type()]->grids[$grid];
 
             // Formatte la notice
-            return $ref->format();
+            return $ref->getFormattedValue($grid);
         }, 9999); // priorité très haute pour ignorer wp_autop et cie.
     }
 
     /**
      * @return Reference
      */
-    public function load($id, $context = null) {
+    public function load($id)
+    {
         // Vérifie que l'ID est correct
         $id = $this->checkId($id);
 
@@ -181,17 +190,17 @@ class Database extends PostTypeRepository {
         $post = $this->loadData($id);
 
         // Crée la référence
-        return $this->fromPost($post, $context);
+        return $this->fromPost($post);
     }
 
     /**
-     *
      * @param WP_Post|array $post
      * @param string $context
      * @throws InvalidArgumentException
      * @return Reference
      */
-    public function fromPost($post, $context = null) {
+    public function fromPost($post)
+    {
         // Si on nous passé un objet WP_Post, on le convertit en tableau
         if (is_object($post)) {
             $post = (array) $post;
@@ -206,92 +215,103 @@ class Database extends PostTypeRepository {
         $data = $this->decode($post, $id);
 
         // Récupère le type de la notice
-        if (isset($data['type'])) {
-            $type = $data['type'];
+        if (!isset($data['type'])) {
+            throw new InvalidArgumentException('No type found in reference');
+        }
+        $type = $data['type'];
+
+        // Vérifie que ce type de notice figure dans la base
+        if (! isset($this->settings->types[$type])) {
+            $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
+            $msg = sprintf($msg, $type);
+            throw new InvalidArgumentException($msg);
         }
 
-        // Si la notice n'a pas de type (erreur interne), impossible d'utiliser un contexte
-        else {
-            if ($context === 'edit') {
-                add_action('admin_notices', function() {
-                    printf('<div class="error"><p>%s %s</p></div>',
-                        __('Aucun type de notice indiqué dans cette référence.', 'docalist-biblio'),
-                        __('Chargement de la grille par défaut.', 'docalist-biblio')
-                    );
-                });
-            }
-            $context = null;
+        // Debug - vérifie que la grille 'base' existe
+        if (! isset($this->settings->types[$type]->grids['base'])) {
+            $msg = __("La grille de base n'existe pas pour le type %s.", 'docalist-biblio');
+            throw new InvalidArgumentException(sprintf($msg, $type));
         }
 
-        // Détermine le schéma à utiliser en fonction du contexte demandé
-        if (is_null($context)) {
-            $schema = null; // reference brute sans schéma personnalisé
-        } else {
-            if (! isset($this->settings->types[$type])) {
-                // erreur : on a une notice dont le type ne figure pas dans les settings de la base
-                $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
-                $msg = sprintf($msg, $type);
-                if ($context === 'edit') {
-                    add_action('admin_notices', function() use ($msg) {
-                        printf('<div class="error"><p>%s %s</p></div>',
-                            $msg,
-                            __('Chargement de la grille par défaut.', 'docalist-biblio')
-                        );
-                    });
-                    // schéma = null = grille par défaut
-                } else {
-                    throw new InvalidArgumentException($msg);
-                }
-            } else {
-                if (! isset($this->settings->types[$type]->grids[$context])) {
-                    $msg = __("La grille %s n'existe pas pour le type %s.", 'docalist-biblio');
-                    throw new InvalidArgumentException(sprintf($msg, $context, $type));
-                } else {
-                    $schema = $this->settings->types[$type]->grids[$context];
-                }
-            }
-        }
+        // Ok
+        $schema = $this->settings->types[$type]->grids['base'];
 
         // Crée la référence avec le schéma demandé
-        $type = $this->type; // Reference
+        $type = $this->type; // Type
         return new $type($data, $schema, $id);
     }
 
     /**
-     * Affiche une notice.
+     * Crée une notice du type indiqué.
      *
-     * @param string $format Nom du format d'affichage (correspond au nom de la
-     * vue qui sera utilisée : docalist-biblio:format/$format).
-     * @param null|int|Reference $ref La notice à formatter.
+     * Par défaut la notice est initialisée avec les valeurs par défaut qui figurent dans le schéma
+     * du type (grille 'base'). Si on indique une grille, il doit s'agit d'un formulaire de saisie
+     * ('edit') et dans ce cas, ce sont les valeurs par défaut indiquées pour le formualaire qui
+     * seront appliquées.
      *
-     * @throws InvalidArgumentException Si Ref invalide ou erreur dans la vue
+     * @param string $type Nom du type de notice à créer.
+     * @param array  $data Optionnel, données initiales de la notice. Si null, utilise la valeur par défaut.
+     * @param string $grid Optionnel, nom du formulaire de saisie à utiliser pour initialiser la valeur par défaut.
+     * N'est utilisé que si $data vaut null.
+     *
+     * @throws InvalidArgumentException
      */
-    protected function display($format = 'content', $ref = null) {
-        // Aucune ref passée en paramètre
-        if (is_null($ref)) {
-            global $post;
+    public function createReference($type, array $data = null, $grid = null)
+    {
+        // Remarque : valeur par défaut / données initiales de la notice
+        // - Si $data a été transmis (non null), ce sont ces données qu'on va utiliser pour initialiser la notice.
+        // - Si $data est null, Any va initialiser la notice avec la valeur par défaut du schéma qu'on lui passe
+        // - Si un formulaire a été indiqué et que $data est null, c'est la valeur par défaut du formulaire qui
+        //   sera utilisée
 
-            $ref = $this->load($post->ID);
+        // Vérifie que le type indiqué figure dans la base
+        if (! isset($this->settings->types[$type])) {
+            throw new InvalidArgumentException("Type '$type' does not exist in database");
         }
 
-        // On nous a passé un numéro de référence
-        elseif (is_scalar($ref)) {
-            $ref = $this->load($ref);
+        // Vérifie que la grille de base (schéma) existe (debug / sanity check)
+        if (! isset($this->settings->types[$type]->grids['base'])) {
+            throw new InvalidArgumentException("Grid 'base' does not exist for type '$type'");
         }
 
-        // On nous a passé un objet Reference
-        elseif ($ref instanceof Reference) {
-            // ok
+        // Ok, on a le schéma
+        $schema = $this->settings->types[$type]->grids['base'];
+
+        // Si une grille a été indiquée, vérifie qu'elle existe et que c'est bien un formulaire
+        if (is_null($data) && ! is_null($grid)) {
+            // La grille doit exister
+            if (! isset($this->settings->types[$type]->grids[$grid])) {
+                throw new InvalidArgumentException("Grid '$grid' does not exist for type '$type'");
+            }
+            $grid = $this->settings->types[$type]->grids[$grid];
+
+            // La grille doit être du type 'edit'
+            if ($grid->gridtype() !== 'edit') {
+                throw new InvalidArgumentException("Grid '$grid' is not an edit form");
+            }
+
+            // Si on n'a pas de données, on utilise la valeur par défaut du formulaire
+            if (is_null($data)) {
+                $data = $grid->getDefaultValue();   // peut retourner []
+                empty($data) && $data = null;       // dans ce cas, utilise la valeur par défaut du schéma
+            }
         }
 
-        // Erreur
-        else {
-            throw new InvalidArgumentException('invalid ref');
+        // Détermine le nom de la classe php correspondant au type de notice
+        $types = apply_filters('docalist_biblio_get_types', []);
+        if (! isset($types[$type])) {
+            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
+            // qui fournissait ces types.
+            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
         }
+        $class = $types[$type];
 
-        // Exécute la vue
-        $view = "docalist-biblio:format/$format";
-        docalist('views')->display($view, ['this' => $this, 'ref' => $ref]);
+        // Ok, crée la notice
+        $ref = new $class($data, $schema);
+
+        $ref->type = $type;
+
+        return $ref;
     }
 
     /**
@@ -299,7 +319,8 @@ class Database extends PostTypeRepository {
      *
      * @return DatabaseSettings
      */
-    public function settings() {
+    public function settings()
+    {
         return $this->settings;
     }
 
@@ -309,7 +330,8 @@ class Database extends PostTypeRepository {
      *
      * @return int
      */
-    public function homePage() {
+    public function homePage()
+    {
         return $this->settings->homepage();
     }
 
@@ -319,7 +341,8 @@ class Database extends PostTypeRepository {
      *
      * @return int
      */
-    public function searchPage() {
+    public function searchPage()
+    {
         return $this->settings->searchpage();
     }
 
@@ -329,7 +352,8 @@ class Database extends PostTypeRepository {
      *
      * @return string
      */
-    public function searchPageUrl() {
+    public function searchPageUrl()
+    {
         return get_permalink($this->settings->searchpage());
     }
 
@@ -338,7 +362,8 @@ class Database extends PostTypeRepository {
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
      */
-    private function registerPostType() {
+    private function registerPostType()
+    {
         $type = $this->postType();
 
         // Compatibilité avec les bases antérieures (à supprimer une fois que le .net sera à jour)
@@ -355,35 +380,35 @@ class Database extends PostTypeRepository {
 
         // Détermine les paramètres du custom post type
         $args = [
-            'labels'                => $this->postTypeLabels(),
-            'description'           => $this->settings->description(),
-            'public'                => true,  //
-            'hierarchical'          => false, // WP est inutilisable si on met à true (cache de la hiérarchie)
-            'exclude_from_search'   => true,  // Inutile que WP recherche avec du like dans nos milliers de notices
-            'publicly_queryable'    => true,  // Permet d'avoir des query dclrefbase=xxx
-            'show_ui'               => true,  // Laisse WP générer l'interface
-            'show_in_menu'          => true,  // Afficher dans le menu wordpress
-            'show_in_nav_menus'     => false, // Gestionnaire de menus inutilisable si true : charge tout
-            'show_in_admin_bar'     => true,  // Afficher dans la barre d'outils admin
+            'labels' => $this->postTypeLabels(),
+            'description' => $this->settings->description(),
+            'public' => true,  //
+            'hierarchical' => false, // WP est inutilisable si on met à true (cache de la hiérarchie)
+            'exclude_from_search' => true,  // Inutile que WP recherche avec du like dans nos milliers de notices
+            'publicly_queryable' => true,  // Permet d'avoir des query dclrefbase=xxx
+            'show_ui' => true,  // Laisse WP générer l'interface
+            'show_in_menu' => true,  // Afficher dans le menu wordpress
+            'show_in_nav_menus' => false, // Gestionnaire de menus inutilisable si true : charge tout
+            'show_in_admin_bar' => true,  // Afficher dans la barre d'outils admin
          // 'menu_position'         => 20,    // En dessous de "Pages", avant "commentaires"
-            'menu_icon'             => $this->settings->icon(),
-            'capability_type'       => $this->settings->capabilitySuffix(), // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
-            'capabilities'          => $this->settings->capabilities(),
-            'map_meta_cap'          => true,  // Doit être à true pour que WP traduise correctement nos droits
-            'supports'              => $supports,
-            'register_meta_box_cb'  => null,
-            'taxonomies'            => [],    // Aucune pour le moment
-            'has_archive'           => false, // On gère nous même la page d'accueil
-            'rewrite'               => false, // On gère nous-mêmes les rewrite rules (cf. ci-dessous)
-            'query_var'             => true,  // Laisse WP créer la QV dclrefbase=xxx
-            'can_export'            => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
-            'delete_with_user'      => false, // On ne veut pas supprimer
+            'menu_icon' => $this->settings->icon(),
+            'capability_type' => $this->settings->capabilitySuffix(), // Inutile car on définit 'capabilities', mais évite que wp_front dise : "Uses 'Posts' capabilities. Upgrade to Pro"
+            'capabilities' => $this->settings->capabilities(),
+            'map_meta_cap' => true,  // Doit être à true pour que WP traduise correctement nos droits
+            'supports' => $supports,
+            'register_meta_box_cb' => null,
+            'taxonomies' => [],    // Aucune pour le moment
+            'has_archive' => false, // On gère nous même la page d'accueil
+            'rewrite' => false, // On gère nous-mêmes les rewrite rules (cf. ci-dessous)
+            'query_var' => true,  // Laisse WP créer la QV dclrefbase=xxx
+            'can_export' => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
+            'delete_with_user' => false, // On ne veut pas supprimer
         ];
 
         // Active les archives si homemode=archive
         if ($this->settings->homemode() === 'archive') {
             $args = [
-                'has_archive'       => true,
+                'has_archive' => true,
                 'rewrite' => [
                     'slug' => $this->settings->slug(),
                     'with_front' => false,
@@ -395,7 +420,7 @@ class Database extends PostTypeRepository {
         register_post_type($type, $args);
 
         // Crée une requête quand on est sur la page d'accueil
-        add_filter('docalist_search_create_request', function(SearchRequest $request = null, WP_Query $query) {
+        add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
             // Si quelqu'un a déjà créé une requête, on le laisse gérer
             if ($request) {
                 return $request;
@@ -456,7 +481,7 @@ class Database extends PostTypeRepository {
             'forcomments' => false,
             'walk_dirs' => false,
             'endpoints' => false,
-        ] );
+        ]);
 
         /*
             Remarque : bien qu'on indique EP_NONE, WordPress génère tout de même
@@ -496,7 +521,8 @@ class Database extends PostTypeRepository {
      *
      * @see http://codex.wordpress.org/Function_Reference/register_post_type
      */
-    private function postTypeLabels() {
+    private function postTypeLabels()
+    {
         $label = $this->settings->label();
 
         // translators: une notice bibliographique unique
@@ -524,7 +550,7 @@ class Database extends PostTypeRepository {
 
         // @formatter:off
         // cf. wp-includes/post.php:get_post_type_labels()
-        return array(
+        return [
             'name' => $label,
             'singular_name' => $singular,
             'add_new' => $new,
@@ -539,16 +565,17 @@ class Database extends PostTypeRepository {
             'all_items' => $all,
             'menu_name' => $label,
             'name_admin_bar' => $singular,
-        );
+        ];
         // @formatter:on
     }
 
     /**
-     * Retourne le libellé de la base
+     * Retourne le libellé de la base.
      *
      * @return string
      */
-    public function label() {
+    public function label()
+    {
         return $this->settings->label();
     }
 
@@ -556,7 +583,8 @@ class Database extends PostTypeRepository {
      * Rendue publique car EditReference::save() en a besoin.
      * @see \Docalist\Repository\PostTypeRepository::encode()
      */
-    public function encode(array $data) {
+    public function encode(array $data)
+    {
         return parent::encode($data);
     }
 
@@ -564,7 +592,8 @@ class Database extends PostTypeRepository {
      * Rendue publique car EditReference::save() en a besoin.
      * @see \Docalist\Repository\PostTypeRepository::decode()
      */
-    public function decode($post, $id) {
+    public function decode($post, $id)
+    {
         return parent::decode($post, $id);
     }
 
@@ -572,7 +601,8 @@ class Database extends PostTypeRepository {
      * Indique à Docalist Search les facettes disponibles pour une notice
      * documentaire.
      */
-    protected function docalistSearchFacets() {
+    protected function docalistSearchFacets()
+    {
         static $done = false;
 
         // Evite de le faire pour chaque base, une fois ça suffit
@@ -581,78 +611,78 @@ class Database extends PostTypeRepository {
         }
         $done = true;
 
-        add_filter('docalist_search_get_facets', function($facets) {
-            $facets += array(
-                'ref.status' => array(
+        add_filter('docalist_search_get_facets', function ($facets) {
+            $facets += [
+                'ref.status' => [
                     'label' => __('Statut', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'status.filter',
-                    )
-                ),
-                'ref.type' => array(
+                    ],
+                ],
+                'ref.type' => [
                     'label' => __('Type de document', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'type.filter',
                         // 'order' => 'term',
-                    )
-                ),
-                'ref.genre' => array(
+                    ],
+                ],
+                'ref.genre' => [
                     'label' => __('Genre de document', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'genre.filter',
-                    )
-                ),
-                'ref.media' => array(
+                    ],
+                ],
+                'ref.media' => [
                     'label' => __('Support de document', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'media.filter',
-                    )
-                ),
-                'ref.author' => array(
+                    ],
+                ],
+                'ref.author' => [
                     'label' => __('Auteur', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'author.filter',
-                        'exclude' => array('et al.¤'),
-                    )
-                ),
-                'ref.organisation' => array(
+                        'exclude' => ['et al.¤'],
+                    ],
+                ],
+                'ref.organisation' => [
                     'label' => __('Organisme', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'organisation.filter',
-                    )
-                ),
-                'ref.date' => array(
+                    ],
+                ],
+                'ref.date' => [
                     'label' => __('Année du document', 'docalist-biblio'),
                     'type' => 'date_histogram',
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'date',
-                        'interval' => 'year'
-                    )
-                ),
-                'ref.journal' => array(
+                        'interval' => 'year',
+                    ],
+                ],
+                'ref.journal' => [
                     'label' => __('Revue', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'journal.filter',
-                    )
-                ),
-                'ref.editor' => array(
+                    ],
+                ],
+                'ref.editor' => [
                     'label' => __('Editeur', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'editor.filter',
-                    )
-                ),
-                'ref.event' => array(
+                    ],
+                ],
+                'ref.event' => [
                     'label' => __('Evénement', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'event.filter',
-                    )
-                ),
-                'ref.degree' => array(
+                    ],
+                ],
+                'ref.degree' => [
                     'label' => __('Diplôme', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'degree.filter',
-                    )
-                ),
+                    ],
+                ],
                 /*//@todo : pas trouvé comment
                 'ref.abstract' => array(
                     'label' => __('Résumé', 'docalist-biblio'),
@@ -665,47 +695,47 @@ class Database extends PostTypeRepository {
                     )
                 ),
                 */
-                'ref.topic' => array(
+                'ref.topic' => [
                     'label' => __('Mot-clé', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'topic.filter',
-                        'size'  => 10,
+                        'size' => 10,
                         //                    'order' => 'term',
-                    )
-                ),
-                'ref.owner' => array(
+                    ],
+                ],
+                'ref.owner' => [
                     'label' => __('Producteur de la notice', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'owner.filter',
-                    )
-                ),
+                    ],
+                ],
 
-                'ref.creation' => array(
+                'ref.creation' => [
                     'label' => __('Année de création de la notice', 'docalist-biblio'),
                     'type' => 'date_histogram',
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'creation',
-                        'interval' => 'year'
-                    )
-                ),
+                        'interval' => 'year',
+                    ],
+                ],
 
-                'ref.lastupdate' => array(
+                'ref.lastupdate' => [
                     'label' => __('Année de mise à jour de la notice', 'docalist-biblio'),
                     'type' => 'date_histogram',
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'lastupdate',
-                        'interval' => 'year'
-                    )
-                ),
+                        'interval' => 'year',
+                    ],
+                ],
 
-                'ref.error' => array(
+                'ref.error' => [
                     //'state' => 'closed',
                     'label' => __('Erreurs détectées', 'docalist-biblio'),
-                    'facet' => array(
+                    'facet' => [
                         'field' => 'error.filter',
-                    )
-                ),
-            );
+                    ],
+                ],
+            ];
 
             return $facets;
         });

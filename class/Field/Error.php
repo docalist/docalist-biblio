@@ -13,34 +13,33 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\Object;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Composite;
+use Docalist\MappingBuilder;
 
 /**
  * Une erreur.
  *
- * @property String $code
- * @property String $value
- * @property String $message
+ * @property Docalist\Type\Text $code
+ * @property Docalist\Type\Text $value
+ * @property Docalist\Type\Text $message
  */
-class Error extends Object {
-    static protected function loadSchema() {
-        // @formatter:off
+class Error extends Composite {
+    static public function loadSchema() {
         return [
             'fields' => [
-                'code',
-                'value',
-                'message'
-            ]
+                'code' => 'Docalist\Type\Text',
+                'value' => 'Docalist\Type\Text',
+                'message' => 'Docalist\Type\Text',
+            ],
         ];
-        // @formatter:on
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('error')->text()->filter();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('error')->text()->filter();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['error'][] = $this->message();
     }
 }

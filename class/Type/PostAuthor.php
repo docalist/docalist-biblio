@@ -11,27 +11,32 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Field;
+namespace Docalist\Biblio\Type;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 use Docalist\Biblio\DatabaseIndexer;
 use WP_User;
 
 /**
  * L'auteur WordPress de la notice (login).
  */
-class CreatedBy extends String {
-    public function mapping(MappingBuilder $mapping) {
+class PostAuthor extends Text
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
         DatabaseIndexer::standardMapping('post_author', $mapping);
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         DatabaseIndexer::standardMap('post_author', $this->value(), $document);
     }
 
-    public function format() {
-        $author = get_user_by('id', $this->value()); /* @var $author WP_User */
+    public function getFormattedValue($options = null)
+    {
+        $author = get_user_by('id', $this->value); /* @var $author WP_User */
+
         return $author->display_name;
     }
 }

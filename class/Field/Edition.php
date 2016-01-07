@@ -13,18 +13,21 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 
 /**
  * Une mention d'édition
  */
-class Edition extends String {
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('edition')->text();
+class Edition extends Text
+{
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('edition')->text();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document)
+    {
         $document['edition'][] = $this->value();
     }
 }

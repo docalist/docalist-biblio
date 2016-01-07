@@ -13,30 +13,25 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-// use Docalist\Forms\Input;
-use Docalist\Search\MappingBuilder;
-use Docalist\Forms\TableLookup;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
+use Docalist\Forms\EntryPicker;
 
 /**
  * Un titre de périodique.
  */
-class Journal extends String {
-    public function editForm() {
-//         $field = new Input($this->schema->name());
-//         $field->addClass('large-text');
-
-        $field = new TableLookup('journal', 'index:journal');
-        $field->addClass('large-text');
-
-        return $field;
+class Journal extends Text {
+    public function getEditorForm($options = null)
+    {
+        return (new EntryPicker('journal'))->setOptions('index')->addClass('large-text');
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('journal')->text()->filter()->suggest();
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('journal')->text()->filter()->suggest();
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['journal'] = $this->value();
     }
 }

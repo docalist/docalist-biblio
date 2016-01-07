@@ -13,43 +13,48 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\MultiField;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\MultiField;
+use Docalist\MappingBuilder;
+use InvalidArgumentException;
 
 /**
  * Organisme.
  *
- * @property String $name
- * @property String $acronym
- * @property String $city
- * @property String $country
- * @property String $role
+ * @property Docalist\Type\Text $name
+ * @property Docalist\Type\Text $acronym
+ * @property Docalist\Type\Text $city
+ * @property Docalist\Type\TableEntry $country
+ * @property Docalist\Type\TableEntry $role
  */
 class Organisation extends MultiField {
-    static protected $groupkey = 'role';
-    static protected $table2ForGroupkey = true;
-
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // @formatter:off
         return [
             'fields' => [
                 'name' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Nom', 'docalist-biblio'),
                     'description' => __("Nom de l'organisme", 'docalist-biblio'),
                 ],
                 'acronym' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Sigle', 'docalist-biblio'),
                     'description' => __("Sigle ou acronyme", 'docalist-biblio'),
                 ],
                 'city' => [
+                    'type' => 'Docalist\Type\Text',
                     'label' => __('Ville', 'docalist-biblio'),
                     'description' => __('Ville du siège social', 'docalist-biblio'),
                 ],
                 'country' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'table:ISO-3166-1_alpha2_fr',
                     'label' => __('Pays', 'docalist-biblio'),
                     'description' => __('Pays du siège social', 'docalist-biblio'),
                 ],
                 'role' => [
+                    'type' => 'Docalist\Type\TableEntry',
+                    'table' => 'thesaurus:marc21-relators_fr',
                     'label' => __('Rôle', 'docalist-biblio'),
                     'description' => __('Fonction', 'docalist-biblio'),
                 ]
@@ -58,66 +63,62 @@ class Organisation extends MultiField {
         // @formatter:on
     }
 
-    public function __toString() {
-        $result = $this->name;
-
-        if (isset($this->acronym)) {
-            $result .= ' - ';
-            $result .= $this->acronym();
-        }
-
-        if (isset($this->city) || isset($this->country)) {
-            $result .= ' (';
-            isset($this->city) && $result .= $this->city();
-            if (isset($this->country)) {
-                isset($this->city) && $result .= ', ';
-                $result .= $this->country();
-            }
-            $result .= ')';
-        }
-
-        isset($this->role) && $result .= ' / ' . $this->role();
-
-        return $result;
+    protected function getCategoryField()
+    {
+        return 'role';
     }
 
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('organisation')->text()->filter()->suggest(); // stemming sur les noms d'organismes
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('organisation')->text()->filter()->suggest(); // stemming sur les noms d'organismes
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         $document['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
     }
 
-    protected static function initFormats() {
-        self::registerFormat('n (a), t, c, r', 'Nom (sigle), ville, pays, rôle', function(Organisation $org, Organisations $parent) {
-            if (isset($org->name) && isset($org->acronym)) {
-                $h = $org->name() . ' (' . $org->acronym() . ')';
-            } else {
-                $h = $org->name() . $org->acronym(); // l'un des deux est vide
-            }
+    public function getAvailableFormats()
+    {
+        return [
+            'n (a), t, c, r' => 'Nom (sigle), ville, pays, rôle',
+            'name' => 'Nom ou sigle uniquement',
+        ];
+    }
 
-            if (isset($org->city)) {
-                $h && $h .= ', ';
-                $h .= $org->city();
-            }
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-            if (isset($org->country)) {
-                $h && $h .= ', ';
-                //$h .= $org->country();
-                $h .= $parent->lookup($org->country()); // table1
-            }
+        switch ($format) {
+            case 'n (a), t, c, r':
+                $name = $this->formatField('name', $options);
+                $acronym = $this->formatField('acronym', $options);
+                if ($name && $acronym) {
+                    $h = $name . ' (' . $acronym . ')';
+                } else {
+                    $h = $name . $acronym; // l'un des deux est vide
+                }
 
-            if (isset($org->role)) {
-                $h && $h .= ' / '; // espaces insécables
-                $h .= $parent->lookup($org->role(), true); // table2
-            }
-            return $h;
-        });
+                if (isset($this->city)) {
+                    $h && $h .= ', ';
+                    $h .= $this->formatField('city', $options);
+                }
 
-        self::registerFormat('name', 'Nom ou sigle uniquement', function(Organisation $org) {
-            return $org->name() ?: $org->acronym();
-        });
+                if (isset($this->country)) {
+                    $h && $h .= ', ';
+                    $h .= $this->formatField('country', $options);
+                }
+
+                if (isset($this->role)) {
+                    $h && $h .= ' / '; // espaces insécables
+                    $h .= $this->formatField('role', $options);
+                }
+                return $h;
+
+            case 'name':
+                return $this->formatField(isset($this->name) ? 'name' : 'acronym', $options);
+        }
+        throw new InvalidArgumentException("Invalid Organization format '$format'");
     }
 
     public function filterEmpty($strict = true) {

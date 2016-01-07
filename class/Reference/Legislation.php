@@ -31,7 +31,7 @@ use Docalist\Schema\Schema;
  * - est publié ou nom au bo, au jo, etc.
  */
 class Legislation extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 

@@ -13,27 +13,25 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\String;
-use Docalist\Forms\Input;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\Text;
+use Docalist\MappingBuilder;
 use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le titre de la notice.
  */
-class Title extends String {
-    public function editForm() {
-        $field = new Input($this->schema->name());
-        $field->addClass('large-text');//->attribute('id', 'DocTitle');
-
-        return $field;
+class Title extends Text {
+    public function getEditorForm($options = null)
+    {
+        return parent::getEditorForm($options)->addClass('large-text');
     }
 
-    public function mapping(MappingBuilder $mapping) {
+    public function setupMapping(MappingBuilder $mapping)
+    {
         DatabaseIndexer::standardMapping('post_title', $mapping);
     }
 
-    public function map(array & $document) {
+    public function mapData(array & $document) {
         DatabaseIndexer::standardMap('post_title', $this->value(), $document);
     }
 }

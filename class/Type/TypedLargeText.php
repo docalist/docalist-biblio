@@ -11,25 +11,21 @@
  * @subpackage  Biblio
  * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
-namespace Docalist\Biblio\Settings;
+namespace Docalist\Biblio\Type;
 
 /**
- * Config de Docalist Biblio.
- *
- * @property DatabaseSettings[] $databases Liste des bases.
+ * Texte large typé : un type composite associant un type provenant d'une table d'autorité
+ * à une valeur de type LargeText.
  */
-class Settings extends \Docalist\Type\Settings
+class TypedLargeText extends TypedText
 {
-    protected $id = 'docalist-biblio-settings';
-
     public static function loadSchema()
     {
         return [
             'fields' => [
-                'databases' => [
-                    'type' => 'Docalist\Biblio\Settings\DatabaseSettings*',
-                    'key' => 'name',
-                    'label' => __('Liste des bases de données documentaires', 'docalist-biblio'),
+                'value' => [
+                    'type' => 'Docalist\Type\LargeText',
+                    'label' => __('Texte', 'docalist-core'),
                 ],
             ],
         ];

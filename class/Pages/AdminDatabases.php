@@ -16,14 +16,13 @@ namespace Docalist\Biblio\Pages;
 use Docalist\AdminPage;
 use Exception;
 use Docalist\Biblio\Database;
-use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Schema\Schema;
-use Docalist\Schema\Field;
-use Docalist\Type\Collection;
 use WP_Role;
+use Docalist\Biblio\Type;
+use Docalist\Biblio\Grid;
 
 /**
  * Gestion des bases de données.
@@ -446,7 +445,7 @@ class AdminDatabases extends AdminPage {
         $database = $this->database($dbindex);
 
         // Récupère la liste des types existants
-        $types = Reference::types();
+        $types = apply_filters('docalist_biblio_get_types', []);
 
         // Récupère la liste des types qui existent déjà dans la base
         $selected = $database->types;
@@ -459,7 +458,7 @@ class AdminDatabases extends AdminPage {
                 if (isset($selected[$name])) {
                     unset($types[$name]);
                 } else {
-                    $types[$name] = $class::defaultSchema();
+                    $types[$name] = $class::getDefaultSchema();
                 }
             }
 
@@ -496,33 +495,24 @@ class AdminDatabases extends AdminPage {
             }
 
             // Initialise les différentes grilles du type
-            $defaultSchema = $types[$name]::defaultSchema();
+            $class = $types[$name]; /* @var Type $class */
 
-            $base = $types[$name]::baseGrid();
-            $base->name = 'base';
+            $base    = new Grid($class::getBaseGrid());
+            $edit    = new Grid($class::getEditGrid());
+            $content = new Grid($class::getContentGrid());
+            $excerpt = new Grid($class::getExcerptGrid());
 
-            $edit = $types[$name]::editGrid();
-            $edit->name = 'edit';
-
-            $content = $types[$name]::contentGrid();
-            $content->name = 'content';
-
-            $excerpt = $types[$name]::excerptGrid();
-            $excerpt->name = 'excerpt';
+            $edit->initSubfields($base);
+            $content->initSubfields($base);
+            $excerpt->initSubfields($base);
 
             // Crée le type
-            $type = new TypeSettings([
+            $database->types[] = new TypeSettings([
                 'name' => $name,
-                'label' => $defaultSchema->label(),
-                'description' => $defaultSchema->description(),
-                'grids' => [ $base, $edit, $content, $excerpt ]
+                'label' => $base->label(),
+                'description' => $base->description(),
+                'grids' => [ $base, $edit, $content, $excerpt]
             ]);
-
-            // Copie les propriétés de la grille de base dans toutes les autres grilles
-            $this->updateGrids($type);
-
-            // Enregistre le type
-            $database->types[] = $type;
         }
 
         $this->settings->save();
@@ -591,30 +581,10 @@ class AdminDatabases extends AdminPage {
         return $this->redirect($this->url('TypesList', $dbindex), 303);
     }
 
-    /**
-     * Modifie un format d'affichage
-     *
-     * @param int $dbindex Base à éditer
-     * @param int $typeindex Type à éditer
-     */
-    public function actionTypeDisplay($dbindex, $typeindex) {
-        $database = $this->database($dbindex);
-        $type = $this->type($dbindex, $typeindex);
+    public function actionTypeRecreate($dbindex, $typeindex, $confirm = false) {
+        unset($this->settings->databases[$dbindex]->types[$typeindex]);
 
-        if ($this->isPost()) {
-            die('isPost');
-//             $type->fields = wp_unslash($_POST);
-//             $this->settings->save();
-
-//             return $this->redirect($this->url('TypesList', $dbindex), 303);
-        }
-
-        return $this->view('docalist-biblio:type/display', [
-            'dbindex' => $dbindex,
-            'typeindex' => $typeindex,
-            'database' => $database,
-            'type' => $type,
-        ]);
+        return $this->actionTypeAdd($dbindex, $typeindex);
     }
 
     /**
@@ -653,10 +623,8 @@ class AdminDatabases extends AdminPage {
         if ($this->isPost()) {
             $_POST = wp_unslash($_POST);
 
-            $grid->merge([
-                'label' => $_POST['label'],
-                'description' => $_POST['description']
-            ]);
+            $grid->label = $_POST['label'];
+            $grid->description = $_POST['description'];
 
             $this->settings->save();
 
@@ -681,38 +649,48 @@ class AdminDatabases extends AdminPage {
      * @param string $gridname Nom de la grille à éditer.
      */
     public function actionGridEdit($dbindex, $typeindex, $gridname) {
+        $debug = false;
+
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
-        /* @var $grid Schema */
-        $grid = $type->grids[$gridname];
+        $grid = $type->grids[$gridname]; /* @var Schema $grid */
 
         // Enregistre la grille si on est en POST
         if ($this->isPost()) {
             $data = wp_unslash($_POST);
 
-            // Filtre les valeurs par défaut qui sont vides. On crée une ref,
-            // on initialise chaque champ avec la valeur par défaut indiquée
-            // dans la grille et on lui demande de la filtrer.
-            $ref = Reference::create($typeindex);
-            foreach($data as $name => & $field) {
-                if (isset($field['default'])) {
-                    $ref->$name = $field['default'];
-                    if ($ref->$name->filterEmpty()) { // mode strict pour conserver tout ce qu'on a mis en valeur par défaut
-                        unset($field['default']);
-                    } else {
-                        $field['default'] = $ref->$name->value();
-                    }
-                }
+            if ($debug) {
+                $old = '<?php ' . var_export($grid, true);
+                $grid = $grid->mergeWith($data);
+                $type->grids[$gridname] = $grid;
+                $new = '<?php ' . var_export($grid, true);
+
+                header('content-type: text/html; charset=UTF-8');
+                echo '<pre style="width: 49%; float: left; border:1px;">', htmlspecialchars($old), '</pre>';
+                echo '<pre style="width: 49%; float: left; border:1px;">', htmlspecialchars($new), '</pre>';
+                file_put_contents('d:/old.txt', $old);
+                file_put_contents('d:/new.txt', $new);
+                die();
+                $this->settings->save();
             }
-            $grid->merge(['fields' => $data]);
-            $this->updateGrids($type); // Gère l'héritage des propriétés
+
+            // Renumérote les groupes
+            $fields = [];
+            $groupNumber = 1;
+            foreach($data['fields'] as $name => $field) {
+                if (isset($field['type']) && $field['type'] === 'Docalist\Biblio\Type\Group') {
+                    $name = 'group' . $groupNumber;
+                    $groupNumber++;
+                }
+                $fields[$name] = $field;
+            }
+            $data['fields'] = $fields;
+
+            // Met à jour la grille et enregistre les settings
+            $type->grids[$gridname] = $grid->mergeWith($data);
             $this->settings->save();
 
             return $this->redirect($this->url('GridList', $dbindex, $typeindex), 303);
-        }
-
-        if ($gridname !== 'base') {
-            $this->initDefaults($type->grids['base'], $grid);
         }
 
         return $this->view('docalist-biblio:grid/edit', [
@@ -723,65 +701,6 @@ class AdminDatabases extends AdminPage {
             'grid' => $grid,
             'gridname' => $gridname
         ]);
-    }
-
-    protected function updateGrids(TypeSettings $type) {
-        $base = $type->grids['base'];
-        foreach($type->grids as $grid) {/* @var $grid Schema */
-            if ($grid !== $base) {
-                $this->updateGrid($grid, $base);
-            }
-        }
-    }
-
-    protected function updateGrid(Schema $grid, Schema $base) {
-        foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
-            if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
-                continue;
-            }
-
-            // TODO : plus tard, gérer les champs filtrés (par exemple si
-            // on a un champ qui s'appelle genre.xxx, comparer avec genre
-
-            $src = $base->field($name); /* @var $src Field */
-
-            // Propriétés héritées, non modifiables
-            // On les copie simplement pour que les grilles y ait accès
-            $dst->type = $src->type;
-            $dst->collection = $src->collection;
-            $dst->key = $src->key;
-
-            // Propriétés héritées et modifiables (xx-spec)
-            // On prend la propriété spécifique si elle existe,
-            // la propriété de la grille de base sinon
-            $dst->table  = $dst->tablespec  ?: $src->table;
-            $dst->table2 = $dst->table2spec ?: $src->table2;
-            $dst->label  = $dst->labelspec  ?: $src->label;
-            $dst->description  = $dst->descriptionspec  ?: $src->description;
-            $dst->capability  = $dst->capabilityspec  ?: $src->capability;
-        }
-    }
-
-    protected function initDefaults(Schema $base, Schema $grid) {
-        foreach($grid->fields() as $name => $dst) { /* @var $dest Field */
-            if (! $base->has($name)) { // nom de groupe qu'on n'a pas dans base
-                continue;
-            }
-
-            // TODO : plus tard, gérer les champs filtrés (par exemple si
-            // on a un champ qui s'appelle genre.xxx, comparer avec genre
-
-            $src = $base->field($name); /* @var $src Field */
-
-            // Propriétés héritées et modifiables (xx-spec)
-            // On prend la propriété spécifique si elle existe,
-            // la propriété de la grille de base sinon
-            $dst->tabledefault  = $src->table;
-            $dst->table2default = $src->table2;
-            $dst->labeldefault  = $src->label;
-            $dst->descriptiondefault  = $src->description;
-            $dst->capabilitydefault  = $src->capability;
-        }
     }
 
     /**
@@ -814,18 +733,14 @@ class AdminDatabases extends AdminPage {
 
         // recrée la grille telle que'elle était initialement pour
         // que la vue tophp puisse indiquer les modifications apportées
-        $types = Reference::types();
+        $types = apply_filters('docalist_biblio_get_types', []);
 
         if ($diffonly) {
-            $method = $gridname . 'Grid';
+            $method = 'get' . $gridname . 'Grid';
             $base = $types[$typeindex]::$method();
             $base->name = $gridname;
-            if ($gridname !== 'base') {
-                $this->updateGrid($base, $types[$typeindex]::baseGrid());
-                $this->updateGrid($base, $type->grids['base']);
-            }
         } else {
-            $base = $types[$typeindex]::baseGrid();
+            $base = $types[$typeindex]::getBaseGrid();
         }
 
         return $this->view('docalist-biblio:grid/tophp', [

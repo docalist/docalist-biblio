@@ -13,18 +13,19 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\StringTable;
-use Docalist\Search\MappingBuilder;
+use Docalist\Type\TableEntry;
+use Docalist\MappingBuilder;
 
 /**
  * Une langue.
  */
-class Language extends StringTable {
-    public function mapping(MappingBuilder $mapping) {
-        $mapping->field('language')->text()->filter();
+class Language extends TableEntry {
+    public function setupMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('language')->text()->filter();
     }
 
-    public function map(array & $document) {
-        $document['language'][] = $this->label();
+    public function mapData(array & $document) {
+        $document['language'][] = $this->getEntryLabel();
     }
 }

@@ -11,6 +11,7 @@
 /* Réduit un peu la largeur des th (label) dans le formulaire (200px par défaut) */
 .form-table th {
     width: 120px;
+    min-width: 120px;
 }
 .form-table th, .form-table td {
     padding: 30px 0 0 0;
@@ -25,7 +26,9 @@
     padding: 15px 0 0 0;
 }
 
-.field-table td input, .field-table td select, .field-table td textarea {
+.field-table td input[type=text], 
+.field-table td select, 
+.field-table td textarea {
     width: 100%;
 }
 
@@ -64,10 +67,8 @@
 .field-table th.link-label              { width: 20%; }
 .field-table th.link-date               { width: 10%; }
 
-.field-table th.relations-type          { width: 20%; }
-.field-table th.relations-ref           { width: 80%; }
-
-.field-table td .relations-ref          { width: 10%; }
+.field-table th.relation-type          { width: 20%; }
+.field-table th.relation-ref           { width: 80%; }
 /*
 #post-body.columns-2 #postbox-container-1 {
 	position: fixed;

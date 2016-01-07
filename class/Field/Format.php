@@ -13,11 +13,11 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\StringTable;
+use Docalist\Type\TableEntry;
 
 /**
  * Une étiquette de collation.
  */
-class Format extends StringTable {
+class Format extends TableEntry {
     // map : champ non indexé
 }

@@ -14,19 +14,14 @@
 namespace Docalist\Biblio\Pages;
 
 use Docalist\Biblio\Database;
-use Docalist\Biblio\Reference;
-use Docalist\Forms\Themes;
-use Docalist\Utils;
+use Docalist\Biblio\Type;
 use WP_Post;
 use WP_Screen;
 use Exception;
 
-use Docalist\Forms\Fragment;
-
 use Docalist\Http\ViewResponse;
-use Docalist\Forms\Assets;
-use Docalist\Schema\Field;
 use Docalist\Biblio\DatabaseIndexer;
+use Docalist\Forms\Container;
 
 /**
  * Gère la page "création/modification d'une notice" d'une base documentaire.
@@ -61,7 +56,7 @@ class EditReference {
     /**
      * La notice en cours d'édition.
      *
-     * @var Reference
+     * @var Type
      */
     protected $reference;
 
@@ -167,11 +162,11 @@ class EditReference {
 
             // Injecte les valeurs par défaut dans le draft qui va être créé
             add_filter('wp_insert_post_data', function(array $data) {
-                // Crée une référence du type demandé avec les valeurs par défaut du schéma
-                $ref = Reference::create($_REQUEST['ref_type']);
+                // Crée une référence du type demandé avec les valeurs par défaut du formulaire
+                $ref = $this->database->createReference($_REQUEST['ref_type'], null, 'edit');
 
                 // Evite le titre wp "brouillon auto"
-                $ref->title = '';
+                $ref->schema()->hasField('title') && $ref->title = '';
 
                 // Génère les données du post wp à créer
                 $data = $this->database->encode($ref->value()) + $data;
@@ -209,7 +204,7 @@ class EditReference {
     /**
      * Ajoute une metabox de débogage qui affiche le contenu brut du post.
      */
-    protected function addDebugMetabox(Reference $ref) {
+    protected function addDebugMetabox(Type $ref) {
         // @formatter:off
         add_meta_box(
             'dclrefdebug',                         // id metabox
@@ -226,8 +221,8 @@ class EditReference {
                 echo "</pre>";
 
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                //echo $ref;
+                // echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo $ref;
                 echo "</pre>";
 
                 echo "<h4>Mapping Docalist-Search</h4><pre>";
@@ -252,7 +247,7 @@ class EditReference {
      */
     protected function edit($id) {
         // Charge la notice à éditer
-        $ref = $this->database->load($id, 'edit');
+        $ref = $this->database->load($id);
 
         // Adapte le titre de l'écran de saisie
         $this->setPageTitle($ref->type(), false);
@@ -268,28 +263,27 @@ class EditReference {
         $this->addDebugMetabox($ref);
 
         // Construit le formulaire
-        $assets = new Assets();
         foreach($this->metaboxes($ref, ! $this->isNewPost) as $form) {
-            $id = $form->attribute('id');
-            $title = $form->label() ?: $ref->schema()->label();
-            $form->label(false); // comme on affiche le titre nous même
+            $id = $form->getAttribute('id');
+            $title = $form->getLabel() ?: $ref->schema()->label();
+            $form->setLabel(null); // comme on affiche le titre nous même
 
             // binde le formulaire
             $form->bind($ref);
 
             // Regroupe tous les champs dans un champ parent 'dbref'
             // Cela évite que wp interfére avec nos champs (#250, #335 par exemple)
-            $form->name(self::FORM_NAME);
+            $form->setName(self::FORM_NAME);
 
-            // Envoie les assets requis
-            $assets->add($form->assets());
+            // Génère le formulaire et enqueue les assets requis
+            $form = $form->render('wordpress');
 
-            // Ajoute une metabox qui se chargera d'afficher le formulaire
+            // Ajoute une metabox qui affiche le résultat
             add_meta_box(
                 $id,
                 $title,
                 function() use($form) {
-                    $form->render('wordpress');
+                    echo $form;
                 },
                 $this->postType,
                 'normal',
@@ -297,15 +291,13 @@ class EditReference {
             );
         }
 
-        // Insère tous les assets dans la page
-        $assets->add(Themes::assets('wordpress'));
-        Utils::enqueueAssets($assets); // @todo : faire plutôt $assets->enqueue()
-        wp_enqueue_style('docalist-biblio-edit-reference');
+        // Insère notre feuille de style
+        wp_styles()->enqueue('docalist-biblio-edit-reference');
 
         // Définit l'état initial des metaboxes (normal, replié, masqué)
         $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
         $collapsed = [];
-        foreach($ref->schema()->fields() as $name => $field) { /* @var $field Field */
+        foreach($ref->schema()->getFields() as $name => $field) {
             if ($field->type() === 'Docalist\Biblio\Type\Group') {
                 switch($field->state()) {
                     case 'hidden':
@@ -357,27 +349,19 @@ class EditReference {
         $data = wp_unslash($data);
         $postarr = wp_unslash($postarr);
 
-        if ($debug) {
-            header('content-type: text/html; charset=UTF8');
-            echo '<style>code{color: darkblue;font-weight: bold;}</style>';
-            echo '<h1>Données de $postarr</h1>';
-            var_dump($postarr);
-            echo '<h1>Données de $data</h1>';
-            var_dump($data);
-        }
-
         // Tous les champs sont dans un champ parent 'dbref' (cf. edit)
         if (! isset($postarr[self::FORM_NAME])) {
             die('Aucune donnée transmise dans '. self::FORM_NAME . '[]');
         }
 
+        if ($debug) {
+            header('content-type: text/html; charset=UTF8');
+            echo '<h1>Données du formulaire</h1>';
+            var_dump($postarr[self::FORM_NAME]);
+        }
+
         // Supprime les espaces de début et de fin partout (docalist/docalist#327)
         $postarr[self::FORM_NAME] = $this->deepTrim($postarr[self::FORM_NAME]);
-
-        // Wordpress considère que "content" est un alias de "post_content"
-        // Du coup, on récupère dans $data.post_content le champ docalist
-        // "content" (un tableau donc comme le champ est un objet multivalué)
-        // $data['post_content'] = ''; Inutile maintenant qu'on le champ parent dbref
 
         /*
          * Etape 1
@@ -387,7 +371,7 @@ class EditReference {
          * - les anciennes données de la notice existante, encodées en json
          *   dans le champ post_excerpt fournit par wordpress dans $data.
          *
-         * On construit un objet Reference à partir de ces données :
+         * On construit un objet Type à partir de ces données :
          * - la référence obtenue correspond aux données de l'ancienne notice
          *   sauf pour les champs mappés qui contiennent les données WP à jour.
          * - les champs wordpress qui ne sont pas mappés (post_date_gmt,
@@ -398,11 +382,12 @@ class EditReference {
         if (! isset($ref['type'])) {
             throw new Exception("Pas de type dans data");
         }
-        $ref = Reference::create($ref['type'], $ref);
+        unset($ref['title']);
+        $ref = $this->database->createReference($ref['type'], $ref);
 
         if ($debug) {
-            echo '<h1>Reference créée à partir de $data)</h1>';
-            echo "<p>Il s'agit de la notice existante, sauf pour les champs WP mappés qui contiennent déjà la valeur mise à jour.</p>";
+            echo '<h1>Notice existante</h1>';
+            echo "<p>Ref créée à partir de data, il s'agit de la notice existante, sauf pour les champs WP mappés qui contiennent déjà la valeur mise à jour.</p>";
             echo "<pre>$ref</pre>";
         }
 
@@ -411,16 +396,23 @@ class EditReference {
          *
          * Met à jour la référence avec les données des metaboxes.
          */
+        if ($debug) {
+            echo '<h1>Binding notice / formulaire</h1>';
+        }
         foreach($this->metaboxes($ref) as $metabox) {
             $metabox->bind($postarr[self::FORM_NAME]);
-            foreach($metabox->data() as $key => $value) {
+            foreach($metabox->getData() as $key => $value) {
+                if ($debug) {
+                    echo "<li>Set <code>$key = ", htmlspecialchars(var_export($value,true)), '</code></li>';
+                }
                 $ref->$key = $value;
             }
         }
 
         if ($debug) {
             echo "<h1>Etat de la notice après binding</h1>";
-            echo "<pre>$ref</pre>";
+            var_dump($ref);
+            //echo "<pre>$ref</pre>";
         }
 
         // Filtre les champs et les valeurs vides
@@ -503,26 +495,26 @@ class EditReference {
      * @param bool $ignoreDefaults Indique s'il faut ignorer la valeur par
      * défaut des champs.
      *
-     * @return Fragment[] Un tableau de la forme id metabox => form fragment
+     * @return Container[] Un tableau de la forme id metabox => form fragment
      */
-    protected function metaboxes(Reference $ref, $ignoreDefaults = false) {
+    protected function metaboxes(Type $ref, $ignoreDefaults = false) {
 
         // Charge la grille "edit" correspondant au type de la notice
         $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
 
         // Récupère la liste des champs
-        $fields = $schema->fields();
+        $fields = $schema->getFields();
 
         // Crée un groupe par défaut si la liste ne commence pas par un groupe
-        if (reset($fields)->type()) {
-            $box = new Fragment();
-            $box->label('')->attribute('id', 'defaultgroup');
+        if (reset($fields)->type() !== 'Docalist\Biblio\Type\Group') {
+            $box = new Container();
+            $box->setLabel('')->setAttribute('id', 'defaultgroup');
             $hasBoxCap = true;
         }
 
         // Balaie les champs et crée les boites au fur et à mesure
         $metaboxes = [];
-        foreach($fields as $name => $field) { /* @var $field Field */
+        foreach($fields as $name => $field) {
             // Nouveau champ
             if ($field->type() !== 'Docalist\Biblio\Type\Group') {
 
@@ -538,15 +530,15 @@ class EditReference {
                 }
 
                 // Ok, on a tous les droits requis, crée le champ
-                $ignoreDefaults && $field->__set('default', null);
-                $box->add($ref->$name->editForm());
+//                $ignoreDefaults && $field->__unset('default', null);
+                $box->add($ref->$name->getEditorForm($field));
 
                 // Au suivant
                 continue;
             }
 
             // Nouveau groupe de champ, sauvegarde la boite en cours si nécessaire
-            if (isset($box) && !empty($box->fields())) {
+            if (isset($box) && $box->hasItems()) {
                 $metaboxes[] = $box;
             }
 
@@ -563,14 +555,14 @@ class EditReference {
 
             // Ok, on a les droits, crée la nouvelle boite
             $hasBoxCap = true;
-            $box = new Fragment();
-            $box->label($field->label())
-                ->description($field->description())
-                ->attribute('id', $name);
+            $box = new Container();
+            $box->setLabel($field->label())
+                ->setDescription($field->description())
+                ->setAttribute('id', $name);
         }
 
         // Sauvegarde la dernière boite créée si nécessaire
-        if (isset($box) && !empty($box->fields())) {
+        if (isset($box) && $box->hasItems()) {
             $metaboxes[] = $box;
         }
 
@@ -586,12 +578,12 @@ class EditReference {
      * modifiée pour utiliser la table par défaut indiquée en paramètre et
      * une erreur "admin notice" est générée.
      *
-     * @param Field $def La définition du champ à vérifier.
+     * @param Schema $def La définition du champ à vérifier.
      * @param string $default Le nom de la première table par défaut.
      * @param string $default2 Le nom de laseconde table par défaut (si le champ
      * utilise deux tables, par exemple organization).
      */
-//     protected function checkTables(Field $def, $default, $default2 = null) {
+//     protected function checkTables(Schema $def, $default, $default2 = null) {
 //         foreach(['table' => $default, 'table2' => $default2] as $table => $default) {
 //             if ($table === 'table2' && !isset($def->$table)) {
 //                 continue;

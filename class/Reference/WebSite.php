@@ -33,7 +33,7 @@ use Docalist\Schema\Schema;
  * - a un organisme ou une personne auteur
  */
 class WebSite extends Reference {
-    static protected function loadSchema() {
+    static public function loadSchema() {
         // Récupère les champs d'une référence standard
         $fields = parent::loadSchema()['fields'];
 
