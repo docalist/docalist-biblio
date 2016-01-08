@@ -67,7 +67,7 @@ class ListReferences{
             if (is_null($customColumns)) {
                 echo
                     '<style type="text/css">
-                        .widefat .column-ref  { width: 3em; text-align: right }
+                        .widefat .column-ref  { width: 4em }
                         .column-type { width: 5em }
                         .column-creation { width: 9em }
                         .column-lastupdate { width: 9em }
