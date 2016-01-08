@@ -75,3 +75,10 @@
 	right: 320px;
 }
 */
+
+/* Masque temporairement le bouton "clone" pour address et WPEditor */
+.content .cloner, 
+.postal-address .cloner 
+{
+    display: none;
+}
