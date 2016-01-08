@@ -20,20 +20,30 @@ use Docalist\Schema\Schema;
 use InvalidArgumentException;
 use Exception;
 use Docalist\Forms\Container;
+use Docalist\Biblio\Type\PostType;
+use Docalist\Biblio\Type\PostStatus;
+use Docalist\Biblio\Type\PostTitle;
+use Docalist\Biblio\Type\PostDate;
+use Docalist\Biblio\Type\PostModified;
+use Docalist\Type\Text;
+use Docalist\Type\Integer;
+use Docalist\Biblio\Type\RefNumber;
+use Docalist\Biblio\Type\RefType;
 
 /**
  * Référence documentaire.
  *
- * @property Docalist\Biblio\Type\PostType      $posttype
- * @property Docalist\Biblio\Type\PostStatus    $status
- * @property Docalist\Biblio\Type\PostDate      $creation
- * @property Docalist\Biblio\Type\PostAuthor    $createdBy
- * @property Docalist\Biblio\Type\PostModified  $lastupdate
- * @property Docalist\Type\Text $password
- * @property Docalist\Type\Integer $parent
- * @property Docalist\Biblio\Type\RefNumber     $ref
- * @property Docalist\Type\Text $slug
- * @property Docalist\Biblio\Type\RefType       $type
+ * @property PostType       $posttype   Post Type
+ * @property PostStatus     $status     Statut de la fiche
+ * @property PostTitle      $title      Titre de la fiche
+ * @property PostDate       $creation   Date/heure de création de la fiche
+ * @property PostAuthor     $createdBy  Auteur de la fiche
+ * @property PostModified   $lastupdate Date/heure de dernière modification
+ * @property Text           $password   Mot de passe de la fiche
+ * @property Integer        $parent     Post ID de la fiche parent
+ * @property Text           $slug       Slug de la fiche
+ * @property RefNumber      $ref        Numéro unique identifiant la fiche
+ * @property RefType        $type       Type de fiche
  */
 class Type extends Entity
 {
@@ -51,6 +61,11 @@ class Type extends Entity
                     'type' => 'Docalist\Biblio\Type\PostStatus',
                     'label' => __('Statut', 'docalist-biblio'),
                     'description' => __('Statut de la fiche.', 'docalist-biblio'),
+                ],
+                'title' => [       // Alias de post_title
+                    'type' => 'Docalist\Biblio\Type\PostStatus',
+                    'label' => __('Titre', 'docalist-biblio'),
+                    'description' => __('Titre de la fiche.', 'docalist-biblio'),
                 ],
                 'creation' => [    // Alias de post_date
                     'type' => 'Docalist\Biblio\Type\PostDate',
@@ -75,7 +90,7 @@ class Type extends Entity
                 'parent' => [      // Alias de post_parent
                     'type' => 'Docalist\Type\Integer',
                     'label' => __('Notice parent', 'docalist-biblio'),
-                    'description' => __('Numéro de référence de la fiche parent.', 'docalist-biblio'),
+                    'description' => __('Post ID de la fiche parent.', 'docalist-biblio'),
                 ],
                 'slug' => [  // Alias de post_name
                     'type' => 'Docalist\Type\Text',
@@ -89,7 +104,7 @@ class Type extends Entity
                 'type' => [
                     'type' => 'Docalist\Biblio\Type\RefType',
                     'label' => __('Type de fiche', 'docalist-biblio'),
-                    'description' => __('Code indiquant le type de fiche.', 'docalist-biblio'),
+                    'description' => __('Type de fiche.', 'docalist-biblio'),
                 ],
             ],
         ];
@@ -365,15 +380,12 @@ class Type extends Entity
         // Met à jour la séquence si on a déjà un numéro de ref
         $ref = $this->ref();
         if (! empty($ref)) {
-            docalist('sequences')->setIfGreater($repository->postType(), 'ref', $this->ref());
+            docalist('sequences')->setIfGreater($repository->postType(), 'ref', $ref);
         }
 
         // Sinon, alloue un numéro à la notice
         else {
             // On n'alloue un n° de ref qu'aux notices publiées (#322)
-            if ($this->status() === 'publish') {
-                $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
-            }
 
             // Remarque : dans wp_insert_post, WP fait le test suivant :
             // if ( !in_array( $post_status, array( 'draft', 'pending', 'auto-draft' ) ) )
@@ -384,17 +396,26 @@ class Type extends Entity
             //
             // Remarque : ne fonctionne pas pour un post 'future' car beforeSave
             // n'est pas rappellée dans ce cas.
+
+            if ($this->status() === 'publish') {
+                $ref = $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
+            } else {
+                $ref = '(sans titre)'; // Notice sans n° de ref et qui n'est pas public
+            }
         }
 
         // Alloue une slug à la notice
 
         // slug de la forme 'ref'
-        $slug = $this->ref();
+        $slug = $ref;
 
         // slug de la forme 'ref-mots-du-titre'
         // $slug = $this->ref() . '-' . sanitize_title($this->title(), '', 'save');
 
         $this->slug = $slug;
+
+        // Affecte un post_title à la fiche (par défaut : n° de ref
+        $this->title = $ref;
     }
 
     public function getSettingsForm()
