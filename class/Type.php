@@ -188,7 +188,7 @@ class Type extends Entity
             $class = get_parent_class($class);
         }
 
-        return array_reverse($parents);
+        return $parents;
     }
 
     /**
