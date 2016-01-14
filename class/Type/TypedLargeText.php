@@ -13,9 +13,15 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Type\TableEntry;
+use Docalist\Type\LargeText;
+
 /**
  * Texte large typé : un type composite associant un type provenant d'une table d'autorité
  * à une valeur de type LargeText.
+ *
+ * @property TableEntry $type   Type
+ * @property LargeText  $value  Value
  */
 class TypedLargeText extends TypedText
 {
