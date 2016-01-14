@@ -225,10 +225,10 @@ class EditReference {
                 echo $ref;
                 echo "</pre>";
 
-                echo "<h4>Mapping Docalist-Search</h4><pre>";
-                $indexer = new DatabaseIndexer($this->database);
-                $document = $indexer->map($ref);
-                echo json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+//                 echo "<h4>Mapping Docalist-Search</h4><pre>";
+//                 $indexer = new DatabaseIndexer($this->database);
+//                 $document = $indexer->map($ref);
+//                 echo json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
                 echo "</pre>";
             },
