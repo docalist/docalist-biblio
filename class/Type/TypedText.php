@@ -16,10 +16,15 @@ namespace Docalist\Biblio\Type;
 use Docalist\MappingBuilder;
 use InvalidArgumentException;
 use Docalist\Type\MultiField;
+use Docalist\Type\TableEntry;
+use Docalist\Type\Text;
 
 /**
  * Texte typé : un type composite associant un type provenant d'une table d'autorité
  * à une valeur de type Text.
+ *
+ * @property TableEntry $type   Type
+ * @property Text       $value  Value
  */
 class TypedText extends MultiField
 {
