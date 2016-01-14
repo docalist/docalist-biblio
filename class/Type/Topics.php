@@ -15,6 +15,7 @@ namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Collection;
 use Docalist\Forms\TopicsInput;
+use Docalist\Biblio\Type\Topic;
 
 /**
  * Une collection de topics d'indexation.
@@ -23,13 +24,25 @@ class Topics extends Collection
 {
     protected static $type = 'Docalist\Biblio\Type\Topic';
 
-    public static function loadSchema()
+// inutile : seul le schéma des éléments de la collection est pris en compte
+//     public static function loadSchema()
+//     {
+//         return [
+//             'key' => 'type',
+//             'table' => 'table:topics',
+//             'editor' => 'table',
+//         ];
+//     }
+
+    public function offsetSet($offset, $value)
     {
-        return [
-            'key' => 'type',
-            'table' => 'table:topics',
-            'editor' => 'table',
-        ];
+        // Si value n'est pas du bon type, on l'instancie
+        if (! $value instanceof Topic) { /* @var Topic $value */
+            $value = new Topic($value, $this->schema);
+        }
+        $value->setParent($this);
+
+        parent::offsetSet($offset, $value);
     }
 
     public function getEditorForm($options = null)
