@@ -236,9 +236,17 @@ class Database extends PostTypeRepository
         // Ok
         $schema = $this->settings->types[$type]->grids['base'];
 
-        // Crée la référence avec le schéma demandé
-        $type = $this->type; // Type
-        return new $type($data, $schema, $id);
+        // Crée l'entité
+        $types = apply_filters('docalist_biblio_get_types', []);
+        if (! isset($types[$type])) {
+            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
+            // qui fournissait ces types.
+            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
+        }
+        $class = $types[$type];
+
+        // Ok, crée la notice
+        return new $class($data, $schema, $id);
     }
 
     /**
