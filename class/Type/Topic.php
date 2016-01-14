@@ -18,22 +18,33 @@ use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
 use Docalist\MappingBuilder;
 use Docalist\Forms\TopicsInput;
+use InvalidArgumentException;
+use Docalist\Type\TableEntry;
+use Docalist\Type\Text;
 
 /**
  * Une liste de mots-clés d'un certain type.
  *
- * @property Docalist\Type\TableEntry $type
- * @property Docalist\Type\Text[] $term
+ * @property TableEntry $type
+ * @property Text[] $term
  */
 class Topic extends MultiField
 {
+    /**
+     * Collection parent (pour avoir accès à la table des topics)
+     *
+     * @var Topics
+     */
+    protected $parent;
+
     public static function loadSchema()
     {
         return [
             'label' => __('Indexation', 'docalist-biblio'),
             'description' => __('Tags, mots-clés, catégories, domaines, étiquettes, classification...', 'docalist-biblio'),
-            'table' => 'table:topics',
+            'table' => 'table:topics', // non, dans la collection
             'editor' => 'table',
+            'key' => 'type',
             'fields' => [
                 'type' => [
                     'type' => 'Docalist\Type\TableEntry',
@@ -46,6 +57,19 @@ class Topic extends MultiField
                 ],
             ],
         ];
+    }
+
+    /**
+     * @return Topics|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setParent(Topics $parent)
+    {
+        $this->parent = $parent;
     }
 
     public function getAvailableEditors()
@@ -87,6 +111,83 @@ class Topic extends MultiField
         $repeatable = $this->schema->collection();
 
         $repeatable ? ($document[$name][] = $value) : ($document[$name] = $value);
+    }
+
+    public function getAvailableFormats()
+    {
+        return [
+            'v'     => 'Mots-clés',
+            'V'     => 'Code des mots-clés (i.e. mots-clés en majuscules)',
+            't : v' => 'Nom du vocabulaire : Mots-clés',
+            't: v'  => 'Nom du vocabulaire: Mots-clés',
+            'v (t)' => 'Mots-clés (Nom du vocabulaire)'
+        ];
+    }
+
+    public function getTermsLabel()
+    {
+        // Récupère la liste des termes
+        $terms = $this->term();
+        $terms = array_combine($terms, $terms);
+
+        // Récupère la table des topics utilisée (dans le schéma de la collection Topics parent)
+        if (is_null($this->parent) || is_null($schema = $this->parent->schema()) || is_null($table = $schema->table())) {
+            return $this->term();
+        }
+
+        // Récupère le table-manager
+        $tables = docalist('table-manager'); /* @var $tables TableManager */
+
+        // Récupère la table qui contient la liste des vocabulaires
+        $tableName = explode(':', $table)[1];
+        $table = $tables->get($tableName); /* @var $table TableInterface */
+
+        // Détermine la source qui correspond au type du topic
+        $source = $table->find('source', 'code='. $table->quote($this->type()));
+        if ($source !== false) { // type qu'on n'a pas dans la table topics
+            list($type, $tableName) = explode(':', $source);
+
+            // Si la source est une table, on traduit les termes
+            if ($type === 'table' || $type === 'thesaurus') {
+                $table = $tables->get($tableName); /* @var $table TableInterface */
+                foreach ($terms as & $term) {
+                    $result = $table->find('label', 'code=' . $table->quote($term));
+                    $result !== false && $term = $result;
+                }
+            }
+        }
+
+        // Ok
+        return $terms;
+    }
+
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
+
+        switch ($format) {
+            case 'v':
+                return implode(', ', $this->getTermsLabel());
+            case 'V':
+                return implode(', ', $this->term());
+            case 't : v':
+                $format = '%s : %s'; // espace insécable avant le ':'
+                break;
+            case 't: v':
+                $format = '%s: %s';
+                break;
+            case 'v (t)':
+                $format = '%2$s (%1$s)';
+                break;
+            default:
+                throw new InvalidArgumentException("Invalid Topic format '$format'");
+        }
+
+        return sprintf(
+            $format,
+            $this->type->getEntryLabel(),
+            implode(', ', $this->getTermsLabel())
+        );
     }
 
 //     protected static function initFormats() {
