@@ -142,16 +142,16 @@ class Topic extends MultiField
 //         });
 //     }
 
-//     public function filterEmpty($strict = true) {
-//         // Supprime les éléments vides
-//         $empty = parent::filterEmpty();
+    public function filterEmpty($strict = true) {
+        // Supprime les éléments vides
+        $empty = parent::filterEmpty();
 
-//         // Si tout est vide ou si on est en mode strict, terminé
-//         if ($empty || $strict) {
-//             return $empty;
-//         }
+        // Si tout est vide ou si on est en mode strict, terminé
+        if ($empty || $strict) {
+            return $empty;
+        }
 
-//         // Retourne true si on n'a pas de mots-clés
-//         return $this->filterEmptyProperty('term');
-//     }
+        // Retourne true si on n'a pas de mots-clés
+        return $this->filterEmptyProperty('term');
+    }
 }
