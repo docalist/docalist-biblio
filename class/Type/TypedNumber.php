@@ -14,12 +14,17 @@
 namespace Docalist\Biblio\Type;
 
 use InvalidArgumentException;
+use Docalist\Type\TableEntry;
+use Docalist\Type\Text;
 
 /**
  * Nombre typé : un type composite associant un type provenant d'une table d'autorité
  * de type number à une valeur de type texte.
  * La table associée contient une colonne format qui indique comment formatter les
  * entrées.
+ *
+ * @property TableEntry $type   Type
+ * @property Text       $value  Value
  */
 class TypedNumber extends TypedText
 {
