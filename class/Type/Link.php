@@ -67,6 +67,16 @@ class Link extends MultiField {
         ];
     }
 
+    public function assign($value)
+    {
+        if (is_array($value)) {
+            unset($value['lastcheck']);
+            unset($value['status']);
+        }
+
+        return parent::assign($value);
+    }
+
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('link')->url();
