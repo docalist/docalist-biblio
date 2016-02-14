@@ -18,7 +18,6 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
-use Docalist\Search\TypeIndexer;
 use Docalist\Search\SearchRequest;
 use WP_Post;
 use WP_Query;
@@ -79,15 +78,10 @@ class Database extends PostTypeRepository
         $this->registerPostType();
 
         // Indique à docalist-search que cette base est indexable
-        add_filter('docalist_search_get_types', function (array $types) {
-            $types[$this->settings->postType()] = $this->settings->label();
+        add_filter('docalist_search_get_indexers', function ($indexers) {
+            $indexers[$this->settings->postType()] = new DatabaseIndexer($this);
 
-            return $types;
-        });
-
-        // Retourne l'indexeur à utiliser pour indexer les notices de cette base
-        add_filter("docalist_search_get_{$type}_indexer", function (TypeIndexer $indexer = null) {
-            return new DatabaseIndexer($this);
+            return $indexers;
         });
 
         // Retourne le filtre standard de recherche pour cette base
