@@ -227,20 +227,58 @@ class Database extends PostTypeRepository
             throw new InvalidArgumentException(sprintf($msg, $type));
         }
 
-        // Ok
+        // Récupère le schéma à utiliser
         $schema = $this->settings->types[$type]->grids['base'];
 
-        // Crée l'entité
-        $types = apply_filters('docalist_biblio_get_types', []);
-        if (! isset($types[$type])) {
-            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
-            // qui fournissait ces types.
-            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
-        }
-        $class = $types[$type];
+        // Détermine le nom de la classe php correspondant au type de notice
+        $class = $this->getClassForType($type);
 
-        // Ok, crée la notice
+        // Crée et retourne la notice
         return new $class($data, $schema, $id);
+    }
+
+    /**
+     * Retourne la liste des types disponibles.
+     *
+     * Lors du premier appel, le filtre 'docalist_biblio_get_types' est exécuté et le résultat est stocké en cache.
+     *
+     * @return string[] Un tableau de la forme type => nom complet de la classe php qui gère ce type.
+     */
+    public static function getAvailableTypes()
+    {
+        static $types;
+
+        // Initialise la liste des types disponibles lors du premier appel
+        if (is_null($types)) {
+            $types = apply_filters('docalist_biblio_get_types', []);
+        }
+
+        return $types;
+    }
+
+    /**
+     * Retourne le nom complet de la classe PHP qui gère le type indiqué.
+     *
+     * @param string $type Le nom du type recherché.
+     * @return string Le nom de la classe php.
+     *
+     * @throws InvalidArgumentException Si le type indiqué ne figure pas dans la liste retournée par
+     * getAvailableTypes().
+     */
+    public static function getClassForType($type)
+    {
+        static $types;
+
+        // Récupère la liste des types disponibles
+        $types = self::getAvailableTypes();
+
+        // Génère une exception si le type demandé n'existe pas
+        if (! isset($types[$type])) {
+            throw new InvalidArgumentException("Type '$type' is not availableFilter");
+        }
+
+        // Ok
+        return $types[$type];
     }
 
     /**
@@ -300,19 +338,13 @@ class Database extends PostTypeRepository
         }
 
         // Détermine le nom de la classe php correspondant au type de notice
-        $types = apply_filters('docalist_biblio_get_types', []);
-        if (! isset($types[$type])) {
-            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
-            // qui fournissait ces types.
-            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
-        }
-        $class = $types[$type];
+        $class = $this->getClassForType($type);
 
-        // Ok, crée la notice
+        // Crée la notice
         $ref = new $class($data, $schema);
-
         $ref->type = $type;
 
+        // Ok
         return $ref;
     }
 
