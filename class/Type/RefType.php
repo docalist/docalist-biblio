@@ -16,6 +16,7 @@ namespace Docalist\Biblio\Type;
 use Docalist\Type\Text;
 use Docalist\Forms\Select;
 use Docalist\MappingBuilder;
+use Docalist\Biblio\Database;
 
 /**
  * Le type de la notice.
@@ -32,7 +33,7 @@ class RefType extends Text
 
     public function getFormattedValue($options = null)
     {
-        $types = apply_filters('docalist_biblio_get_types', []);
+        $types = Database::getAvailableTypes();
         $type = $this->value();
         if (isset($types[$type])) {
             $type = $types[$type]::getDefaultSchema()->label();
@@ -42,7 +43,7 @@ class RefType extends Text
 
     public function getEditorForm($options = null)
     {
-        $types = apply_filters('docalist_biblio_get_types', []);
+        $types = Database::getAvailableTypes();
         foreach ($types as $type => $class) {
             $types[$type] = $class::getDefaultSchema()->label() . " ($type)";
         }
