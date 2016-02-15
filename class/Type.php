@@ -29,6 +29,8 @@ use Docalist\Type\Text;
 use Docalist\Type\Integer;
 use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
+use Docalist\Search\ElasticSearchMappingBuilder;
+use Docalist\MappingBuilder;
 
 /**
  * Référence documentaire.
@@ -63,7 +65,7 @@ class Type extends Entity
                     'description' => __('Statut de la fiche.', 'docalist-biblio'),
                 ],
                 'title' => [       // Alias de post_title
-                    'type' => 'Docalist\Biblio\Type\PostStatus',
+                    'type' => 'Docalist\Biblio\Type\PostTitle',
                     'label' => __('Titre', 'docalist-biblio'),
                     'description' => __('Titre de la fiche.', 'docalist-biblio'),
                 ],
@@ -620,5 +622,83 @@ class Type extends Entity
 
         // Terminé
         return $result;
+    }
+
+    public function buildIndexSettings(array $settings, Database $database)
+    {
+        // Récupère l'analyseur par défaut pour les champs texte de cette base (dans les settings de la base)
+        $defaultAnalyzer = $database->settings()->stemming();
+
+        // Détermine le nom du mapping (nom de la base + nom du type)
+        $name = $database->postType() . '-' . $this->schema->name();
+        // garder synchro avec DatabaseIndexer::index()
+
+        // Construit le mapping du type
+        $mapping = $this->buildMapping(new ElasticSearchMappingBuilder($defaultAnalyzer));
+
+        // Stocke le mapping dans les settings
+        $settings['mappings'][$name] = $mapping->getMapping();
+
+        // Ok
+        return $settings;
+    }
+
+    /**
+     *
+     * @param MappingBuilder $mapping
+     *
+     * @return MappingBuilder
+     */
+    protected function buildMapping(MappingBuilder $mapping)
+    {
+        $mapping->addField('status')->text()->filter();
+        $mapping->addField('title')->text();
+        $mapping->addField('creation')->dateTime();
+        $mapping->addField('createdby')->text()->filter();
+        $mapping->addField('lastupdate')->dateTime();
+        $mapping->addField('slug')->text();
+        $mapping->addField('ref')->integer();
+        $mapping->addField('type')->text()->filter();
+
+        return $mapping;
+    }
+
+    public function map()
+    {
+        $document = [];
+
+        // Statut
+        if (isset($this->status)) {
+            $status = get_post_status_object($this->status());
+            $document['status'] = $status ? $status->label : $this->status();
+        }
+
+        // Titre
+        $document['title'] = $this->title();
+
+        // Date de création
+        $document['creation'] = $this->creation();
+
+        // Auteur
+        $user = get_user_by('id', $this->createdBy());
+        $document['createdby'] = $user ? $user->user_login : $this->createdBy();
+
+        // Date de modification
+        $document['lastupdate'] = $this->lastupdate();
+
+        // Slug
+        if (isset($this->slug)) {
+            $document['slug'] = $this->slug();
+        }
+
+        // Numéro de réf
+        if (isset($this->ref)) {
+            $document['ref'] = $this->ref();
+        }
+
+        // Type de réf
+        $document['type'] = $this->schema->label();
+
+        return $document;
     }
 }
