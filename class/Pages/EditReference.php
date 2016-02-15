@@ -20,7 +20,6 @@ use WP_Screen;
 use Exception;
 
 use Docalist\Http\ViewResponse;
-use Docalist\Biblio\DatabaseIndexer;
 use Docalist\Forms\Container;
 
 /**
@@ -205,7 +204,6 @@ class EditReference {
      * Ajoute une metabox de débogage qui affiche le contenu brut du post.
      */
     protected function addDebugMetabox(Type $ref) {
-        // @formatter:off
         add_meta_box(
             'dclrefdebug',                         // id metabox
             'Informations de debug de la notice',  // titre
@@ -221,14 +219,11 @@ class EditReference {
                 echo "</pre>";
 
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                // echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 echo $ref;
                 echo "</pre>";
 
-//                 echo "<h4>Mapping Docalist-Search</h4><pre>";
-//                 $indexer = new DatabaseIndexer($this->database);
-//                 $document = $indexer->map($ref);
-//                 echo json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo "<h4>Mapping Docalist-Search</h4><pre>";
+                echo json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
                 echo "</pre>";
             },
@@ -236,7 +231,6 @@ class EditReference {
             'normal',           // contexte
             'high'              // priorité
         );
-        // @formatter:on
     }
 
     /**
