@@ -13,11 +13,12 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Search\PostIndexer;
-use Docalist\MappingBuilder;
+use Docalist\Search\Indexer\PostIndexer;
+use Docalist\Biblio\Settings\TypeSettings;
+use Docalist\Search\IndexManager;
 
 /**
- * Un indexeur pour les notices d'une base documentaire.
+ * Un indexeur pour les notices d'une base.
  */
 class DatabaseIndexer extends PostIndexer
 {
@@ -35,41 +36,54 @@ class DatabaseIndexer extends PostIndexer
      */
     public function __construct(Database $database)
     {
-        parent::__construct($database->postType());
         $this->database = $database;
     }
 
-    public function getMapping()
+    public function getType()
     {
-        // Crée une référence vide
-        $type = $this->database->type();
-        $ref = new $type(); /* @var $ref Reference */
-
-        // Récupère l'analyseur par défaut pour les champs texte (dans les settings)
-        $defaultAnalyzer = $this->database->settings()->stemming();
-
-        // Construit le mapping
-        $mapping = docalist('mapping-builder'); /* @var MappingBuilder $mapping */
-        $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
-        $ref->setupMapping($mapping);
-
-        // Ok
-        return $mapping->getMapping();
+        return $this->database->postType();
     }
 
-    public function map($post)
+    public function getLabel()
     {
-        // Crée la référence à partir des données du post passé en paramètre
-        if ($post instanceof Reference) {
-            $ref = $post;
-        } else {
-            $ref = $this->database->fromPost($post);
+        return $this->database->label();
+    }
+
+    public function getCategory()
+    {
+        return __('Bases Docalist', 'docalist-biblio');
+    }
+
+    public function buildIndexSettings(array $settings)
+    {
+        $types = $this->database->settings()->types;
+        foreach($types as $type) {  /* TypeSettings $type */
+            $class = Database::getClassForType($type->name());
+            $ref = new $class();
+            $settings = $ref->buildIndexSettings($settings, $this->database);
         }
 
-        // Mappe la notice
-        $document = [];
-        $ref->mapData($document);
+        return $settings;
+    }
 
-        return $document;
+    protected function index($post, IndexManager $indexManager)
+    {
+        $ref = $this->database->fromPost($post);
+        $esType = $this->database->postType() . '-' . $ref->type();
+
+        $indexManager->index($this->getType(), $this->getID($post), $this->map($ref), $esType);
+    }
+
+    protected function remove($post, IndexManager $indexManager)
+    {
+        $ref = $this->database->fromPost($post);
+        $esType = $this->database->postType() . '-' . $ref->type();
+
+        $indexManager->delete($this->getType(), is_scalar($post) ? $post : $this->getID($post), $esType);
+    }
+
+    protected function map($ref) /* @var Type $ref */
+    {
+        return $ref->map();
     }
 }
