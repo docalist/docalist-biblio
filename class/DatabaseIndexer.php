@@ -84,6 +84,9 @@ class DatabaseIndexer extends PostIndexer
 
     protected function map($ref) /* @var Type $ref */
     {
-        return $ref->map();
+        $document = $ref->map();
+        $document['database'] = $this->database->postType(); // mapping créé dans Type::buildIndexSettings()
+
+        return $document;
     }
 }
