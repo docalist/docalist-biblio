@@ -636,6 +636,9 @@ class Type extends Entity
         // Construit le mapping du type
         $mapping = $this->buildMapping(new ElasticSearchMappingBuilder($defaultAnalyzer));
 
+        // Ajoute le champ 'database'
+        $mapping->addField('database')->keyword(); // initialisé dans DatabaseIndexer::map()
+
         // Stocke le mapping dans les settings
         $settings['mappings'][$name] = $mapping->getMapping();
 
@@ -651,14 +654,14 @@ class Type extends Entity
      */
     protected function buildMapping(MappingBuilder $mapping)
     {
-        $mapping->addField('status')->text()->filter();
+        $mapping->addField('status')->keyword();
         $mapping->addField('title')->text();
         $mapping->addField('creation')->dateTime();
-        $mapping->addField('createdby')->text()->filter();
+        $mapping->addField('createdby')->keyword();
         $mapping->addField('lastupdate')->dateTime();
         $mapping->addField('slug')->text();
         $mapping->addField('ref')->integer();
-        $mapping->addField('type')->text()->filter();
+        $mapping->addField('type')->keyword();
 
         return $mapping;
     }
@@ -668,37 +671,57 @@ class Type extends Entity
         $document = [];
 
         // Statut
-        if (isset($this->status)) {
-            $status = get_post_status_object($this->status());
-            $document['status'] = $status ? $status->label : $this->status();
-        }
+        isset($this->status) && $document['status'] = $this->status();
 
         // Titre
-        $document['title'] = $this->title();
+        isset($this->title) && $document['title'] = $this->title();
 
         // Date de création
-        $document['creation'] = $this->creation();
+        isset($this->creation) && $document['creation'] = $this->creation();
 
         // Auteur
-        $user = get_user_by('id', $this->createdBy());
-        $document['createdby'] = $user ? $user->user_login : $this->createdBy();
+        if (isset($this->createdBy)) {
+            $user = get_user_by('id', $this->createdBy());
+            $document['createdby'] = $user ? $user->user_login : $this->createdBy();
+        }
 
         // Date de modification
-        $document['lastupdate'] = $this->lastupdate();
+        isset($this->lastupdate) && $document['lastupdate'] = $this->lastupdate();
 
         // Slug
-        if (isset($this->slug)) {
-            $document['slug'] = $this->slug();
-        }
+        isset($this->slug) && $document['slug'] = $this->slug();
 
         // Numéro de réf
-        if (isset($this->ref)) {
-            $document['ref'] = $this->ref();
-        }
+        isset($this->ref) && $document['ref'] = $this->ref();
 
         // Type de réf
-        $document['type'] = $this->schema->label();
+        isset($this->type) && $document['type'] = $this->type();
 
+        // Ok
         return $document;
+    }
+
+    /**
+     * Indexation standard d'un champ multifield répétable.
+     *
+     * Génère un champ field-type.
+     *
+     * @param array $document Document ElasticSearch à modifier.
+     * @param string $field Nom du champ à mapper.
+     * @param string $value Nom du sous-champ contenant la valeur à indexer (value par défaut).
+     */
+    protected function mapMultiField(array & $document, $field, $value='value')
+    {
+        if (isset($this->$field)) {
+            foreach($this->$field as $item) { /* @var TypedText $item */
+                $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
+                $content = $item->__get($value)->value();
+                if (isset($document[$key])) {
+                    $content = (array) $document[$key] + (array) $content;
+                }
+                is_array($content) && count($content) === 1 && $content = array_shift($content);
+                $document[$key] = $content;
+            }
+        }
     }
 }
