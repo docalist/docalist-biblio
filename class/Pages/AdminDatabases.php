@@ -325,7 +325,8 @@ class AdminDatabases extends AdminPage {
         unset($this->settings->databases[$dbindex]);
         $this->settings->save();
 
-        //TODO : supprimer séquences
+        // Supprimer la séquence utilisée pour cette base
+        docalist('sequences')->clear($database->postType());
 
         // Supprime les droits accordés lors de la création de la base
         // NB : Si l'utilisateur a ensuite accordé les droits à d'autres groupes
