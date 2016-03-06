@@ -205,9 +205,9 @@ class EditReference {
      */
     protected function addDebugMetabox(Type $ref) {
         add_meta_box(
-            'dclrefdebug',                         // id metabox
+            'dbdebug',                             // id metabox
             'Informations de debug de la notice',  // titre
-            function () use ($ref) {                // Callback
+            function () use ($ref) {               // Callback
                 global $post;
 
                 $data = $post->to_array();
@@ -289,7 +289,7 @@ class EditReference {
         wp_styles()->enqueue('docalist-biblio-edit-reference');
 
         // Définit l'état initial des metaboxes (normal, replié, masqué)
-        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
+        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dbdebug'];
         $collapsed = [];
         foreach($ref->schema()->getFields() as $name => $field) {
             if ($field->type() === 'Docalist\Biblio\Type\Group') {
@@ -309,7 +309,7 @@ class EditReference {
             return $screen->id === $this->postType ? $hidden : $result;
         }, 10, 2);
 
-        add_filter('get_user_option_closedpostboxes_dclrefprisme', function($result) use ($collapsed) {
+        add_filter('get_user_option_closedpostboxes_dbprisme', function($result) use ($collapsed) {
             return $result === false ? $collapsed : $result;
         });
     }

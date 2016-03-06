@@ -419,7 +419,7 @@ class Database extends PostTypeRepository
             'public' => true,  //
             'hierarchical' => false, // WP est inutilisable si on met à true (cache de la hiérarchie)
             'exclude_from_search' => true,  // Inutile que WP recherche avec du like dans nos milliers de notices
-            'publicly_queryable' => true,  // Permet d'avoir des query dclrefbase=xxx
+            'publicly_queryable' => true,  // Permet d'avoir des query dbbase=xxx
             'show_ui' => true,  // Laisse WP générer l'interface
             'show_in_menu' => true,  // Afficher dans le menu wordpress
             'show_in_nav_menus' => false, // Gestionnaire de menus inutilisable si true : charge tout
@@ -434,7 +434,7 @@ class Database extends PostTypeRepository
             'taxonomies' => [],    // Aucune pour le moment
             'has_archive' => false, // On gère nous même la page d'accueil
             'rewrite' => false, // On gère nous-mêmes les rewrite rules (cf. ci-dessous)
-            'query_var' => true,  // Laisse WP créer la QV dclrefbase=xxx
+            'query_var' => true,  // Laisse WP créer la QV dbbase=xxx
             'can_export' => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
             'delete_with_user' => false, // On ne veut pas supprimer
         ];
@@ -532,10 +532,10 @@ class Database extends PostTypeRepository
              5  mabase/\d+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$       index.php?attachment=$1&cpage=$2
 
             // Trackback sur une notice
-             6  mabase/(\d+)/trackback/?$                                       index.php?dclrefprisme=$1&tb=1
+             6  mabase/(\d+)/trackback/?$                                       index.php?dbprisme=$1&tb=1
 
             // Pagination d'une notice (balise <!––nextpage––>)
-             7  mabase/(\d+)(/[0-9]+)?/?$                                       index.php?dclrefprisme=$1&page=$2
+             7  mabase/(\d+)(/[0-9]+)?/?$                                       index.php?dbprisme=$1&page=$2
 
              8  mabase/\d+/([^/]+)/?$                                           index.php?attachment=$1
              9  mabase/\d+/([^/]+)/trackback/?$                                 index.php?attachment=$1&tb=1
@@ -544,7 +544,7 @@ class Database extends PostTypeRepository
             12  mabase/\d+/([^/]+)/comment-page-([0-9]{1,})/?$                  index.php?attachment=$1&cpage=$2
 
             Seule la règle 7 (sans la pagination) nous intéresse. Idéalement, on devrait uniquement avoir :
-                mabase/(\d+)/?$                                                 index.php?dclrefprisme=$1
+                mabase/(\d+)/?$                                                 index.php?dbprisme=$1
          */
     }
 

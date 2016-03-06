@@ -43,7 +43,7 @@ class Relation extends Integer
     static public function loadSchema() {
         return [
             'reltype' => '',    // exemple : "Svb\Type\Event"
-            'relfilter' => '',  // exemple: "+type:event +database:dclrefevents"
+            'relfilter' => '',  // exemple: "+type:event +database:dbevents"
         ];
     }
 

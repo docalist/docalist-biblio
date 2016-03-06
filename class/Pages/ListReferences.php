@@ -289,9 +289,9 @@ class ListReferences{
 
             // Filtre par type de notice
             $types = $this->countTypes();
-            $current = empty($_GET['dclreftype']) ? '' : $_GET['dclreftype'];
+            $current = empty($_GET['dbtype']) ? '' : $_GET['dbtype'];
 
-            echo '<select name="dclreftype">';
+            echo '<select name="dbtype">';
             printf(
                 "<option%s value=''>%s</option>",
                 selected($current, '', false),
@@ -317,8 +317,8 @@ class ListReferences{
                 if (!empty($_GET['year'])) {
                     $wp_query->query_vars['year'] = $_GET['year'];
                 }
-                if (!empty($_GET['dclreftype'])) {
-                    $wp_query->query_vars['post_mime_type'] = 'dclref/' . $_GET['dclreftype'];
+                if (!empty($_GET['dbtype'])) {
+                    $wp_query->query_vars['post_mime_type'] = 'db/' . $_GET['dclreftype'];
                 }
             }
         });
@@ -361,7 +361,7 @@ class ListReferences{
      *
      * @return array Un tableau d'objets avec les propriétés :
      * - type : le nom du type (par exemple "article")
-     * - post_mime_type : le type mime du type (par exemple "dclref/article"),
+     * - post_mime_type : le type mime du type (par exemple "db/article"),
      * - count : le nombre de notices de ce type,
      * - label : le libellé du type (par exemple "Article de périodique").
      */
@@ -404,7 +404,7 @@ class ListReferences{
         if ($cache) {
             $types = $this->database->settings()->types;
             foreach ($cache as $type) {
-                list($dclref, $code) = explode('/', $type->post_mime_type);
+                list(, $code) = explode('/', $type->post_mime_type);
                 $label = isset($types[$code]) ? $types[$code]->label : $code;
 
                 $type->type = $code;
