@@ -294,7 +294,7 @@ class Plugin
         // Liste des formats autorisés pour chaque type
         // TODO : depuis les settings
         $formatsByType = [
-            'dclrefprisme' => [
+            'dbprisme' => [
                 'prisme2014-delimited',
                 'prisme2014-uppercase-delimited',
                 'prisme2011-delimited',
@@ -302,7 +302,7 @@ class Plugin
                 'docalist-json-pretty',
                 'docalist-xml-pretty',
             ],
-            'dclreftests' => [
+            'dbtests' => [
                 'prisme2014-delimited',
                 'prisme2014-uppercase-delimited',
                 'prisme2011-delimited',
