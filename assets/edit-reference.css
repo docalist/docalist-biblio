@@ -76,9 +76,8 @@
 }
 */
 
-/* Masque temporairement le bouton "clone" pour address et WPEditor */
-.content .cloner, 
-.postal-address .cloner 
+/* Masque temporairement le bouton "clone" pour address */
+.address .cloner 
 {
     display: none;
 }
