@@ -168,7 +168,13 @@ class EditReference {
                 $ref->schema()->hasField('title') && $ref->title = '';
 
                 // Génère les données du post wp à créer
-                $data = $this->database->encode($ref->value()) + $data;
+                $value = $this->database->encode($ref->value());
+
+                // wp_insert_post_data veut absolument des données "slashées" (cf post.php:3328 qui fait un unslash)
+                $value = wp_slash($value);
+
+                // Ajoute les données par défaut transmises par WordPress (déjà slashées)
+                $data = $value + $data;
 
                 return $data;
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
