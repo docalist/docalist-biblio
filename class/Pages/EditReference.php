@@ -191,8 +191,7 @@ class EditReference {
 
         // Indique à WP l'option de menu en cours
         // cf. wp-admin/post-new.php, lignes 28 et suivantes
-        global $submenu_file;
-        $submenu_file = "post-new.php?post_type=$this->postType";
+        $GLOBALS['submenu_file'] = "post-new.php?post_type=$this->postType";
 
         // Affiche la page "Choix du type de notice à créer"
         require_once('./admin-header.php');
