@@ -220,15 +220,15 @@ class EditReference {
                 $data = array_filter($data);
 
                 echo "<h4>Propriétés du post WordPress :</h4><pre>";
-                echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo htmlspecialchars(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                 echo "</pre>";
 
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                echo $ref;
+                echo htmlspecialchars((string)$ref);
                 echo "</pre>";
 
                 echo "<h4>Mapping Docalist-Search</h4><pre>";
-                echo json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo htmlspecialchars(json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
                 echo "</pre>";
             },
