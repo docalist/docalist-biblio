@@ -636,9 +636,6 @@ class Type extends Entity
         // Construit le mapping du type
         $mapping = $this->buildMapping(new ElasticSearchMappingBuilder($defaultAnalyzer));
 
-        // Ajoute le champ 'database'
-        $mapping->addField('database')->keyword(); // initialisé dans DatabaseIndexer::map()
-
         // Stocke le mapping dans les settings
         $settings['mappings'][$name] = $mapping->getMapping();
 
@@ -654,14 +651,16 @@ class Type extends Entity
      */
     protected function buildMapping(MappingBuilder $mapping)
     {
-        $mapping->addField('status')->keyword();
-        $mapping->addField('title')->text();
-        $mapping->addField('creation')->dateTime();
-        $mapping->addField('createdby')->keyword();
-        $mapping->addField('lastupdate')->dateTime();
-        $mapping->addField('slug')->text();
-        $mapping->addField('ref')->integer();
+        // pour les champs de base, maintenir le même ordre que dans PostIndexer
+        $mapping->addField('in')->keyword();
         $mapping->addField('type')->keyword();
+        $mapping->addField('status')->keyword();
+        $mapping->addField('slug')->text();
+        $mapping->addField('createdby')->keyword();
+        $mapping->addField('creation')->dateTime();
+        $mapping->addField('lastupdate')->dateTime();
+        $mapping->addField('title')->text();
+        $mapping->addField('ref')->integer();
 
         return $mapping;
     }
@@ -670,32 +669,35 @@ class Type extends Entity
     {
         $document = [];
 
+        // In
+        // -> initialisé dans DatabaseIndexer::map() car un type ne sait pas dans quelle base il figure
+
+        // Type de réf
+        isset($this->type) && $document['type'] = $this->type();
+
         // Statut
         isset($this->status) && $document['status'] = $this->status();
 
-        // Titre
-        isset($this->title) && $document['title'] = $this->title();
+        // Slug
+        isset($this->slug) && $document['slug'] = $this->slug();
 
-        // Date de création
-        isset($this->creation) && $document['creation'] = $this->creation();
-
-        // Auteur
+        // CreatedBy
         if (isset($this->createdBy)) {
             $user = get_user_by('id', $this->createdBy());
             $document['createdby'] = $user ? $user->user_login : $this->createdBy();
         }
 
+        // Date de création
+        isset($this->creation) && $document['creation'] = $this->creation();
+
         // Date de modification
         isset($this->lastupdate) && $document['lastupdate'] = $this->lastupdate();
 
-        // Slug
-        isset($this->slug) && $document['slug'] = $this->slug();
+        // Titre
+        isset($this->title) && $document['title'] = $this->title();
 
         // Numéro de réf
         isset($this->ref) && $document['ref'] = $this->ref();
-
-        // Type de réf
-        isset($this->type) && $document['type'] = $this->type();
 
         // Ok
         return $document;
