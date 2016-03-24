@@ -54,6 +54,11 @@ class DatabaseIndexer extends PostIndexer
         return __('Bases Docalist', 'docalist-biblio');
     }
 
+    public function getCollection()
+    {
+        return $this->database->settings()->name();
+    }
+
     public function buildIndexSettings(array $settings)
     {
         $types = $this->database->settings()->types;
@@ -85,7 +90,8 @@ class DatabaseIndexer extends PostIndexer
     protected function map($ref) /* @var Type $ref */
     {
         $document = $ref->map();
-        $document['database'] = $this->database->postType(); // mapping créé dans Type::buildIndexSettings()
+//      $document['database'] = $this->database->postType(); // mapping créé dans Type::buildIndexSettings()
+        $document['in'] = $this->getCollection(); // mapping créé dans Type::buildIndexSettings()
 
         return $document;
     }
