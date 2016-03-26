@@ -634,7 +634,9 @@ class Type extends Entity
         // garder synchro avec DatabaseIndexer::index()
 
         // Construit le mapping du type
-        $mapping = $this->buildMapping(new ElasticSearchMappingBuilder($defaultAnalyzer));
+        $mapping = docalist('mapping-builder'); /* @var ElasticSearchMappingBuilder $mapping */
+        $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
+        $mapping = $this->buildMapping($mapping);
 
         // Stocke le mapping dans les settings
         $settings['mappings'][$name] = $mapping->getMapping();
