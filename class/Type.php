@@ -29,8 +29,7 @@ use Docalist\Type\Text;
 use Docalist\Type\Integer;
 use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
-use Docalist\Search\ElasticSearchMappingBuilder;
-use Docalist\MappingBuilder;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Référence documentaire.
@@ -634,7 +633,7 @@ class Type extends Entity
         // garder synchro avec DatabaseIndexer::index()
 
         // Construit le mapping du type
-        $mapping = docalist('mapping-builder'); /* @var ElasticSearchMappingBuilder $mapping */
+        $mapping = docalist('mapping-builder'); /* @var MappingBuilder $mapping */
         $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
         $mapping = $this->buildMapping($mapping);
 
