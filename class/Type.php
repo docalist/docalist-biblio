@@ -580,7 +580,7 @@ class Type extends Entity
             // Ok, c'est un nouveau champ
 
             // Si on n'a pas la capacité du groupe en cours, ou si le format ou le champ sont vides, terminé
-            if (! $hasCap || empty($format) || ! isset($this->value[$name])) {
+            if (! $hasCap || empty($format) || ! isset($this->phpValue[$name])) {
                 continue;
             }
 
@@ -591,7 +591,7 @@ class Type extends Entity
             }
 
             // Ok, formatte le contenu du champ
-            $content = $this->value[$name]->getFormattedValue($this->getFieldOptions($name, $options));
+            $content = $this->phpValue[$name]->getFormattedValue($this->getFieldOptions($name, $options));
 
             // Champ renseigné mais format() n'a rien retourné, passe au champ suivant
             if (empty($content)) {
@@ -718,7 +718,7 @@ class Type extends Entity
         if (isset($this->$field)) {
             foreach($this->$field as $item) { /* @var TypedText $item */
                 $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
-                $content = $item->__get($value)->value();
+                $content = $item->$value->getPhpValue();
                 if (isset($document[$key])) {
                     $content = (array) $document[$key] + (array) $content;
                 }
