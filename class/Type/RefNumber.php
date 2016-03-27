@@ -14,20 +14,10 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Integer;
-use Docalist\MappingBuilder;
 
 /**
  * Le numéro de référence de la notice.
  */
 class RefNumber extends Integer
 {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('ref')->integer();
-    }
-
-    public function mapData(array & $document)
-    {
-        $document['ref'] = $this->value();
-    }
 }
