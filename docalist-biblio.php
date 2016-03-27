@@ -10,7 +10,7 @@
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org/
  * Description: Docalist: bibliographic data manager.
- * Version:     0.12.0
+ * Version:     0.13.0
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Text Domain: docalist-biblio
