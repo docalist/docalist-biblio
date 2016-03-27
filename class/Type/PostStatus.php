@@ -14,21 +14,10 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
-use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le statut wordpress de la notice.
  */
 class PostStatus extends Text
 {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        DatabaseIndexer::standardMapping('post_status', $mapping);
-    }
-
-    public function mapData(array & $document)
-    {
-        DatabaseIndexer::standardMap('post_status', $this->value(), $document);
-    }
 }
