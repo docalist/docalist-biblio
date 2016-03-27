@@ -168,7 +168,7 @@ class EditReference {
                 $ref->schema()->hasField('title') && $ref->title = '';
 
                 // Génère les données du post wp à créer
-                $value = $this->database->encode($ref->value());
+                $value = $this->database->encode($ref->getPhpValue());
 
                 // wp_insert_post_data veut absolument des données "slashées" (cf post.php:3328 qui fait un unslash)
                 $value = wp_slash($value);
@@ -434,7 +434,7 @@ class EditReference {
          *
          * Génère le post wordpress à partir de la notice
          */
-        $ref = $this->database->encode($ref->value()); // !!! encode ne doit pas générer de valeurs par défaut
+        $ref = $this->database->encode($ref->getPhpValue()); // !!! encode ne doit pas générer de valeurs par défaut
         if ($debug) {
             echo "<h1>Données de la notice après encode() = post généré :</h1>";
             var_dump($ref);
