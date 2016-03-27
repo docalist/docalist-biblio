@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -67,7 +66,7 @@ class Organisation extends MultiField {
     {
         return 'role';
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('organisation')->text()->filter()->suggest(); // stemming sur les noms d'organismes
@@ -76,7 +75,7 @@ class Organisation extends MultiField {
     public function mapData(array & $document) {
         $document['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

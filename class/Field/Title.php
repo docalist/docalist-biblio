@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
 use Docalist\Biblio\DatabaseIndexer;
 
 /**
@@ -25,7 +24,7 @@ class Title extends Text {
     {
         return parent::getEditorForm($options)->addClass('large-text');
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         DatabaseIndexer::standardMapping('post_title', $mapping);
@@ -34,4 +33,5 @@ class Title extends Text {
     public function mapData(array & $document) {
         DatabaseIndexer::standardMap('post_title', $this->value(), $document);
     }
+*/
 }

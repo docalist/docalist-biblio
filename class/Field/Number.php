@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -41,7 +40,7 @@ class Number extends MultiField {
             ]
         ];
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('number')->literal();
@@ -51,7 +50,7 @@ class Number extends MultiField {
     public function mapData(array & $document) {
         $document['number.' . $this->type()][] = $this->__get('value')->value();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

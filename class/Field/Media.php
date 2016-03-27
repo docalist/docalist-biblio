@@ -14,13 +14,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\TableEntry;
-use Docalist\MappingBuilder;
 
 /**
  * Un support de document.
  */
 class Media extends TableEntry
 {
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('media')->text()->filter();
@@ -30,4 +30,5 @@ class Media extends TableEntry
     {
         $document['media'][] = $this->getEntryLabel();
     }
+*/
 }

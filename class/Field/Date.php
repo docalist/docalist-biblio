@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -40,7 +39,7 @@ class Date extends MultiField {
             ]
         ];
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('date')->date();
@@ -50,7 +49,7 @@ class Date extends MultiField {
     public function mapData(array & $document) {
         $document['date.' . $this->type()][] = $this->__get('value')->value();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

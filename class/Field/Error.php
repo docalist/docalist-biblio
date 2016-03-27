@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Composite;
-use Docalist\MappingBuilder;
 
 /**
  * Une erreur.
@@ -33,7 +32,7 @@ class Error extends Composite {
             ],
         ];
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('error')->text()->filter();
@@ -42,4 +41,5 @@ class Error extends Composite {
     public function mapData(array & $document) {
         $document['error'][] = $this->message();
     }
+*/
 }

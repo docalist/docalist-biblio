@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 
 /**
  * Editeur
@@ -61,7 +60,7 @@ class Editor extends MultiField {
     {
         return 'role';
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('editor')->text()->filter()->suggest(); // stemming sur les noms d'organismes
@@ -70,7 +69,7 @@ class Editor extends MultiField {
     public function mapData(array & $document) {
         $document['editor'][] = $this->name() . '¤' . $this->city() . '¤' . $this->country();
     }
-
+*/
     protected static function initFormats() {
         self::registerFormat('n, t, c, r', "Nom de l'éditeur, ville, pays, rôle", function(Editor $ed, Editors $parent) {
             $h = $ed->name();

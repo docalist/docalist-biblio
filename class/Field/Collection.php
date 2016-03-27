@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Composite;
-use Docalist\MappingBuilder;
 
 /**
  * Collection et numéro au sein de la collection.
@@ -42,7 +41,7 @@ class Collection extends Composite {
         ];
         // @formatter:on
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('collection')->text();
@@ -51,7 +50,7 @@ class Collection extends Composite {
     public function mapData(array & $document) {
         $document['collection'][] = $this->name();
     }
-
+*/
     public function format() {
         $h = $this->name();
         isset($this->number) && $h .= ' (' . $this->number() . ')';

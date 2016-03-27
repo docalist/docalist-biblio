@@ -16,7 +16,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\Text;
 use Docalist\Type\Composite;
 use Docalist\Forms\Table;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -65,7 +64,7 @@ class Event extends Composite {
 
         return $field;
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('event')->text();
@@ -74,7 +73,7 @@ class Event extends Composite {
     public function mapData(array & $document) {
         $document['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

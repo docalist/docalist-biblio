@@ -14,13 +14,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
 
 /**
  * Une mention d'édition
  */
 class Edition extends Text
 {
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('edition')->text();
@@ -30,4 +30,5 @@ class Edition extends Text
     {
         $document['edition'][] = $this->value();
     }
+*/
 }

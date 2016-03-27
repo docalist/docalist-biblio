@@ -14,13 +14,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
 
 /**
  * Un producteur.
  */
 class Owner extends Text
 {
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('owner')->text()->filter();
@@ -30,4 +30,5 @@ class Owner extends Text
     {
         $document['owner'] = $this->value();
     }
+*/
 }

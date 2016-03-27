@@ -14,12 +14,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\TableEntry;
-use Docalist\MappingBuilder;
 
 /**
  * Une langue.
  */
-class Language extends TableEntry {
+class Language extends TableEntry
+{
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('language')->text()->filter();
@@ -28,4 +29,5 @@ class Language extends TableEntry {
     public function mapData(array & $document) {
         $document['language'][] = $this->getEntryLabel();
     }
+*/
 }

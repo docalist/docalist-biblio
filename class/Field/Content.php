@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -44,7 +43,7 @@ class Content extends MultiField {
             ]
         ];
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('content')->text();
@@ -53,7 +52,7 @@ class Content extends MultiField {
     public function mapData(array & $document) {
         $document['content'][] = $this->__get('value')->value();
     }
-
+*/
     protected static function shortenText($text, $maxlen = 240, $ellipsis = '…') {
         if (strlen($text) > $maxlen) {
             // Tronque le texte

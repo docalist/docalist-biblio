@@ -14,18 +14,18 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
 use Docalist\Forms\EntryPicker;
 
 /**
  * Un titre de périodique.
  */
-class Journal extends Text {
+class Journal extends Text
+{
     public function getEditorForm($options = null)
     {
         return (new EntryPicker('journal'))->setOptions('index')->addClass('large-text');
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('journal')->text()->filter()->suggest();
@@ -34,4 +34,5 @@ class Journal extends Text {
     public function mapData(array & $document) {
         $document['journal'] = $this->value();
     }
+*/
 }
