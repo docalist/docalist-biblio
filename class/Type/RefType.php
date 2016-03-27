@@ -15,7 +15,6 @@ namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
 use Docalist\Forms\Select;
-use Docalist\MappingBuilder;
 use Docalist\Biblio\Database;
 
 /**
@@ -52,15 +51,5 @@ class RefType extends Text
         $field->setOptions($types);
 
         return $field;
-    }
-
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('type')->text()->filter();
-    }
-
-    public function mapData(array & $document)
-    {
-        $document['type'] = $this->getFormattedValue();
     }
 }
