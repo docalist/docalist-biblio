@@ -16,7 +16,6 @@ namespace Docalist\Biblio\Type;
 use Docalist\Type\MultiField;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
-use Docalist\MappingBuilder;
 use Docalist\Forms\TopicsInput;
 use InvalidArgumentException;
 use Docalist\Type\TableEntry;
@@ -87,30 +86,6 @@ class Topic extends MultiField
             ->setDescription($this->getOption('description', $options));
 
         return $editor;
-    }
-
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $name = $this->schema->name();
-        $mapping->addField($name)->text()->filter()->suggest();
-        $mapping->addTemplate($name . '.*')->copyFrom($name)->copyDataTo($name);
-    }
-
-    public function mapData(array & $document)
-    {
-        return;
-        $value = $this->__get('value')->value();
-        if (empty($value)) {
-            return;
-        }
-
-        $name = $this->schema->name();
-        $type = $this->type();
-        !empty($type) && $name .= '.' . $type;
-
-        $repeatable = $this->schema->collection();
-
-        $repeatable ? ($document[$name][] = $value) : ($document[$name] = $value);
     }
 
     public function getAvailableFormats()
