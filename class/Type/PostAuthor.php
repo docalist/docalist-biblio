@@ -14,8 +14,6 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
-use Docalist\Biblio\DatabaseIndexer;
 use WP_User;
 
 /**
@@ -23,16 +21,6 @@ use WP_User;
  */
 class PostAuthor extends Text
 {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        DatabaseIndexer::standardMapping('post_author', $mapping);
-    }
-
-    public function mapData(array & $document)
-    {
-        DatabaseIndexer::standardMap('post_author', $this->value(), $document);
-    }
-
     public function getFormattedValue($options = null)
     {
         $author = get_user_by('id', $this->value); /* @var $author WP_User */
