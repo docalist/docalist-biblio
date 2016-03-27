@@ -23,7 +23,7 @@ class PostAuthor extends Text
 {
     public function getFormattedValue($options = null)
     {
-        $author = get_user_by('id', $this->value); /* @var $author WP_User */
+        $author = get_user_by('id', $this->getPhpValue()); /* @var $author WP_User */
 
         return $author->display_name;
     }

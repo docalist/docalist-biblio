@@ -33,7 +33,7 @@ class RefType extends Text
     public function getFormattedValue($options = null)
     {
         $types = Database::getAvailableTypes();
-        $type = $this->value();
+        $type = $this->getPhpValue();
         if (isset($types[$type])) {
             $type = $types[$type]::getDefaultSchema()->label();
         }
