@@ -13,7 +13,6 @@
  */
 namespace Docalist\Biblio\Type;
 
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 use Docalist\Type\MultiField;
 use Docalist\Type\TableEntry;
@@ -46,29 +45,6 @@ class TypedText extends MultiField
                 ],
             ],
         ];
-    }
-
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $name = $this->schema->name();
-        $mapping->addField($name)->text();
-        $mapping->addTemplate($name . '.*')->copyFrom($name)->copyDataTo($name);
-    }
-
-    public function mapData(array & $document)
-    {
-        $value = $this->__get('value')->value();
-        if (empty($value)) {
-            return;
-        }
-
-        $name = $this->schema->name();
-        $type = $this->type();
-        !empty($type) && $name .= '.' . $type;
-
-        $repeatable = $this->schema->collection();
-
-        $repeatable ? ($document[$name][] = $value) : ($document[$name] = $value);
     }
 
     public function getAvailableFormats()
