@@ -429,6 +429,9 @@ class EditReference {
             echo "<pre>$ref</pre>";
         }
 
+        // Il faut également appeler afterSave() (remarque : on triche : on n'a pas encore enregistré...)
+        $ref->afterSave($this->database);
+
         /*
          * Etape 3
          *
