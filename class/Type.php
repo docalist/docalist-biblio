@@ -720,7 +720,7 @@ class Type extends Entity
                 $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
                 $content = $item->$value->getPhpValue();
                 if (isset($document[$key])) {
-                    $content = (array) $document[$key] + (array) $content;
+                    $content = array_merge((array) $document[$key], (array) $content);
                 }
                 is_array($content) && count($content) === 1 && $content = array_shift($content);
                 $document[$key] = $content;
