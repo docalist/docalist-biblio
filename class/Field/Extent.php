@@ -86,7 +86,7 @@ class Extent extends MultiField {
         }
 
         // L'entrée "non paginé" ne prend pas de valeur, donc pas vide
-        if ($this->type->value() === 'no-pages') {
+        if ($this->type() === 'no-pages') {
             return false;
         }
 

@@ -167,7 +167,7 @@ class DatabaseSettings extends Composite
      */
     public function postType()
     {
-        return 'dclref' . $this->name();
+        return 'db' . $this->name();
     }
 
     /**
@@ -293,8 +293,6 @@ class DatabaseSettings extends Composite
      */
     public function capabilitySuffix()
     {
-        // TODO : en attendant que "dclref" soit remplacé partout par "db"
-        return 'db' . $this->name() . '_ref';
-        // return $this->postType() . '_ref';
+        return $this->postType() . '_ref';
     }
 }

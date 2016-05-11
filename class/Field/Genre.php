@@ -14,13 +14,13 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\TableEntry;
-use Docalist\MappingBuilder;
 
 /**
  * Un genre de document.
  */
 class Genre extends TableEntry
 {
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('genre')->text()->filter();
@@ -30,4 +30,5 @@ class Genre extends TableEntry
     {
         $document['genre'][] = $this->getEntryLabel();
     }
+*/
 }

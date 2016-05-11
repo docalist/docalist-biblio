@@ -40,8 +40,8 @@ use Docalist\Forms\Form;
     <?php endif ?>
 
     <?php
-        // Charge la liste des analyseurs disponibles
-        $settings = apply_filters('docalist_search_get_index_settings', []);
+        // Récupère les settings pour déterminer la liste des analyseurs disponibles
+        $settings = docalist('docalist-search-index-manager')->getIndexSettings();
 
         // Ne conserve que les analyseurs "texte"
         $analyzers = [];

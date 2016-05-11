@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -67,13 +66,14 @@ class Link extends MultiField {
         ];
     }
 
-    public function setupMapping(MappingBuilder $mapping)
+    public function assign($value)
     {
-        $mapping->addField('link')->url();
-    }
+        if (is_array($value)) {
+            unset($value['lastcheck']);
+            unset($value['status']);
+        }
 
-    public function mapData(array & $document) {
-        $document['link'][] = $this->url();
+        return parent::assign($value);
     }
 
     public function getDefaultFormat()

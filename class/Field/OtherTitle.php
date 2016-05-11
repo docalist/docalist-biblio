@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -42,7 +41,7 @@ class OtherTitle extends MultiField {
         ];
         // @formatter:on
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('othertitle')->text();
@@ -51,7 +50,7 @@ class OtherTitle extends MultiField {
     public function mapData(array & $document) {
         $document['othertitle'][] = $this->__get('value')->value();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

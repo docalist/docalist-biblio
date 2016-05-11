@@ -18,7 +18,6 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
-use Docalist\Search\TypeIndexer;
 use Docalist\Search\SearchRequest;
 use WP_Post;
 use WP_Query;
@@ -79,15 +78,10 @@ class Database extends PostTypeRepository
         $this->registerPostType();
 
         // Indique à docalist-search que cette base est indexable
-        add_filter('docalist_search_get_types', function (array $types) {
-            $types[$this->settings->postType()] = $this->settings->label();
+        add_filter('docalist_search_get_indexers', function ($indexers) {
+            $indexers[$this->settings->postType()] = new DatabaseIndexer($this);
 
-            return $types;
-        });
-
-        // Retourne l'indexeur à utiliser pour indexer les notices de cette base
-        add_filter("docalist_search_get_{$type}_indexer", function (TypeIndexer $indexer = null) {
-            return new DatabaseIndexer($this);
+            return $indexers;
         });
 
         // Retourne le filtre standard de recherche pour cette base
@@ -233,20 +227,58 @@ class Database extends PostTypeRepository
             throw new InvalidArgumentException(sprintf($msg, $type));
         }
 
-        // Ok
+        // Récupère le schéma à utiliser
         $schema = $this->settings->types[$type]->grids['base'];
 
-        // Crée l'entité
-        $types = apply_filters('docalist_biblio_get_types', []);
-        if (! isset($types[$type])) {
-            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
-            // qui fournissait ces types.
-            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
-        }
-        $class = $types[$type];
+        // Détermine le nom de la classe php correspondant au type de notice
+        $class = $this->getClassForType($type);
 
-        // Ok, crée la notice
+        // Crée et retourne la notice
         return new $class($data, $schema, $id);
+    }
+
+    /**
+     * Retourne la liste des types disponibles.
+     *
+     * Lors du premier appel, le filtre 'docalist_biblio_get_types' est exécuté et le résultat est stocké en cache.
+     *
+     * @return string[] Un tableau de la forme type => nom complet de la classe php qui gère ce type.
+     */
+    public static function getAvailableTypes()
+    {
+        static $types;
+
+        // Initialise la liste des types disponibles lors du premier appel
+        if (is_null($types)) {
+            $types = apply_filters('docalist_biblio_get_types', []);
+        }
+
+        return $types;
+    }
+
+    /**
+     * Retourne le nom complet de la classe PHP qui gère le type indiqué.
+     *
+     * @param string $type Le nom du type recherché.
+     * @return string Le nom de la classe php.
+     *
+     * @throws InvalidArgumentException Si le type indiqué ne figure pas dans la liste retournée par
+     * getAvailableTypes().
+     */
+    public static function getClassForType($type)
+    {
+        static $types;
+
+        // Récupère la liste des types disponibles
+        $types = self::getAvailableTypes();
+
+        // Génère une exception si le type demandé n'existe pas
+        if (! isset($types[$type])) {
+            throw new InvalidArgumentException("Type '$type' is not availableFilter");
+        }
+
+        // Ok
+        return $types[$type];
     }
 
     /**
@@ -306,19 +338,13 @@ class Database extends PostTypeRepository
         }
 
         // Détermine le nom de la classe php correspondant au type de notice
-        $types = apply_filters('docalist_biblio_get_types', []);
-        if (! isset($types[$type])) {
-            // Peut se produire si on a ajouté des types à une base et qu'ensuite on désinstalle le plugin
-            // qui fournissait ces types.
-            throw new InvalidArgumentException("Filter 'docalist_biblio_get_types' do not have type '$type'");
-        }
-        $class = $types[$type];
+        $class = $this->getClassForType($type);
 
-        // Ok, crée la notice
+        // Crée la notice
         $ref = new $class($data, $schema);
-
         $ref->type = $type;
 
+        // Ok
         return $ref;
     }
 
@@ -393,7 +419,7 @@ class Database extends PostTypeRepository
             'public' => true,  //
             'hierarchical' => false, // WP est inutilisable si on met à true (cache de la hiérarchie)
             'exclude_from_search' => true,  // Inutile que WP recherche avec du like dans nos milliers de notices
-            'publicly_queryable' => true,  // Permet d'avoir des query dclrefbase=xxx
+            'publicly_queryable' => true,  // Permet d'avoir des query dbbase=xxx
             'show_ui' => true,  // Laisse WP générer l'interface
             'show_in_menu' => true,  // Afficher dans le menu wordpress
             'show_in_nav_menus' => false, // Gestionnaire de menus inutilisable si true : charge tout
@@ -408,7 +434,7 @@ class Database extends PostTypeRepository
             'taxonomies' => [],    // Aucune pour le moment
             'has_archive' => false, // On gère nous même la page d'accueil
             'rewrite' => false, // On gère nous-mêmes les rewrite rules (cf. ci-dessous)
-            'query_var' => true,  // Laisse WP créer la QV dclrefbase=xxx
+            'query_var' => true,  // Laisse WP créer la QV dbbase=xxx
             'can_export' => true,  // A tester, est-ce que l'export standard de WP arrive à exporter nos notices ?
             'delete_with_user' => false, // On ne veut pas supprimer
         ];
@@ -506,10 +532,10 @@ class Database extends PostTypeRepository
              5  mabase/\d+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$       index.php?attachment=$1&cpage=$2
 
             // Trackback sur une notice
-             6  mabase/(\d+)/trackback/?$                                       index.php?dclrefprisme=$1&tb=1
+             6  mabase/(\d+)/trackback/?$                                       index.php?dbprisme=$1&tb=1
 
             // Pagination d'une notice (balise <!––nextpage––>)
-             7  mabase/(\d+)(/[0-9]+)?/?$                                       index.php?dclrefprisme=$1&page=$2
+             7  mabase/(\d+)(/[0-9]+)?/?$                                       index.php?dbprisme=$1&page=$2
 
              8  mabase/\d+/([^/]+)/?$                                           index.php?attachment=$1
              9  mabase/\d+/([^/]+)/trackback/?$                                 index.php?attachment=$1&tb=1
@@ -518,7 +544,7 @@ class Database extends PostTypeRepository
             12  mabase/\d+/([^/]+)/comment-page-([0-9]{1,})/?$                  index.php?attachment=$1&cpage=$2
 
             Seule la règle 7 (sans la pagination) nous intéresse. Idéalement, on devrait uniquement avoir :
-                mabase/(\d+)/?$                                                 index.php?dclrefprisme=$1
+                mabase/(\d+)/?$                                                 index.php?dbprisme=$1
          */
     }
 

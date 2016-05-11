@@ -14,21 +14,10 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
-use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le PostType WordPress de la notice.
  */
 class PostType extends Text
 {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        DatabaseIndexer::standardMapping('post_type', $mapping);
-    }
-
-    public function mapData(array & $document)
-    {
-        DatabaseIndexer::standardMap('post_type', $this->value(), $document);
-    }
 }

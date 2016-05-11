@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 
 /**
  * Relation
@@ -40,7 +39,7 @@ class Relation extends MultiField {
             ]
         ];
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('relation')->integer();
@@ -50,7 +49,7 @@ class Relation extends MultiField {
     public function mapData(array & $document) {
         $document['relation.' . $this->type()][] = $this->ref();
     }
-
+*/
     private static function getRef($ref) {
         // cette fonction suppose que post_name === ref, attention si ça change
         // on suppose également que la ref en cours dans $post est celle

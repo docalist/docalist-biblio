@@ -325,7 +325,8 @@ class AdminDatabases extends AdminPage {
         unset($this->settings->databases[$dbindex]);
         $this->settings->save();
 
-        //TODO : supprimer séquences
+        // Supprimer la séquence utilisée pour cette base
+        docalist('sequences')->clear($database->postType());
 
         // Supprime les droits accordés lors de la création de la base
         // NB : Si l'utilisateur a ensuite accordé les droits à d'autres groupes
@@ -444,8 +445,8 @@ class AdminDatabases extends AdminPage {
         // Vérifie que la base à modifier existe
         $database = $this->database($dbindex);
 
-        // Récupère la liste des types existants
-        $types = apply_filters('docalist_biblio_get_types', []);
+        // Récupère la liste des types disponibles
+        $types = Database::getAvailableTypes();
 
         // Récupère la liste des types qui existent déjà dans la base
         $selected = $database->types;
@@ -733,7 +734,7 @@ class AdminDatabases extends AdminPage {
 
         // recrée la grille telle que'elle était initialement pour
         // que la vue tophp puisse indiquer les modifications apportées
-        $types = apply_filters('docalist_biblio_get_types', []);
+        $types = Database::getAvailableTypes();
 
         if ($diffonly) {
             $method = 'get' . $gridname . 'Grid';

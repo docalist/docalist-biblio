@@ -20,7 +20,6 @@ use WP_Screen;
 use Exception;
 
 use Docalist\Http\ViewResponse;
-use Docalist\Biblio\DatabaseIndexer;
 use Docalist\Forms\Container;
 
 /**
@@ -169,7 +168,13 @@ class EditReference {
                 $ref->schema()->hasField('title') && $ref->title = '';
 
                 // Génère les données du post wp à créer
-                $data = $this->database->encode($ref->value()) + $data;
+                $value = $this->database->encode($ref->getPhpValue());
+
+                // wp_insert_post_data veut absolument des données "slashées" (cf post.php:3328 qui fait un unslash)
+                $value = wp_slash($value);
+
+                // Ajoute les données par défaut transmises par WordPress (déjà slashées)
+                $data = $value + $data;
 
                 return $data;
             }, 1000); // on doit avoir une priorité > au filtre installé dans database.php
@@ -186,8 +191,7 @@ class EditReference {
 
         // Indique à WP l'option de menu en cours
         // cf. wp-admin/post-new.php, lignes 28 et suivantes
-        global $submenu_file;
-        $submenu_file = "post-new.php?post_type=$this->postType";
+        $GLOBALS['submenu_file'] = "post-new.php?post_type=$this->postType";
 
         // Affiche la page "Choix du type de notice à créer"
         require_once('./admin-header.php');
@@ -205,11 +209,10 @@ class EditReference {
      * Ajoute une metabox de débogage qui affiche le contenu brut du post.
      */
     protected function addDebugMetabox(Type $ref) {
-        // @formatter:off
         add_meta_box(
-            'dclrefdebug',                         // id metabox
+            'dbdebug',                             // id metabox
             'Informations de debug de la notice',  // titre
-            function () use ($ref) {                // Callback
+            function () use ($ref) {               // Callback
                 global $post;
 
                 $data = $post->to_array();
@@ -217,18 +220,15 @@ class EditReference {
                 $data = array_filter($data);
 
                 echo "<h4>Propriétés du post WordPress :</h4><pre>";
-                echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo htmlspecialchars(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                 echo "</pre>";
 
                 echo "<h4>Contenu de la notice :</h4><pre>";
-                // echo json_encode($ref, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                echo $ref;
+                echo htmlspecialchars((string)$ref);
                 echo "</pre>";
 
-//                 echo "<h4>Mapping Docalist-Search</h4><pre>";
-//                 $indexer = new DatabaseIndexer($this->database);
-//                 $document = $indexer->map($ref);
-//                 echo json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                echo "<h4>Mapping Docalist-Search</h4><pre>";
+                echo htmlspecialchars(json_encode($ref->map(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
                 echo "</pre>";
             },
@@ -236,7 +236,6 @@ class EditReference {
             'normal',           // contexte
             'high'              // priorité
         );
-        // @formatter:on
     }
 
     /**
@@ -295,7 +294,7 @@ class EditReference {
         wp_styles()->enqueue('docalist-biblio-edit-reference');
 
         // Définit l'état initial des metaboxes (normal, replié, masqué)
-        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dclrefdebug'];
+        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dbdebug'];
         $collapsed = [];
         foreach($ref->schema()->getFields() as $name => $field) {
             if ($field->type() === 'Docalist\Biblio\Type\Group') {
@@ -315,7 +314,7 @@ class EditReference {
             return $screen->id === $this->postType ? $hidden : $result;
         }, 10, 2);
 
-        add_filter('get_user_option_closedpostboxes_dclrefprisme', function($result) use ($collapsed) {
+        add_filter('get_user_option_closedpostboxes_dbprisme', function($result) use ($collapsed) {
             return $result === false ? $collapsed : $result;
         });
     }
@@ -430,12 +429,15 @@ class EditReference {
             echo "<pre>$ref</pre>";
         }
 
+        // Il faut également appeler afterSave() (remarque : on triche : on n'a pas encore enregistré...)
+        $ref->afterSave($this->database);
+
         /*
          * Etape 3
          *
          * Génère le post wordpress à partir de la notice
          */
-        $ref = $this->database->encode($ref->value()); // !!! encode ne doit pas générer de valeurs par défaut
+        $ref = $this->database->encode($ref->getPhpValue()); // !!! encode ne doit pas générer de valeurs par défaut
         if ($debug) {
             echo "<h1>Données de la notice après encode() = post généré :</h1>";
             var_dump($ref);

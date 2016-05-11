@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
-use Docalist\MappingBuilder;
 use InvalidArgumentException;
 
 /**
@@ -46,7 +45,7 @@ class Translation extends MultiField {
     {
         return 'language';
     }
-
+/*
     public function setupMapping(MappingBuilder $mapping)
     {
         $mapping->addField('translation')->text();
@@ -55,7 +54,7 @@ class Translation extends MultiField {
     public function mapData(array & $document) {
         $document['translation'][] = $this->title();
     }
-
+*/
     public function getAvailableFormats()
     {
         return [

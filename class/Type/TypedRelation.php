@@ -13,6 +13,15 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Type\TableEntry;
+
+/**
+ * Une relation typée : un type composite associant un type provenant d'une table d'autorité à un champ de type
+ * Relation.
+ *
+ * @property TableEntry $type   Type
+ * @property Relation   $value  Value
+ */
 class TypedRelation extends TypedText
 {
     static public function loadSchema() {
@@ -22,7 +31,7 @@ class TypedRelation extends TypedText
             'editor' => 'table',
             'fields' => [
                 'value' => [
-                    'type' => 'Docalist\Type\Relation',
+                    'type' => 'Docalist\Biblio\Type\Relation',
                     'label' => __('Fiche', 'docalist-core'),
                 ],
             ],

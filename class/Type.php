@@ -29,6 +29,7 @@ use Docalist\Type\Text;
 use Docalist\Type\Integer;
 use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
+use Docalist\Search\MappingBuilder;
 
 /**
  * Référence documentaire.
@@ -63,7 +64,7 @@ class Type extends Entity
                     'description' => __('Statut de la fiche.', 'docalist-biblio'),
                 ],
                 'title' => [       // Alias de post_title
-                    'type' => 'Docalist\Biblio\Type\PostStatus',
+                    'type' => 'Docalist\Biblio\Type\PostTitle',
                     'label' => __('Titre', 'docalist-biblio'),
                     'description' => __('Titre de la fiche.', 'docalist-biblio'),
                 ],
@@ -579,7 +580,7 @@ class Type extends Entity
             // Ok, c'est un nouveau champ
 
             // Si on n'a pas la capacité du groupe en cours, ou si le format ou le champ sont vides, terminé
-            if (! $hasCap || empty($format) || ! isset($this->value[$name])) {
+            if (! $hasCap || empty($format) || ! isset($this->phpValue[$name])) {
                 continue;
             }
 
@@ -590,7 +591,7 @@ class Type extends Entity
             }
 
             // Ok, formatte le contenu du champ
-            $content = $this->value[$name]->getFormattedValue($this->getFieldOptions($name, $options));
+            $content = $this->phpValue[$name]->getFormattedValue($this->getFieldOptions($name, $options));
 
             // Champ renseigné mais format() n'a rien retourné, passe au champ suivant
             if (empty($content)) {
@@ -620,5 +621,110 @@ class Type extends Entity
 
         // Terminé
         return $result;
+    }
+
+    public function buildIndexSettings(array $settings, Database $database)
+    {
+        // Récupère l'analyseur par défaut pour les champs texte de cette base (dans les settings de la base)
+        $defaultAnalyzer = $database->settings()->stemming();
+
+        // Détermine le nom du mapping (nom de la base + nom du type)
+        $name = $database->postType() . '-' . $this->schema->name();
+        // garder synchro avec DatabaseIndexer::index()
+
+        // Construit le mapping du type
+        $mapping = docalist('mapping-builder'); /* @var MappingBuilder $mapping */
+        $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
+        $mapping = $this->buildMapping($mapping);
+
+        // Stocke le mapping dans les settings
+        $settings['mappings'][$name] = $mapping->getMapping();
+
+        // Ok
+        return $settings;
+    }
+
+    /**
+     *
+     * @param MappingBuilder $mapping
+     *
+     * @return MappingBuilder
+     */
+    protected function buildMapping(MappingBuilder $mapping)
+    {
+        // pour les champs de base, maintenir le même ordre que dans PostIndexer
+        $mapping->addField('in')->keyword();
+        $mapping->addField('type')->keyword();
+        $mapping->addField('status')->keyword();
+        $mapping->addField('slug')->text();
+        $mapping->addField('createdby')->keyword();
+        $mapping->addField('creation')->dateTime();
+        $mapping->addField('lastupdate')->dateTime();
+        $mapping->addField('title')->text();
+        $mapping->addField('ref')->integer();
+
+        return $mapping;
+    }
+
+    public function map()
+    {
+        $document = [];
+
+        // In
+        // -> initialisé dans DatabaseIndexer::map() car un type ne sait pas dans quelle base il figure
+
+        // Type de réf
+        isset($this->type) && $document['type'] = $this->type();
+
+        // Statut
+        isset($this->status) && $document['status'] = $this->status();
+
+        // Slug
+        isset($this->slug) && $document['slug'] = $this->slug();
+
+        // CreatedBy
+        if (isset($this->createdBy)) {
+            $user = get_user_by('id', $this->createdBy());
+            $document['createdby'] = $user ? $user->user_login : $this->createdBy();
+        }
+
+        // Date de création
+        isset($this->creation) && $document['creation'] = $this->creation();
+
+        // Date de modification
+        isset($this->lastupdate) && $document['lastupdate'] = $this->lastupdate();
+
+        // Titre
+        isset($this->title) && $document['title'] = $this->title();
+
+        // Numéro de réf
+        isset($this->ref) && $document['ref'] = $this->ref();
+
+        // Ok
+        return $document;
+    }
+
+    /**
+     * Indexation standard d'un champ multifield répétable.
+     *
+     * Génère un champ field-type.
+     *
+     * @param array $document Document ElasticSearch à modifier.
+     * @param string $field Nom du champ à mapper.
+     * @param string $value Nom du sous-champ contenant la valeur à indexer (value par défaut).
+     */
+    protected function mapMultiField(array & $document, $field, $value='value')
+    {
+        if (isset($this->$field)) {
+            foreach($this->$field as $item) { /* @var TypedText $item */
+                $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
+                $content = $item->$value->getPhpValue();
+                if (isset($document[$key])) {
+                    $content = array_merge((array) $document[$key], (array) $content);
+                }
+                is_array($content) && count($content) === 1 && $content = array_shift($content);
+                $document[$key] = $content;
+            }
+        }
     }
 }

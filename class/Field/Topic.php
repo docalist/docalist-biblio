@@ -16,7 +16,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
-use Docalist\MappingBuilder;
 
 /**
  * Une liste de mots-clés d'un certain type.

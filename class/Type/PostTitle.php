@@ -14,21 +14,10 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\Text;
-use Docalist\MappingBuilder;
-use Docalist\Biblio\DatabaseIndexer;
 
 /**
  * Le titre de la fiche.
  */
 class PostTitle extends Text
 {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        DatabaseIndexer::standardMapping('post_title', $mapping);
-    }
-
-    public function mapData(array & $document)
-    {
-        DatabaseIndexer::standardMap('post_title', $this->value(), $document);
-    }
 }

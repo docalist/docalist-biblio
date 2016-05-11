@@ -14,19 +14,10 @@
 namespace Docalist\Biblio\Type;
 
 use Docalist\Type\DateTime;
-use Docalist\Biblio\DatabaseIndexer;
-use Docalist\MappingBuilder;
 
 /**
  * La date de dernière modification de la notice.
  */
-class PostModified extends DateTime {
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        DatabaseIndexer::standardMapping('post_modified', $mapping);
-    }
-
-    public function mapData(array & $document) {
-        DatabaseIndexer::standardMap('post_modified', $this->value(), $document);
-    }
+class PostModified extends DateTime
+{
 }
