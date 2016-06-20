@@ -18,7 +18,8 @@ use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
-use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchUrl;
+use Docalist\Search\SearchRequest2 as SearchRequest;
 use WP_Post;
 use WP_Query;
 use InvalidArgumentException;
@@ -449,7 +450,7 @@ class Database extends PostTypeRepository
         register_post_type($type, $args);
 
         // Crée une requête quand on est sur la page d'accueil
-        add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
+        add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query, & $displayResults) {
             // Si quelqu'un a déjà créé une requête, on le laisse gérer
             if ($request) {
                 return $request;
@@ -459,31 +460,36 @@ class Database extends PostTypeRepository
             if ($query->is_page && $page = $query->get_queried_object_id()) {
                 // Page liste des réponses
                 if ($page === $this->searchPage()) {
-                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType);
-                    $request->isSearch(true);
                     // on fait une recherche et on affiche les réponses
+                    $searchUrl = new SearchUrl($_SERVER['REQUEST_URI'], [$this->postType]);
+                    $displayResults = true;
+
+                    return $searchUrl->getSearchRequest();
                 }
 
                 // Page d'accueil
-                elseif ($page === $this->homePage()) {
-                    $request = docalist('docalist-search-engine')->defaultRequest($this->postType, true);
-                    $request->isSearch($this->settings->homemode() === 'search');
+                if ($page === $this->homePage()) {
                     // en mode 'page', on fait une recherche mais on laisse wp afficher la page
                     // en mode 'search', on affiche les réponses obtenues
+                    $searchUrl = new SearchUrl($this->searchPageUrl(), [$this->postType]);
+                    $displayResults = ($this->settings->homemode() === 'search');
+
+                    return $searchUrl->getSearchRequest();
                 }
             }
 
             // Page d'accueil - mode 'archive'
             elseif ($query->is_post_type_archive && $query->get('post_type') === $this->postType) {
-                $request = docalist('docalist-search-engine')->defaultRequest($this->postType, true);
                 // on fait une recherche, mais on laisse wp afficher les archives
+                $searchUrl = new SearchUrl($this->searchPageUrl(), [$this->postType]);
+                $displayResults = false;
+
+                return $searchUrl->getSearchRequest();
             }
 
-            // Si on a créé une requête, indique la page de recherche
-            $request && $request->searchPageUrl($this->searchPageUrl());
-
+            // Ce n'est pas une de nos pages
             return $request;
-        }, 10, 2);
+        }, 10, 3);
 
 
         // Vérifie que le CPT est déclaré correctement
