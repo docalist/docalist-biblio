@@ -84,11 +84,6 @@ class Database extends PostTypeRepository
             return $indexers;
         });
 
-        // Retourne le filtre standard de recherche pour cette base
-        add_filter("docalist_search_get_{$type}_filter", function ($filter, $type) {
-            return docalist('docalist-search-engine')->defaultFilter($type);
-        }, 10, 2);
-
         // Déclare nos facettes
         $this->docalistSearchFacets();
 
