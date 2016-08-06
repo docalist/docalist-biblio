@@ -147,6 +147,6 @@ class ReferenceIterator implements Iterator, Countable
     {
         is_null($this->results) && $this->rewind();
 
-        return $this->results->total();
+        return $this->results->getHitsCount();
     }
 }
