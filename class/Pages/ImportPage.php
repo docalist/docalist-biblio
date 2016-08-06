@@ -344,7 +344,7 @@ class ImportPage extends AdminPage {
         $results = $request->execute('count');
 
         // Si on a zéro réponses, corrige l'équation de recherche
-        if (0 === $results->total()) {
+        if (0 === $results->getHitsCount()) {
             return $this->view('docalist-biblio:export/choose-refs', [
                 'database' => $this->database,
                 'format' => $format,
