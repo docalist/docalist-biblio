@@ -124,7 +124,7 @@ class ReferenceIterator implements Iterator, Countable
     {
         $this->request->page($page);
         $this->results = $this->request->execute();
-        $this->hits = $this->results->hits();
+        $this->hits = $this->results->getHits();
         $this->current = 0;
     }
 
