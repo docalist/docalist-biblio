@@ -176,7 +176,7 @@ class Plugin
         $results = $request->execute('count'); /* @var $results SearchResults */
 
         // Affiche un message si on a aucune réponse
-        if ($results->total() === 0) {
+        if ($results->getHitsCount() === 0) {
             return $this->view('docalist-biblio-export:nohits');
         }
 
@@ -193,7 +193,7 @@ class Plugin
         if (empty($formats)) {
             return $this->view('docalist-biblio-export:noformat', [
                 'types' => $countByType,
-                'total' => $results->total(),
+                'total' => $results->getHitsCount(),
                 'max' => 100,
             ]);
         }
@@ -220,7 +220,7 @@ class Plugin
         // Sinon, affiche le formulaire "choix du format"
         return $this->view('docalist-biblio-export:form', [
             'types' => $countByType,
-            'total' => $results->total(),
+            'total' => $results->getHitsCount(),
             'max' => 100,
             'formats' => $formats,
             'format' => is_null($format) ? key($formats) : $format, // le premier par défaut
