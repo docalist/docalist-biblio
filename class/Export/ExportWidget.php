@@ -63,13 +63,13 @@ class ExportWidget extends WP_Widget
         }
 
         // Si on n'a pas de recherche en cours, terminé
-        $request = docalist('docalist-search-engine')->request(); /* @var $request SearchRequest */
+        $request = docalist('docalist-search-engine')->getSearchRequest(); /* @var $request SearchRequest */
         if (is_null($request) || ! $request->isSearch()) {
             return;
         }
 
         // Si on n'a pas de hits, terminé
-        $results = docalist('docalist-search-engine')->results(); /* @var $results SearchResults */
+        $results = docalist('docalist-search-engine')->getSearchResults(); /* @var $results SearchResults */
         if (is_null($results) || $results->getHitsCount() === 0) {
             return;
         }
