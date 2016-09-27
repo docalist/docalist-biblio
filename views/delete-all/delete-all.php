@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2016 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,6 +14,7 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\Database;
+use Docalist\Biblio\Pages\ImportPage;
 
 /**
  * Cette vue est affichée lorsqu'on lance l'option "vider la base".
@@ -23,6 +24,8 @@ use Docalist\Biblio\Database;
  *
  * Remarque : cette vue ne prend aucun paramètre, ils sont passés directement
  * aux callbacks des filtres installés.
+ *
+ * @var ImportPage $this
  */
 
 $startTime = microtime(true);
@@ -77,12 +80,10 @@ add_action('docalist_biblio_deleteall_progress', function($message) {
  * @param int $count Le nombre de notices supprimées.
  */
 add_action('docalist_biblio_deleteall_done', function(Database $database, $count) use ($startTime) { ?>
-    </ul>
-
-    <?php
-    $msg = __('%d notices supprimées. Temps écoulé : %.2f secondes', 'docalist-biblio');
-    printf("<p>$msg</p>", $count, (microtime(true) - $startTime));
-
+        </ul> <?php
+            $msg = __('%d notices supprimées. Temps écoulé : %.2f secondes', 'docalist-biblio');
+            printf("<p>$msg</p>", $count, (microtime(true) - $startTime)); ?>
+    </div> <?php
     flush();
 }, 10, 2);
 ?>
