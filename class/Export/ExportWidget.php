@@ -14,7 +14,7 @@ namespace Docalist\Biblio\Export;
 
 use WP_Widget;
 use Docalist\Search\SearchRequest;
-use Docalist\Search\SearchResults;
+use Docalist\Search\SearchResponse;
 use Docalist\Forms\Container;
 
 class ExportWidget extends WP_Widget
@@ -63,14 +63,14 @@ class ExportWidget extends WP_Widget
         }
 
         // Si on n'a pas de recherche en cours, terminé
-        $request = docalist('docalist-search-engine')->getSearchRequest(); /* @var $request SearchRequest */
-        if (is_null($request) || ! $request->isSearch()) {
+        $searchRequest = docalist('docalist-search-engine')->getSearchRequest(); /** @var SearchRequest $request */
+        if (is_null($searchRequest) || ! $searchRequest->isSearch()) {
             return;
         }
 
         // Si on n'a pas de hits, terminé
-        $results = docalist('docalist-search-engine')->getSearchResults(); /* @var $results SearchResults */
-        if (is_null($results) || $results->getHitsCount() === 0) {
+        $searchResponse = docalist('docalist-search-engine')->getSearchResponse(); /** @var SearchResponse $results */
+        if (is_null($searchResponse) || $searchResponse->getHitsCount() === 0) {
             return;
         }
 
