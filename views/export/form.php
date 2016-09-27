@@ -92,7 +92,7 @@ if (count($types) === 1) {
 
     <h3><?=__('Format', 'docalist-biblio-export')?></h3>
     <table>
-        <?php foreach($formats as $name => $fmt): /* @var $fmt Format */ ?>
+        <?php foreach($formats as $name => $fmt): /** @var Format $fmt */ ?>
         <tr>
             <th>
                 <input type="radio" name="format" id="format-<?=$name?>" value="<?=$name?>" <?php checked($format, $name)?> />
