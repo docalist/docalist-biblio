@@ -148,8 +148,8 @@ class Type extends Entity
      * @return array
      */
     private static function fieldsDiff($class1, $class2) {
-        $schema1 = $class1::getDefaultSchema(); /* @var Schema $schema */
-        $schema2 = $class2::getDefaultSchema(); /* @var Schema $parent */
+        $schema1 = $class1::getDefaultSchema(); /** @var Schema $schema */
+        $schema2 = $class2::getDefaultSchema(); /** @var Schema $parent */
 
         return array_diff_key($schema1->getFields(), $schema2->getFields());
     }
@@ -633,7 +633,7 @@ class Type extends Entity
         // garder synchro avec DatabaseIndexer::index()
 
         // Construit le mapping du type
-        $mapping = docalist('mapping-builder'); /* @var MappingBuilder $mapping */
+        $mapping = docalist('mapping-builder'); /** @var MappingBuilder $mapping */
         $mapping->reset()->setDefaultAnalyzer($defaultAnalyzer);
         $mapping = $this->buildMapping($mapping);
 
@@ -716,7 +716,7 @@ class Type extends Entity
     protected function mapMultiField(array & $document, $field, $value='value')
     {
         if (isset($this->$field)) {
-            foreach($this->$field as $item) { /* @var TypedText $item */
+            foreach($this->$field as $item) { /** @var TypedText $item */
                 $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
                 $content = $item->$value->getPhpValue();
                 if (isset($document[$key])) {

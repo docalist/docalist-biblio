@@ -62,7 +62,7 @@ class DatabaseIndexer extends PostIndexer
     public function buildIndexSettings(array $settings)
     {
         $types = $this->database->settings()->types;
-        foreach($types as $type) {  /* TypeSettings $type */
+        foreach($types as $type) {  /** @var TypeSettings $type */
             $class = Database::getClassForType($type->name());
             $ref = new $class();
             $settings = $ref->buildIndexSettings($settings, $this->database);
@@ -87,7 +87,7 @@ class DatabaseIndexer extends PostIndexer
         $indexManager->delete($this->getType(), is_scalar($post) ? $post : $this->getID($post), $esType);
     }
 
-    protected function map($ref) /* @var Type $ref */
+    protected function map($ref) /** @var Type $ref */
     {
         $document = $ref->map();
 //      $document['database'] = $this->database->postType(); // mapping créé dans Type::buildIndexSettings()

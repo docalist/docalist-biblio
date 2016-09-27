@@ -255,8 +255,7 @@ class ImportPage extends AdminPage {
         $class = $this->database->type();
 
         // Récupère le schéma
-        /* @var $ref Reference */
-        $ref = new $class;
+        $ref = new $class; /** @var Reference $ref */
         $schema = $ref->schema();
 
         $maxlevel = 4;
@@ -278,8 +277,7 @@ class ImportPage extends AdminPage {
     protected function doc(array $fields, $level, $maxlevel) {
         // var_dump($schema);
 
-        /* @var Schema $field */
-        foreach($fields as $field) {
+        foreach($fields as $field) { /** @var Schema $field */
             echo '<tr>';
 
             //$level && printf('<td colspan="%d">x</td>', $level);
@@ -404,11 +402,11 @@ class ImportPage extends AdminPage {
 
         // Crée le convertisseur
         $settings = isset($format['converter-settings']) ? $format['converter-settings'] : [];
-        $converter = new $converter($settings); /* @var Converter $converter */
+        $converter = new $converter($settings); /** @var Converter $converter */
 
         // Crée l'exporteur
         $settings = isset($format['exporter-settings']) ? $format['exporter-settings'] : [];
-        $exporter = new $exporter($converter, $settings); /* @var Exporter $exporter */
+        $exporter = new $exporter($converter, $settings); /** @var Exporter $exporter */
 
         // Crée l'itérateur
         $iterator = new ReferenceIterator($request);

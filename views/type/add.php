@@ -37,7 +37,7 @@ $back = $this->url('TypesList', $dbindex);
 
     <form method="POST" action="<?=$this->url('TypeAdd', $dbindex) ?>">
         <ul>
-            <?php foreach($types as $type) : /* @var $type Schema */ ?>
+            <?php foreach($types as $type) : /** @var Schema $type */ ?>
                 <li>
                     <h2>
                         <label>

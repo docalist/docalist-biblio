@@ -37,7 +37,7 @@ class Topics extends Collection
     public function offsetSet($offset, $value)
     {
         // Si value n'est pas du bon type, on l'instancie
-        if (! $value instanceof Topic) { /* @var Topic $value */
+        if (! $value instanceof Topic) { /** @var Topic $value */
             $value = new Topic($value, $this->schema);
         }
         $value->setParent($this);
@@ -52,16 +52,16 @@ class Topics extends Collection
 
 // TODO : à porter vers nouveau système + choix de la table dans les settings
 //     public function map(array & $document) {
-//         $tables = docalist('table-manager'); /* @var $tables TableManager */
+//         $tables = docalist('table-manager'); /** @var TableManager $tables */
 
-//         foreach($this->value as $topic) { /* @var $topic Topic */
+//         foreach($this->value as $topic) { /** @var Topic $topic */
 
 //             // Récupère la liste des termes
 //             $terms = $topic->term();
 
 //             // Récupère la table qui contient la liste des vocabulaires
 //             $tableName = explode(':', $this->schema->table())[1];
-//             $table = $tables->get($tableName); /* @var $table TableInterface */
+//             $table = $tables->get($tableName); /** @var TableInterface $table */
 
 //             // Détermine la source qui correspond au type du topic
 //             $source = $table->find('source', 'code='. $table->quote($topic->type()));
@@ -70,7 +70,7 @@ class Topics extends Collection
 
 //                 // Si la source est une table, on traduit les termes
 //                 if ($type === 'table' || $type === 'thesaurus') {
-//                     $table = $tables->get($tableName); /* @var $table TableInterface */
+//                     $table = $tables->get($tableName); /** @var TableInterface $table */
 //                     foreach ($terms as & $term) {
 //                         $result = $table->find('label', 'code=' . $table->quote($term));
 //                         $result !== false && $term = $result;

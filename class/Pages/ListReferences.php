@@ -96,10 +96,10 @@ class ListReferences{
 
         // Fournit le contenu des colonnes personnalisées pour chaque notice
         add_action("manage_{$this->postType}_posts_custom_column", function($column, $post_id) {
-            /* @var $ref Reference */
+            /** @var Reference $ref */
             static $ref = null;
 
-            /* @var $post WP_Post */
+            /** @var WP_Post $post */
             global $post;
 
             if (is_null($ref) || $ref->id() !== $post_id) {
@@ -129,7 +129,7 @@ class ListReferences{
 
                 case 'creation':
                     $date = $post->post_date;
-                    $author = get_user_by('id', $post->post_author); /* @var $author WP_User */
+                    $author = get_user_by('id', $post->post_author); /** @var WP_User $author */
                     printf('%s<br/><a href="%s">%s</a>',
                         $this->formatDate($date),
                         esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
@@ -142,7 +142,7 @@ class ListReferences{
                     if ($date !== $post->post_date) {
                         $id = get_post_meta($post->ID, '_edit_last', true);
                         if ($id /* && $id !== $post->post_author */) {
-                            $author = get_user_by('id', $id); /* @var $author WP_User */
+                            $author = get_user_by('id', $id); /** @var WP_User $author */
                             printf('%s<br/><a href="%s">%s</a>',
                                 $this->formatDate($date),
                                 esc_url(add_query_arg(['author' => $author ? $author->ID : 0])),
@@ -376,8 +376,7 @@ class ListReferences{
 
         // Version dynamique qui tient compte des critères de recherche actuels
         if (true) {
-            /* @var $wp_query WP_Query */
-            global $wp_query;
+            global $wp_query; /** @var WP_Query $wp_query */
 
             $sql = $wp_query->request;
 
@@ -433,7 +432,7 @@ class ListReferences{
 
         // Version dynamique qui tient compte des critères de recherche actuels
         if (true) {
-            /* @var $wp_query WP_Query */
+            /** @var WP_Query $wp_query */
             global $wp_query;
 
             $sql = $wp_query->request;

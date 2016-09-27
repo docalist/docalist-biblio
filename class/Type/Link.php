@@ -211,7 +211,7 @@ class Link extends MultiField {
      */
     private function formatEmbed($options = null)
     {
-        global $wp_embed; /* @var $wp_embed WP_Embed */
+        global $wp_embed; /** @var WP_Embed $wp_embed */
 
         $url = $this->formatField('url', $options);
 

@@ -205,7 +205,7 @@ class AdminDatabases extends AdminPage {
                 $database->validate();
 
                 // vérifie unicité nom/homepage (https://github.com/daniel-menard/prisme/issues/181)
-                foreach ($this->settings->databases as $name => $db) { /* @var $db Database */
+                foreach ($this->settings->databases as $name => $db) { /** @var Database $db */
                     if ($name === $dbindex) {
                         continue;
                     }
@@ -289,7 +289,7 @@ class AdminDatabases extends AdminPage {
 
         // Attribue les droits à tous les rôles indiqués
         foreach ($roles as $role) {
-            $role = get_role($role); /* @var $role WP_Role */
+            $role = get_role($role); /** @var WP_Role $role */
             foreach($capabilities as $capability) {
                 if (substr($capability, -strlen($primary)) === $primary) {
                     $grant ? $role->add_cap($capability) : $role->remove_cap($capability);
@@ -496,7 +496,7 @@ class AdminDatabases extends AdminPage {
             }
 
             // Initialise les différentes grilles du type
-            $class = $types[$name]; /* @var Type $class */
+            $class = $types[$name]; /** @var Type $class */
 
             $base    = new Grid($class::getBaseGrid());
             $edit    = new Grid($class::getEditGrid());
@@ -618,8 +618,8 @@ class AdminDatabases extends AdminPage {
     public function actionGridSettings($dbindex, $typeindex, $gridname) {
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
-        /* @var $grid Schema */
-        $grid = $type->grids[$gridname];
+
+        $grid = $type->grids[$gridname]; /** @var Schema $grid */
 
         if ($this->isPost()) {
             $_POST = wp_unslash($_POST);
@@ -654,7 +654,7 @@ class AdminDatabases extends AdminPage {
 
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
-        $grid = $type->grids[$gridname]; /* @var Schema $grid */
+        $grid = $type->grids[$gridname]; /** @var Schema $grid */
 
         // Enregistre la grille si on est en POST
         if ($this->isPost()) {
@@ -729,8 +729,7 @@ class AdminDatabases extends AdminPage {
     public function actionGridToPhp($dbindex, $typeindex, $gridname, $diffonly = false) {
         $database = $this->database($dbindex);
         $type = $this->type($dbindex, $typeindex);
-        /* @var $grid Schema */
-        $grid = $type->grids[$gridname];
+        $grid = $type->grids[$gridname]; /** @var Schema $grid */
 
         // recrée la grille telle que'elle était initialement pour
         // que la vue tophp puisse indiquer les modifications apportées

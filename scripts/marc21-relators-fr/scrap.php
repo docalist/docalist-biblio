@@ -72,7 +72,7 @@ $terms = [];
 $labelToCode = [];
 
 $nb = 0;
-/* @var $domElement \DOMElement */
+/** @var \DOMElement $domElement */
 foreach ($crawler->filter('dl') as $dl) {
     ++$nb;
 

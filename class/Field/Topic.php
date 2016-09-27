@@ -60,11 +60,11 @@ class Topic extends MultiField {
             // Récupère la liste des termes
             $terms = $topic->term();
 
-            $tables = docalist('table-manager'); /* @var $tables TableManager */
+            $tables = docalist('table-manager'); /** @var TableManager $tables */
 
             // Récupère la table qui contient la liste des vocabulaires
             $tableName = explode(':', $parent->schema->table())[1];
-            $table = $tables->get($tableName); /* @var $table TableInterface */
+            $table = $tables->get($tableName); /** @var TableInterface $table */
 
             // Détermine la source qui correspond au type du topic
             $source = $table->find('source', 'code='. $table->quote($topic->type()));
@@ -73,7 +73,7 @@ class Topic extends MultiField {
 
                 // Si la source est une table, on traduit les termes
                 if ($type === 'table' || $type === 'thesaurus') {
-                    $table = $tables->get($tableName); /* @var $table TableInterface */
+                    $table = $tables->get($tableName); /** @var TableInterface $table */
                     foreach ($terms as & $term) {
                         $result = $table->find('label', 'code=' . $table->quote($term));
                         $result !== false && $term = $result;

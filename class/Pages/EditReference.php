@@ -619,7 +619,7 @@ class EditReference {
      */
 //     protected function tableOptions($table, $fields = 'code,label') {
 //         empty($table) && $table = 'countries';
-//         /* @var $tableManager TableManager */
+//         /** @var TableManager $tableManager */
 //         $tableManager = docalist('table-manager');
 //         return $tableManager->get($table)->search($fields);
 //     }

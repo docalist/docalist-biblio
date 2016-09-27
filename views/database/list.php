@@ -52,7 +52,7 @@ div.dbdesc{
 
     <?php
     $nb = 0;
-    foreach($databases as $dbindex => $database) { /* @var $database DatabaseSettings */
+    foreach($databases as $dbindex => $database) { /** @var DatabaseSettings $database */
         $edit = esc_url($this->url('DatabaseEdit', $dbindex));
         $delete = esc_url($this->url('DatabaseDelete', $dbindex));
         $listTypes = esc_url($this->url('TypesList', $dbindex));
@@ -108,7 +108,7 @@ div.dbdesc{
                         <?= __('Ajouter un type...', 'docalist-biblio') ?>
                     </a>
                 <?php else: ?>
-                    <?php foreach ($database->types as $typeindex => $type): /* @var $type TypeSettings */ ?>
+                    <?php foreach ($database->types as $typeindex => $type): /** @var TypeSettings $type */ ?>
                         <a href="<?= esc_url($this->url('GridList', $dbindex, $typeindex)) ?>">
                             <?= $type->label() ?>
                         </a>
