@@ -721,6 +721,7 @@ class Type extends Entity
                 $content = $item->$value->getPhpValue();
                 if (isset($document[$key])) {
                     $content = array_merge((array) $document[$key], (array) $content);
+                    $content = array_values(array_unique($content));
                 }
                 is_array($content) && count($content) === 1 && $content = array_shift($content);
                 $document[$key] = $content;
