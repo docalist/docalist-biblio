@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Export;
 use WP_Query;
 use Docalist\Search\SearchRequest;
 use Docalist\Http\ViewResponse;
-use Docalist\Search\SearchResults;
+use Docalist\Search\SearchResponse;
 use RuntimeException;
 
 /**
@@ -173,16 +173,16 @@ class Plugin
         // Exécute la requête
         $request->facet('_type', 100);
         $request->size(2);
-        $results = $request->execute('count'); /* @var $results SearchResults */
+        $searchResponse = $request->execute('count'); /** @var SearchResponse $results */
 
         // Affiche un message si on a aucune réponse
-        if ($results->getHitsCount() === 0) {
+        if ($searchResponse->getHitsCount() === 0) {
             return $this->view('docalist-biblio-export:nohits');
         }
 
         // Détermine la liste des types de notices qu'on va exporter
         $countByType = $types = [];
-        foreach ($results->facet('_type')->terms as $term) {
+        foreach ($searchResponse->facet('_type')->terms as $term) {
             $types[] = $term->term;
             $label = apply_filters('docalist_search_get_facet_label', $term->term, '_type');
             $countByType[$label] = $term->count;
@@ -193,7 +193,7 @@ class Plugin
         if (empty($formats)) {
             return $this->view('docalist-biblio-export:noformat', [
                 'types' => $countByType,
-                'total' => $results->getHitsCount(),
+                'total' => $searchResponse->getHitsCount(),
                 'max' => 100,
             ]);
         }
@@ -220,7 +220,7 @@ class Plugin
         // Sinon, affiche le formulaire "choix du format"
         return $this->view('docalist-biblio-export:form', [
             'types' => $countByType,
-            'total' => $results->getHitsCount(),
+            'total' => $searchResponse->getHitsCount(),
             'max' => 100,
             'formats' => $formats,
             'format' => is_null($format) ? key($formats) : $format, // le premier par défaut
