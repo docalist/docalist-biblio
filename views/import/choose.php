@@ -16,13 +16,15 @@ namespace Docalist\Biblio\Views;
 use Docalist\Biblio\Database;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Forms\Form;
+use Docalist\Biblio\Pages\ImportPage;
 
 /**
  * Import de fichier dans une base : choix des fichiers.
  *
- * @param Database $database Base de données en cours.
- * @param DatabaseSettings $settings Paramètres de la base de données en cours.
- * @param array $converters Liste des formats d'imports disponibles (code => label).
+ * @var ImportPage $this
+ * @var Database $database Base de données en cours.
+ * @var DatabaseSettings $settings Paramètres de la base de données en cours.
+ * @var array $converters Liste des formats d'imports disponibles (code => label).
  */
 ?>
 <div class="wrap">
@@ -36,32 +38,32 @@ use Docalist\Forms\Form;
     <form action="" method="post">
         <h3 class="title"><?=__('Liste des fichiers à importer', 'docalist-biblio') ?></h3>
 
-        <ul id="file-list">
-            <!-- Template utilisé pour afficher le(s) fichier(s) choisi(s) -->
-            <script type="text/html" id="file-template">
-                <li class="file postbox"><?php // postbox : pour avoir le cadre, la couleur, ... ?>
-                    <img class="file-icon" src="{icon}" title="Type {mime}, id {id}">
-                    <div class="file-info">
-                        <h4>{filename} <span class="file-date">({dateFormatted})</span>
-                            - <a class="remove-file" href="#"><?=__('Retirer ce fichier', 'docalist-biblio') ?></a>
-                        </h4>
-                        <p class="file-description">
-                            <i>{caption} {description}</i><br />
-                        </p>
-                        <label>
-                            <?=__('Format : ', 'docalist-biblio') ?>
-                            <select name="formats[]">
-                                <option value=""><?=__('Indiquez le format', 'docalist-biblio')?></option>
-                                <?php foreach($converters as $name => $label): ?>
-                                <option value="<?=esc_attr($name)?>" selected="selected"><?=esc_html($label)?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
-                    </div>
-                    <input type="hidden" name="ids[]" value="{id}" />
-                </li>
-            </script>
-        </ul>
+        <ul id="file-list"></ul>
+
+        <!-- Template utilisé pour afficher le(s) fichier(s) choisi(s) -->
+        <script type="text/html" id="file-template">
+            <li class="file postbox"><?php // postbox : pour avoir le cadre, la couleur, ... ?>
+                <img class="file-icon" src="{icon}" title="Type {mime}, id {id}">
+                <div class="file-info">
+                    <h4>{filename} <span class="file-date">({dateFormatted})</span>
+                        - <a class="remove-file" href="#"><?=__('Retirer ce fichier', 'docalist-biblio') ?></a>
+                    </h4>
+                    <p class="file-description">
+                        <i>{caption} {description}</i><br />
+                    </p>
+                    <label>
+                        <?=__('Format : ', 'docalist-biblio') ?>
+                        <select name="formats[]">
+                            <option value=""><?=__('Indiquez le format', 'docalist-biblio')?></option>
+                            <?php foreach($converters as $name => $label): ?>
+                            <option value="<?=esc_attr($name)?>" selected="selected"><?=esc_html($label)?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+                <input type="hidden" name="ids[]" value="{id}" />
+            </li>
+        </script>
 
         <button type="button"
             class="add-file button button-secondary">
