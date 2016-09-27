@@ -14,25 +14,27 @@
 namespace Docalist\Biblio\Views;
 
 use Docalist\Biblio\Database;
-use Docalist\Forms\Fragment;
+use Docalist\Forms\Container;
+use Docalist\Biblio\Pages\ImportPage;
 
 /**
  * Export de notices : choix des notices à exporter.
  *
- * @param Database $database Base de données en cours.
- * @param array $exporter Le nom de code de l'exporteur en cours.
- * @param string $error Optionnel, erreur à afficher.
+ * @var ImportPage $this
+ * @var Database $database Base de données en cours.
+ * @var array $exporter Le nom de code de l'exporteur en cours.
+ * @var string $error Optionnel, erreur à afficher.
  */
 
 // TODO : utiliser get_search_form() ?
-$form = new Fragment();
+$form = new Container();
 /*
 $form->attribute('class', 'form-horizontal')
 ->attribute('id', 'advanced-search');
 */
 $form->input('q')
-->label('Equation :')
-->attribute('class', 'input-block-level');
+->setLabel('Equation :')
+->setAttribute('class', 'input-block-level');
 /*
 $form->input('topic.filter')
 ->label('Mots-clés :')
@@ -95,8 +97,7 @@ $form->render('bootstrap');
 
     <form action="" method="post">
         <?php
-            $form->bind($_REQUEST);
-            $form->render('wordpress');
+            $form->bind($_REQUEST)->display('wordpress');
         ?>
 
         <div class="submit buttons">

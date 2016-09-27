@@ -16,13 +16,15 @@ namespace Docalist\Biblio\Views;
 use Docalist\Biblio\Database;
 use Docalist\Forms\Form;
 use Symfony\Component\HttpFoundation\Cookie;
+use Docalist\Biblio\Pages\ImportPage;
 
 /**
  * Export de notices : choix du format d'export.
  *
- * @param Database $database Base de données en cours.
- * @param array $formats Liste des formats d'exports disponibles.
- * @param string $args Arguments supplémentaires à transmettre.
+ * @var ImportPage $this
+ * @var Database $database Base de données en cours.
+ * @var array $formats Liste des formats d'exports disponibles.
+ * @var string $args Arguments supplémentaires à transmettre.
  */
 
 // Classe les formats d'export par convertisseur et par exporteur
