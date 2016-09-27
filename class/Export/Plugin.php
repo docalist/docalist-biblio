@@ -165,7 +165,7 @@ class Plugin
     protected function checkParams()
     {
         // Affiche un message si on n'a aucune requête en cours
-        $request = get_transient($this->transient()); /* @var $request SearchRequest */
+        $request = get_transient($this->transient()); /** @var SearchRequest $request */
         if ($request === false) {
             return $this->view('docalist-biblio-export:norequest');
         }
