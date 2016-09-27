@@ -14,7 +14,7 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Search\SearchRequest;
-use Docalist\Search\SearchResults;
+use Docalist\Search\SearchResponse;
 use Iterator;
 use Countable;
 
@@ -28,14 +28,14 @@ class ReferenceIterator implements Iterator, Countable
      *
      * @var SearchRequest
      */
-    protected $request;
+    protected $searchRequest;
 
     /**
      * Les résultats en cours.
      *
-     * @var SearchResults
+     * @var SearchResponse
      */
-    protected $results;
+    protected $searchResponse;
 
     /**
      * Les hits de la page actuelle.
@@ -68,12 +68,12 @@ class ReferenceIterator implements Iterator, Countable
     /**
      * Construit l'itérateur.
      *
-     * @param SearchRequest $request
+     * @param SearchRequest $searchRequest
      * @param int $limit Nombre maximum de notices à itérer.
      */
-    public function __construct(SearchRequest $request, $limit = null)
+    public function __construct(SearchRequest $searchRequest, $limit = null)
     {
-        $this->request = $request;
+        $this->searchRequest = $searchRequest;
         $this->limit = $limit;
         $this->count = 0;
     }
@@ -111,7 +111,7 @@ class ReferenceIterator implements Iterator, Countable
         ++$this->current;
         ++$this->count;
         if (! $this->valid()) {
-            $this->loadPage($this->request->page() + 1);
+            $this->loadPage($this->searchRequest->page() + 1);
         }
     }
 
@@ -122,9 +122,9 @@ class ReferenceIterator implements Iterator, Countable
      */
     protected function loadPage($page)
     {
-        $this->request->page($page);
-        $this->results = $this->request->execute();
-        $this->hits = $this->results->getHits();
+        $this->searchRequest->page($page);
+        $this->searchResponse = $this->searchRequest->execute();
+        $this->hits = $this->searchResponse->getHits();
         $this->current = 0;
     }
 
@@ -135,7 +135,7 @@ class ReferenceIterator implements Iterator, Countable
      */
     public function searchRequest()
     {
-        return $this->request;
+        return $this->searchRequest;
     }
 
     /**
@@ -145,8 +145,8 @@ class ReferenceIterator implements Iterator, Countable
      */
     public function count()
     {
-        is_null($this->results) && $this->rewind();
+        is_null($this->searchResponse) && $this->rewind();
 
-        return $this->results->getHitsCount();
+        return $this->searchResponse->getHitsCount();
     }
 }
