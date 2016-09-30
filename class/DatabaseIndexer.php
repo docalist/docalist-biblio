@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2016 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,14 +13,14 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Search\Indexer\PostIndexer;
 use Docalist\Biblio\Settings\TypeSettings;
 use Docalist\Search\IndexManager;
+use Docalist\Search\Indexer\CustomPostTypeIndexer;
 
 /**
  * Un indexeur pour les notices d'une base.
  */
-class DatabaseIndexer extends PostIndexer
+class DatabaseIndexer extends CustomPostTypeIndexer
 {
     /**
      * La base de données indexée.
@@ -37,26 +37,11 @@ class DatabaseIndexer extends PostIndexer
     public function __construct(Database $database)
     {
         $this->database = $database;
-    }
-
-    public function getType()
-    {
-        return $this->database->postType();
-    }
-
-    public function getLabel()
-    {
-        return $this->database->label();
-    }
-
-    public function getCategory()
-    {
-        return __('Bases Docalist', 'docalist-biblio');
-    }
-
-    public function getCollection()
-    {
-        return $this->database->settings()->name();
+        parent::__construct(
+            $database->postType(),                  // Nom du post type
+            $this->database->settings()->name(),    // collection (in:) = nom de la base
+            __('Bases Docalist', 'docalist-biblio') // Catégorie
+        );
     }
 
     public function buildIndexSettings(array $settings)

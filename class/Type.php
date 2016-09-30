@@ -652,7 +652,7 @@ class Type extends Entity
      */
     protected function buildMapping(MappingBuilder $mapping)
     {
-        // pour les champs de base, maintenir le même ordre que dans PostIndexer
+        // pour les champs de base, maintenir le même ordre que dans CustomPostTypeIndexer
         $mapping->addField('in')->keyword();
         $mapping->addField('type')->keyword();
         $mapping->addField('status')->keyword();
