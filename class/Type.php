@@ -30,6 +30,7 @@ use Docalist\Type\Integer;
 use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
 use Docalist\Search\MappingBuilder;
+use Docalist\Tokenizer;
 
 /**
  * Référence documentaire.
@@ -661,6 +662,7 @@ class Type extends Entity
         $mapping->addField('creation')->dateTime();
         $mapping->addField('lastupdate')->dateTime();
         $mapping->addField('title')->text();
+        $mapping->addField('title-sort')->keyword();
         $mapping->addField('ref')->integer();
 
         return $mapping;
@@ -695,7 +697,11 @@ class Type extends Entity
         isset($this->lastupdate) && $document['lastupdate'] = $this->lastupdate();
 
         // Titre
-        isset($this->title) && $document['title'] = $this->title();
+        if (isset($this->title)) {
+            $title = $this->title();
+            $document['title'] = $title;
+            $document['title-sort'] = implode(' ', Tokenizer::tokenize($title));
+        }
 
         // Numéro de réf
         isset($this->ref) && $document['ref'] = $this->ref();
