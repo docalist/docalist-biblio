@@ -734,4 +734,52 @@ class Type extends Entity
             }
         }
     }
+
+    /**
+     * Recherche le code de tous les topics qui sont associés à une table de type 'thesaurus'.
+     *
+     * @return string[] Un tableau de la forme table => topic (les clés indiquent la table utilisée).
+     */
+    protected function getThesaurusTopics()
+    {
+        // Ouvre la table des topics indiquée dans le schéma du champ 'topic'
+        list(, $name) = explode(':', $this->topic->schema()->table());
+        $table = docalist('table-manager')->get($name);
+
+        // Recherche toutes les entrées qui sont associées à une table de type 'thesaurus'
+        $topics = [];
+        foreach($table->search('code,source', 'source LIKE "thesaurus:%"') as $code => $source) {
+            $topics[substr($source, 10)] = $code; // supprime le préfixe 'thesaurus:'
+        }
+
+        // Ok
+        return $topics;
+    }
+
+    /**
+     * Détermine le path complet des termes passés en paramètre dans le thesaurus indiqué.
+     *
+     * @param array $terms Liste des termes à traduire.
+     * @param string $table Nom de la table d'autorité à utiliser (doit être de type 'thesaurus').
+     *
+     * @return string[] Le path complet des termes.
+     */
+    protected function getTermsPath(array $terms, $table)
+    {
+        // Ouvre le thesaurus
+        $table = docalist('table-manager')->get($table);
+
+        // Pour chaque terme ajoute le terme parent comme préfixe tant qu'on a un terme parent
+        foreach ($terms as & $term) {
+            $path = $term;
+            while (!empty($term = $table->find('BT', 'code=' . $table->quote($term)))) {
+                // find() retourne null si pas de BT ou false si pas de réponse (erreur dans le theso)
+                $path = $term . '/' . $path;
+            }
+            $term = $path;
+        }
+
+        // Ok
+        return $terms;
+    }
 }
