@@ -40,6 +40,25 @@ class Relation extends Integer
         }
     }
 
+    public static function getClassDefault()
+    {
+        // On surcharge car la valeur par défut d'un Integer est 0
+        // On utilise null pour indiquer "pas de relation"
+        return null;
+    }
+
+    public function assign($value)
+    {
+        // Un Integer ne peut pas être à null, par contre pour un type Relation, il faut accepter la valeur null
+        if (is_null($value)) {
+            $this->phpValue = null;
+
+            return $this;
+        }
+
+        return parent::assign($value);
+    }
+
     static public function loadSchema() {
         return [
             'reltype' => '',    // exemple : "Svb\Type\Event"
