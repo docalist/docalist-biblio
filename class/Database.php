@@ -121,31 +121,27 @@ class Database extends PostTypeRepository
             new ImportPage($this);
         });
 
-        add_filter('the_excerpt', function ($content) {
-            global $post;
+        // Pour l'excerpt, on filtre 'get_the_excerpt' car the_content() appelle get_the_content() et
+        // les deux ont des filtres.
+        add_filter('get_the_excerpt', function ($excerpt, $post) {
 
             // Vérifie que c'est une de nos notices
             if ($post->post_type !== $this->postType) {
-                return $content;
+                return $excerpt;
             }
 
-            // remarque : pour "court-circuiter" tous les filtres qui sont
-            // après nous en priorité (wp_autop, etc.), on pourrait faire :
-            // global $wp_filter;
-            // end($wp_filter['the_excerpt']);
-            // hyper dépendant du code qu'on a dans apply_filters() mais
-            // cela fonctionne.
-
-            // Charge la notice en mode "affichage court"
+            // Charge la notice en mode
             $ref = $this->load($post->ID);
 
-            // Charge la grille
+            // Charge la grille "format court"
             $grid = $this->settings->types[$ref->type()]->grids['excerpt'];
 
             // Formatte la notice
             return $ref->getFormattedValue($grid);
-        }, 9999); // priorité très haute pour ignorer wp_autop et cie.
+        }, 9999,2); // priorité très haute pour ignorer wp_autop et cie.
 
+        // Par contre pour le content, on est obligé de filtre the_content() car il n'y a aucun
+        // filtre dans get_the_content(). Donc si un thème appelle get_the_content, il n'aura rien.
         add_filter('the_content', function ($content) {
             global $post;
 
