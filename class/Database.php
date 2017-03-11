@@ -123,8 +123,7 @@ class Database extends PostTypeRepository
 
         // Pour l'excerpt, on filtre 'get_the_excerpt' car the_content() appelle get_the_content() et
         // les deux ont des filtres.
-        add_filter('get_the_excerpt', function ($excerpt, $post) {
-
+        add_filter('get_the_excerpt', function ($excerpt, WP_Post $post) {
             // Vérifie que c'est une de nos notices
             if ($post->post_type !== $this->postType) {
                 return $excerpt;
