@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -448,6 +448,11 @@ class Database extends PostTypeRepository
         add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query, & $displayResults) {
             // Si quelqu'un a déjà créé une requête, on le laisse gérer
             if ($request) {
+                return $request;
+            }
+
+            // Si c'est une page back-office, on ne fait rien
+            if (is_admin()) {
                 return $request;
             }
 
