@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Docalist\Biblio\Database;
 ?>
 <div class="wrap">
     <?php
-        $title = sprintf(__('%1$s - %2$s', 'docalist-search'),
+        $title = sprintf(__('%1$s » %2$s', 'docalist-search'),
             $database->settings()->label(),
             get_post_type_object($database->postType())->labels->add_new_item
         );
