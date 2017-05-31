@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -31,6 +31,7 @@ use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
+use ReflectionMethod;
 
 /**
  * Référence documentaire.
@@ -225,7 +226,84 @@ class Type extends Entity
      *
      * @return Schema
      */
-    static public function getEditGrid() {
+    static public function getEditGrid()
+    {
+        // On part du type en cours
+        $class = get_called_class();
+
+        // On construit le formulaire de saisie par défaut en regroupant les champs par niveau de hiérarchie
+        $seen = $fields = [];
+        $groupNumber = 1;
+        while ($class !== self::class) {
+            // Si le type en cours n'a pas surchargé loadSchema(), terminé (exemple : SvbType)
+            $method = new ReflectionMethod($class, 'loadSchema');
+            if ($method->class !== $class) {
+                $class = get_parent_class($class);
+                continue;
+            }
+
+            // Ajoute tous les champs qui sont dans le schéma du type en cours
+            $schema = $class::loadSchema();
+            $specific = [];
+            foreach($schema['fields'] as $name => $field) {
+                if (isset($seen[$name])) {
+                    continue;
+                }
+                $seen[$name] = true;
+                if (isset($field['unused']) && $field['unused']) {
+                    continue;
+                }
+                $specific[] = $name;
+            }
+
+            // Aucun champ, passe le niveau
+            if (empty($specific)) {
+                $class = get_parent_class($class);
+                continue;
+            }
+
+            // Crée un groupe pour ce niveau
+            $fields['group' . $groupNumber] = [
+                'type' => 'Docalist\Biblio\Type\Group',
+                'label' => $schema['label'],
+            ];
+            ++$groupNumber;
+
+            // Ajoute les champs spécifique à ce niveau
+            $fields = array_merge($fields, $specific);
+
+            // Passe au niveau suivant de la hiérarchie des types
+            $class = get_parent_class($class);
+        }
+
+        // Ajoute les champs de gestion (type et ref) si on ne les a pas encore rencontrés
+        $specific = [];
+        foreach(['type', 'ref'] as $name) {
+            !isset($seen[$name]) && $specific[] = $name;
+        }
+
+        if ($specific) {
+            $fields['group' . $groupNumber] = [
+                'type' => 'Docalist\Biblio\Type\Group',
+                'label' => __('Champs de gestion', 'docalist-core'),
+                'state' => 'collapsed',
+            ];
+            $fields = array_merge($fields, $specific);
+        }
+
+        // Construit la grille finale
+        //$description = sprintf(__("Saisie/modification d'une fiche '%s'.", 'docalist-biblio'), static::getDefaultSchema()->label());
+
+        return [
+            'name' => 'edit',
+            'gridtype' => 'edit',
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            //'description' => $description,
+            'fields' => $fields,
+        ];
+    }
+
+    static public function getEditGridOLD() {
         // On part du schéma du type
         $schema = static::getDefaultSchema();
 
@@ -263,8 +341,10 @@ class Type extends Entity
             'label' => 'Champs de gestion',
             'state' => 'collapsed',
         ];
+//         $fields[] = 'title';
         $fields[] = 'type';
         $fields[] = 'ref';
+//         $fields = array_merge($fields, array_keys(self::loadSchema()['fields']));
 
         // Construit la grille finale
         $description = sprintf(__("Saisie/modification d'une fiche '%s'.", 'docalist-biblio'), $schema->label());
@@ -473,8 +553,10 @@ class Type extends Entity
             ->setDescription(
                 __("Texte d'introduction qui sera affiché pour présenter le formulaire.", 'docalist-core') .
                 ' ' .
-                __("Par défaut, c'est la description du type qui est utilisée.", 'docalist-core')
-                );
+                __("Par défaut, c'est la description du type qui est utilisée.", 'docalist-core') .
+                ' ' .
+                __("Indiquez '-' pour ne rien afficher.", 'docalist-core')
+            );
 
         return $form;
     }
