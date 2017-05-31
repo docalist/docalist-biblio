@@ -202,6 +202,9 @@ class Reference extends Type
                 if (!isset($allFields[$field])) {
                     throw new \InvalidArgumentException(sprintf('Field "%s" not in schema or defined twice', $field));
                 }
+                if ($allFields[$field]->unused()) {
+                    throw new \InvalidArgumentException(sprintf('Field "%s" is marked "unused" in schema', $field));
+                }
                 unset($allFields[$field]);
 
                 // Ajoute le champ
