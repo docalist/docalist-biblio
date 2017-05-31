@@ -16,7 +16,7 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
-
+die('La classe Docalist\Biblio\Field\Topic est remplacée par Docalist\Type\Topics');
 /**
  * Une liste de mots-clés d'un certain type.
  *
