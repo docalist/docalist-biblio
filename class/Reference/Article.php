@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
-use Docalist\Schema\Schema;
 
 /**
  * Article.
@@ -73,70 +72,20 @@ class Article extends Reference {
 //         ];
     }
 
-    static public function editGrid() {
-        return new Schema([
-            'label' => __('Formulaire de saisie', 'docalist-biblio'),
-            'description' => __("Grille de saisie d'un article.", 'docalist-biblio'),
-            'fields' => [
-
-                // Nature du document
-                'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Nature du document', 'docalist-biblio') ],
-                'genre',
-                'media',
-
-                // Titres
-                'group2' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Titres', 'docalist-biblio') ],
-                'title',
-                'othertitle',
-                'translation',
-                'event',
-
-                // Auteurs
-                'group3' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Auteurs', 'docalist-biblio') ],
-                'author',
-                'organisation',
-
-                // Journal / Périodique
-                'group4' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Journal / Périodique', 'docalist-biblio') ],
-                'journal',
-                'number',
-                'date',
-                'edition',
-
-                // Informations bibliographiques
-                'group5' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Informations bibliographiques', 'docalist-biblio') ],
-                'language',
-                'extent',
-                'format',
-
-                // Indexation et résumé
-                'group6' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Indexation et résumé', 'docalist-biblio') ],
-                'topic',
-                'content',
-
-                // Liens et relations
-                'group7' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Liens et relations', 'docalist-biblio') ],
-                'link',
-                'relation',
-
-                // Informations de gestion
-                'group8' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Informations de gestion', 'docalist-biblio') ],
-                'type',
-                'ref',
-                'owner',
-/*
-posttype
-creation
-lastupdate
-password
-parent
-slug
-imported
-errors
-*/
-            ]
+    public static function getEditGrid()
+    {
+        return static::buildEditGrid([
+            __('Nature du document', 'docalist-core')               => 'genre,media',
+            __('Titres', 'docalist-core')                           => 'title,othertitle,translation,event',
+            __('Auteurs', 'docalist-core')                          => 'author,organisation',
+            __('Journal / Périodique', 'docalist-core')             => 'journal,number,date,edition',
+            __('Informations bibliographiques', 'docalist-core')    => 'language,extent,format',
+            __('Indexation et résumé', 'docalist-core')             => 'topic,content',
+            __('Liens et relations', 'docalist-core')               => 'link,relation',
+            __('Informations de gestion', 'docalist-core')          => '-,type,ref,owner',
         ]);
     }
+
 /*
     static public function contentGrid() {
         return new Schema([
