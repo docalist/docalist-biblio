@@ -3,7 +3,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -130,7 +130,7 @@ class Reference extends Type
                     'description' => __("Description de l'évènement à l'origine du document : congrès, colloque, manifestation, soutenance de thèse...", 'docalist-biblio'),
                 ],
                 'topic' => [
-                    'type' => 'Docalist\Biblio\Field\Topic*',
+                    'type' => 'Docalist\Biblio\Type\Topics', // Collection spéciale Topics (pas Topic*) pour avoir le bon éditeur
                     'label' => __('Indexation', 'docalist-biblio'),
                     'description' => __("Mots-clés décrivant le contenu du document. Les mots-clés utilisés peuvent provenir d'un ou plusieurs vocabulaires différents.", 'docalist-biblio'),
                     'table' => 'table:topics',
@@ -173,4 +173,150 @@ class Reference extends Type
             ],
         ];
     }
+
+    private static function buildEditGrid(array $groups)
+    {
+        $allFields = static::getDefaultSchema()->getFields();
+        $grid = [];
+        $groupNumber = 1;
+        foreach($groups as $label => $fields) {
+            // Pour chaque groupe de champs, la liste de champs est une chaine ou un tableau
+            is_string($fields) && $fields = explode(',', $fields);
+
+            // Crée le groupe
+            $group = 'group' . $groupNumber++;
+            $grid[$group] = [
+                'type' => 'Docalist\Biblio\Type\Group',
+                'label' => $label
+            ];
+
+            // Ajoute tous les champs de ce groupe
+            foreach($fields as $field) {
+                // La chaine '-' est utilisée pour indiquer une boite "collapsed"
+                if ($field==='-') {
+                    $grid[$group]['state'] = 'collapsed';
+                    continue;
+                }
+                // Vérifie que le champ existe et qu'il n'apparait qu'une seule fois dans la grille
+                $field = trim($field);
+                if (!isset($allFields[$field])) {
+                    throw new \InvalidArgumentException(sprintf('Field "%s" not in schema or defined twice', $field));
+                }
+                unset($allFields[$field]);
+
+                // Ajoute le champ
+                $grid[] = $field;
+            }
+        }
+
+        // Ajoute tous les champs qui ne sont pas listés dans un groupe caché "champs non utilisés"
+        if ($allFields) {
+            $group = 'group' . $groupNumber++;
+            $grid[$group] = [
+                'type' => 'Docalist\Biblio\Type\Group',
+                'label' => __('Champs non utilisés', 'docalist-core'),
+                'state' => 'hidden',
+                'description' => __('
+                    <b>ATTENTION</b> : les champs suivants ne sont pas utilisés ou sont des champs de
+                    gestion gérés directement par WordPress. <b>VOUS NE DEVRIEZ PAS LES MODIFIER<b>.',
+                    'docalist-biblio'
+                )
+            ];
+            $grid = array_merge($grid, array_keys($allFields));
+        }
+
+        // Construit la grille finale
+        return [
+            'name' => 'edit',
+            'gridtype' => 'edit',
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            //'description' => $description,
+            'fields' => $grid,
+        ];
+    }
+
+    static public function getEditGrid()
+    {
+        return static::buildEditGrid([
+            __('Nature du document', 'docalist-core')               => 'genre,media',
+            __('Titres', 'docalist-core')                           => 'title,othertitle,translation',
+            __('Auteurs', 'docalist-core')                          => 'author,organisation',
+            __('Informations bibliographiques', 'docalist-core')    => 'date,language,number,extent,format',
+            __('Informations éditeur', 'docalist-core')             => 'editor,collection,edition',
+            __('Congrès et diplômes', 'docalist-core')              => 'event',
+            __('Indexation et résumé', 'docalist-core')             => 'topic,content',
+            __('Liens et relations', 'docalist-core')               => 'link,relation',
+            __('Informations de gestion', 'docalist-core')          => '-,type,ref,owner',
+        ]);
+
+        return [
+            'name' => 'edit',
+            'gridtype' => 'edit',
+            'label' => __('Formulaire de saisie', 'docalist-biblio'),
+            'description' => __("Grille de saisie d'un livre.", 'docalist-biblio'),
+            'fields' => [
+                // Type, Genre, Media
+                'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
+                'genre',
+                'media',
+
+                // Title, OtherTitle, Translation
+                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
+                'title',
+                'othertitle',
+                'translation',
+
+                // Author, Organisation
+                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
+                'author',
+                'organisation',
+
+                // Date / Language / Pagination / Format
+                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
+                'date',
+                'language',
+                'number',
+                'extent',
+                'format',
+
+                // Editor / Collection / Edition
+                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
+                'editor',
+                'collection',
+                'edition',
+
+                // Event
+                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Congrès et diplômes'],
+                'event',
+
+                // Topic / Abstract / Note
+                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
+                'topic',
+                'content',
+
+                // // Liens et relations
+                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
+                'link',
+                'relation',
+
+                // Ref / Owner / Creation / Lastupdate
+                'group9' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
+                'type',
+                'ref',
+                'owner',
+
+                /*
+                 posttype
+        creation
+        lastupdate
+        password
+        parent
+        slug
+        imported
+        errors
+        */
+            ]
+        ];
+    }
+
 }
