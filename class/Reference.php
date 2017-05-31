@@ -174,7 +174,7 @@ class Reference extends Type
         ];
     }
 
-    private static function buildEditGrid(array $groups)
+    protected static function buildEditGrid(array $groups)
     {
         $allFields = static::getDefaultSchema()->getFields();
         $grid = [];
@@ -238,7 +238,7 @@ class Reference extends Type
         ];
     }
 
-    static public function getEditGrid()
+    public static function getEditGrid()
     {
         return static::buildEditGrid([
             __('Nature du document', 'docalist-core')               => 'genre,media',
