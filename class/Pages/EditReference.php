@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -23,124 +23,112 @@ use Docalist\Http\ViewResponse;
 use Docalist\Forms\Container;
 
 /**
- * Gère la page "création/modification d'une notice" d'une base documentaire.
+ * Gère la page "création/modification d'une notice" d'une base docalist.
  */
-class EditReference {
+class EditReference
+{
     /**
-     * Le nonce qui sera généré dans l'écran d'édition.
+     * @var string Le nom du nonce qui sera généré dans l'écran d'édition.
      */
-    const NONCE = 'dcl_nonce';
+    const NONCE = 'docalist_nonce';
 
     /**
-     * Le nom du champ parent de tous les champs de la notice.
+     * @var Le nom du champ parent de tous les champs de la notice.
      */
     const FORM_NAME = 'dbref';
 
     /**
-     * La base de données documentaire.
-     *
-     * @var Database
+     * @var string L'ID de la metabox de débogage.
+     */
+    const DEBUG_METABOX = 'dbdebug';
+
+    /**
+     * @var Database La base de données documentaire.
      */
     protected $database;
 
     /**
-     * Le post-type de la base.
+     * @var string Le post-type de la base.
      *
      * Equivalent à $this->database->postType().
-     *
-     * @var string
      */
     protected $postType;
 
     /**
-     * La notice en cours d'édition.
-     *
-     * @var Type
+     * @var Type La notice en cours d'édition.
      */
     protected $reference;
 
     /**
-     * Indique si on crée un nouveau post ou si on édite une notice existante.
+     * @var bool Indique si on crée un nouveau post ou si on édite une notice existante.
      *
-     * Initialisé par create() et utilisé par edit() pour savoir s'il faut ou
-     * non injecter les valeurs par défaut dans les champs des metaboxes.
-     *
-     * @var bool
+     * Cette propriété est initialisé par create() et elle est utilisée par edit() pour savoir s'il faut
+     * ou non injecter les valeurs par défaut dans les champs des metaboxes.
      */
     protected $isNewPost = false;
 
     /**
+     * Initialise l'éditeur de notice.
      *
      * @param Database $database
      */
-    public function __construct(Database $database) {
+    public function __construct(Database $database)
+    {
         $this->database = $database;
         $this->postType = $database->postType();
 
         // Demande à l'utilisateur le type de la notice à créer
-        add_action('load-post-new.php', function() {
+        add_action('load-post-new.php', function () {
             $this->isMyPostType() && $this->create();
         });
 
         // Ajoute les metaboxes dans le formulaire de saisie
-        add_action('add_meta_boxes_' . $this->postType, function(WP_Post $post) {
+        add_action('add_meta_boxes_' . $this->postType, function (WP_Post $post) {
             $this->edit($post->ID);
         });
 
         // Enregistre les données transmises lorsque wordpress sauve le post
         global $pagenow;
         if ($pagenow === 'post.php' && $this->isMyPostType() && isset($_POST['action']) && $_POST['action'] === 'editpost') {
-            add_filter('wp_insert_post_data', function(array $data, array $postarr) {
+            add_filter('wp_insert_post_data', function (array $data, array $postarr) {
                 return $this->save($data, $postarr);
             }, 10, 2);
         }
     }
 
     /**
-     * Indique si la requête en cours concerne un enregistrement du post-type
-     * géré par cette base.
+     * Indique si la requête en cours concerne un enregistrement de notre base.
      *
      * @return boolean
      */
-    protected function isMyPostType() {
-        global $typenow;
-
-        return $typenow === $this->postType;
+    protected function isMyPostType()
+    {
+        return $GLOBALS['typenow'] === $this->postType;
     }
 
     /**
-     * Modifie le titre de l'écran d'édition en fonction du type de notice en
-     * cours.
+     * Modifie le titre de l'écran d'édition en fonction du type de notice en cours.
      *
-     * @param string $type le type en cours
-     * @param boolean $creation true s'il s'agit d'un nouvele enregistrement,
-     * false s'il s'agit d'une mise à jour.
+     * @param string    $type       Le nom du type en cours
+     * @param boolean   $creation   Indique s'il s'agit d'un nouvel enregistrement (true) ou d'une mise à jour (false).
      */
-    protected function setPageTitle($type, $creation = false) {
-        // Variable globale wordpress utilisée pour le titre de la page
-        // Définie dans post-new.php (entres autres) et affichée dans
-        // edit-form-advanced...
-        global $title;
-
-//         if ($creation) {
-//             $title = __("Base %s : créer une notice (%s)", 'docalist-biblio');
-//         } else {
-//             $title = __("Base %s : modifier une notice (%s)", 'docalist-biblio');
-//         }
-
-        $title = __('%s : %s', 'docalist-biblio');
-
-        $title = sprintf(
-            $title,
+    protected function setPageTitle($type, $creation = false)
+    {
+        // Le titre de la page "edit-post" est stocké dans une variable globale "title" qui est définie dans
+        // post-new.php (entres autres) et affichée dans edit-form-advanced...
+        $GLOBALS['title'] = sprintf(
+            __('%s » %s » %s', 'docalist-biblio'),
             $this->database->settings()->label(),
-            lcfirst($this->database->settings()->types[$type]->label())
+            $this->database->settings()->types[$type]->label(),
+            $creation ? __('Création', 'docalist-biblio') : __('Modification', 'docalist-biblio')
         );
     }
 
     /**
      * Affiche l'écran "choix du type de notice à créer".
      */
-    protected function create() {
+    protected function create()
+    {
         $this->isNewPost = true;
 
         // S'il n'y a qu'un seul type de notices, inutile de demander à l'utilisateur
@@ -160,7 +148,7 @@ class EditReference {
             // formulaire edit-form-advanced
 
             // Injecte les valeurs par défaut dans le draft qui va être créé
-            add_filter('wp_insert_post_data', function(array $data) {
+            add_filter('wp_insert_post_data', function (array $data) {
                 // Crée une référence du type demandé avec les valeurs par défaut du formulaire
                 $ref = $this->database->createReference($_REQUEST['ref_type'], null, 'edit');
 
@@ -208,11 +196,12 @@ class EditReference {
     /**
      * Ajoute une metabox de débogage qui affiche le contenu brut du post.
      */
-    protected function addDebugMetabox(Type $ref) {
+    protected function addDebugMetabox(Type $ref)
+    {
         add_meta_box(
-            'dbdebug',                             // id metabox
-            'Informations de debug de la notice',  // titre
-            function () use ($ref) {               // Callback
+            self::DEBUG_METABOX,
+            'Informations de debug de la notice',
+            function () use ($ref) {
                 global $post;
 
                 $data = $post->to_array();
@@ -239,40 +228,62 @@ class EditReference {
     }
 
     /**
-     * Paramètre le formulaire de saisie et ajoute les metaboxes correspondant
-     * au type de la notice en cours.
+     * Paramètre le formulaire de saisie et ajoute les metaboxes correspondant au type de la notice en cours.
      *
      * @param int $id ID du post à éditer.
      */
-    protected function edit($id) {
+    protected function edit($id)
+    {
         // Charge la notice à éditer
         $ref = $this->database->load($id);
 
         // Adapte le titre de l'écran de saisie
         $this->setPageTitle($ref->type(), false);
 
-        // Supprime la metabox "Identifiant"
-        remove_meta_box('slugdiv', $this->postType, 'normal');
+        // Insère notre feuille de style
+        wp_styles()->enqueue('docalist-biblio-edit-reference');
 
-        add_action('edit_form_after_title', function() {
+        // Crée un nonce
+        add_action('edit_form_after_title', function () {
             $this->createNonce();
         });
 
-        // Crée une metabox "debug" pour afficher le contenu brut du post
-        $this->addDebugMetabox($ref);
+        // Affiche un texte d'intro si la grille comporte une description
+        $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
+        $description = $schema->description() ?: $ref->schema()->description();
+        if ($description && $description !== '-') { // '-' signifie "ne pas hériter"
+            add_action('edit_form_after_title', function () use ($description) {
+                printf('<p class="description">%s</p>', $description);
+            });
+        }
 
-        // Construit le formulaire
-        foreach($this->metaboxes($ref, ! $this->isNewPost) as $form) {
+        // On va regrouper les metabox par "state" pour savoir lesquelles sont ouvertes/repliées/cachées
+        $state = [
+            '' => [],
+            'collapsed' => [],
+            'hidden' => ['slugdiv', 'authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv'],
+        ];
+
+        // Génère les metabox
+        foreach ($this->metaboxes($ref, ! $this->isNewPost) as $form) {
             $id = $form->getAttribute('id');
-            $title = $form->getLabel() ?: $ref->schema()->label();
-            $form->setLabel(null); // comme on affiche le titre nous même
+            $title = $form->getLabel() ?: $ref->schema()->label(); // wp n'aime pas les metabox sans titre
+            $description = $form->getDescription();
 
-            // binde le formulaire
+            // Binde le formulaire
             $form->bind($ref);
 
-            // Regroupe tous les champs dans un champ parent 'dbref'
-            // Cela évite que wp interfére avec nos champs (#250, #335 par exemple)
+            // Supprime le libellé de la metabox (affiché comme titre par wp)
+            $form->setLabel(null);
+
+            // Définit la description (le bind prend automatiquement la description de la ref sinon)
+            $form->setDescription($description);
+
+            // Regroupe tous les champs dans un champ parent 'dbref' (cf. #250, #335 par exemple)
             $form->setName(self::FORM_NAME);
+
+            // Stocke l'état initial de la boite
+            $state[$form->getAttribute('state')][] = $id;
 
             // Génère le formulaire et enqueue les assets requis
             $form = $form->render('wordpress');
@@ -281,7 +292,7 @@ class EditReference {
             add_meta_box(
                 $id,
                 $title,
-                function() use($form) {
+                function () use ($form) {
                     echo $form;
                 },
                 $this->postType,
@@ -290,44 +301,33 @@ class EditReference {
             );
         }
 
-        // Insère notre feuille de style
-        wp_styles()->enqueue('docalist-biblio-edit-reference');
+        // Ajoute une metabox "debug" pour afficher le contenu brut du post
+        $this->addDebugMetabox($ref);
+        $state['hidden'][] = self::DEBUG_METABOX;
 
-        // Définit l'état initial des metaboxes (normal, replié, masqué)
-        $hidden = ['authordiv', 'commentsdiv', 'commentstatusdiv', 'trackbacksdiv', 'revisionsdiv', 'dbdebug'];
-        $collapsed = [];
-        foreach($ref->schema()->getFields() as $name => $field) {
-            if ($field->type() === 'Docalist\Biblio\Type\Group') {
-                switch($field->state()) {
-                    case 'hidden':
-                        $hidden[] = $name;
-                        break;
-                    case 'collapsed':
-                        $collapsed[] = $name;
-                        break;
-                    // default : affichage normal
-                }
-            }
-        }
-
-        add_filter('default_hidden_meta_boxes', function(array $result, WP_Screen $screen) use($hidden) {
-            return $screen->id === $this->postType ? $hidden : $result;
+        // Indique à wordpress les metabox hidden
+        add_filter('default_hidden_meta_boxes', function (array $result, WP_Screen $screen) use ($state) {
+            return $screen->id === $this->postType ? $state['hidden'] : $result;
         }, 10, 2);
 
-        add_filter('get_user_option_closedpostboxes_dbprisme', function($result) use ($collapsed) {
-            return $result === false ? $collapsed : $result;
-        });
+        // Indique à wordpress les metabox collapsed
+        if (!empty($state['collapsed'])) {
+            add_filter("get_user_option_closedpostboxes_{$this->postType}", function ($result) use ($state) {
+                return $result === false ? $state['collapsed'] : $result;
+            });
+        }
     }
 
     /**
      * Enregistre la notice.
      *
-     * @param array $data Les données du post wordpress (wp_slashées).
-     * @param array $postarr Les données transmises dans $_POST.
+     * @param array $data       Les données du post wordpress (wp_slashées).
+     * @param array $postarr    Les données transmises dans $_POST.
      *
      * @return array Les données à enregistrer dans le post.
      */
-    protected function save($data, $postarr) {
+    protected function save($data, $postarr)
+    {
         $debug = false;
 
         /*
@@ -399,11 +399,11 @@ class EditReference {
         if ($debug) {
             echo '<h1>Binding notice / formulaire</h1>';
         }
-        foreach($this->metaboxes($ref) as $metabox) {
+        foreach ($this->metaboxes($ref) as $metabox) {
             $metabox->bind($postarr[self::FORM_NAME]);
-            foreach($metabox->getData() as $key => $value) {
+            foreach ($metabox->getData() as $key => $value) {
                 if ($debug) {
-                    echo "<li>Set <code>$key = ", htmlspecialchars(var_export($value,true)), '</code></li>';
+                    echo "<li>Set <code>$key = ", htmlspecialchars(var_export($value, true)), '</code></li>';
                 }
                 $ref->$key = $value;
             }
@@ -467,41 +467,41 @@ class EditReference {
      *
      * @return $data
      */
-    protected function deepTrim(array $data) {
-        return array_map(function($data) {
+    protected function deepTrim(array $data)
+    {
+        return array_map(function ($data) {
             return is_scalar($data) ? trim($data) : $this->deepTrim($data);
         }, $data);
     }
 
     /**
-     * Génère un nonce WordPress lorsque l'écran d'édition du post type
-     * est affiché.
+     * Génère un nonce.
      */
-    protected function createNonce() {
+    protected function createNonce()
+    {
         wp_nonce_field('edit-post', self::NONCE);
     }
 
     /**
-     * Vérifie que $_POST contient le nonce créé par createNonce() et que
-     * celui-ci est valide.
+     * Vérifie que $_POST contient le nonce créé par createNonce() et que celui-ci est valide.
      *
      * @return bool
      */
-    protected function checkNonce() {
+    protected function checkNonce()
+    {
         return isset($_POST[self::NONCE]) && wp_verify_nonce($_POST[self::NONCE], 'edit-post');
     }
 
     /**
      * Retourne les formulaires utilisés pour saisir une notice de ce type.
      *
-     * @param string $type
-     * @param bool $ignoreDefaults Indique s'il faut ignorer la valeur par
-     * défaut des champs.
+     * @param string    $type
+     * @param bool      $ignoreDefaults Indique s'il faut ignorer la valeur par défaut des champs.
      *
      * @return Container[] Un tableau de la forme id metabox => form fragment
      */
-    protected function metaboxes(Type $ref, $ignoreDefaults = false) {
-
+    protected function metaboxes(Type $ref, $ignoreDefaults = false)
+    {
         // Charge la grille "edit" correspondant au type de la notice
         $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
 
@@ -517,10 +517,9 @@ class EditReference {
 
         // Balaie les champs et crée les boites au fur et à mesure
         $metaboxes = [];
-        foreach($fields as $name => $field) {
+        foreach ($fields as $name => $field) {
             // Nouveau champ
             if ($field->type() !== 'Docalist\Biblio\Type\Group') {
-
                 // Si on n'a pas la cap de la boite en cours, inutile de créer le champ
                 if (! $hasBoxCap) {
                     continue;
@@ -561,7 +560,8 @@ class EditReference {
             $box = new Container();
             $box->setLabel($field->label())
                 ->setDescription($field->description())
-                ->setAttribute('id', $name);
+                ->setAttribute('id', $name)
+                ->setAttribute('state', $field->state());
         }
 
         // Sauvegarde la dernière boite créée si nécessaire
