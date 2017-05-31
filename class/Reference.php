@@ -244,7 +244,7 @@ class Reference extends Type
             __('Nature du document', 'docalist-core')               => 'genre,media',
             __('Titres', 'docalist-core')                           => 'title,othertitle,translation',
             __('Auteurs', 'docalist-core')                          => 'author,organisation',
-            __('Informations bibliographiques', 'docalist-core')    => 'date,language,number,extent,format',
+            __('Informations bibliographiques', 'docalist-core')    => 'journal,date,language,number,extent,format',
             __('Informations éditeur', 'docalist-core')             => 'editor,collection,edition',
             __('Congrès et diplômes', 'docalist-core')              => 'event',
             __('Indexation et résumé', 'docalist-core')             => 'topic,content',
