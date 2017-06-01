@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
@@ -16,6 +15,9 @@ namespace Docalist\Biblio;
 
 /**
  * Une référence documentaire.
+ *
+ * Le schéma d'une référence est fixe : les classes descendantes (Article, Book, ...) ne doivent pas créer
+ * de nouveaux champs, elles peuvent juste paramétrer les champs existant ou les marquer "unused".
  */
 class Reference extends Type
 {
