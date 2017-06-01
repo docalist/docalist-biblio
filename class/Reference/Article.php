@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -37,8 +37,10 @@ use Docalist\Biblio\Reference;
  * - pas d'auteur organisme
  * - pagination de type "page de début - page de fin"
  */
-class Article extends Reference {
-    static public function loadSchema() {
+class Article extends Reference
+{
+    public static function loadSchema()
+    {
         return [
             'name' => 'article',
             'label' => __('Article de périodique', 'docalist-biblio'),
@@ -95,7 +97,8 @@ class Article extends Reference {
             'fields' => [
 
                 // Champs affichés
-                'group1' => [ 'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'format' => '<tr><th style="width: 200px; text-align: right; vertical-align: top">%label : </th><td>%content</td></tr>', 'before' => '<table>', 'after' => '</table>' ],
+                'group1' => [
+                    'type' => 'Docalist\Biblio\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'format' => '<tr><th style="width: 200px; text-align: right; vertical-align: top">%label : </th><td>%content</td></tr>', 'before' => '<table>', 'after' => '</table>' ],
                 'genre' => [
                     'sep' => ', ',
                 ],
