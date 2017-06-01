@@ -77,14 +77,14 @@ class Article extends Reference
     public static function getEditGrid()
     {
         return static::buildEditGrid([
-            __('Nature du document', 'docalist-core')               => 'genre,media',
-            __('Titres', 'docalist-core')                           => 'title,othertitle,translation,event',
-            __('Auteurs', 'docalist-core')                          => 'author,organisation',
-            __('Journal / Périodique', 'docalist-core')             => 'journal,number,date,edition',
-            __('Informations bibliographiques', 'docalist-core')    => 'language,extent,format',
-            __('Indexation et résumé', 'docalist-core')             => 'topic,content',
-            __('Liens et relations', 'docalist-core')               => 'link,relation',
-            __('Informations de gestion', 'docalist-core')          => '-,type,ref,owner',
+            __('Nature du document', 'docalist-biblio')             => 'genre,media',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,event',
+            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Journal / Périodique', 'docalist-biblio')           => 'journal,number,date,edition',
+            __('Informations bibliographiques', 'docalist-biblio')  => 'language,extent,format',
+            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
+            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
     }
 
