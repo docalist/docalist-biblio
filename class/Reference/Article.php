@@ -39,6 +39,8 @@ use Docalist\Biblio\Reference;
  */
 class Article extends Reference
 {
+    // Un type de référence ne doit pas créer de champs, juste paramétrer les champs existant ou les marquer "unused".
+
     public static function loadSchema()
     {
         return [
@@ -54,24 +56,6 @@ class Article extends Reference
                 ],
             ],
         ];
-
-//         // Récupère les champs d'une référence standard
-//         $fields = parent::loadSchema()['fields'];
-
-//         // Supprime les champs qu'on n'utilise pas
-//         unset($fields['editor']);
-//         unset($fields['collection']);
-
-//         // Personnalise les tables, les libellés, les description, etc.
-//         // todo
-
-//         // Contruit notre schéma
-//         return [
-//             'name' => 'article',
-//             'label' => __('Article de périodique', 'docalist-biblio'),
-//             'description' => __('Un article de presse publié dans un numéro de périodique.', 'docalist-biblio'),
-//             'fields' => $fields,
-//         ];
     }
 
     public static function getEditGrid()
