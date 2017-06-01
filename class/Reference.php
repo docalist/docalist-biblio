@@ -283,7 +283,7 @@ class Reference extends Type
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
                 'type' => 'Docalist\Biblio\Type\Group',
-                'label' => __('Champs non utilisés', 'docalist-core'),
+                'label' => __('Champs non utilisés', 'docalist-biblio'),
                 'state' => 'hidden',
                 'description' => __(
                     '<b>ATTENTION</b> : les champs suivants ne sont pas utilisés ou sont des champs de
@@ -307,15 +307,15 @@ class Reference extends Type
     public static function getEditGrid()
     {
         return static::buildEditGrid([
-            __('Nature du document', 'docalist-core')               => 'genre,media',
-            __('Titres', 'docalist-core')                           => 'title,othertitle,translation',
-            __('Auteurs', 'docalist-core')                          => 'author,organisation',
-            __('Informations bibliographiques', 'docalist-core')    => 'journal,date,language,number,extent,format',
-            __('Informations éditeur', 'docalist-core')             => 'editor,collection,edition',
-            __('Congrès et diplômes', 'docalist-core')              => 'event',
-            __('Indexation et résumé', 'docalist-core')             => 'topic,content',
-            __('Liens et relations', 'docalist-core')               => 'link,relation',
-            __('Informations de gestion', 'docalist-core')          => '-,type,ref,owner',
+            __('Nature du document', 'docalist-biblio')             => 'genre,media',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Informations bibliographiques', 'docalist-biblio')  => 'journal,date,language,number,extent,format',
+            __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
+            __('Congrès et diplômes', 'docalist-biblio')            => 'event',
+            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
+            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
     }
 }
