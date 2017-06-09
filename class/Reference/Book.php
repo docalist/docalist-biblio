@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
-use Docalist\Schema\Schema;
 
 /**
  * Livre.
@@ -37,94 +36,37 @@ use Docalist\Schema\Schema;
  * - a un ou plusieurs auteurs moraux
  * - pagination de type "nombre de pages"
  */
-class Book extends Reference {
-    static public function loadSchema() {
-        // Récupère les champs d'une référence standard
-        $fields = parent::loadSchema()['fields'];
-
-        // Supprime les champs qu'on n'utilise pas
-        unset($fields['journal']);
-
-        // Personnalise les tables, les libellés, les description, etc.
-        // todo
-
-        // Contruit notre schéma
+class Book extends Reference
+{
+    public static function loadSchema()
+    {
         return [
             'name' => 'book',
             'label' => __('Livre', 'docalist-biblio'),
             'description' => __('Un livre publié par un éditeur.', 'docalist-biblio'),
-            'fields' => $fields,
+            'fields' => [
+                'journal' => [
+                    'unused' => true
+                ],
+            ],
         ];
     }
 
-    static public function editGrid() {
-        return new Schema([
-            'label' => __('Formulaire de saisie', 'docalist-biblio'),
-            'description' => __("Grille de saisie d'un livre.", 'docalist-biblio'),
-            'fields' => [
-                // Type, Genre, Media
-                'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Nature du document'],
-                'genre',
-                'media',
-
-                // Title, OtherTitle, Translation
-                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                'title',
-                'othertitle',
-                'translation',
-
-                // Author, Organisation
-                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Auteurs'],
-                'author',
-                'organisation',
-
-                // Date / Language / Pagination / Format
-                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                'date',
-                'language',
-                'number',
-                'extent',
-                'format',
-
-                // Editor / Collection / Edition
-                'group5' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations éditeur'],
-                'editor',
-                'collection',
-                'edition',
-
-                // Event
-                'group6' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Congrès et diplômes'],
-                'event',
-
-                // Topic / Abstract / Note
-                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                'topic',
-                'content',
-
-                // // Liens et relations
-                'group8' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                'link',
-                'relation',
-
-                // Ref / Owner / Creation / Lastupdate
-                'group9' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                'type',
-                'ref',
-                'owner',
-
-/*
- posttype
- creation
- lastupdate
- password
- parent
- slug
- imported
- errors
- */
-            ]
+    public static function getEditGrid()
+    {
+        return static::buildEditGrid([
+            __('Nature du document', 'docalist-biblio')             => 'genre,media',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,extent,format',
+            __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
+            __('Congrès et diplômes', 'docalist-biblio')            => 'event',
+            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
+            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
     }
+
 /*
     static public function contentGrid() {
         return new Schema([
