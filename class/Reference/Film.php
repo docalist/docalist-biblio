@@ -131,6 +131,12 @@ class Film extends Reference
                         "Synopsis, résumé, critique, avertissement sur le contenu, objectifs pédagogiques...",
                         'docalist-biblio'
                     ),
+//                     'editor' => 'integrated',
+//                     'fields' => [
+//                         'value' => [
+//                             'editor' => 'wpeditor-teeny',
+//                         ],
+//                     ],
                 ],
                 'link' => [
                     'description'   => __(
@@ -152,7 +158,7 @@ class Film extends Reference
             __("Événement à l'origine du film", 'docalist-biblio')  => 'event',
             __('Caractéristiques', 'docalist-biblio')               => 'date,extent,language,edition,format',
             __('Collection et numéros', 'docalist-biblio')          => 'collection,number',
-            __('Ce dont parle le film', 'docalist-biblio')          => 'topic,content',
+            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
             __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
