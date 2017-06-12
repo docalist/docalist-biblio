@@ -193,7 +193,7 @@ class Reference extends Type
                 ],
                 'content' => [
                     'type' => 'Docalist\Biblio\Field\Content*',
-                    'label' => __('Contenu du document', 'docalist-biblio'),
+                    'label' => __('Contenu', 'docalist-biblio'),
                     'description' => __(
                         'Description textuelle du document (résumé, présentation, critique, remarques...)',
                         'docalist-biblio'
