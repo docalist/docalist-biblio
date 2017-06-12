@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,7 +14,6 @@
 namespace Docalist\Biblio\Reference;
 
 use Docalist\Biblio\Reference;
-use Docalist\Schema\Schema;
 
 /**
  * Numéro de périodique.
@@ -28,80 +27,37 @@ use Docalist\Schema\Schema;
  * Principales caractéristiques :
  * - a un parent de type Periodical
  */
-class PeriodicalIssue extends Reference {
-    static public function loadSchema() {
-        // Récupère les champs d'une référence standard
-        $fields = parent::loadSchema()['fields'];
-
-        // Supprime les champs qu'on n'utilise pas
-        unset($fields['genre']);
-        unset($fields['media']);
-        unset($fields['othertitle']);
-        unset($fields['translation']);
-        unset($fields['author']);
-        unset($fields['organisation']);
-        unset($fields['journal']);
-        unset($fields['language']);
-        unset($fields['editor']);
-        unset($fields['collection']);
-
-        // Personnalise les tables, les libellés, les description, etc.
-        // todo
-
-        // Contruit notre schéma
+class PeriodicalIssue extends Reference
+{
+    public static function loadSchema()
+    {
         return [
             'name' => 'periodical-issue',
             'label' => __('Numéro de périodique', 'docalist-biblio'),
             'description' => __('Une parution d\'un périodique.', 'docalist-biblio'),
-            'fields' => $fields,
+            'fields' => [
+                'genre'         => ['unused' => true],
+                'media'         => ['unused' => true],
+                'othertitle'    => ['unused' => true],
+                'translation'   => ['unused' => true],
+                'author'        => ['unused' => true],
+                'organisation'  => ['unused' => true],
+                'journal'       => ['unused' => true],
+                'language'      => ['unused' => true],
+                'editor'        => ['unused' => true],
+                'collection'    => ['unused' => true],
+            ],
         ];
     }
 
-    static public function editGrid() {
-        return new Schema([
-            'label' => __('Formulaire de saisie', 'docalist-biblio'),
-            'description' => __("Grille de saisie d'un numéro de périodique.", 'docalist-biblio'),
-            'fields' => [
-                // Title, OtherTitle, Translation
-                'group1' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Titres'],
-                'number',
-                'title',
-                'event',
-
-                // Date / Language / Pagination / Format
-                'group2' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations bibliographiques'],
-                'date',
-                'edition',
-                'extent',
-                'format',
-
-                // Topic / Abstract / Note
-                'group3' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Indexation et résumé'],
-                'topic',
-                'content',
-
-                // // Liens et relations
-                'group4' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Liens et relations'],
-                'link',
-                'relation',
-
-                // Ref / Owner / Creation / Lastupdate
-                'group7' => ['type' => 'Docalist\Biblio\Type\Group', 'label' => 'Informations de gestion'],
-                'type',
-                'ref',
-                'owner',
-            ]
+    public static function getEditGrid()
+    {
+        return static::buildEditGrid([
+            __('Titres', 'docalist-biblio')                         => 'number,title,event',
+            __('Informations bibliographiques', 'docalist-biblio')  => 'date,edition,extent,format',
+            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
+            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
     }
-/*
- posttype
- creation
- lastupdate
- password
- parent
- slug
- imported
- errors
- */
-
 }
