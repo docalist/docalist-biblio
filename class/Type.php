@@ -32,6 +32,7 @@ use Docalist\Biblio\Type\RefType;
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
 use ReflectionMethod;
+use Docalist\Type\MultiField;
 
 /**
  * Référence documentaire.
@@ -804,8 +805,9 @@ class Type extends Entity
     protected function mapMultiField(array & $document, $field, $value='value')
     {
         if (isset($this->$field)) {
-            foreach($this->$field as $item) { /** @var TypedText $item */
-                $key = isset($item->type) ? ($field . '-' . $item->type()) : $field;
+            foreach($this->$field as $item) { /** @var MultiField $item */
+                $code = $item->getCategoryCode();
+                $key = $code ? ($field . '-' . $code) : $field;
                 $content = $item->$value->getPhpValue();
                 if (isset($document[$key])) {
                     $content = array_merge((array) $document[$key], (array) $content);
