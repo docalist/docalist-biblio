@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,35 +13,33 @@
  */
 namespace Docalist\Biblio\Type;
 
-use InvalidArgumentException;
 use Docalist\Type\MultiField;
 use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
+use InvalidArgumentException;
 
 /**
- * Texte typé : un type composite associant un type provenant d'une table d'autorité
- * à une valeur de type Text.
+ * Texte typé : un type composite associant un champ TableEntry à une valeur de type Text.
  *
- * @property TableEntry $type   Type
- * @property Text       $value  Value
+ * @property TableEntry $type   Type    Type de texte.
+ * @property Text       $value  Value   Texte associé.
  */
 class TypedText extends MultiField
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Texte', 'docalist-core'),
-            'description' => __('Texte et type de texte.', 'docalist-core'),
-            'editor' => 'table',
+            'label' => __('Texte', 'docalist-biblio'),
+            'description' => __('Texte et type de texte.', 'docalist-biblio'),
             'fields' => [
                 'type' => [
                     'type' => 'Docalist\Type\TableEntry',
-                    'label' => __('Type', 'docalist-core'),
+                    'label' => __('Type', 'docalist-biblio'),
                     'table' => '',
                 ],
                 'value' => [
                     'type' => 'Docalist\Type\Text',
-                    'label' => __('Texte', 'docalist-core'),
+                    'label' => __('Texte', 'docalist-biblio'),
                 ],
             ],
         ];
@@ -50,11 +48,17 @@ class TypedText extends MultiField
     public function getAvailableFormats()
     {
         return [
-            'v' => __('Texte', 'docalist-core'),
-            't : v' => __('Type : Texte', 'docalist-core'),
-            't: v' => __('Type: Texte', 'docalist-core'),
-            'v (t)' => __('Texte (Type)', 'docalist-core'),
+            'v'     => __('Valeur', 'docalist-biblio'),
+            'v (t)' => __('Valeur (Type)', 'docalist-biblio'),
+            't : v' => __('Type : Valeur', 'docalist-biblio'),
+            't: v'  => __('Type: Valeur', 'docalist-biblio'),
+            't v'   => __('Type Valeur', 'docalist-biblio'),
         ];
+    }
+
+    public function getDefaultFormat()
+    {
+        return 't: v';
     }
 
     public function getFormattedValue($options = null)
@@ -62,13 +66,23 @@ class TypedText extends MultiField
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
         $type = $this->formatField('type', $options);
-        $text = $this->formatField('value', $options);
+        $value = $this->formatField('value', $options);
 
         switch ($format) {
-            case 'v':       return $text;
-            case 't : v':   return $type . ' : ' . $text; // espace insécable avant le ':'
-            case 't: v':    return $type . ': ' . $text;
-            case 'v (t)':   return empty($type) ? $text : $text . ' ('  . $type . ')'; // espace insécable avant '('
+            case 'v':
+                return $value;
+
+            case 'v (t)': // Espace insécable avant la parenthèse ouvrante
+                return empty($type) ? $value : $value . ' ('  . $type . ')';
+
+            case 't : v': // Espace insécable avant le ':'
+                return empty($type) ? $value : $type . ' : ' . $value;
+
+            case 't: v':
+                return empty($type) ? $value : $type . ': ' . $value;
+
+            case 't v':
+                return empty($type) ? $value : $type . ' ' . $value; // espace insécable
         }
 
         throw new InvalidArgumentException("Invalid TypedText format '$format'");
@@ -84,7 +98,7 @@ class TypedText extends MultiField
             return $empty;
         }
 
-        // Retourne true si on n'a que le type de titre et pas de valeur
+        // Retourne true si on n'a que le type et pas de valeur
         return $this->filterEmptyProperty('value');
     }
 }
