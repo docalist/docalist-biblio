@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -10,7 +10,7 @@
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org/
  * Description: Docalist: bibliographic data manager.
- * Version:     0.13.0
+ * Version:     0.15.0
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Text Domain: docalist-biblio
