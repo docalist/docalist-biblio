@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -34,7 +34,7 @@ class Group extends Any
     // pas de baseSettings() pour un groupe : pas de groupes dans une grille de base
     public function getEditorSettingsForm()
     {
-        $name = isset($this->schema) ? $this->schema->name() : $this->randomId();
+        $name = $this->schema->name();
         $form = new Container($name);
 
         $form->hidden('type')->bind('Docalist\Biblio\Type\Group');
@@ -99,7 +99,7 @@ class Group extends Any
 
     public function getFormatSettingsForm()
     {
-        $name = isset($this->schema) ? $this->schema->name() : $this->randomId();
+        $name = $this->schema->name();
         $form = new Container($name);
 
         $form->input('label')
