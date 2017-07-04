@@ -256,7 +256,7 @@ class ImportPage extends AdminPage {
 
         // Récupère le schéma
         $ref = new $class; /** @var Reference $ref */
-        $schema = $ref->schema();
+        $schema = $ref->getSchema();
 
         $maxlevel = 4;
 
