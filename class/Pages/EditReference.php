@@ -153,7 +153,7 @@ class EditReference
                 $ref = $this->database->createReference($_REQUEST['ref_type'], null, 'edit');
 
                 // Evite le titre wp "brouillon auto"
-                $ref->schema()->hasField('title') && $ref->title = '';
+                $ref->getSchema()->hasField('title') && $ref->title = '';
 
                 // Génère les données du post wp à créer
                 $value = $this->database->encode($ref->getPhpValue());
@@ -250,7 +250,7 @@ class EditReference
 
         // Affiche un texte d'intro si la grille comporte une description
         $schema = $this->database->settings()->types[$ref->type()]->grids['edit'];
-        $description = $schema->description() ?: $ref->schema()->description();
+        $description = $schema->description() ?: $ref->getSchema()->description();
         if ($description && $description !== '-') { // '-' signifie "ne pas hériter"
             add_action('edit_form_after_title', function () use ($description) {
                 printf('<p class="description">%s</p>', $description);
@@ -267,7 +267,7 @@ class EditReference
         // Génère les metabox
         foreach ($this->metaboxes($ref, ! $this->isNewPost) as $form) {
             $id = $form->getAttribute('id');
-            $title = $form->getLabel() ?: $ref->schema()->label(); // wp n'aime pas les metabox sans titre
+            $title = $form->getLabel() ?: $ref->getSchema()->label(); // wp n'aime pas les metabox sans titre
             $description = $form->getDescription();
 
             // Binde le formulaire
