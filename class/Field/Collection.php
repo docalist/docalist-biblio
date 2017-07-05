@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,18 +14,31 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Composite;
+use Docalist\Type\Text;
 
 /**
- * Collection et numéro au sein de la collection.
+ * Collection et numéro au sein de la collection de l'éditeur.
  *
- * @property Docalist\Type\Text $name Name of the collection.
- * @property Docalist\Type\Text $number Number in the collection.
+ * Ce champ composite permet d'indiquer le nom de la collection de l'éditeur à laquelle appartient le document
+ * catalogué et de préciser le numéro de ce document au sein de cette collection.
+ *
+ * Chaque occurence du champ comporte deux sous-champs :
+ * - `name` : nom de la collection,
+ * - `number` : numéro au sein de la collection,
+ *
+ * @property Text   $name   Nom de la collection.
+ * @property Text   $number Numéro au sein de la collection.
  */
-class Collection extends Composite {
-    static public function loadSchema() {
-        // @formatter:off
+class Collection extends Composite
+{
+    public static function loadSchema()
+    {
         return [
-            'editor' => 'table',
+            'label' => __('Collection', 'docalist-biblio'),
+            'description' => __(
+                "Collection et numéro au sein de la collection de l'éditeur.",
+                'docalist-biblio'
+            ),
             'fields' => [
                 'name' => [
                     'type' => 'Docalist\Type\Text',
@@ -35,26 +48,54 @@ class Collection extends Composite {
                 'number' => [
                     'type' => 'Docalist\Type\Text',
                     'label' => __('Numéro', 'docalist-biblio'),
-                    'description' => __('Numéro au sein de la collection ou de la sous-collection.', 'docalist-biblio'),
+                    'description' => __(
+                        'Numéro au sein de la collection ou de la sous-collection.',
+                        'docalist-biblio'
+                    ),
                 ]
             ]
         ];
-        // @formatter:on
     }
-/*
-    public function setupMapping(MappingBuilder $mapping)
+
+    public function getAvailableFormats()
     {
-        $mapping->addField('collection')->text();
+        return [
+            'n (#)' => __('Collection (numéro)', 'docalist-biblio'),
+            'n : #' => __('Collection : numéro', 'docalist-biblio'),
+            'n: #'  => __('Collection: numéro', 'docalist-biblio'),
+            'n;#'   => __('Collection;numéro', 'docalist-biblio'),
+            'n #'   => __('Collection numéro', 'docalist-biblio'),
+            'n'     => __('collection', 'docalist-biblio'),
+        ];
     }
 
-    public function mapData(array & $document) {
-        $document['collection'][] = $this->name();
-    }
-*/
-    public function format() {
-        $h = $this->name();
-        isset($this->number) && $h .= ' (' . $this->number() . ')';
+    public function getFormattedValue($options = null)
+    {
+        $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-        return $h;
+        $name = $this->formatField('name', $options);
+        $number = $this->formatField('number', $options);
+
+        switch ($format) {
+            case 'n (#)': // Espace insécable avant la parenthèse ouvrante
+                return empty($number) ? $name : ($name . ' ('  . $number . ')');
+
+            case 'n : #': // Espace insécable avant le signe deux-points
+                return empty($number) ? $name : ($name . ' : '  . $number);
+
+            case 'n: #':
+                return empty($number) ? $name : ($name . ': '  . $number);
+
+            case 'n;#':
+                return empty($number) ? $name : ($name . ';'  . $number);
+
+            case 'n #': // Espace insécable
+                return empty($number) ? $name : ($name . ' '  . $number);
+
+            case 'n':
+                return $name;
+        }
+
+        throw new InvalidArgumentException("Invalid Collection format '$format'");
     }
 }
