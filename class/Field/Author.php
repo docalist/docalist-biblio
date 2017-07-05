@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,18 +14,40 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
+use Docalist\Type\Text;
+use Docalist\Type\TableEntry;
 use InvalidArgumentException;
 
 /**
  * Auteur personne physique.
  *
- * @property Docalist\Type\Text $name
- * @property Docalist\Type\Text $firstname
- * @property Docalist\Type\TableEntry $role
+ * Ce champ permet de saisir les noms et prénoms des personnes qui ont contribué à l'élaboration du document catalogué.
+ *
+ * On peut également indiquer pour chaque personne une étiquette de rôle qui précise la nature de sa contribution
+ * (traducteur, auteur de la préface, illustrations...)
+ *
+ * Chaque auteur comporte trois sous-champs :
+ * - `name` : nom de la personne,
+ * - `firstname` : prénom ou initiale de la personne,
+ * - `role` : étiquette de rôle éventuelle.
+ *
+ * Le sous-champ role est associé à une table d'autorité qui contient les étiquettes de rôles disponibles (par
+ * défaut, il s'agit de la table "marc21 relators").
+ *
+ * @property Text       $name       Nom de la personne.
+ * @property Text       $firstname  Prénom.
+ * @property TableEntry $role       Rôle.
  */
-class Author extends MultiField {
-    static public function loadSchema() {
+class Author extends MultiField
+{
+    public static function loadSchema()
+    {
         return [
+            'label' => __('Auteurs', 'docalist-biblio'),
+            'description' => __(
+                "Personnes qui ont contribué au document (auteur, coordonnateur, réalisateur...)",
+                'docalist-biblio'
+            ),
             'fields' => [
                 'name' => [
                     'type' => 'Docalist\Type\Text',
@@ -54,30 +76,21 @@ class Author extends MultiField {
 
     /**
      * Retourne l'auteur "et al."
+     *
      * @return Author
      */
-    public static function etal() {
+    public static function etal()
+    {
         return new self(['name' => 'et al.']);
     }
-/*
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('author')->literal()->filter()->suggest();
-    }
 
-    public function mapData(array & $document)
-    {
-        echo __METHOD__, '<br />';
-        $document['author'][] = $this->name() . '¤' . $this->firstname();
-    }
-*/
     public function getAvailableFormats()
     {
         return [
-            'f n (r)'   => 'Charlie Chaplin (Acteur)',
-            'f n'       => 'Charlie Chaplin',
-            'n (f) / r' => 'Chaplin (Charlie) / Acteur',
-            'n (f)'     => 'Chaplin (Charlie) / Acteur',
+            'f n (r)'   => __('Charlie Chaplin (Acteur)', 'docalist-biblio'),
+            'f n'       => __('Charlie Chaplin', 'docalist-biblio'),
+            'n (f) / r' => __('Chaplin (Charlie) / Acteur', 'docalist-biblio'),
+            'n (f)'     => __('Chaplin (Charlie) / Acteur', 'docalist-biblio'),
         ];
     }
 
@@ -92,19 +105,23 @@ class Author extends MultiField {
                 isset($this->name) && $t[] = $this->formatField('name', $options);
                 isset($this->role) && $t[] =  '(' . $this->formatField('role', $options) . ')';
                 break;
+
             case 'f n':
-                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);;
+                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);
                 isset($this->name) && $t[] = $this->formatField('name', $options);
                 break;
+
             case 'n (f) / r':
                 isset($this->name) && $t[] = $this->formatField('name', $options);
                 isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
-                isset($this->role) && $t[] =  '/ ' . $this->formatField('role', $options); // espace insécable après le slash
+                isset($this->role) && $t[] =  '/ ' . $this->formatField('role', $options); // insécable après le slash
                 break;
+
             case 'n (f)':
                 isset($this->name) && $t[] = $this->formatField('name', $options);
                 isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
                 break;
+
             default:
                 throw new InvalidArgumentException("Invalid Author format '$format'");
         }
@@ -112,7 +129,8 @@ class Author extends MultiField {
         return implode(' ', $t); // espace insécable
     }
 
-    public function filterEmpty($strict = true) {
+    public function filterEmpty($strict = true)
+    {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();
 
