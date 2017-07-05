@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,53 +13,33 @@
  */
 namespace Docalist\Biblio\Type;
 
-use InvalidArgumentException;
+use Docalist\Type\TableEntry;
+use Docalist\Type\FuzzyDate;
 
+/**
+ * Date typée : un type composite associant un champ TableEntry à une valeur de type FuzzyDate.
+ *
+ * @property TableEntry $type   Type de date.
+ * @property FuzzyDate  $value  Date associée.
+ */
 class TypedFuzzyDate extends TypedText
 {
-    static public function loadSchema() {
+    public static function loadSchema()
+    {
         return [
-            'label' => __('Date', 'docalist-core'),
-            'description' => __('Date et type de date.', 'docalist-core'),
+            'label' => __('Date', 'docalist-biblio'),
+            'description' => __('Date et type de date.', 'docalist-biblio'),
             'fields' => [
                 'type' => [
                     'table' => 'table:dates',
-                    'description' => __('Type de date', 'docalist-core'),
+                    'description' => __('Type de date', 'docalist-biblio'),
                 ],
                 'value' => [
                     'type' => 'Docalist\Type\FuzzyDate',
-                    'label' => __('Date', 'docalist-core'),
-                    'description' => __('Date au format AAAAMMJJ', 'docalist-core'),
+                    'label' => __('Date', 'docalist-biblio'),
+                    'description' => __('Date au format AAAAMMJJ', 'docalist-biblio'),
                 ]
             ]
         ];
-    }
-
-    public function getAvailableFormats()
-    {
-        return [
-            'date'          => 'Date uniquement',
-            'date (type)'   => 'Date (type)',
-        ];
-    }
-
-    public function getFormattedValue($options = null)
-    {
-        $format = $this->getOption('format', $options, $this->getDefaultFormat());
-        $date = $this->formatField('value', $options);
-        switch ($format) {
-            case 'date':
-            case 'month/year': // format dispo avant, à virer
-            case 'year': // format dispo avant, à virer
-                return $date;
-
-            case 'date (type)':
-                if (isset($this->type)) {
-                    $date && $date .= ' '; // espace insécable avant '('
-                    $date .= '(' . $this->formatField('type', $options) . ')';
-                }
-                return $date;
-        }
-        throw new InvalidArgumentException("Invalid Date format '$format'");
     }
 }
