@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,34 +13,34 @@
  */
 namespace Docalist\Biblio\Type;
 
-use InvalidArgumentException;
+use Docalist\Biblio\Type\TypedText;
 use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
 
 /**
- * Nombre typé : un type composite associant un type provenant d'une table d'autorité
- * de type number à une valeur de type texte.
- * La table associée contient une colonne format qui indique comment formatter les
- * entrées.
+ * Numéro typé : un type composite associant un type provenant d'une table d'autorité de type number à une
+ * valeur de type texte : ISBN, DOI, Numéro de licence, numéro de sécu...
  *
- * @property TableEntry $type   Type
- * @property Text       $value  Value
+ * La table associée contient une colonne format qui indique comment formatter les entrées.
+ *
+ * @property TableEntry $type   Type    Type de numéro.
+ * @property Text       $value  Value   Numéro associé.
  */
 class TypedNumber extends TypedText
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Numéro', 'docalist-core'),
-            'description' => __('Numéro et type de numéro.', 'docalist-core'),
+            'label' => __('Numéro', 'docalist-biblio'),
+            'description' => __('Numéro et type de numéro.', 'docalist-biblio'),
             'fields' => [
                 'type' => [
                     'table' => 'table:numbers',
-                    'description' => __('Type de numéro', 'docalist-core'),
+                    'description' => __('Type de numéro', 'docalist-biblio'),
                 ],
                 'value' => [
-                    'label' => __('Numéro', 'docalist-core'),
-                    'description' => __('Numéro dans le format indiqué par le type.', 'docalist-core'),
+                    'label' => __('Numéro', 'docalist-biblio'),
+                    'description' => __('Numéro dans le format indiqué par le type.', 'docalist-biblio'),
                 ],
             ],
         ];
@@ -49,32 +49,27 @@ class TypedNumber extends TypedText
     public function getAvailableFormats()
     {
         return [
-            'format' => __("Format indiqué dans la table d'autorité", 'docalist-core'),
-            'label' => __('Libellé indiqué dans la table suivi du numéro', 'docalist-core'),
-            'v' => __('Numéro uniquement, sans aucune mention', 'docalist-core'),
-            'v (t)' => __('Numéro suivi du type entre parenthèses', 'docalist-core'),
-        ];
+            'format' => __("Format indiqué dans la table d'autorité", 'docalist-biblio'),
+        ] + parent::getAvailableFormats();
     }
 
     public function getFormattedValue($options = null)
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
-        $type = $this->formatField('type', $options);
-        $number = $this->formatField('value', $options);
-
         switch ($format) {
             case 'format':
-                $format = $this->type->getEntry('format') ?: $this->type() . ' %s';
+                // Récupère le format indiqué dans la table
+                $format = $this->type->getEntry('format') ?: $this->type->getPhpValue() . ' %s';
 
-                return trim(sprintf($format, $number));
+                // Si on n'a pas de format, on en construit un avec le libellé qui figure dans la table
+                empty($format) && $format = $this->type->getEntryLabel() . ' %s';
 
-            // mal nommé, plutôt 't v'
-            case 'label':   return trim($type . ' ' . $number); // insécable
-            case 'v':       return $number;
-            case 'v (t)':   return empty($type) ? $number : $number . ' ('  . $type . ')'; // espace insécable avant '('
+                // Formatte le résultat
+                return trim(sprintf($format, $this->formatField('value', $options)));
         }
 
-        throw new InvalidArgumentException("Invalid Number format '$format'");
+        // Laisse la classe parent gérer les autres formats d'affichage disponibles
+        return parent::getFormattedValue($options);
     }
 }
