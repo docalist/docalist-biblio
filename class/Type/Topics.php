@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -24,62 +24,32 @@ class Topics extends Collection
 {
     protected static $type = 'Docalist\Biblio\Type\Topic';
 
-// inutile : seul le schéma des éléments de la collection est pris en compte
-//     public static function loadSchema()
-//     {
-//         return [
-//             'key' => 'type',
-//             'table' => 'table:topics',
-//             'editor' => 'table',
-//         ];
-//     }
-
-    public function offsetSet($offset, $value)
-    {
-        // Si value n'est pas du bon type, on l'instancie
-        if (! $value instanceof Topic) { /** @var Topic $value */
-            $value = new Topic($value, $this->schema);
-        }
-        $value->setParent($this);
-
-        parent::offsetSet($offset, $value);
-    }
-
     public function getEditorForm($options = null)
     {
-        return new TopicsInput($this->schema->name(), $this->schema->table());
+        return new TopicsInput($this->schema->name(), $this->schema->getField('type')->table());
     }
 
-// TODO : à porter vers nouveau système + choix de la table dans les settings
-//     public function map(array & $document) {
-//         $tables = docalist('table-manager'); /** @var TableManager $tables */
+    /**
+     * Recherche le code de tous les types de topics qui sont associés à une table de type 'thesaurus'.
+     *
+     * La méthode regarde la table des topics indiquées dans le schéma du sous-champ `type` et retourne tous les
+     * codes de topic qui sont associés à une table de lookup de type thesaurus.
+     *
+     * @return string[] Un tableau de la forme table => topic (les clés indiquent la table utilisée).
+     */
+    public function getThesaurusTopics()
+    {
+        // Ouvre la table des topics indiquée dans le schéma du champ 'type'
+        list(, $name) = explode(':', $this->schema->getField('type')->table());
+        $table = docalist('table-manager')->get($name);
 
-//         foreach($this->value as $topic) { /** @var Topic $topic */
+        // Recherche toutes les entrées qui sont associées à une table de type 'thesaurus'
+        $topics = [];
+        foreach ($table->search('code,source', 'source LIKE "thesaurus:%"') as $code => $source) {
+            $topics[substr($source, 10)] = $code; // supprime le préfixe 'thesaurus:'
+        }
 
-//             // Récupère la liste des termes
-//             $terms = $topic->term();
-
-//             // Récupère la table qui contient la liste des vocabulaires
-//             $tableName = explode(':', $this->schema->table())[1];
-//             $table = $tables->get($tableName); /** @var TableInterface $table */
-
-//             // Détermine la source qui correspond au type du topic
-//             $source = $table->find('source', 'code='. $table->quote($topic->type()));
-//             if ($source !== false) { // type qu'on n'a pas dans la table topics
-//                 list($type, $tableName) = explode(':', $source);
-
-//                 // Si la source est une table, on traduit les termes
-//                 if ($type === 'table' || $type === 'thesaurus') {
-//                     $table = $tables->get($tableName); /** @var TableInterface $table */
-//                     foreach ($terms as & $term) {
-//                         $result = $table->find('label', 'code=' . $table->quote($term));
-//                         $result !== false && $term = $result;
-//                     }
-//                 }
-//                 // Sinon, on indexe les codes
-//             }
-
-//             $document['topic.' . $topic->type()][] = $terms;
-//         }
-
+        // Ok
+        return $topics;
+    }
 }
