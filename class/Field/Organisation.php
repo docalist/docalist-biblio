@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,21 +14,47 @@
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\MultiField;
+use Docalist\Type\Text;
+use Docalist\Type\TableEntry;
 use InvalidArgumentException;
 
 /**
- * Organisme.
+ * Organisme auteur.
  *
- * @property Docalist\Type\Text $name
- * @property Docalist\Type\Text $acronym
- * @property Docalist\Type\Text $city
- * @property Docalist\Type\TableEntry $country
- * @property Docalist\Type\TableEntry $role
+ * Ce champ permet de saisir les organismes qui ont contribué à l'élaboration du document catalogué.
+ *
+ * On peut également indiquer pour chaque organisme une étiquette de rôle qui précise la nature de sa contribution
+ * (organisme auteur, commanditaire, financeur...)
+ *
+ * Chaque organisme comporte cinq sous-champs :
+ * - `name` : nom de l'organisme,
+ * - `acronym` : sigle ou acronym éventuel,
+ * - `city` : ville,
+ * - `country` : pays,
+ * - `role` : étiquette de rôle éventuelle.
+ *
+ * Le sous-champ `country` est associé à une table d'autorité qui contient les codes pays disponibles
+ * (par défaut, il s'agit de la table des codes ISO à trois lettres).
+ *
+ * Le sous-champ `role` est associé à une table d'autorité qui contient les étiquettes de rôles disponibles
+ * (par défaut, il s'agit de la table "marc21 relators").
+ *
+ * @property Text       $name       Nom de l'organisme.
+ * @property Text       $acronym    Sigle ou acronyme.
+ * @property Text       $city       Ville.
+ * @property TableEntry $country    Pays.
+ * @property TableEntry $role       Rôle.
  */
-class Organisation extends MultiField {
-    static public function loadSchema() {
-        // @formatter:off
+class Organisation extends MultiField
+{
+    public static function loadSchema()
+    {
         return [
+            'label' => __('Organismes', 'docalist-biblio'),
+            'description' => __(
+                "Organismes qui ont contribué au document (organisme auteur, commanditaire, financeur...)",
+                'docalist-biblio'
+            ),
             'fields' => [
                 'name' => [
                     'type' => 'Docalist\Type\Text',
@@ -59,23 +85,13 @@ class Organisation extends MultiField {
                 ]
             ]
         ];
-        // @formatter:on
     }
 
     protected function getCategoryField()
     {
         return 'role';
     }
-/*
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('organisation')->text()->filter()->suggest(); // stemming sur les noms d'organismes
-    }
 
-    public function mapData(array & $document) {
-        $document['organisation'][] = $this->name() . '¤' . $this->acronym() . '¤' . $this->city() . '¤' . $this->country();
-    }
-*/
     public function getAvailableFormats()
     {
         return [
@@ -120,7 +136,8 @@ class Organisation extends MultiField {
         throw new InvalidArgumentException("Invalid Organization format '$format'");
     }
 
-    public function filterEmpty($strict = true) {
+    public function filterEmpty($strict = true)
+    {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();
 
