@@ -33,6 +33,8 @@ use Docalist\Schema\Schema;
  */
 $urlfull = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $gridname));
 $urldiff = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $gridname, true));
+echo '<pre>', htmlspecialchars(json_encode($grid, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)), '</pre>';
+die();
 ?>
 <div class="wrap">
     <h1><?= sprintf(__('Code PHP de la grille "%s" pour le type "%s"', 'docalist-biblio'), $gridname, $typeindex) ?></h1>
@@ -51,10 +53,11 @@ $urldiff = esc_url($this->url('GridToPhp', $dbindex, $typeindex, $gridname, true
         <?php endif ?>
     </p>
 <?php
+
 $properties = $grid->value();
 $fields = $properties['fields'];
 unset($properties['fields']);
-
+//var_dump($base);die();
 $compact = false; // true = propriétés sur une seule ligne, false = une ligne par propriété
 echo '<textarea class="large-text code" rows="35" readonly style="white-space: pre; word-wrap: normal; overflow-x: scroll">';
 echo "return new Schema([\n";
