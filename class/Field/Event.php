@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,27 +13,34 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\Text;
 use Docalist\Type\Composite;
-use Docalist\Forms\Table;
+use Docalist\Type\Text;
+use Docalist\Type\FuzzyDate;
 use InvalidArgumentException;
 
 /**
- * Description d'un événement (colloque, réunion, soutenance, etc.)
+ * Description de l'événement à l'origine du document cataogué (colloque, réunion, soutenance, etc.)
  *
- * @property Text $title
- * @property Text $date
- * @property Text $place
- * @property Text $number
+ * @property Text       $title      Nom de l'événement.
+ * @property FuzzyDate  $date       Date de l'évènement.
+ * @property Text       $place      Lieu de l'événement.
+ * @property Text       $number     Numéro éventuel associé à l'évènement.
  */
-class Event extends Composite {
-    static public function loadSchema() {
+class Event extends Composite
+{
+    public static function loadSchema()
+    {
         return [
+            'label' => __('Événement', 'docalist-biblio'),
+            'description' => __(
+                "Événement à l'origine du document (congrès, colloque, manifestation, soutenance de thèse...)",
+                'docalist-biblio'
+            ),
             'fields' => [
                 'title' => [
                     'type' => 'Docalist\Type\Text',
-                    'label' => __('Titre', 'docalist-biblio'),
-                    'description' => __("Titre du congrès, nom de la réunion, etc.", 'docalist-biblio'),
+                    'label' => __('Nom', 'docalist-biblio'),
+                    'description' => __("Nom du congrès, de la réunion, etc.", 'docalist-biblio'),
                 ],
                 'date' => [
                     'type' => 'Docalist\Type\FuzzyDate',
@@ -54,16 +61,6 @@ class Event extends Composite {
         ];
     }
 
-    public function getEditorForm($options = null)
-    {
-        $field = new Table($this->schema->name());
-        $field->input('title')->addClass('event-title');
-        $field->input('date')->addClass('event-date');
-        $field->input('place')->addClass('event-place');
-        $field->input('number')->addClass('event-number');
-
-        return $field;
-    }
 /*
     public function setupMapping(MappingBuilder $mapping)
     {
@@ -77,7 +74,7 @@ class Event extends Composite {
     public function getAvailableFormats()
     {
         return [
-            'default'   => __("Format par défaut", 'docalist-biblio'),
+            't (n), p, d' => __('Nom (numéro), lieu, date', 'docalist-biblio'),
         ];
     }
 
@@ -85,16 +82,29 @@ class Event extends Composite {
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
         switch ($format) {
-            case 'default':
+            case 't (n), p, d':
                 $h = $this->formatField('title', $options);
                 isset($this->number) && $h .= ' (' . $this->formatField('number', $options) . ')';
                 isset($this->place) && $h .= ', ' . $this->formatField('place', $options);
                 isset($this->date) && $h .= ', ' . $this->formatField('date', $options);
 
                 return $h;
-
         }
 
         throw new InvalidArgumentException("Invalid Event format '$format'");
+    }
+
+    public function filterEmpty($strict = true)
+    {
+        // Supprime les éléments vides
+        $empty = parent::filterEmpty();
+
+        // Si tout est vide ou si on est en mode strict, terminé
+        if ($empty || $strict) {
+            return $empty;
+        }
+
+        // Retourne true si on n'a de titre
+        return $this->filterEmptyProperty('title');
     }
 }
