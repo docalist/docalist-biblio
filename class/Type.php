@@ -33,6 +33,7 @@ use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
 use ReflectionMethod;
 use Docalist\Type\MultiField;
+use Closure;
 
 /**
  * Référence documentaire.
@@ -503,8 +504,7 @@ class Type extends Entity
 
     public function getSettingsForm()
     {
-        $name = isset($this->schema) ? $this->schema->name() : $this->randomId();
-
+        $name = $this->schema->name();
         $form = new Container($name);
 
         $form->hidden('name')->addClass('name');
@@ -528,8 +528,7 @@ class Type extends Entity
 
     public function getEditorSettingsForm()
     {
-        $name = isset($this->schema) ? $this->schema->name() : $this->randomId();
-
+        $name = $this->schema->name();
         $form = new Container($name);
 
         $form->hidden('name')->addClass('name');
@@ -564,8 +563,7 @@ class Type extends Entity
 
     public function getFormatSettingsForm()
     {
-        $name = isset($this->schema) ? $this->schema->name() : $this->randomId();
-
+        $name = $this->schema->name();
         $form = new Container($name);
 
         $form->hidden('name')->addClass('name');
@@ -800,15 +798,18 @@ class Type extends Entity
      *
      * @param array $document Document ElasticSearch à modifier.
      * @param string $field Nom du champ à mapper.
-     * @param string $value Nom du sous-champ contenant la valeur à indexer (value par défaut).
+     * @param string|Closure $value Nom du sous-champ contenant la valeur à indexer ('value' par défaut) ou
+     * une fonction chargée de retourner le contenu à indexer.
+     * Exemple : function(TypedText $item) { return $item->text->getPhpValue(); }
      */
-    protected function mapMultiField(array & $document, $field, $value='value')
+    protected function mapMultiField(array & $document, $field, $value = 'value')
     {
         if (isset($this->$field)) {
             foreach($this->$field as $item) { /** @var MultiField $item */
                 $code = $item->getCategoryCode();
                 $key = $code ? ($field . '-' . $code) : $field;
-                $content = $item->$value->getPhpValue();
+                //$content = $item->$value->getPhpValue();
+                $content = is_string($value) ? $item->$value->getPhpValue() : $value($item);
                 if (isset($document[$key])) {
                     $content = array_merge((array) $document[$key], (array) $content);
                     $content = array_values(array_unique($content));
@@ -823,21 +824,14 @@ class Type extends Entity
      * Recherche le code de tous les topics qui sont associés à une table de type 'thesaurus'.
      *
      * @return string[] Un tableau de la forme table => topic (les clés indiquent la table utilisée).
+     *
+     * @deprecated Utiliser Topics::getThesaurusTopics() à la place.
      */
     protected function getThesaurusTopics()
     {
-        // Ouvre la table des topics indiquée dans le schéma du champ 'topic'
-        list(, $name) = explode(':', $this->topic->schema()->table());
-        $table = docalist('table-manager')->get($name);
+        trigger_error(__METHOD__ . ' is deprecated, use $this->topic->getThesaurusTopics()');
 
-        // Recherche toutes les entrées qui sont associées à une table de type 'thesaurus'
-        $topics = [];
-        foreach($table->search('code,source', 'source LIKE "thesaurus:%"') as $code => $source) {
-            $topics[substr($source, 10)] = $code; // supprime le préfixe 'thesaurus:'
-        }
-
-        // Ok
-        return $topics;
+        return $this->topic->getThesaurusTopics();
     }
 
     /**
