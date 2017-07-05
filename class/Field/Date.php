@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,81 +13,30 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\MultiField;
-use InvalidArgumentException;
+use Docalist\Biblio\Type\TypedFuzzyDate;
 
 /**
- * Date.
+ * Dates du document.
  *
- * @property Docalist\Type\TableEntry $type
- * @property Docalist\Type\Text $value
+ * Ce champ permet d'indiquer les dates associées au document catalogué (date de publication, date
+ * d'enregistrement...)
+ *
+ * Chaque date comporte deux sous-champs :
+ * - `type` : type de date,
+ * - `value` : date.
+ *
+ * Le sous-champ type est associé à une table d'autorité qui indique les types de dates ("table:dates" par défaut).
  */
-class Date extends MultiField {
-    static public function loadSchema() {
-        return [
-            'fields' => [
-                'type' => [
-                    'type' => 'Docalist\Type\TableEntry',
-                    'table' => 'table:dates',
-                    'label' => __('Type de date', 'docalist-biblio'),
-    //                 'description' => __('Date', 'docalist-biblio'),
-                ],
-                'value' => [
-                    'type' => 'Docalist\Type\FuzzyDate',
-                    'label' => __('Date', 'docalist-biblio'),
-                ]
-            ]
-        ];
-    }
-/*
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('date')->date();
-        $mapping->addTemplate('date.*')->copyFrom('date')->copyDataTo('date');
-    }
-
-    public function mapData(array & $document) {
-        $document['date.' . $this->type()][] = $this->__get('value')->value();
-    }
-*/
-    public function getAvailableFormats()
+class Date extends TypedFuzzyDate
+{
+    public static function loadSchema()
     {
         return [
-            'date'          => 'Date uniquement',
-            'date (type)'   => 'Date (type)',
+            'description' => __(
+                "Dates associées au document catalogué : date de publication, date d'enregistrement...",
+                'docalist-biblio'
+            ),
+            // les sous-champs type et value sont repris tels quels de TypedFuzzyDate.
         ];
-    }
-
-    public function getFormattedValue($options = null)
-    {
-        $format = $this->getOption('format', $options, $this->getDefaultFormat());
-        $date = $this->formatField('value', $options);
-        switch ($format) {
-            case 'date':
-            case 'month/year': // format dispo avant, à virer
-            case 'year': // format dispo avant, à virer
-                return $date;
-
-            case 'date (type)':
-                if (isset($this->type)) {
-                    $date && $date .= ' '; // espace insécable avant '('
-                    $date .= '(' . $this->formatField('type', $options) . ')';
-                }
-                return $date;
-        }
-        throw new InvalidArgumentException("Invalid Date format '$format'");
-    }
-
-    public function filterEmpty($strict = true) {
-        // Supprime les éléments vides
-        $empty = parent::filterEmpty();
-
-        // Si tout est vide ou si on est en mode strict, terminé
-        if ($empty || $strict) {
-            return $empty;
-        }
-
-        // Retourne true si on n'a que le type et pas de date
-        return $this->filterEmptyProperty('value');
     }
 }
