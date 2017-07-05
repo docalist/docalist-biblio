@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,68 +13,36 @@
  */
 namespace Docalist\Biblio\Type;
 
-use InvalidArgumentException;
+use Docalist\Biblio\Type\TypedNumber;
 use Docalist\Type\TableEntry;
 use Docalist\Type\Decimal;
 
 /**
- * Nombre typé : un type composite associant un type provenant d'une table d'autorité
- * de type number à une valeur de type texte.
- * La table associée contient une colonne format qui indique comment formatter les
- * entrées.
+ * Nombre typé : un type composite associant un type provenant d'une table d'autorité de type number à une valeur
+ * numérique de de type Decimal : chiffres clés, données chiffrées, caractéristiques...
  *
- * @property TableEntry $type   Type
- * @property Decimal    $value  Value
+ * La table associée contient une colonne format qui indique comment formatter les entrées.
+ *
+ * @property TableEntry $type   Type    Type de chiffre clé.
+ * @property Decimal    $value  Value   Nombre associé.
  */
-class TypedDecimal extends TypedText
+class TypedDecimal extends TypedNumber
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Chiffres clés', 'docalist-core'),
-            'description' => __('Nombres et chiffres clés.', 'docalist-core'),
+            'label' => __('Chiffres clés', 'docalist-biblio'),
+            'description' => __('Chiffres clés, nombres, caractéristiques...', 'docalist-biblio'),
             'fields' => [
                 'type' => [
-                    'description' => __('Type de chiffre.', 'docalist-core'),
+                    'description' => __('Type de chiffre clé.', 'docalist-biblio'),
                 ],
                 'value' => [
                     'type' => 'Docalist\Type\Decimal',
-                    'label' => __('Nombre', 'docalist-core'),
-                    'description' => __('Valeur.', 'docalist-core'),
+                    'label' => __('Nombre', 'docalist-biblio'),
+                    'description' => __('Nombre associé.', 'docalist-biblio'),
                 ],
             ],
         ];
-    }
-
-    public function getAvailableFormats()
-    {
-        return [
-            'format' => __("Format indiqué dans la table d'autorité", 'docalist-core'),
-            'label' => __('Libellé indiqué dans la table suivi du numéro', 'docalist-core'),
-            'v' => __('Nombre uniquement, sans aucune mention', 'docalist-core'),
-            'v (t)' => __('Nombre suivi du type entre parenthèses', 'docalist-core'),
-        ];
-    }
-
-    public function getFormattedValue($options = null)
-    {
-        $format = $this->getOption('format', $options, $this->getDefaultFormat());
-
-        $type = $this->formatField('type', $options);
-        $number = $this->formatField('value', $options);
-
-        switch ($format) {
-            case 'format':
-                $format = $this->type->getEntry('format') ?: $this->type() . ' %s';
-
-                return trim(sprintf($format, $number));
-
-            // mal nommé, plutôt 't v'
-            case 'label':   return trim($type . ' ' . $number); // insécable
-            case 'v':       return $number;
-            case 'v (t)':   return empty($type) ? $number : $number . ' ('  . $type . ')'; // espace insécable avant '('
-        }
-
-        throw new InvalidArgumentException("Invalid Number format '$format'");
     }
 }
