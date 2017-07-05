@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,81 +13,42 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\MultiField;
-use InvalidArgumentException;
+use Docalist\Biblio\Type\TypedText;
+use Docalist\Type\TableEntry;
+use Docalist\Type\Text;
 
 /**
- * Autre titre.
+ * Autre titre du document.
  *
- * @property Docalist\Type\TableEntry $type
- * @property Docalist\Type\Text $value
+ * Ce champ permet de cataloguer d'autres titres associés au document (différents du titre exact catalogué dans le
+ * champ title) : un complément de titre, un sous-titre, le titre de la série, un sigle ou un titre abrégé, l'ancien
+ * titre, etc.
  *
+ * Chaque occurence comporte deux sous-champs :
+ * - `type` : type de titre,
+ * - `value` : titre.
+ *
+ * Le sous-champ type est associé à une table d'autorité qui indique les valeurs possibles ("table:titles" par défaut).
+ *
+ * @property TableEntry $type   Type de titre.
+ * @property Text       $value  Autre titre.
  */
-class OtherTitle extends MultiField {
-    static public function loadSchema() {
-        // @formatter:off
+class OtherTitle extends TypedText
+{
+    public static function loadSchema()
+    {
         return [
+            'label' => __('Autre titre', 'docalist-biblio'),
+            'description' => __('Autre titre du document : titre du dossier, ancien titre...', 'docalist-biblio'),
             'fields' => [
                 'type' => [
-                    'type' => 'Docalist\Type\TableEntry',
                     'table' => 'table:titles',
                     'label' => __('Type de titre', 'docalist-biblio'),
                 ],
                 'value' => [
-                    'type' => 'Docalist\Type\Text',
                     'label' => __('Autre titre', 'docalist-biblio'),
                 ]
             ]
         ];
-        // @formatter:on
-    }
-/*
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('othertitle')->text();
-    }
-
-    public function mapData(array & $document) {
-        $document['othertitle'][] = $this->__get('value')->value();
-    }
-*/
-    public function getAvailableFormats()
-    {
-        return [
-            'v' => __('Titre', 'docalist-biblio'),
-            't : v' => __('Type : Titre', 'docalist-biblio'),
-            't: v' => __('Type: Titre', 'docalist-biblio'),
-            'v (t)' => __('Titre (Type)', 'docalist-biblio'),
-        ];
-    }
-
-    public function getFormattedValue($options = null)
-    {
-        $format = $this->getOption('format', $options, $this->getDefaultFormat());
-
-        $type = $this->formatField('type', $options);
-        $title = $this->formatField('value', $options);
-
-        switch ($format) {
-            case 'v':       return $title;
-            case 't : v':   return $type . ' : ' . $title; // espace insécable avant le ':'
-            case 't: v':    return $type . ': ' . $title;
-            case 'v (t)':   return empty($type) ? $title : $title . ' ('  . $type . ')'; // espace insécable avant '('
-        }
-
-        throw new InvalidArgumentException("Invalid OtherTitle format '$format'");
-    }
-
-    public function filterEmpty($strict = true) {
-        // Supprime les éléments vides
-        $empty = parent::filterEmpty();
-
-        // Si tout est vide ou si on est en mode strict, terminé
-        if ($empty || $strict) {
-            return $empty;
-        }
-
-        // Retourne true si on a que le type de titre et pas de valeur
-        return $this->filterEmptyProperty('value');
     }
 }
