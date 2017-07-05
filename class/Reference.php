@@ -13,11 +13,64 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Biblio\Field\Genre;
+use Docalist\Biblio\Field\Media;
+use Docalist\Biblio\Field\Title;
+use Docalist\Biblio\Field\OtherTitle;
+use Docalist\Biblio\Field\Translation;
+use Docalist\Biblio\Field\Author;
+use Docalist\Biblio\Field\Organisation;
+use Docalist\Biblio\Field\Date;
+use Docalist\Biblio\Field\Journal;
+use Docalist\Biblio\Field\Number;
+use Docalist\Biblio\Field\Language;
+use Docalist\Biblio\Field\Extent;
+use Docalist\Biblio\Field\Format;
+use Docalist\Biblio\Field\Editor;
+use Docalist\Biblio\Field\Collection;
+use Docalist\Biblio\Field\Edition;
+use Docalist\Biblio\Field\Event;
+use Docalist\Biblio\Type\Topics;
+use Docalist\Biblio\Field\Content;
+use Docalist\Biblio\Type\Link;
+use Docalist\Biblio\Field\Relation;
+use Docalist\Biblio\Field\Owner;
+use Docalist\Biblio\Field\Imported;
+use Docalist\Biblio\Field\Error;
+
+use Docalist\Search\MappingBuilder;
+
 /**
  * Une référence documentaire.
  *
  * Le schéma d'une référence est fixe : les classes descendantes (Article, Book, ...) ne doivent pas créer
  * de nouveaux champs, elles peuvent juste paramétrer les champs existant ou les marquer "unused".
+ *
+ * @property Genre[]        $genre          Genres.
+ * @property Media[]        $media          Supports.
+ * @property Title          $title          Titre du document.
+ * @property OtherTitle[]   $othertitle     Autres titres.
+ * @property Translation[]  $translation    Traductions du titre.
+ * @property Author[]       $author         Personnes auteurs.
+ * @property Organisation[] $organisation   Organismes auteurs.
+ * @property Date[]         $date           Dates du document.
+ * @property Journal        $journal        Périodique.
+ * @property Number[]       $number         Numéros du document.
+ * @property Language[]     $language       Langues des textes.
+ * @property Extent[]       $extent         Etendue.
+ * @property Format[]       $format         Format et étiquettes de collation.
+ * @property Editor[]       $editor         Editeurs.
+ * @property Collection[]   $collection     Collection et numéro dans la collection.
+ * @property Edition[]      $edition        Mentions d'édition.
+ * @property Event          $event          Événement à l'origine du document.
+ * @property Topics         $topic          Mots-clés.
+ * @property Content[]      $content        Contenu du document.
+ * @property Link[]         $link           Liens internet.
+ * @property Relation[]     $relation       Relations avec d'autres références.
+ * @property Owner[]        $owner          Producteur de la notice.
+ *
+ * @property Imported       $imported       Notice importée.
+ * @property Error[]        $errors         Erreurs.
  */
 class Reference extends Type
 {
@@ -28,24 +81,8 @@ class Reference extends Type
             'label' => __('Référence', 'docalist-biblio'),
             'description' => __('Une référence documentaire.', 'docalist-biblio'),
             'fields' => [
-                'genre' => [
-                    'type' => 'Docalist\Biblio\Field\Genre*',
-                    'label' => __('Genres', 'docalist-biblio'),
-                    'description' => __(
-                        'Nature du document.',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'thesaurus:genres',
-                ],
-                'media' => [
-                    'type' => 'Docalist\Biblio\Field\Media*',
-                    'label' => __('Supports', 'docalist-biblio'),
-                    'description' => __(
-                        'Support physique du document (imprimé, numérique, dvd...)',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'thesaurus:medias',
-                ],
+                'genre' => 'Docalist\Biblio\Field\Genre*',
+                'media' => 'Docalist\Biblio\Field\Media*',
                 'title' => [       // Alias de post_title
                     'type' => 'Docalist\Biblio\Field\Title',
                     'label' => __('Titre', 'docalist-biblio'),
@@ -54,178 +91,25 @@ class Reference extends Type
                         'docalist-biblio'
                     ),
                 ],
-                'othertitle' => [
-                    'type' => 'Docalist\Biblio\Field\OtherTitle*',
-                    'label' => __('Autres titres', 'docalist-biblio'),
-                    'description' => __(
-                        'Autres titres du document (sigle, variante, titre du dossier, du numéro, du diplôme...)',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:titles',
-                    'explode' => true,
-                    'format' => 'v (t)',
-                ],
-                'translation' => [
-                    'type' => 'Docalist\Biblio\Field\Translation*',
-                    'label' => __('Traductions', 'docalist-biblio'),
-                    'description' => __(
-                        'Traduction en une ou plusieurs langues du titre original du document.',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:ISO-639-2_alpha3_EU_fr',
-                    'explode' => true,
-                ],
-                'author' => [
-                    'type' => 'Docalist\Biblio\Field\Author*',
-                    'label' => __('Auteurs', 'docalist-biblio'),
-                    'description' => __(
-                        "Personnes qui ont contribué au document (auteur, coordonnateur, réalisateur...)",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'thesaurus:marc21-relators_fr',
-                ],
-                'organisation' => [
-                    'type' => 'Docalist\Biblio\Field\Organisation*',
-                    'label' => __('Organismes', 'docalist-biblio'),
-                    'description' => __(
-                        "Organismes qui ont contribué au document (organisme auteur, commanditaire, financeur...)",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:ISO-3166-1_alpha2_fr',
-                    'table2' => 'thesaurus:marc21-relators_fr',
-                    'sep' => ' ; ', // sép par défaut à l'affichage, espace insécable avant ';'
-                ],
-                'date' => [
-                    'type' => 'Docalist\Biblio\Field\Date*',
-                    'label' => __('Date', 'docalist-biblio'),
-                    'description' => __(
-                        "Dates du document (date de publication, d'enregistrement...). Format <code>AAAAMMJJ</code>.",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:dates',
-                ],
-                'journal' => [
-                    'type' => 'Docalist\Biblio\Field\Journal',
-                    'label' => __('Périodique', 'docalist-biblio'),
-                    'description' => __(
-                        'Nom du journal (revue, magazine, périodique...) dans lequel a été publié le document.',
-                        'docalist-biblio'
-                    ),
-                ],
-                'number' => [
-                    'type' => 'Docalist\Biblio\Field\Number*',
-                    'label' => __('Numéros', 'docalist-biblio'),
-                    'description' => __(
-                        'Numéros du document (DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...)',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:numbers',
-                ],
-                'language' => [
-                    'type' => 'Docalist\Biblio\Field\Language*',
-                    'label' => __('Langues', 'docalist-biblio'),
-                    'description' => __(
-                        'Langues des textes qui figurent dans le document.',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:ISO-639-2_alpha3_EU_fr',
-                ],
-                'extent' => [
-                    'type' => 'Docalist\Biblio\Field\Extent*',
-                    'label' => __('Etendue', 'docalist-biblio'),
-                    'description' => __(
-                        'Pagination, nombre de pages, durée, dimensions...',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:extent',
-                ],
-                'format' => [
-                    'type' => 'Docalist\Biblio\Field\Format*',
-                    'label' => __('Format', 'docalist-biblio'),
-                    'description' => __(
-                        "Etiquettes de collation indiquant le contenu du document (tableaux, annexes, références...)",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'thesaurus:format',
-                ],
-                'editor' => [
-                    'type' => 'Docalist\Biblio\Field\Editor*',
-                    'label' => __('Editeurs', 'docalist-biblio'),
-                    'description' => __(
-                        "Organisme délégué par l'auteur pour assurer la diffusion et la distribution du document.",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:ISO-3166-1_alpha2_fr',
-                    'table2' => 'thesaurus:marc21-relators_fr',
-                ],
-                'collection' => [
-                    'type' => 'Docalist\Biblio\Field\Collection*',
-                    'label' => __('Collection', 'docalist-biblio'),
-                    'description' => __(
-                        "Collection et numéro au sein de la collection de l'éditeur.",
-                        'docalist-biblio'
-                    ),
-                ],
-                'edition' => [
-                    'type' => 'Docalist\Biblio\Field\Edition*',
-                    'label' => __("Mentions d'édition", 'docalist-biblio'),
-                    'description' => __(
-                        "Nouvelle édition, édition revue et corrigée, périodicité...",
-                        'docalist-biblio'
-                    ),
-                ],
-                'event' => [
-                    'type' => 'Docalist\Biblio\Field\Event',
-                    'label' => __('Événement', 'docalist-biblio'),
-                    'description' => __(
-                        "Événement à l'origine du document (congrès, colloque, manifestation, soutenance de thèse...)",
-                        'docalist-biblio'
-                    ),
-                ],
-                'topic' => [
-                    'type' => 'Docalist\Biblio\Type\Topics', // Topics (et non pas Topic*) pour avoir le bon éditeur
-                    'label' => __('Indexation', 'docalist-biblio'),
-                    'description' => __(
-                        "Mots-clés décrivant le contenu du document.",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:topics',
-                ],
-                'content' => [
-                    'type' => 'Docalist\Biblio\Field\Content*',
-                    'label' => __('Contenu', 'docalist-biblio'),
-                    'description' => __(
-                        'Description textuelle du document (résumé, présentation, critique, remarques...)',
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:content',
-                ],
-                'link' => [
-                    'type' => 'Docalist\Biblio\Type\Link*',
-                    'label' => __('Liens internet', 'docalist-biblio'),
-                    'description' => __(
-                        "Liens associés au document (URL du document, site de l'auteur, de l'éditeur...)",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:links',
-                ],
-                'relation' => [
-                    'type' => 'Docalist\Biblio\Field\Relation*',
-                    'label' => __("Relations avec d'autres références", 'docalist-biblio'),
-                    'description' => __(
-                        "Relations entre ce document et d'autres documents (voir aussi, nouvelle édition, erratum...)",
-                        'docalist-biblio'
-                    ),
-                    'table' => 'table:relations',
-                ],
-                'owner' => [
-                    'type' => 'Docalist\Biblio\Field\Owner*',
-                    'label' => __('Producteur de la notice', 'docalist-biblio'),
-                    'description' => __(
-                        'Personne ou organisme producteur de la notice.',
-                        'docalist-biblio'
-                    ),
-                ],
+                'othertitle'    => 'Docalist\Biblio\Field\OtherTitle*',
+                'translation'   => 'Docalist\Biblio\Field\Translation*',
+                'author'        => 'Docalist\Biblio\Field\Author*',
+                'organisation'  => 'Docalist\Biblio\Field\Organisation*',
+                'date'          => 'Docalist\Biblio\Field\Date*',
+                'journal'       => 'Docalist\Biblio\Field\Journal',
+                'number'        => 'Docalist\Biblio\Field\Number*',
+                'language'      => 'Docalist\Biblio\Field\Language*',
+                'extent'        => 'Docalist\Biblio\Field\Extent*',
+                'format'        => 'Docalist\Biblio\Field\Format*',
+                'editor'        => 'Docalist\Biblio\Field\Editor*',
+                'collection'    => 'Docalist\Biblio\Field\Collection*',
+                'edition'       => 'Docalist\Biblio\Field\Edition*',
+                'event'         => 'Docalist\Biblio\Field\Event',
+                'topic'         => 'Docalist\Biblio\Type\Topics', // Collection spéciale "Topics"
+                'content'       => 'Docalist\Biblio\Field\Content*',
+                'link'          => 'Docalist\Biblio\Type\Link*',
+                'relation'      => 'Docalist\Biblio\Field\Relation*',
+                'owner'         => 'Docalist\Biblio\Field\Owner*',
 
                 // Les champs qui suivent ne font pas partie du format docalist
 
@@ -240,6 +124,30 @@ class Reference extends Type
                 ],
             ],
         ];
+    }
+
+    /**
+     * Compatibilité : le type du champ relation a changé.
+     *
+     * Auparavant, c'était un multifield du style type+ref*. Désormais, c'est un TypedRelation, le champ ref
+     * n'existe plus et le champ value n'est pas répétable.
+     *
+     * Comme le champ n'était pas utilisé et que de toute façon ce serait difficile de gérer la compatibilité
+     * ascendante (il faudrait traduire les n° de réf en Post ID), on se contente de supprimer la valeur
+     * existante si on rencontre un champ relation qui a l'ancienne forme.
+     *
+     * {@inheritDoc}
+     */
+    public function assign($value)
+    {
+        ($value instanceof Any) && $value = $value->getPhpValue();
+
+        // Ignore (efface) les relations qui utilisent l'ancien type de champ
+        if (is_array($value) && isset($value['relation']) && isset(reset($value['relation'])['ref'])) {
+            unset($value['relation']);
+        }
+
+        return parent::assign($value);
     }
 
     protected static function buildEditGrid(array $groups)
@@ -319,5 +227,233 @@ class Reference extends Type
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
             __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
         ]);
+    }
+
+    protected function buildMapping(MappingBuilder $mapping)
+    {
+        // Le mapping des champs de base est construit par la classe parent
+        $mapping = parent::buildMapping($mapping);
+
+        // genre
+        $mapping->addField('genre')->text()->filter();
+
+        // media
+        $mapping->addField('media')->text()->filter();
+
+        // title
+        // déjà fait dans parent
+
+        // othertitle
+        $mapping->addField('othertitle')->text()
+                ->addTemplate('othertitle-*')->copyFrom('othertitle')->copyDataTo('othertitle');
+
+        // translation
+        $mapping->addField('translation')->text()
+                ->addTemplate('translation-*')->copyFrom('translation')->copyDataTo('translation');
+
+        // author
+        $mapping->addField('author')->literal()->filter()->suggest()
+                ->addTemplate('author-*')->copyFrom('author')->copyDataTo('author');
+
+        // organisation
+        $mapping->addField('organisation')->text()->filter()->suggest()
+                ->addTemplate('organisation-*')->copyFrom('organisation')->copyDataTo('organisation');
+        // Exemples d'options pour l'indexation du champ 'organisme' :
+        // indexer ou pas les organismes
+        // faire ou pas un champ séparé pour chaque rôle (multifield)
+        // indexer ville+pays dans un champ à part (pour faire du lookup sur index)
+        // indexer pays dans un champ à part (pour faire du lookup sur index si on n'utilise pas la table pays)
+
+        // date
+        $mapping->addField('date')->date()
+                ->addTemplate('date-*')->copyFrom('date')->copyDataTo('data');
+
+        // journal
+        $mapping->addField('journal')->text()->filter()->suggest();
+
+        // number
+        $mapping->addField('number')->literal()
+                ->addTemplate('number-*')->copyFrom('number')->copyDataTo('number');
+
+        // language
+        $mapping->addField('language')->text()->filter();
+
+        // extent : non indexé
+
+        // format : non indexé
+
+        // editor
+        $mapping->addField('editor')->text()->filter()->suggest() // cc organisme
+                ->addTemplate('editor-*')->copyFrom('editor')->copyDataTo('editor');
+
+        // collection
+        $mapping->addField('collection')->text()->filter();
+
+        // edition
+        $mapping->addField('edition')->text()->filter();
+
+        // event
+        $mapping->addField('event')->text()->filter();
+
+        // topic
+        $mapping->addField('topic')->text()->filter()->suggest()
+                ->addTemplate('topic-*')->copyFrom('topic')->copyDataTo('topic');
+
+        // topic-hierarchy : crée un champ 'hierarchy' pour tous les topics qui sont associés à une table de type thesaurus
+        foreach($this->topic->getThesaurusTopics() as $topic) {
+            $mapping->addField("topic-$topic-hierarchy")->text('hierarchy')->setProperty('search_analyzer', 'keyword');
+        }
+
+        // content
+        $mapping->addField('content')->text()
+                ->addTemplate('content-*')->copyFrom('content')->copyDataTo('content');
+
+        // link
+        $mapping->addField('link')->url()
+                ->addTemplate('link-*')->copyFrom('link')->copyDataTo('link');
+
+        // relation
+        $mapping->addField('relation')->integer()
+                ->addTemplate('relation-*')->copyFrom('relation')->copyDataTo('relation');
+
+        // owner
+        $mapping->addField('owner')->text()->filter();
+
+        // imported
+        // errors
+
+        return $mapping;
+    }
+
+    public function map()
+    {
+        // Le mapping des champs de base est fait par la classe parent
+        $document = parent::map();
+
+        // genre
+        if (isset($this->genre)) {
+            $document['genre'] = $this->genre->map(function(Genre $genre) { // Indexer le code
+                return $genre->getEntryLabel();
+            });
+        }
+
+        // media
+        if (isset($this->media)) {
+            $document['media'] = $this->media->map(function(Media $media) { // Indexer le code
+                return $media->getEntryLabel();
+            });
+        }
+
+        // title
+        // déjà fait dans parent
+
+        // othertitle
+        $this->mapMultiField($document, 'othertitle');
+
+        // translation
+        $this->mapMultiField($document, 'translation');
+
+        // author
+        $this->mapMultiField($document, 'author', function(Author $aut) {
+            return sprintf('%s¤%s', $aut->name->getPhpValue(), $aut->firstname->getPhpValue());
+        });
+
+        // organisation
+        $this->mapMultiField($document, 'organisation', function(Organisation $org) {
+            return sprintf(
+                '%s¤%s¤%s¤%s',
+                $org->name->getPhpValue(),
+                $org->acronym->getPhpValue(),
+                $org->city->getPhpValue(),
+                $org->country->getPhpValue()
+            );
+         });
+
+        // date
+        $this->mapMultiField($document, 'date');
+
+        // journal
+        if (isset($this->journal)) {
+            $document['journal'] = $this->journal->getPhpValue();
+        }
+
+        // number
+        $this->mapMultiField($document, 'number');
+
+        // language
+        if (isset($this->language)) {
+            $document['language'] = $this->language->map(function(Language $language) { // Indexer le code
+                return $language->getEntryLabel();
+            });
+        }
+
+        // extent : non indexé
+
+        // format : non indexé
+
+        // editor
+        $this->mapMultiField($document, 'editor', function(Editor $org) { // cc organisme
+            return sprintf(
+                '%s¤%s¤%s¤%s',
+                $org->name->getPhpValue(),
+                $org->acronym->getPhpValue(),
+                $org->city->getPhpValue(),
+                $org->country->getPhpValue()
+            );
+        });
+
+        // collection
+        if (isset($this->collection)) {
+            $document['collection'] = array_filter($this->collection->map(function(Collection $col) {
+                return $col->name->getPhpValue();
+            }));
+        }
+
+        // edition
+        if (isset($this->edition)) {
+            $document['edition'] = $this->edition->getPhpValue(); // multivalué, retourne un tableau
+        }
+
+        // event
+        if (isset($this->event)) {
+            $document['event'] = sprintf(
+                '%s¤%s¤%s¤%s',
+                $this->event->title->getPhpValue(),
+                $this->event->date->getPhpValue(),
+                $this->event->place->getPhpValue(),
+                $this->event->number->getPhpValue()
+            );
+        }
+
+        // topic
+        $this->mapMultiField($document, 'topic');
+
+        // topic-hierarchy : initialise le champ 'hierarchy' pour tous les topics qui sont associés à une table de type thesaurus
+        foreach($this->topic->getThesaurusTopics() as $table => $topic) {
+            if (isset($this->topic[$topic])) {
+                $terms = $this->topic[$topic]->term->getPhpValue();
+                $document["topic-$topic-hierarchy"] = $this->getTermsPath($terms, $table);
+            }
+        }
+
+        // content
+        $this->mapMultiField($document, 'content');
+
+        // link
+        $this->mapMultiField($document, 'link', 'url');
+
+        // relation
+        $this->mapMultiField($document, 'relation');
+
+        // owner
+        if (isset($this->owner)) {
+            $document['owner'] = $this->owner->getPhpValue();
+        }
+
+        // imported
+        // errors
+
+        // Ok
+        return $document;
     }
 }
