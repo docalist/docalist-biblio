@@ -51,6 +51,11 @@ class Topic extends TypedText
         ];
     }
 
+    public static function getCollectionClass()
+    {
+        return 'Docalist\Biblio\Type\Topics';
+    }
+
     /* ------------------------------------------------------------------------------------------------------------
      * COMPATIBILITE ASCENDANTE 21/06/17 :
      *
