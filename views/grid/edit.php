@@ -80,7 +80,7 @@ function createForm(Schema $schema, Schema $grid, $method = 'getSettingsForm')
     $metabox->setLabel($label)->setAttribute('class', $class)->addItems($form->getItems());
 
     // Valeur par défaut
-    if ($level > 1 && $method !== 'getFormatSettingsForm' && $type !== 'Docalist\Biblio\Type\Group') {
+    if ($level > 1 && $method !== 'getFormatSettingsForm' && $schema->type() !== 'Docalist\Biblio\Type\Group') {
         $default = $fieldType->getEditorForm($grid)
             ->setName('default')
             ->setLabel(__('Valeur par défaut', 'docalist-biblio'));
