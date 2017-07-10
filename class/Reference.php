@@ -30,7 +30,7 @@ use Docalist\Biblio\Field\Editor;
 use Docalist\Biblio\Field\Collection;
 use Docalist\Biblio\Field\Edition;
 use Docalist\Biblio\Field\Event;
-use Docalist\Biblio\Type\Topics;
+use Docalist\Biblio\Type\Topic;
 use Docalist\Biblio\Field\Content;
 use Docalist\Biblio\Type\Link;
 use Docalist\Biblio\Field\Relation;
@@ -63,7 +63,7 @@ use Docalist\Search\MappingBuilder;
  * @property Collection[]   $collection     Collection et numéro dans la collection.
  * @property Edition[]      $edition        Mentions d'édition.
  * @property Event          $event          Événement à l'origine du document.
- * @property Topics         $topic          Mots-clés.
+ * @property Topic[]        $topic          Mots-clés.
  * @property Content[]      $content        Contenu du document.
  * @property Link[]         $link           Liens internet.
  * @property Relation[]     $relation       Relations avec d'autres références.
@@ -105,7 +105,7 @@ class Reference extends Type
                 'collection'    => 'Docalist\Biblio\Field\Collection*',
                 'edition'       => 'Docalist\Biblio\Field\Edition*',
                 'event'         => 'Docalist\Biblio\Field\Event',
-                'topic'         => 'Docalist\Biblio\Type\Topics', // Collection spéciale "Topics"
+                'topic'         => 'Docalist\Biblio\Type\Topic*',
                 'content'       => 'Docalist\Biblio\Field\Content*',
                 'link'          => 'Docalist\Biblio\Type\Link*',
                 'relation'      => 'Docalist\Biblio\Field\Relation*',
