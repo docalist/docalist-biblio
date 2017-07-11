@@ -106,9 +106,9 @@ class Group extends Any
              ->addClass('label regular-text')
              ->setLabel(__('Nom du groupe', 'docalist-biblio'))
              ->setDescription(__(
-                'Ce texte ne sera pas affiché, il sert uniquement à distinguer les différents groupes de champs.',
-                'docalist-biblio'
-            ));
+                 'Ce texte ne sera pas affiché, il sert uniquement à distinguer les différents groupes de champs.',
+                 'docalist-biblio'
+             ));
 
         $form->input('capability')
             ->setAttribute('id', $name . '-capability')
@@ -135,15 +135,16 @@ class Group extends Any
              ->setAttribute('rows', 2)
              ->setLabel(__('Format des champs', 'docalist-biblio'))
              ->setDescription(sprintf(
-                __(
-                    "Code html utilisé comme modèle pour afficher chacun des champs de ce groupe.
+                 __(
+                     "Code html utilisé comme modèle pour afficher chacun des champs de ce groupe.
                      Utilisez %s pour désigner le libellé du champ et %s pour désigner son contenu.
                      Exemple : %s. Laissez vide pour créer un groupe qui n'affichera aucun champ.",
-                    'docalist-biblio'
-                ),
-                '<code>%label</code>', '<code>%content</code>',
-                '<code>' . htmlspecialchars('<p> <b>%label</b> : %content </p>') . '</code>'
-            ));
+                     'docalist-biblio'
+                 ),
+                 '<code>%label</code>',
+                 '<code>%content</code>',
+                 '<code>' . htmlspecialchars('<p> <b>%label</b> : %content </p>') . '</code>'
+             ));
 
         $form->textarea('after')
              ->addClass('after code large-text')
