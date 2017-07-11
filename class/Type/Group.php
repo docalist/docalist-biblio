@@ -62,8 +62,8 @@ class Group extends Any
 
         $form->textarea('description')
              ->setAttribute('id', $name . '-description')
-             ->addClass('description large-text')
-             ->setAttribute('rows', 2)
+             ->addClass('description large-text autosize')
+             ->setAttribute('rows', 1)
              ->setLabel(__('Introduction', 'docalist-biblio'))
              ->setDescription(__(
                  "Texte d'introduction affiché entre la barre de titre et le premier champ du groupe.
