@@ -517,8 +517,8 @@ class Type extends Entity
 
         $form->textarea('description')
             ->setAttribute('id', $name . '-description')
-            ->addClass('description large-text')
-            ->setAttribute('rows', 2)
+            ->addClass('description large-text autosize')
+            ->setAttribute('rows', 1)
             ->setLabel(__('Description', 'docalist-core'))
             ->setDescription(__('Description du type.', 'docalist-core'));
 
@@ -546,8 +546,8 @@ class Type extends Entity
 
         $form->textarea('description')
             ->setAttribute('id', $name . '-description')
-            ->addClass('description large-text')
-            ->setAttribute('rows', 2)
+            ->addClass('description large-text autosize')
+            ->setAttribute('rows', 1)
             ->setAttribute('placeholder', $this->schema->description())
             ->setLabel(__('Introduction', 'docalist-core'))
             ->setDescription(
@@ -576,8 +576,8 @@ class Type extends Entity
 
         $form->textarea('description')
             ->setAttribute('id', $name . '-description')
-            ->addClass('description large-text')
-            ->setAttribute('rows', 2)
+            ->addClass('description large-text autosize')
+            ->setAttribute('rows', 1)
             ->setLabel(__('Description', 'docalist-core'))
             ->setDescription(__("Description du format, notes, remarques... (champ de gestion)", 'docalist-core'));
 
