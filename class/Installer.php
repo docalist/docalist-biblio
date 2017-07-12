@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -29,7 +29,7 @@ class Installer {
         $tableManager = docalist('table-manager'); /** @var TableManager $tableManager */
 
         // Enregistre les tables prédéfinies
-        foreach($this->tables() as $name => $table) {
+        foreach($this->getTables() as $name => $table) {
             $table['name'] = $name;
             $table['lastupdate'] = date_i18n('Y-m-d H:i:s', filemtime($table['path']));
             $tableManager->register(new TableInfo($table));
@@ -43,7 +43,7 @@ class Installer {
         $tableManager = docalist('table-manager'); /** @var TableManager $tableManager */
 
         // Supprime les tables prédéfinies
-        foreach(array_keys($this->tables()) as $table) {
+        foreach(array_keys($this->getTables()) as $table) {
             $tableManager->unregister($table);
         }
     }
@@ -53,8 +53,8 @@ class Installer {
      *
      * @return array
      */
-    protected function tables() {
-        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tables'  . DIRECTORY_SEPARATOR;
+    protected function getTables() {
+        $dir = DOCALIST_BIBLIO_DIR . DIRECTORY_SEPARATOR . 'tables'  . DIRECTORY_SEPARATOR;
         return [
             // Etiquettes de rôles
             'marc21-relators_fr' => [
