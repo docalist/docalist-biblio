@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,6 +13,7 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Views;
 use Docalist\Biblio\Database;
 use Docalist\Biblio\Reference;
 use Docalist\Biblio\Settings\Settings;
@@ -45,6 +46,11 @@ class Plugin {
     public function __construct() {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
+
+        // Ajoute notre répertoire "views" au service "docalist-views"
+        add_filter('docalist_service_views', function(Views $views) {
+            return $views->addDirectory('docalist-biblio', DOCALIST_BIBLIO_DIR . '/views');
+        });
 
         add_action('init', function() {
             // Charge la configuration du plugin
