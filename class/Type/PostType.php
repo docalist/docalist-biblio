@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -20,4 +20,11 @@ use Docalist\Type\Text;
  */
 class PostType extends Text
 {
+    public static function loadSchema()
+    {
+        return [
+            'label' => __('Type de post WordPress', 'docalist-biblio'),
+            'description' => __('Nom de code interne du type de post WordPress', 'docalist-biblio'),
+        ];
+    }
 }
