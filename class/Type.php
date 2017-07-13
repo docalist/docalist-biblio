@@ -14,26 +14,32 @@
 namespace Docalist\Biblio;
 
 use Docalist\Type\Entity;
-use Docalist\Repository\Repository;
-use Docalist\Repository\PostTypeRepository;
 use Docalist\Schema\Schema;
-use InvalidArgumentException;
-use Exception;
-use Docalist\Forms\Container;
+
 use Docalist\Biblio\Type\PostType;
 use Docalist\Biblio\Type\PostStatus;
 use Docalist\Biblio\Type\PostTitle;
 use Docalist\Biblio\Type\PostDate;
+use Docalist\Biblio\Type\PostAuthor;
 use Docalist\Biblio\Type\PostModified;
-use Docalist\Type\Text;
-use Docalist\Type\Integer;
+use Docalist\Biblio\Type\PostPassword;
+use Docalist\Biblio\Type\PostParent;
+use Docalist\Biblio\Type\PostSlug;
 use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
+
+use Docalist\Repository\Repository;
+use Docalist\Repository\PostTypeRepository;
+
+use Docalist\Forms\Container;
+
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
 use ReflectionMethod;
 use Docalist\Type\MultiField;
 use Closure;
+
+use InvalidArgumentException;
 
 /**
  * Référence documentaire.
@@ -44,73 +50,32 @@ use Closure;
  * @property PostDate       $creation   Date/heure de création de la fiche
  * @property PostAuthor     $createdBy  Auteur de la fiche
  * @property PostModified   $lastupdate Date/heure de dernière modification
- * @property Text           $password   Mot de passe de la fiche
- * @property Integer        $parent     Post ID de la fiche parent
- * @property Text           $slug       Slug de la fiche
+ * @property PostPassword   $password   Mot de passe de la fiche
+ * @property PostParent     $parent     Post ID de la fiche parent
+ * @property PostSlug       $slug       Slug de la fiche
  * @property RefNumber      $ref        Numéro unique identifiant la fiche
  * @property RefType        $type       Type de fiche
  */
 class Type extends Entity
 {
-    static public function loadSchema() {
+    public static function loadSchema()
+    {
         return [
             'name' => 'type',
             'label' => __('Type de base (thing ?)', 'docalist-biblio'),
             'description' => __('Type de base docalist-biblio.', 'docalist-biblio'),
             'fields' => [
-                'posttype' => [  // Alias de post_type
-                    'type' => 'Docalist\Biblio\Type\PostType',
-                    'label' => __('Post Type', 'docalist-biblio'),
-                ],
-                'status' => [      // Alias de post_status
-                    'type' => 'Docalist\Biblio\Type\PostStatus',
-                    'label' => __('Statut', 'docalist-biblio'),
-                    'description' => __('Statut de la fiche.', 'docalist-biblio'),
-                ],
-                'title' => [       // Alias de post_title
-                    'type' => 'Docalist\Biblio\Type\PostTitle',
-                    'label' => __('Titre', 'docalist-biblio'),
-                    'description' => __('Titre de la fiche.', 'docalist-biblio'),
-                ],
-                'creation' => [    // Alias de post_date
-                    'type' => 'Docalist\Biblio\Type\PostDate',
-                    'label' => __('Création', 'docalist-biblio'),
-                    'description' => __('Date/heure de création de la fiche.', 'docalist-biblio'),
-                ],
-                'createdBy' => [      // Alias de post_author
-                    'type' => 'Docalist\Biblio\Type\PostAuthor',
-                    'label' => __('Créé par', 'docalist-biblio'),
-                    'description' => __('Auteur de la fiche.', 'docalist-biblio'),
-                ],
-                'lastupdate' => [  // Alias de post_modified
-                    'type' => 'Docalist\Biblio\Type\PostModified',
-                    'label' => __('Dernière modification', 'docalist-biblio'),
-                    'description' => __('Date/heure de dernière modification.', 'docalist-biblio'),
-                ],
-                'password' => [  // Alias de post_password
-                    'type' => 'Docalist\Type\Text',
-                    'label' => __('Mot de passe', 'docalist-biblio'),
-                    'description' => __('Mot de passe de la fiche.', 'docalist-biblio'),
-                ],
-                'parent' => [      // Alias de post_parent
-                    'type' => 'Docalist\Type\Integer',
-                    'label' => __('Notice parent', 'docalist-biblio'),
-                    'description' => __('Post ID de la fiche parent.', 'docalist-biblio'),
-                ],
-                'slug' => [  // Alias de post_name
-                    'type' => 'Docalist\Type\Text',
-                    'label' => __('Slug de la fiche', 'docalist-biblio'),
-                ],
-                'ref' => [
-                    'type' => 'Docalist\Biblio\Type\RefNumber',
-                    'label' => __('Numéro de fiche', 'docalist-biblio'),
-                    'description' => __('Numéro unique identifiant la fiche.', 'docalist-biblio'),
-                ],
-                'type' => [
-                    'type' => 'Docalist\Biblio\Type\RefType',
-                    'label' => __('Type de fiche', 'docalist-biblio'),
-                    'description' => __('Type de fiche.', 'docalist-biblio'),
-                ],
+                'posttype'      => 'Docalist\Biblio\Type\PostType',
+                'status'        => 'Docalist\Biblio\Type\PostStatus',
+                'title'         => 'Docalist\Biblio\Type\PostTitle',
+                'creation'      => 'Docalist\Biblio\Type\PostDate',
+                'createdBy'     => 'Docalist\Biblio\Type\PostAuthor',
+                'lastupdate'    => 'Docalist\Biblio\Type\PostModified',
+                'password'      => 'Docalist\Biblio\Type\PostPassword',
+                'parent'        => 'Docalist\Biblio\Type\PostParent',
+                'slug'          => 'Docalist\Biblio\Type\PostSlug',
+                'ref'           => 'Docalist\Biblio\Type\RefNumber',
+                'type'          => 'Docalist\Biblio\Type\RefType',
             ],
         ];
     }
@@ -458,7 +423,7 @@ class Type extends Entity
     public function beforeSave(Repository $repository) {
         // Vérifie qu'on peut accéder à $repository->postType()
         if (! $repository instanceof PostTypeRepository) {
-            throw new Exception("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
+            throw new InvalidArgumentException("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
         }
 
         // Met à jour la séquence si on a déjà un numéro de ref
