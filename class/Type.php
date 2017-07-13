@@ -91,7 +91,8 @@ class Type extends Entity
      * Remarque : le schéma de la classe de base (Type) contenant les champs de gestion n'est pas
      * inclus dans le tableau retourné.
      */
-    private static function getSchemaHierarchy() {
+    private static function getSchemaHierarchy()
+    {
         $schemas=[];
 
         $class = get_called_class();
@@ -116,7 +117,8 @@ class Type extends Entity
      *
      * @return array
      */
-    private static function fieldsDiff($class1, $class2) {
+    private static function fieldsDiff($class1, $class2)
+    {
         $schema1 = $class1::getDefaultSchema(); /** @var Schema $schema */
         $schema2 = $class2::getDefaultSchema(); /** @var Schema $parent */
 
@@ -131,8 +133,9 @@ class Type extends Entity
      *
      * @return array La liste des champs épurée.
      */
-    private static function removeUnused(array $fields, Schema $schema) {
-        foreach(array_keys($fields) as $name) {
+    private static function removeUnused(array $fields, Schema $schema)
+    {
+        foreach (array_keys($fields) as $name) {
             if ($schema->hasField($name) && $schema->getField($name)->unused()) {
                 unset($fields[$name]);
             }
@@ -169,12 +172,13 @@ class Type extends Entity
      *
      * @return Schema
      */
-    static public function getBaseGrid() {
+    public static function getBaseGrid()
+    {
         // C'est simplement le schéma par défaut sans les champs unused
         $schema = static::getDefaultSchema();
 
         $fields = self::removeUnused($schema->getFields(), $schema);
-        foreach($fields as & $field) {
+        foreach ($fields as & $field) {
             $field = $field->value();
         }
 
@@ -193,7 +197,7 @@ class Type extends Entity
      *
      * @return Schema
      */
-    static public function getEditGrid()
+    public static function getEditGrid()
     {
         // On part du type en cours
         $class = get_called_class();
@@ -212,7 +216,7 @@ class Type extends Entity
             // Ajoute tous les champs qui sont dans le schéma du type en cours
             $schema = $class::loadSchema();
             $specific = [];
-            foreach($schema['fields'] as $name => $field) {
+            foreach ($schema['fields'] as $name => $field) {
                 if (isset($seen[$name])) {
                     continue;
                 }
@@ -245,7 +249,7 @@ class Type extends Entity
 
         // Ajoute les champs de gestion (type et ref) si on ne les a pas encore rencontrés
         $specific = [];
-        foreach(['type', 'ref'] as $name) {
+        foreach (['type', 'ref'] as $name) {
             !isset($seen[$name]) && $specific[] = $name;
         }
 
@@ -259,7 +263,12 @@ class Type extends Entity
         }
 
         // Construit la grille finale
-        //$description = sprintf(__("Saisie/modification d'une fiche '%s'.", 'docalist-biblio'), static::getDefaultSchema()->label());
+        /*
+        $description = sprintf(__(
+            "Saisie/modification d'une fiche '%s'.", 'docalist-biblio'),
+            static::getDefaultSchema()->label()
+        );
+        */
 
         return [
             'name' => 'edit',
@@ -270,14 +279,15 @@ class Type extends Entity
         ];
     }
 
-    static public function getEditGridOLD() {
+    public static function getEditGridOLD()
+    {
         // On part du schéma du type
         $schema = static::getDefaultSchema();
 
         // On construit le formulaire de saisie par défaut en regroupant les champs par niveau de hiérarchie
         $fields = [];
         $groupNumber = 1;
-        foreach(self::getParentTypes() as $class) {
+        foreach (self::getParentTypes() as $class) {
             // Détermine les champs spécifiques à ce type et supprime ceux qui ont été désactivé
             $parent = get_parent_class($class);
             $specific = self::removeUnused(self::fieldsDiff($class, $parent), $schema);
@@ -330,7 +340,8 @@ class Type extends Entity
      *
      * @return Schema
      */
-    static public function getContentGrid() {
+    public static function getContentGrid()
+    {
         // On affiche un premier groupe contenant tous les champs (hérités ou non) de
         // l'entité (dans l'ordre) plus le champ ref.
         // Tous les autres champs (gestion) sont dans un groupe 2 qui n'est pas affiché.
@@ -380,7 +391,8 @@ class Type extends Entity
      *
      * @return Schema
      */
-    static public function getExcerptGrid() {
+    public static function getExcerptGrid()
+    {
         // La grille courte par défaut n'affiche rien (groupe 1 vide) et wordpress affichera uniquement
         // le titre du post. Tous les champs sont dispos dans le groupe 2 qui n'affiche rien.
 
@@ -420,7 +432,8 @@ class Type extends Entity
      * Attribue un numéro de la ref à la notice avant de l'enregistrer si elle
      * n'en a pas déjà un.
      */
-    public function beforeSave(Repository $repository) {
+    public function beforeSave(Repository $repository)
+    {
         // Vérifie qu'on peut accéder à $repository->postType()
         if (! $repository instanceof PostTypeRepository) {
             throw new InvalidArgumentException("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
@@ -561,7 +574,8 @@ class Type extends Entity
         return $form;
     }
 
-    protected function getFieldOption(Schema $field, $option, $default = null) {
+    protected function getFieldOption(Schema $field, $option, $default = null)
+    {
         $value = $field->__call($option);
         if (! is_null($value)) {
             return $value;
@@ -576,7 +590,8 @@ class Type extends Entity
         return $default;
     }
 
-    public function getFormattedValue($options = null) {
+    public function getFormattedValue($options = null)
+    {
         // Détermine les champs à afficher
         // On ne peut pas utiliser getOption() car ça retourne un tableau à plat et non pas un tableau de Schemas
         if (is_null($options)) {
@@ -599,7 +614,7 @@ class Type extends Entity
         $result = '';                               // Le résultat final qui sera retourné
 
         // Formatte la notice
-        foreach($fields as $name => $field) {
+        foreach ($fields as $name => $field) {
             // Si c'est un groupe, cela devient le nouveau groupe courant
             if ($field->type() === 'Docalist\Biblio\Type\Group') {
                 // Génère le groupe précédent si on a des items
@@ -770,7 +785,7 @@ class Type extends Entity
     protected function mapMultiField(array & $document, $field, $value = 'value')
     {
         if (isset($this->$field)) {
-            foreach($this->$field as $item) { /** @var MultiField $item */
+            foreach ($this->$field as $item) { /** @var MultiField $item */
                 $code = $item->getCategoryCode();
                 $key = $code ? ($field . '-' . $code) : $field;
                 //$content = $item->$value->getPhpValue();
