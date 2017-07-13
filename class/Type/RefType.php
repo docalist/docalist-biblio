@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,43 +13,46 @@
  */
 namespace Docalist\Biblio\Type;
 
-use Docalist\Type\Text;
-use Docalist\Forms\Select;
+use Docalist\Type\ListEntry;
 use Docalist\Biblio\Database;
 
 /**
- * Le type de la notice.
+ * Le type docalist de la notice.
  */
-class RefType extends Text
+class RefType extends ListEntry
 {
-    // Remarque :
-    // Pour getFormattedValue et getEditorForm, on n'utilise pas le bon libellé.
-    // Le libellé utilisé est celui qui figure dans le schéma par défaut du
-    // type alors qu'il faudrait utiliser le libellé définit pour le
-    // TypeSettings qui figure dans la base.
-    // Problème : comment le champ peut-il savoir dans quelle base il est et
-    // comment peut-il accéder aux settings correspondants ?
-
-    public function getFormattedValue($options = null)
+    public static function loadSchema()
     {
-        $types = Database::getAvailableTypes();
-        $type = $this->getPhpValue();
-        if (isset($types[$type])) {
-            $type = $types[$type]::getDefaultSchema()->label();
-        }
-        return $type;
+        return [
+            'label' => __('Type de fiche', 'docalist-biblio'),
+            'description' => __('Type docalist de la fiche.', 'docalist-biblio'),
+        ];
     }
 
-    public function getEditorForm($options = null)
+    /**
+     * Retourne la liste des types docalist disponibles.
+     *
+     * @return array Un tableau de la forme [Nom du type => Libellé du type]
+     *
+     * Remarque : le tableau retourné contient les libellés par défaut des types docalist, pas ceux qui ont été
+     * définis par l'utilisateur dans les paramètres des bases docalist.
+     */
+    protected function getEntries()
     {
-        $types = Database::getAvailableTypes();
-        foreach ($types as $type => $class) {
-            $types[$type] = $class::getDefaultSchema()->label() . " ($type)";
+        static $types = null;
+
+        // Initialise la liste des types disponibles lors du premier appel
+        if (is_null($types)) {
+            // Récupère les types disponibles (tableau de la forme type => classe php)
+            $types = Database::getAvailableTypes();
+
+            // Détermine le libellé de chaque type
+            foreach ($types as $type => $class) {
+                $types[$type] = $class::getDefaultSchema()->label();
+            }
         }
 
-        $field = new Select($this->schema->name());
-        $field->setOptions($types);
-
-        return $field;
+        // Ok
+        return $types;
     }
 }
