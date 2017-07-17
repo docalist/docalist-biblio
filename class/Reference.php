@@ -81,16 +81,9 @@ class Reference extends Type
             'label' => __('Référence', 'docalist-biblio'),
             'description' => __('Une référence documentaire.', 'docalist-biblio'),
             'fields' => [
-                'genre' => 'Docalist\Biblio\Field\Genre*',
-                'media' => 'Docalist\Biblio\Field\Media*',
-                'title' => [       // Alias de post_title
-                    'type' => 'Docalist\Biblio\Field\Title',
-                    'label' => __('Titre', 'docalist-biblio'),
-                    'description' => __(
-                        'Titre original du document.',
-                        'docalist-biblio'
-                    ),
-                ],
+                'genre'         => 'Docalist\Biblio\Field\Genre*',
+                'media'         => 'Docalist\Biblio\Field\Media*',
+                'title'         => 'Docalist\Biblio\Field\Title',
                 'othertitle'    => 'Docalist\Biblio\Field\OtherTitle*',
                 'translation'   => 'Docalist\Biblio\Field\Translation*',
                 'author'        => 'Docalist\Biblio\Field\Author*',
@@ -241,7 +234,8 @@ class Reference extends Type
         $mapping->addField('media')->text()->filter();
 
         // title
-        // déjà fait dans parent
+        $mapping->addField('title')->text();
+        $mapping->addField('title-sort')->keyword();
 
         // othertitle
         $mapping->addField('othertitle')->text()
@@ -345,7 +339,11 @@ class Reference extends Type
         }
 
         // title
-        // déjà fait dans parent
+        if (isset($this->title)) {
+            $title = $this->title->getPhpValue();
+            $document['title'] = $title;
+            $document['title-sort'] = implode(' ', Tokenizer::tokenize($title));
+        }
 
         // othertitle
         $this->mapMultiField($document, 'othertitle');
