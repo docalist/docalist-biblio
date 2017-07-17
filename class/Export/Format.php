@@ -14,7 +14,7 @@ namespace Docalist\Biblio\Export;
 
 use InvalidArgumentException;
 use Docalist\Biblio\Reference\ReferenceIterator;
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 
 /**
  * Un format d'export composé d'un converter et d'un exporter.

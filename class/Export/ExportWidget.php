@@ -13,7 +13,7 @@
 namespace Docalist\Biblio\Export;
 
 use WP_Widget;
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 use Docalist\Search\SearchResponse;
 use Docalist\Forms\Container;
 

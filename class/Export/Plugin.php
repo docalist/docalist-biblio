@@ -13,7 +13,7 @@
 namespace Docalist\Biblio\Export;
 
 use WP_Query;
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 use Docalist\Http\ViewResponse;
 use Docalist\Search\SearchResponse;
 use RuntimeException;
