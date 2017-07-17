@@ -13,12 +13,12 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\Text;
+use Docalist\Biblio\Type\PostTitle;
 
 /**
  * Le titre de la notice.
  */
-class Title extends Text
+class Title extends PostTitle
 {
     public static function loadSchema()
     {
@@ -29,10 +29,5 @@ class Title extends Text
                 'docalist-biblio'
             ),
         ];
-    }
-
-    public function getEditorForm($options = null)
-    {
-        return parent::getEditorForm($options)->addClass('large-text');
     }
 }
