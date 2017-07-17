@@ -19,7 +19,7 @@ use Docalist\AdminPage;
 use Docalist\Schema\Schema;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 use Docalist\Biblio\Reference\ReferenceIterator;
 use Docalist\Biblio\Export\Converter;
 use Docalist\Biblio\Export\Exporter;

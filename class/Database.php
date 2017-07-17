@@ -19,7 +19,7 @@ use Docalist\Biblio\Pages\ListReferences;
 use Docalist\Biblio\Pages\EditReference;
 use Docalist\Biblio\Pages\ImportPage;
 use Docalist\Search\SearchUrl;
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 use WP_Post;
 use WP_Query;
 use InvalidArgumentException;

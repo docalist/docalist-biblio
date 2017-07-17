@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Reference;
 
-use Docalist\Search\SearchRequest2 as SearchRequest;
+use Docalist\Search\SearchRequest;
 use Docalist\Search\SearchResponse;
 use Iterator;
 use Countable;
