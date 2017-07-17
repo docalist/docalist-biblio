@@ -46,7 +46,7 @@ use InvalidArgumentException;
  *
  * @property PostType       $posttype   Post Type
  * @property PostStatus     $status     Statut de la fiche
- * @property PostTitle      $title      Titre de la fiche
+ * @property PostTitle      $posttitle  Titre de la fiche
  * @property PostDate       $creation   Date/heure de création de la fiche
  * @property PostAuthor     $createdBy  Auteur de la fiche
  * @property PostModified   $lastupdate Date/heure de dernière modification
@@ -67,7 +67,7 @@ class Type extends Entity
             'fields' => [
                 'posttype'      => 'Docalist\Biblio\Type\PostType',
                 'status'        => 'Docalist\Biblio\Type\PostStatus',
-                'title'         => 'Docalist\Biblio\Type\PostTitle',
+                'posttitle'     => 'Docalist\Biblio\Type\PostTitle',
                 'creation'      => 'Docalist\Biblio\Type\PostDate',
                 'createdBy'     => 'Docalist\Biblio\Type\PostAuthor',
                 'lastupdate'    => 'Docalist\Biblio\Type\PostModified',
@@ -318,7 +318,7 @@ class Type extends Entity
             'label' => 'Champs de gestion',
             'state' => 'collapsed',
         ];
-//         $fields[] = 'title';
+//         $fields[] = 'posttitle';
         $fields[] = 'type';
         $fields[] = 'ref';
 //         $fields = array_merge($fields, array_keys(self::loadSchema()['fields']));
@@ -472,12 +472,12 @@ class Type extends Entity
         $slug = $ref;
 
         // slug de la forme 'ref-mots-du-titre'
-        // $slug = $this->ref() . '-' . sanitize_title($this->title(), '', 'save');
+        // $slug = $this->ref() . '-' . sanitize_title($this->posttitle(), '', 'save');
 
         $this->slug = $slug;
 
-        // Affecte un post_title à la fiche (par défaut : n° de ref
-        $this->title = $ref;
+        // Affecte un post_title à la fiche (par défaut : n° de ref)
+        $this->posttitle = $ref;
     }
 
     public function getSettingsForm()
@@ -722,8 +722,8 @@ class Type extends Entity
         $mapping->addField('createdby')->keyword();
         $mapping->addField('creation')->dateTime();
         $mapping->addField('lastupdate')->dateTime();
-        $mapping->addField('title')->text();
-        $mapping->addField('title-sort')->keyword();
+        $mapping->addField('posttitle')->text();
+        $mapping->addField('posttitle-sort')->keyword();
         $mapping->addField('ref')->integer();
 
         return $mapping;
@@ -757,11 +757,11 @@ class Type extends Entity
         // Date de modification
         isset($this->lastupdate) && $document['lastupdate'] = $this->lastupdate();
 
-        // Titre
-        if (isset($this->title)) {
-            $title = $this->title();
-            $document['title'] = $title;
-            $document['title-sort'] = implode(' ', Tokenizer::tokenize($title));
+        // Titre du post
+        if (isset($this->posttitle)) {
+            $postTitle = $this->posttitle->getPhpValue();
+            $document['posttitle'] = $postTitle;
+            $document['posttitle-sort'] = implode(' ', Tokenizer::tokenize($postTitle));
         }
 
         // Numéro de réf
