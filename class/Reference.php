@@ -39,6 +39,7 @@ use Docalist\Biblio\Field\Imported;
 use Docalist\Biblio\Field\Error;
 
 use Docalist\Search\MappingBuilder;
+use Docalist\Tokenizer;
 
 /**
  * Une référence documentaire.
