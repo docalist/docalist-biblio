@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio Export' plugin.
  *
- * Copyright (C) 2012-2014 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -43,7 +43,7 @@ class Xml extends Exporter
         $xml->startElement('references');
         $xml->writeAttribute('count', $references->count());
         $xml->writeAttribute('datetime', date('Y-m-d H:i:s'));
-        $xml->writeAttribute('query', $references->searchRequest()->asEquation());
+        $xml->writeAttribute('query', $references->getSearchRequest()->getEquation());
         foreach ($references as $reference) {
             $data = $this->converter->convert($reference);
             $xml->startElement('reference');
