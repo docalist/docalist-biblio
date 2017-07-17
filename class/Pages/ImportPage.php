@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -19,7 +19,7 @@ use Docalist\AdminPage;
 use Docalist\Schema\Schema;
 use Docalist\Http\ViewResponse;
 use Docalist\Http\CallbackResponse;
-use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchRequest2 as SearchRequest;
 use Docalist\Biblio\Reference\ReferenceIterator;
 use Docalist\Biblio\Export\Converter;
 use Docalist\Biblio\Export\Exporter;
