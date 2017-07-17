@@ -1,9 +1,8 @@
 <?php
-
 /**
  * This file is part of the 'Docalist Biblio Export' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,7 +14,7 @@ namespace Docalist\Biblio\Export;
 
 use InvalidArgumentException;
 use Docalist\Biblio\Reference\ReferenceIterator;
-use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchRequest2 as SearchRequest;
 
 /**
  * Un format d'export composé d'un converter et d'un exporter.
