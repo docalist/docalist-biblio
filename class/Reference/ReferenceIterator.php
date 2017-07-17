@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Reference;
 
-use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchRequest2 as SearchRequest;
 use Docalist\Search\SearchResponse;
 use Iterator;
 use Countable;
@@ -111,7 +111,7 @@ class ReferenceIterator implements Iterator, Countable
         ++$this->current;
         ++$this->count;
         if (! $this->valid()) {
-            $this->loadPage($this->searchRequest->page() + 1);
+            $this->loadPage($this->searchRequest->getPage() + 1);
         }
     }
 
@@ -122,7 +122,7 @@ class ReferenceIterator implements Iterator, Countable
      */
     protected function loadPage($page)
     {
-        $this->searchRequest->page($page);
+        $this->searchRequest->setPage($page);
         $this->searchResponse = $this->searchRequest->execute();
         $this->hits = $this->searchResponse->getHits();
         $this->current = 0;
