@@ -27,4 +27,9 @@ class PostTitle extends Text
             'description' => __('Titre du post WordPress.', 'docalist-biblio'),
         ];
     }
+
+    public function getEditorForm($options = null)
+    {
+        return parent::getEditorForm($options)->addClass('large-text');
+    }
 }
