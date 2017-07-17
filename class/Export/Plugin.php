@@ -1,9 +1,8 @@
 <?php
-
 /**
  * This file is part of the "Docalist Biblio Export" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -14,7 +13,7 @@
 namespace Docalist\Biblio\Export;
 
 use WP_Query;
-use Docalist\Search\SearchRequest;
+use Docalist\Search\SearchRequest2 as SearchRequest;
 use Docalist\Http\ViewResponse;
 use Docalist\Search\SearchResponse;
 use RuntimeException;
@@ -107,7 +106,7 @@ class Plugin
         // paramètres indiqués et on déclenche l'export.
         add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
             // Stocke la SearchRequest
-            if ($request && $request->isSearch() && is_user_logged_in()) {
+            if ($request && is_user_logged_in()) {
                 set_transient($this->transient(), $request, 24 * HOUR_IN_SECONDS);
             }
 
