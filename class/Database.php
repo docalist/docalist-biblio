@@ -34,7 +34,7 @@ class Database extends PostTypeRepository
         'post_date' => 'creation',
      // 'post_date_gmt'         => '',
      // 'post_content'          => '',
-        'post_title' => 'title',
+        'post_title' => 'posttitle',
      // 'post_excerpt'          => '',
         'post_status' => 'status',
      // 'comment_status'        => '',
