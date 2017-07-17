@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -131,9 +131,23 @@ class ReferenceIterator implements Iterator, Countable
     /**
      * Retourne la requête docalist-search en cours.
      *
+     * @deprecated Utiliser getSearchRequest().
+     *
      * @return SearchRequest
      */
     public function searchRequest()
+    {
+        _deprecated_function(__METHOD__, '0.15', 'getSearchRequest');
+
+        return $this->getSearchRequest();
+    }
+
+    /**
+     * Retourne la requête docalist-search en cours.
+     *
+     * @return SearchRequest
+     */
+    public function getSearchRequest()
     {
         return $this->searchRequest;
     }
