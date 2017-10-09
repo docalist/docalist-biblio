@@ -43,7 +43,12 @@ define('DOCALIST_BIBLIO_VERSION', '0.15.0'); // Garder synchro avec la version i
  */
 define('DOCALIST_BIBLIO', DOCALIST_BIBLIO_DIR . DIRECTORY_SEPARATOR . basename(__FILE__));
 
-/*
+/**
+ * Url de base du plugin.
+ */
+define('DOCALIST_BIBLIO_URL', plugins_url('', DOCALIST_BIBLIO));
+
+/**
  * Initialise le plugin.
  */
 add_action('plugins_loaded', function () {
