@@ -2,7 +2,7 @@
 /**
  * This file is part of the "Docalist Biblio" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,7 +15,7 @@ namespace Docalist\Biblio;
 
 // Les scripts suivants ne sont dispos que dans le back-office
 add_action('admin_init', function () {
-    $url = plugins_url('docalist-biblio');
+    $url = DOCALIST_BIBLIO_URL;
 
     // Css pour EditReference (également utilisé dans le paramétrage de la grille de saisie)
     wp_register_style(
