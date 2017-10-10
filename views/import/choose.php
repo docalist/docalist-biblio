@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -196,7 +196,7 @@ wp_enqueue_media();
 
 wp_enqueue_script(
     'docalist-biblio-import-choose',
-    plugins_url('docalist-biblio/views/import/choose.js'),
+    DOCALIST_BIBLIO_URL . '/views/import/choose.js',
     ['jquery-ui-sortable'],
     20140417,
     true
