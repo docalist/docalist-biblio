@@ -13,6 +13,7 @@
 namespace Docalist\Biblio\Export;
 
 use WP_Query;
+use Docalist\Views;
 use Docalist\Search\SearchRequest;
 use Docalist\Http\ViewResponse;
 use Docalist\Search\SearchResponse;
@@ -83,6 +84,11 @@ class Plugin
     {
         // Charge les fichiers de traduction du plugin
         load_plugin_textdomain('docalist-biblio-export', false, 'docalist-biblio-export/languages');
+
+        // Ajoute notre répertoire "views" au service "docalist-views"
+        add_filter('docalist_service_views', function(Views $views) {
+            return $views->addDirectory('docalist-biblio-export', DOCALIST_BIBLIO_EXPORT_DIR . '/views');
+        });
 
         // Charge la configuration du plugin
         $this->settings = new Settings(docalist('settings-repository'));
