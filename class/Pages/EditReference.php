@@ -383,7 +383,7 @@ class EditReference
         }
         unset($ref['title']);
         $ref = $this->database->createReference($ref['type'], $ref);
-        $ref->id($postarr['ID']); // TODO devrait être géré dans createRef
+        $ref->setID($postarr['ID']); // TODO devrait être géré dans createRef
 
         if ($debug) {
             echo '<h1>Notice existante</h1>';

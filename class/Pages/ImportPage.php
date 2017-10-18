@@ -218,7 +218,7 @@ class ImportPage extends AdminPage {
      * Taxonomies
      */
     public function actionTaxonomies() {
-        // $posttype = $this->plugin()->get('references')->id();
+        // $posttype = $this->plugin()->get('references')->getID();
         // $taxonomies = get_taxonomies(array('object_type' => array($posttype)), 'objects');
         $taxonomies = get_taxonomies(array(), 'objects');
 

@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -102,7 +102,7 @@ class ListReferences{
             /** @var WP_Post $post */
             global $post;
 
-            if (is_null($ref) || $ref->id() !== $post_id) {
+            if (is_null($ref) || $ref->getID() !== $post_id) {
                 try {
                     $ref = $this->database->load($post_id);
                 } catch (Exception $e) {
