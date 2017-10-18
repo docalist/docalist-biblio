@@ -285,6 +285,8 @@ class Database extends PostTypeRepository
      * @param string $grid Optionnel, nom du formulaire de saisie à utiliser pour initialiser la valeur par défaut.
      * N'est utilisé que si $data vaut null.
      *
+     * @return Type
+     *
      * @throws InvalidArgumentException
      */
     public function createReference($type, array $data = null, $grid = null)
