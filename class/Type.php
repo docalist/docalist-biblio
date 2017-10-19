@@ -474,7 +474,7 @@ class Type extends Entity
 
         // Si la notice est en statut publish, on lui attribue un numéro de référence
         if (isset($this->status) && $this->status->getPhpValue() === 'publish') {
-            $ref = $this->ref = docalist('sequences')->increment($database->postType(), 'ref');
+            $this->ref = docalist('sequences')->increment($database->postType(), 'ref');
         }
     }
 
