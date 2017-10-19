@@ -29,7 +29,6 @@ use Docalist\Biblio\Type\RefNumber;
 use Docalist\Biblio\Type\RefType;
 
 use Docalist\Repository\Repository;
-use Docalist\Repository\PostTypeRepository;
 
 use Docalist\Forms\Container;
 
@@ -42,7 +41,7 @@ use Closure;
 use InvalidArgumentException;
 
 /**
- * Référence documentaire.
+ * Type de base des entités qu'on peut stocker dans une base docalist.
  *
  * @property PostType       $posttype   Post Type
  * @property PostStatus     $status     Statut de la fiche
@@ -429,55 +428,76 @@ class Type extends Entity
     }
 
     /**
-     * Attribue un numéro de la ref à la notice avant de l'enregistrer si elle
-     * n'en a pas déjà un.
+     * Initialise les champs de gestion de la notice juste avant qu'elle ne soit enregistrée.
+     *
+     * Les champs suivants sont initialisés :
+     *
+     * - ref : on attribue un numéro de référence à la notice si elle est en statut "publish" et qu'elle n'a pas
+     *   encore de numéro de référence.
+     * - slug : on attribue un slug à la notice si elle a un numéro de référence (ie si elle est publiée).
+     * - posttitle : on utilise le champ ref comme postitle par défaut de la notice. Les classes descendantes
+     *   définissent un meilleur titre (par exemple, Reference recopie le contenu du champ title).
+     *
+     * @param Repository $repository Le dépôt dans lequel l'entité va être enregistrée.
      */
     public function beforeSave(Repository $repository)
     {
-        // Vérifie qu'on peut accéder à $repository->postType()
-        if (! $repository instanceof PostTypeRepository) {
-            throw new InvalidArgumentException("Les notices ne peuvent enregistrées que dans un PostTypeRepository");
+        parent::beforeSave($repository);
+
+        // Initialise le numéro de réf
+        $this->initRefNumber($repository);
+
+        // Initialise le slug du post
+        $this->initSlug();
+
+        // Initialise le titre du post
+        $this->initPostTitle();
+    }
+
+    /**
+     * Initialise/vérifie le numéro de référence (champ ref) de la notice lorsque celle-ci est enregistrée.
+     *
+     * On alloue un numéro de référence à la notice si celle-ci est en statut publish et qu'elle n'a pas encore de
+     * numéro. Sinon, on met à jour la séquence si le numéro de la notice est supérieur au dernier numéro alloué.
+     *
+     * @param Database $database La base dans laquelle la notice va être enregistrée (utilisé pour déterminer le
+     * nom de la séquence).
+     */
+    protected function initRefNumber(Database $database)
+    {
+        // Si la notice a déjà un numéro de référence, on se contente de synchroniser la séquence
+        if (isset($this->ref)) {
+            docalist('sequences')->setIfGreater($database->postType(), 'ref', $this->ref->getPhpValue());
+
+            return;
         }
 
-        // Met à jour la séquence si on a déjà un numéro de ref
-        $ref = $this->ref();
-        if (! empty($ref)) {
-            docalist('sequences')->setIfGreater($repository->postType(), 'ref', $ref);
+        // Si la notice est en statut publish, on lui attribue un numéro de référence
+        if (isset($this->status) && $this->status->getPhpValue() === 'publish') {
+            $ref = $this->ref = docalist('sequences')->increment($database->postType(), 'ref');
         }
+    }
 
-        // Sinon, alloue un numéro à la notice
-        else {
-            // On n'alloue un n° de ref qu'aux notices publiées (#322)
+    /**
+     * Initialise le slug (post_name) de la notice.
+     *
+     * Recopie le numéro de réf de la notice dans le champ slug (si la notice a un numéro), ne fait rien sinon.
+     */
+    protected function initSlug()
+    {
+        isset($this->ref) && $this->slug = $this->ref->getPhpValue();
+    }
 
-            // Remarque : dans wp_insert_post, WP fait le test suivant :
-            // if ( !in_array( $post_status, array( 'draft', 'pending', 'auto-draft' ) ) )
-            //
-            // Autre solution : tester si la notice a un statut public
-            // $publicStatuses = get_post_stati(['public' => true], 'names')
-            // if (isset($publicStatuses[$this->status()])) { /* alloc ref */ }
-            //
-            // Remarque : ne fonctionne pas pour un post 'future' car beforeSave
-            // n'est pas rappellée dans ce cas.
-
-            if ($this->status() === 'publish') {
-                $ref = $this->ref = docalist('sequences')->increment($repository->postType(), 'ref');
-            } else {
-                $ref = '(sans titre)'; // Notice sans n° de ref et qui n'est pas public
-            }
-        }
-
-        // Alloue une slug à la notice
-
-        // slug de la forme 'ref'
-        $slug = $ref;
-
-        // slug de la forme 'ref-mots-du-titre'
-        // $slug = $this->ref() . '-' . sanitize_title($this->posttitle(), '', 'save');
-
-        $this->slug = $slug;
-
-        // Affecte un post_title à la fiche (par défaut : n° de ref)
-        $this->posttitle = $ref;
+    /**
+     * Initialise le champ post_title de la notice.
+     *
+     * Par défaut, le champ post_title est initialisé en recopiant le contenu du champ ref (si la notice a un numéro).
+     * Les classes descendantes surchargent cette méthode pour définir un post_title plus adéquat (par exemple, la
+     * classe Reference récupère le contenu du champ title).
+     */
+    protected function initPostTitle()
+    {
+        isset($this->ref) && $this->posttitle = $this->ref->getPhpValue();
     }
 
     public function getSettingsForm()
