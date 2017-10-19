@@ -144,6 +144,19 @@ class Reference extends Type
         return parent::assign($value);
     }
 
+    /**
+     * Initialise le champ post_title lorsque la notice est enregistrée.
+     *
+     * Par défaut, les post_title correspond simplement au champ title de la notice, mais les classes descendantes
+     * peuvent surcharger la méthode pour avoir un titre plus spécifique (par exemple, pour un article de périodique,
+     * on pourrait définir un post_title de la forme "title (in perio)".
+     */
+    protected function initPostTitle()
+    {
+        isset($this->title) && $this->posttitle = $this->title->getPhpValue();
+    }
+
+
     protected static function buildEditGrid(array $groups)
     {
         $allFields = static::getDefaultSchema()->getFields();
@@ -183,6 +196,8 @@ class Reference extends Type
         }
 
         // Ajoute tous les champs qui ne sont pas listés dans un groupe caché "champs non utilisés"
+        /*
+         Désactivé car ça crée un conflit entre l'UI wordpress et la notre (les notices restent en auto-draft)
         if ($allFields) {
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
@@ -197,6 +212,7 @@ class Reference extends Type
             ];
             $grid = array_merge($grid, array_keys($allFields));
         }
+        */
 
         // Construit la grille finale
         return [
