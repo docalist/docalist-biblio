@@ -34,6 +34,6 @@ class Journal extends Text
 
     public function getEditorForm($options = null)
     {
-        return (new EntryPicker('journal'))->setOptions('index:journal.filter')->addClass('large-text');
+        return (new EntryPicker('journal'))->setOptions('index:journal')->addClass('large-text');
     }
 }
