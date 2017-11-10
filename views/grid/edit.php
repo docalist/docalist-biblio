@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -119,7 +119,7 @@ $methods = [
 
 // Crée le formulaire
 $form = createForm($type->grids['base'], $grid, $methods[$grid->gridtype()]);
-$form->bind($grid->value());
+$form->bind($grid->getPhpValue());
 
 wp_styles()->enqueue(['docalist-biblio-edit-reference', 'docalist-biblio-grid-edit']);
 wp_scripts()->enqueue(['docalist-biblio-grid-edit']);
@@ -172,13 +172,23 @@ wp_scripts()->enqueue(['docalist-biblio-grid-edit']);
     <!-- Template utilisé pour créer de nouveaux groupes. -->
     <script type="text/html" id="group-template"><?php // Pas d'espace avant le début du formulaire sinon on a un warning jqueryMigrate "$.html() must start with '<'"
             $schema = new Schema([
+                // Valeurs par défaut communes
                 'type' => 'Docalist\Biblio\Type\Group',
                 'name' => 'group{group-number}',
                 'label' => __('Nouveau groupe de champs', 'docalist-biblio'),
+
+                // Valeurs par défaut pour grille de saisie
                 'state' => '', // = normal
+
+                // Valeurs par défaut pour grille d'affichage
+                'before' => '<dl>',
+                'format' => '<dt>%label</dt><dd>%content</dd>',
+                'after' => '</dl>',
             ]);
 
             $group = createForm($schema, $schema, $methods[$grid->gridtype()]);
+            $group->bind($schema->getPhpValue());
+
             $group->removeClass('level1')->addClass('level2')->setName($schema->name()); // au level 1, createForm ne génère pas de nom
 
             $form->get('fields')->add($group); // pour que les champs aient le bon nom

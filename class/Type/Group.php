@@ -37,7 +37,7 @@ class Group extends Any
         $name = $this->schema->name();
         $form = new Container($name);
 
-        $form->hidden('type')->bind('Docalist\Biblio\Type\Group');
+        $form->hidden('type');
 
         $form->input('label')
              ->setAttribute('id', $name . '-label')
@@ -101,6 +101,8 @@ class Group extends Any
     {
         $name = $this->schema->name();
         $form = new Container($name);
+
+        $form->hidden('type');
 
         $form->input('label')
              ->addClass('label regular-text')
