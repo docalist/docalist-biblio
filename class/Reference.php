@@ -277,7 +277,7 @@ class Reference extends Type
 
         // date
         $mapping->addField('date')->date()
-                ->addTemplate('date-*')->copyFrom('date')->copyDataTo('data');
+                ->addTemplate('date-*')->copyFrom('date')->copyDataTo('date');
 
         // journal
         $mapping->addField('journal')->text()->filter()->suggest();
