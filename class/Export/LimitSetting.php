@@ -2,7 +2,7 @@
 /**
  * This file is part of the "Docalist Biblio Export" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -24,7 +24,7 @@ use Docalist\Type\Integer;
  */
 class LimitSetting extends Composite
 {
-    static public function loadSchema()
+    public static function loadSchema()
     {
         return [
             'fields' => [
@@ -36,7 +36,10 @@ class LimitSetting extends Composite
                 'limit' => [
                     'type' => 'Docalist\Type\Integer',
                     'label' => __('Limite pour ce rôle', 'docalist-biblio-export'),
-                    'description' => __('Nombre maximum de notices exportables pour ce rôle (0 = pas de limite).', 'docalist-biblio-export'),
+                    'description' => __(
+                        'Nombre maximum de notices exportables pour ce rôle (0 = pas de limite).',
+                        'docalist-biblio-export'
+                    ),
                 ],
             ],
         ];
