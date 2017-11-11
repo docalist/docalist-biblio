@@ -74,6 +74,7 @@ class ReferenceIterator implements Iterator, Countable
     public function __construct(SearchRequest $searchRequest, $limit = null)
     {
         $this->searchRequest = $searchRequest;
+        $this->searchRequest->setSize(1000);
         $this->limit = $limit;
         $this->count = 0;
     }
