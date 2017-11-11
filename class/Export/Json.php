@@ -2,7 +2,7 @@
 /**
  * This file is part of the 'Docalist Biblio Export' plugin.
  *
- * Copyright (C) 2012-2015 Daniel Ménard
+ * Copyright (C) 2012-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -39,9 +39,12 @@ class Json extends Exporter
         $pretty && print("\n");
         $comma = $pretty ? ",\n" : ',';
         foreach ($references as $reference) {
-            $first ? ($first = false) : print($comma);
             $data = $this->converter->convert($reference);
             $data = $this->removeEmpty($data);
+            if (empty($data)) {
+                continue;
+            }
+            $first ? ($first = false) : print($comma);
             echo json_encode($data, $options);
             $pretty && print("\n");
         }
@@ -65,6 +68,12 @@ class Json extends Exporter
 
     public function description()
     {
-        return __('Fichier texte contenant des données structurées au format <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">Javascript Object Notation</a>.', 'docalist-biblio-export');
+        return sprintf(
+            __(
+                'Fichier texte contenant des données au format <a href="%s">Javascript Object Notation</a>.',
+                'docalist-biblio-export'
+            ),
+            'https://fr.wikipedia.org/wiki/JavaScript_Object_Notation'
+        );
     }
 }
