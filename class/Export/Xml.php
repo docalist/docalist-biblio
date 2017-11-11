@@ -46,6 +46,9 @@ class Xml extends Exporter
         $xml->writeAttribute('query', $references->getSearchRequest()->getEquation());
         foreach ($references as $reference) {
             $data = $this->converter->convert($reference);
+            if (empty($data)) {
+                continue;
+            }
             $xml->startElement('reference');
             $this->outputArray($xml, $data);
             $xml->endElement();
@@ -93,6 +96,12 @@ class Xml extends Exporter
 
     public function description()
     {
-        return __('<a href="http://fr.wikipedia.org/wiki/Extensible_Markup_Language">Extensible Markup Language</a> : fichier texte dans lequel les données sont encadrées par des &lt;balises&gt;.', 'docalist-biblio-export');
+        return sprintf(
+            __(
+                '<a href="%s">Extensible Markup Language</a> : fichier texte contenant des &lt;balises&gt;.',
+                'docalist-biblio-export'
+            ),
+            'https://fr.wikipedia.org/wiki/Extensible_Markup_Language'
+        );
     }
 }
