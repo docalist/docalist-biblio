@@ -18,6 +18,7 @@ use Docalist\Search\SearchRequest;
 use Docalist\Http\ViewResponse;
 use Docalist\Search\SearchResponse;
 use RuntimeException;
+use Docalist\Search\Aggregation\Standard\TermsIn;
 
 /**
  * Extension pour Docalist Biblio : génère des fichiers d'export et des
@@ -86,7 +87,7 @@ class Plugin
         load_plugin_textdomain('docalist-biblio-export', false, 'docalist-biblio-export/languages');
 
         // Ajoute notre répertoire "views" au service "docalist-views"
-        add_filter('docalist_service_views', function(Views $views) {
+        add_filter('docalist_service_views', function (Views $views) {
             return $views->addDirectory('docalist-biblio-export', DOCALIST_BIBLIO_EXPORT_DIR . '/views');
         });
 
@@ -176,9 +177,10 @@ class Plugin
         }
 
         // Exécute la requête
-        $request->facet('_type', 100);
-        $request->size(2);
-        $searchResponse = $request->execute('count'); /** @var SearchResponse $results */
+        $agg = new TermsIn();
+        $request->addAggregation($agg->getName(), $agg);
+        $request->setSize(0);
+        $searchResponse = $request->execute(); /** @var SearchResponse $results */
 
         // Affiche un message si on a aucune réponse
         if ($searchResponse->getHitsCount() === 0) {
@@ -187,10 +189,10 @@ class Plugin
 
         // Détermine la liste des types de notices qu'on va exporter
         $countByType = $types = [];
-        foreach ($searchResponse->facet('_type')->terms as $term) {
-            $types[] = $term->term;
-            $label = apply_filters('docalist_search_get_facet_label', $term->term, '_type');
-            $countByType[$label] = $term->count;
+        foreach ($agg->getBuckets() as $bucket) {
+            $types[] = $bucket->key;
+            $label = $agg->getBucketLabel($bucket);
+            $countByType[$label] = $bucket->doc_count;
         }
 
         // Récupère la liste des formats d'export possibles
@@ -291,14 +293,24 @@ class Plugin
      */
     protected function formats(array $types)
     {
-        // Dans une table 'export-formats', on aura :
-        // 'formats' => liste des formats définis = ['name', 'converter', 'converter-settings', 'exporter', 'exporter-settings']
+        // Dans une table 'export-formats', on aura la liste des formats définis
+        // ['name', 'converter', 'converter-settings', 'exporter', 'exporter-settings']
         // Dans les settings, on aura pour chaque type indexé par docalist-search :
         // 'formats' => liste des formats autorisés pour ce type = ['format1', 'format2', ...]
 
         // Liste des formats autorisés pour chaque type
         // TODO : depuis les settings
         $formatsByType = [
+            'prisme' => [ // en local
+                'prisme2014-delimited',
+                'prisme2014-uppercase-delimited',
+                'prisme2011-delimited',
+                'prisme2011-uppercase-delimited',
+                'prisme2012-delimited',
+                'prisme2012-uppercase-delimited',
+                'docalist-json-pretty',
+                'docalist-xml-pretty',
+            ],
             'dbprisme' => [
                 'prisme2014-delimited',
                 'prisme2014-uppercase-delimited',
