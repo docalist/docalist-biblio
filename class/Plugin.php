@@ -20,6 +20,7 @@ use Docalist\Biblio\Settings\Settings;
 use Docalist\Biblio\Settings\DatabaseSettings;
 use Docalist\Biblio\Pages\AdminDatabases;
 use Exception;
+use Docalist\Biblio\Export\ExportService;
 
 /**
  * Plugin de gestion de notices bibliographiques.
@@ -51,6 +52,9 @@ class Plugin {
         add_filter('docalist_service_views', function(Views $views) {
             return $views->addDirectory('docalist-biblio', DOCALIST_BIBLIO_DIR . '/views');
         });
+
+        // Déclare le service "docalist-biblio-export"
+        docalist('services')->add('docalist-biblio-export', new ExportService());
 
         add_action('init', function() {
             // Charge la configuration du plugin
