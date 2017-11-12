@@ -2,7 +2,7 @@
 /**
  * This file is part of the "Docalist Biblio" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -13,6 +13,7 @@
 namespace Docalist\Biblio\Export;
 
 use Docalist\AdminPage;
+use Exception;
 
 /**
  * Options de configuration du plugin.
