@@ -48,20 +48,6 @@ class SettingsPage extends AdminPage
             'options-general.php',                      // page parent
             __('Export et biblios', 'docalist-biblio')  // libellé menu
         );
-
-        // Ajoute un lien "Réglages" dans la page des plugins
-        $filter = 'plugin_action_links_docalist-biblio-export/docalist-biblio-export.php';
-        add_filter($filter, function ($actions) {
-            $action = sprintf(
-                '<a href="%s" title="%s">%s</a>',
-                esc_attr($this->url()),
-                $this->menuTitle(),
-                __('Réglages', 'docalist-biblio')
-            );
-            array_unshift($actions, $action);
-
-            return $actions;
-        });
     }
 
     /**
