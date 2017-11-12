@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio Export' plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
  *
  * Copyright (C) 2012-2017 Daniel Ménard
  *
@@ -71,7 +71,7 @@ class Json extends Exporter
         return sprintf(
             __(
                 'Fichier texte contenant des données au format <a href="%s">Javascript Object Notation</a>.',
-                'docalist-biblio-export'
+                'docalist-biblio'
             ),
             'https://fr.wikipedia.org/wiki/JavaScript_Object_Notation'
         );

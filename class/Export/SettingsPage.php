@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio Export" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
  * Copyright (C) 2015-2015 Daniel Ménard
  *
@@ -43,9 +43,9 @@ class SettingsPage extends AdminPage
         $this->settings = $settings;
 
         parent::__construct(
-            'docalist-biblio-export-settings',                // ID
-            'options-general.php',                            // page parent
-            __('Export et biblios', 'docalist-biblio-export') // libellé menu
+            'docalist-biblio-export-settings',          // ID
+            'options-general.php',                      // page parent
+            __('Export et biblios', 'docalist-biblio')  // libellé menu
         );
 
         // Ajoute un lien "Réglages" dans la page des plugins
@@ -55,7 +55,7 @@ class SettingsPage extends AdminPage
                 '<a href="%s" title="%s">%s</a>',
                 esc_attr($this->url()),
                 $this->menuTitle(),
-                __('Réglages', 'docalist-biblio-export')
+                __('Réglages', 'docalist-biblio')
             );
             array_unshift($actions, $action);
 
@@ -78,7 +78,7 @@ class SettingsPage extends AdminPage
                 $this->settings->save();
 
                 docalist('admin-notices')->success(
-                    __('Options enregistrées.', 'docalist-biblio-export')
+                    __('Options enregistrées.', 'docalist-biblio')
                 );
 
                 return $this->redirect($this->url($this->defaultAction()), 303);
@@ -87,7 +87,7 @@ class SettingsPage extends AdminPage
             }
         }
 
-        return $this->view('docalist-biblio-export:settings/export', [
+        return $this->view('docalist-biblio:export/settings/export', [
             'settings' => $this->settings,
         ]);
     }

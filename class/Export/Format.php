@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio Export' plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
  *
  * Copyright (C) 2012-2017 Daniel Ménard
  *
@@ -64,13 +64,13 @@ class Format
     {
         // Vérifie que le format indique le nom du convertisseur à utiliser
         if (!isset($format['converter'])) {
-            $msg = sprintf(__('Aucun convertisseur indiqué dans le format %s.', 'docalist-biblio-export'), $name);
+            $msg = sprintf(__('Aucun convertisseur indiqué dans le format %s.', 'docalist-biblio'), $name);
             throw new InvalidArgumentException($msg);
         }
 
         // Vérifie que le format indique le nom de l'exporter à utiliser
         if (!isset($format['exporter'])) {
-            $msg = sprintf(__('Aucune exporteur indiqué dans le format %s.', 'docalist-biblio-export'), $name);
+            $msg = sprintf(__('Aucune exporteur indiqué dans le format %s.', 'docalist-biblio'), $name);
             throw new InvalidArgumentException($msg);
         }
 

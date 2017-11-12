@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio Export" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
@@ -26,12 +26,12 @@ use Docalist\Forms\Form;
 .limit table.field-table { width: auto; }
 </style>
 <div class="wrap">
-    <h1><?= __('Export et bibliographies', 'docalist-biblio-export') ?></h1>
+    <h1><?= __('Export et bibliographies', 'docalist-biblio') ?></h1>
 
     <p class="description"><?php
         echo __(
             "Le module d'export vous permet de générer des fichiers d'export et des bibliographies à partir d'une recherche docalist-search ou du panier de notices.",
-            'docalist-biblio-export'
+            'docalist-biblio'
         );
     ?></p>
 
@@ -46,7 +46,7 @@ use Docalist\Forms\Form;
                 ->select('role')->setOptions(userRoles())->getParent()
                 ->input('limit')->setAttribute('type', 'number');
 
-        $form->submit(__('Enregistrer les modifications', 'docalist-biblio-export'))
+        $form->submit(__('Enregistrer les modifications', 'docalist-biblio'))
              ->addClass('button button-primary');
 
         $form->bind($settings)->display();

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio Export' plugin.
+ * This file is part of the 'Docalist Biblio' plugin.
  *
  * Copyright (C) 2012-2017 Daniel Ménard
  *
@@ -99,7 +99,7 @@ class Xml extends Exporter
         return sprintf(
             __(
                 '<a href="%s">Extensible Markup Language</a> : fichier texte contenant des &lt;balises&gt;.',
-                'docalist-biblio-export'
+                'docalist-biblio'
             ),
             'https://fr.wikipedia.org/wiki/Extensible_Markup_Language'
         );

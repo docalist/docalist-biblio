@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio Export" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
- * Copyright (C) 2015-2015 Daniel Ménard
+ * Copyright (C) 2015-2017 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.

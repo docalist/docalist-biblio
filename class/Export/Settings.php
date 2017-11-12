@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio Export" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
  * Copyright (C) 2015-2017 Daniel Ménard
  *
@@ -31,19 +31,19 @@ class Settings extends TypeSettings
             'fields' => [
                 'exportpage' => [
                     'type' => 'Docalist\Type\Integer',
-                    'label' => __("Page pour l'export", 'docalist-biblio-export'),
+                    'label' => __("Page pour l'export", 'docalist-biblio'),
                     'description' => __(
                         "Page WordPress sur laquelle l'export sera disponible.",
-                        'docalist-biblio-export'
+                        'docalist-biblio'
                     ),
                     'default' => 0,
                 ],
                 'limit' => [
                     'type' => 'Docalist\Biblio\Export\LimitSetting*',
-                    'label' => __("Limites de l'export", 'docalist-biblio-export'),
+                    'label' => __("Limites de l'export", 'docalist-biblio'),
                     'description' => __(
                         'Liste des rôles autorisés à exporter des notices et nombre maximum de notices par rôle.',
-                        'docalist-biblio-export'
+                        'docalist-biblio'
                     ),
                     'key' => 'role',
                 ],

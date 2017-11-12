@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the "Docalist Biblio Export" plugin.
+ * This file is part of the "Docalist Biblio" plugin.
  *
  * Copyright (C) 2015-2017 Daniel Ménard
  *
@@ -27,11 +27,11 @@ class ExportWidget extends WP_Widget
             $id,
 
             // Titre (nom) du widget affiché en back office
-            __('Export de notices', 'docalist-biblio-export'),
+            __('Export de notices', 'docalist-biblio'),
 
             // Args
             [
-                'description' => __('Export de notices', 'docalist-biblio-export'),
+                'description' => __('Export de notices', 'docalist-biblio'),
                 'classname' => $id, // par défaut, WordPress met 'widget_'.$id
             ]
         );
@@ -102,7 +102,7 @@ class ExportWidget extends WP_Widget
         $label && printf($link,
             'export-file',
             '',
-            __("Génére un fichier d'export", 'docalist-biblio-export'),
+            __("Génére un fichier d'export", 'docalist-biblio'),
             $exportPage,
             $label
         );
@@ -112,7 +112,7 @@ class ExportWidget extends WP_Widget
         $label && printf($link,
             'export-print',
             '',
-            __('Génére une bibliographie', 'docalist-biblio-export'),
+            __('Génére une bibliographie', 'docalist-biblio'),
             $exportPage,
             $label
         );
@@ -122,7 +122,7 @@ class ExportWidget extends WP_Widget
         $label && printf($link,
             'export-mail',
             '',
-            __("Génère un fichier d'export et l'envoie par messagerie", 'docalist-biblio-export'),
+            __("Génère un fichier d'export et l'envoie par messagerie", 'docalist-biblio'),
             $exportPage,
             $label
         );
@@ -145,19 +145,19 @@ class ExportWidget extends WP_Widget
 
         $form->input('title')
             ->setAttribute('id', $this->get_field_id('title')) // pour que le widget affiche le bon titre en backoffice. cf widgets.dev.js, fonction appendTitle(), L250
-            ->setLabel(__('<b>Titre du widget</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Titre du widget</b>', 'docalist-biblio'))
             ->addClass('widefat');
 
         $form->input('file')
-            ->setLabel(__('<b>Exporter</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Exporter</b>', 'docalist-biblio'))
             ->addClass('widefat');
 
         $form->input('print')
-            ->setLabel(__('<b>Créer une bibliographie</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Créer une bibliographie</b>', 'docalist-biblio'))
             ->addClass('widefat');
 
         $form->input('mail')
-            ->setLabel(__('<b>Envoyer par messagerie</b>', 'docalist-biblio-export'))
+            ->setLabel(__('<b>Envoyer par messagerie</b>', 'docalist-biblio'))
             ->addClass('widefat');
 
         return $form;
@@ -171,10 +171,10 @@ class ExportWidget extends WP_Widget
     protected function defaultSettings()
     {
         return [
-            'title' => __('Export', 'docalist-biblio-export'),
-            'file' => __('Générer un fichier', 'docalist-biblio-export'),
-            'print' => __('Créer une bibliographie', 'docalist-biblio-export'),
-            'mail' => __('Envoyer par messagerie', 'docalist-biblio-export'),
+            'title' => __('Export', 'docalist-biblio'),
+            'file' => __('Générer un fichier', 'docalist-biblio'),
+            'print' => __('Créer une bibliographie', 'docalist-biblio'),
+            'mail' => __('Envoyer par messagerie', 'docalist-biblio'),
         ];
     }
 
