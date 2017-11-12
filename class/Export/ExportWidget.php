@@ -33,6 +33,7 @@ class ExportWidget extends WP_Widget
             [
                 'description' => __('Export de notices', 'docalist-biblio'),
                 'classname' => $id, // par défaut, WordPress met 'widget_'.$id
+                'customize_selective_refresh' => true,
             ]
         );
     }
