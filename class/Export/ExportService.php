@@ -13,7 +13,6 @@
 namespace Docalist\Biblio\Export;
 
 use WP_Query;
-use Docalist\Views;
 use Docalist\Search\SearchRequest;
 use Docalist\Http\ViewResponse;
 use Docalist\Search\SearchResponse;
@@ -21,10 +20,9 @@ use RuntimeException;
 use Docalist\Search\Aggregation\Standard\TermsIn;
 
 /**
- * Extension pour Docalist Biblio : génère des fichiers d'export et des
- * bibliographies.
+ * Service docalist-biblio-export  : génère des fichiers d'export et des bibliographies.
  */
-class Plugin
+class ExportService
 {
     /**
      * Les paramètres du plugin.
@@ -83,14 +81,6 @@ class Plugin
      */
     public function __construct()
     {
-        // Charge les fichiers de traduction du plugin
-        load_plugin_textdomain('docalist-biblio-export', false, 'docalist-biblio-export/languages');
-
-        // Ajoute notre répertoire "views" au service "docalist-views"
-        add_filter('docalist_service_views', function (Views $views) {
-            return $views->addDirectory('docalist-biblio-export', DOCALIST_BIBLIO_EXPORT_DIR . '/views');
-        });
-
         // Charge la configuration du plugin
         $this->settings = new Settings(docalist('settings-repository'));
 
@@ -104,13 +94,11 @@ class Plugin
             register_widget('Docalist\Biblio\Export\ExportWidget');
         });
 
-        // Stocke la dernière requête exécutée par docalist-search dans un
-        // transient. On utilise une priorité haute pour laisser la possibilité
-        // à tous les autres plugins de créer la requête.
-        // On en profite pour tester si on est sur la page "export" (c'est plus
-        // simple de le faire içi plutôt que d'intercepter parse_query et ça
-        // fait un filtre en moins) et si c'est le cas, on vérifie les
-        // paramètres indiqués et on déclenche l'export.
+        // Stocke la dernière requête exécutée par docalist-search dans un transient.
+        // On utilise une priorité haute pour laisser la possibilité à tous les autres plugins de créer la requête.
+        // On en profite pour tester si on est sur la page "export" (c'est plus simple de le faire içi plutôt que
+        // d'intercepter parse_query et ça fait un filtre en moins) et si c'est le cas, on vérifie les paramètres
+        // indiqués et on déclenche l'export.
         add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
             // Stocke la SearchRequest
             if ($request && is_user_logged_in()) {
@@ -173,7 +161,7 @@ class Plugin
         // Affiche un message si on n'a aucune requête en cours
         $request = get_transient($this->transient()); /** @var SearchRequest $request */
         if ($request === false) {
-            return $this->view('docalist-biblio-export:norequest');
+            return $this->view('docalist-biblio:export/norequest');
         }
 
         // Exécute la requête
@@ -184,7 +172,7 @@ class Plugin
 
         // Affiche un message si on a aucune réponse
         if ($searchResponse->getHitsCount() === 0) {
-            return $this->view('docalist-biblio-export:nohits');
+            return $this->view('docalist-biblio:export/nohits');
         }
 
         // Détermine la liste des types de notices qu'on va exporter
@@ -198,7 +186,7 @@ class Plugin
         // Récupère la liste des formats d'export possibles
         $formats = $this->formats($types);
         if (empty($formats)) {
-            return $this->view('docalist-biblio-export:noformat', [
+            return $this->view('docalist-biblio:export/noformat', [
                 'types' => $countByType,
                 'total' => $searchResponse->getHitsCount(),
                 'max' => 100,
@@ -225,7 +213,7 @@ class Plugin
         }
 
         // Sinon, affiche le formulaire "choix du format"
-        return $this->view('docalist-biblio-export:form', [
+        return $this->view('docalist-biblio:export/form', [
             'types' => $countByType,
             'total' => $searchResponse->getHitsCount(),
             'max' => 100,
@@ -306,8 +294,6 @@ class Plugin
                 'prisme2014-uppercase-delimited',
                 'prisme2011-delimited',
                 'prisme2011-uppercase-delimited',
-                'prisme2012-delimited',
-                'prisme2012-uppercase-delimited',
                 'docalist-json-pretty',
                 'docalist-xml-pretty',
             ],
@@ -352,7 +338,7 @@ class Plugin
         // TODO : depuis la table
         $allFormats = apply_filters('docalist_biblio_get_export_formats', []);
         if (empty($allFormats)) {
-            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio-export'));
+            throw new RuntimeException(__("Aucun format d'export disponible", 'docalist-biblio'));
         }
         // on récupère un tableau de la forme 'format' => params
 
