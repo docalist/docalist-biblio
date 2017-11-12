@@ -52,7 +52,9 @@ class Format
     /**
      * Initialise l'objet.
      *
-     * @param array $settings Les paramètres de l'objet.
+     * @param string    $name   Le nom du format.
+     * @param array     $format Les paramètres de l'objet.
+     *
      * - label : optionnel, string, libellé du format.
      * - description : optionnel, string description du format.
      * - converter : obligatoire, string, nom de classe complet du converter.
