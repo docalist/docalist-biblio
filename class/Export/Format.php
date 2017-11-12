@@ -64,16 +64,13 @@ class Format
      */
     public function __construct($name, array $format)
     {
-        // Vérifie que le format indique le nom du convertisseur à utiliser
-        if (!isset($format['converter'])) {
-            $msg = sprintf(__('Aucun convertisseur indiqué dans le format %s.', 'docalist-biblio'), $name);
-            throw new InvalidArgumentException($msg);
-        }
+        // Vérifie que les clés obligatoires sont définies dans les options
+        foreach(['converter', 'exporter'] as $key) {
+            if (!isset($format[$key])) {
+                $msg = sprintf(__('La clé %s doit être définie pour le le format %s.', 'docalist-biblio'), $key, $name);
+                throw new InvalidArgumentException($msg);
+            }
 
-        // Vérifie que le format indique le nom de l'exporter à utiliser
-        if (!isset($format['exporter'])) {
-            $msg = sprintf(__('Aucune exporteur indiqué dans le format %s.', 'docalist-biblio'), $name);
-            throw new InvalidArgumentException($msg);
         }
 
         $this->name = $name;
