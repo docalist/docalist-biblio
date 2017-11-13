@@ -28,8 +28,8 @@ class PostTitle extends Text
         ];
     }
 
-    public function getEditorForm($options = null)
+    public function getDefaultEditor()
     {
-        return parent::getEditorForm($options)->addClass('large-text');
+        return 'input-large';
     }
 }
