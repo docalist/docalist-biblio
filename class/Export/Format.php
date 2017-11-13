@@ -112,7 +112,7 @@ class Format
             return $this->format['description'];
         }
 
-        return $this->converter()->description() . '<br />' . $this->exporter()->description();
+        return $this->converter()->getDescription() . '<br />' . $this->exporter()->getDescription();
     }
 
     /**
