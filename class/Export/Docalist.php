@@ -19,12 +19,12 @@ namespace Docalist\Biblio\Export;
  */
 class Docalist extends Converter
 {
-    public function label()
+    public function getLabel()
     {
         return __('Format docalist', 'docalist-biblio');
     }
 
-    public function description()
+    public function getDescription()
     {
         return __('Notices au format natif de Docalist-Biblio.', 'docalist-biblio');
     }

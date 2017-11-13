@@ -92,7 +92,7 @@ class Format
      *
      * @return string
      */
-    public function label()
+    public function getLabel()
     {
         if (isset($this->format['label'])) {
             return $this->format['label'];
@@ -106,7 +106,7 @@ class Format
      *
      * @return string
      */
-    public function description()
+    public function getDescription()
     {
         if (isset($this->format['description'])) {
             return $this->format['description'];

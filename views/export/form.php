@@ -100,14 +100,14 @@ if (count($types) === 1) {
             </th>
             <td>
                 <p class="export-label">
-                    <label for="format-<?=$name?>"><?=$fmt->label()?></label>
+                    <label for="format-<?=$name?>"><?=$fmt->getlabel()?></label>
                 </p>
                 <p class="export-description">
-                    <?=$fmt->description()?> <a class="export-more" href="#">+</a>
+                    <?=$fmt->getDescription()?> <a class="export-more" href="#">+</a>
                 </p>
                 <ul class="export-details">
-                    <li><?=$fmt->converter()->label() . ' : ' . lcfirst($fmt->converter()->description())?></li>
-                    <li><?=$fmt->exporter()->label() . ' : ' . lcfirst($fmt->exporter()->description())?></li>
+                    <li><?=$fmt->converter()->getLabel() . ' : ' . lcfirst($fmt->converter()->getDescription())?></li>
+                    <li><?=$fmt->exporter()->getLabel() . ' : ' . lcfirst($fmt->exporter()->getDescription())?></li>
                 </ul>
             </td>
         </tr>

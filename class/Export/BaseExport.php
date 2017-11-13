@@ -190,13 +190,46 @@ abstract class BaseExport
     }
 
     /**
-     * Retourne le libellé de l'objet.
+     * Retourne l'identifiant unique de l'objet.
+     *
+     * L'identifiant est généré à partir du nom complet de la classe PHP. Les antislashs sont remplacés par un tiret
+     * et l'ensemble est converti en minuscules. Exemple : retourne "docalist-biblio-export-xml" pour la classe
+     * "Docalist\Biblio\Export\Xml".
+     *
+     * Remarque : Le résultat obtenu est utilisable comme nom de classe CSS ou comme id dans du code html.
      *
      * @return string
      */
-    public function label()
+    final public function getID()
     {
-        return strtolower(substr(strrchr(get_called_class(), '\\'), 1));
+        return strtolower(strtr(get_class($this), '\\', '-'));
+    }
+
+    /**
+     * Retourne le nom usuel utilisé pour identifier l'objet.
+     *
+     * Par défaut, le nom usuel correspond à la version en minuscules du nom court (sans namespace) de la classe PHP.
+     * Par Exemple : retourne "xml" pour la classe "Docalist\Biblio\Export\Xml".
+     *
+     * Les classes descendantes peuvent surcharger la méthode pour retourner un nom plus approprié.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return strtolower(substr(strrchr(get_class($this), '\\'), 1));
+    }
+
+    /**
+     * Retourne le libellé de l'objet.
+     *
+     * Par défaut, la méthode retourne simplement le nom de l'objet.
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->getName();
     }
 
     /**
@@ -204,18 +237,9 @@ abstract class BaseExport
      *
      * @return string
      */
-    public function description()
+    public function getDescription()
     {
         return '';
     }
 
-    /**
-     * Retourne l'identifiant de l'objet.
-     *
-     * @return string
-     */
-    public function id()
-    {
-        return strtolower(strtr(get_called_class(), '\\', '-'));
-    }
 }

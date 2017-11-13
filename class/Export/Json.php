@@ -61,12 +61,12 @@ class Json extends Exporter
         });
     }
 
-    public function label()
+    public function getLabel()
     {
         return 'JSON';
     }
 
-    public function description()
+    public function getDescription()
     {
         return sprintf(
             __(

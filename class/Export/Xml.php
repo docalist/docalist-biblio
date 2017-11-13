@@ -89,12 +89,12 @@ class Xml extends Exporter
         }
     }
 
-    public function label()
+    public function getLabel()
     {
         return 'XML';
     }
 
-    public function description()
+    public function getDescription()
     {
         return sprintf(
             __(
