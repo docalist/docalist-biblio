@@ -265,7 +265,7 @@ class Database extends PostTypeRepository
 
         // Génère une exception si le type demandé n'existe pas
         if (! isset($types[$type])) {
-            throw new InvalidArgumentException("Type '$type' is not availableFilter");
+            throw new InvalidArgumentException("Type '$type' is not available");
         }
 
         // Ok
