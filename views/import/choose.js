@@ -67,7 +67,7 @@
             
             // Définit ce qui est affiché dans la bibliothèque de médias
             library: {
-                type: 'text'
+                //type: 'text'
             }
         })
         
