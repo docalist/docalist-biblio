@@ -130,6 +130,8 @@ class ImportPage extends AdminPage {
 
             // Supprime la bufferisation pour voir le suivi en temps réel
             while(ob_get_level()) ob_end_flush();
+            ini_set('implicit_flush',1);
+            ini_set('zlib.output_compression',0);
 
 //             Susceptible d'être plus rapide avec une base innodb, à tester.
 //             global $wpdb;
