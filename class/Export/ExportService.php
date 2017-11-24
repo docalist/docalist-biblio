@@ -99,7 +99,7 @@ class ExportService
         // On en profite pour tester si on est sur la page "export" (c'est plus simple de le faire içi plutôt que
         // d'intercepter parse_query et ça fait un filtre en moins) et si c'est le cas, on vérifie les paramètres
         // indiqués et on déclenche l'export.
-        add_filter('docalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
+        add_filter('ZZZZdocalist_search_create_request', function (SearchRequest $request = null, WP_Query $query) {
             // Stocke la SearchRequest
             if ($request && is_user_logged_in()) {
                 set_transient($this->transient(), $request, 24 * HOUR_IN_SECONDS);
