@@ -73,7 +73,6 @@ add_action('docalist_biblio_before_import', function(array $files, Database $dat
         }
     ?>
     <div class="wrap">
-        <?= screen_icon() ?>
         <h2><?= $h2 ?></h2>
 
         <p class="description"><?php

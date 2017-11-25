@@ -33,7 +33,6 @@ $back = 'javascript:history.go(-1)';
 ?>
 
 <div class="wrap">
-    <?= screen_icon() ?>
     <h2><?= __('Vider la base', 'docalist-biblio') ?></h2>
 
     <div class="error">

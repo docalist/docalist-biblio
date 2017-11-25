@@ -81,7 +81,6 @@ $form->render('bootstrap');
 */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
     <h2><?= sprintf(__('Export %s', 'docalist-biblio'), $database->settings()->label) ?></h2>
 
     <p class="description">

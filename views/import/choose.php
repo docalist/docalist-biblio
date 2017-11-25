@@ -28,7 +28,6 @@ use Docalist\Biblio\Pages\ImportPage;
  */
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
     <h2><?= sprintf(__('Import %s', 'docalist-biblio'), $settings->label) ?></h2>
 
     <p class="description">

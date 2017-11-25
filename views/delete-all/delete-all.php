@@ -40,7 +40,6 @@ $startTime = microtime(true);
  */
 add_action('docalist_biblio_deleteall_start', function(Database $database, $count) { ?>
     <div class="wrap">
-        <?= screen_icon() ?>
         <h2><?= __("Vider la base", 'docalist-biblio') ?></h2>
 
         <p class="description"><?php

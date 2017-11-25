@@ -44,7 +44,6 @@ foreach($formats as $name => $format) {
 }
 ?>
 <div class="wrap">
-    <?= screen_icon() ?>
     <h2><?= sprintf(__("Export %s : choix du format d'export", 'docalist-biblio'), $database->settings()->label()) ?></h2>
 
     <p class="description">
