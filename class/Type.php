@@ -737,6 +737,7 @@ class Type extends Entity
         // pour les champs de base, maintenir le même ordre que dans CustomPostTypeIndexer
         $mapping->addField('in')->keyword();
         $mapping->addField('type')->keyword();
+        $mapping->addField('type-label')->text()->filter();
         $mapping->addField('status')->keyword();
         $mapping->addField('slug')->text();
         $mapping->addField('createdby')->keyword();
@@ -758,6 +759,9 @@ class Type extends Entity
 
         // Type de réf
         isset($this->type) && $document['type'] = $this->type();
+
+        // Récupère le libellé exact du type de notice, tel qu'indiqué dans la grille
+        $document['type-label'] = $this->getSchema()->label() ?: $this->type();
 
         // Statut
         isset($this->status) && $document['status'] = $this->status();
