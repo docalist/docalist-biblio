@@ -207,9 +207,8 @@ class Database extends PostTypeRepository
 
         // Vérifie que ce type de notice figure dans la base
         if (! isset($this->settings->types[$type])) {
-            $msg = __('Cette référence a un type de notice (%s) qui ne figure pas dans la base.', 'docalist-biblio');
-            $msg = sprintf($msg, $type);
-            throw new InvalidArgumentException($msg);
+            $msg = __('Le type "%s" n\'existe pas dans la base "%s".', 'docalist-biblio');
+            throw new InvalidArgumentException(sprintf($msg, $type, $this->label()));
         }
 
         // Debug - vérifie que la grille 'base' existe
