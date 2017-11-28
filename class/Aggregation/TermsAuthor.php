@@ -18,7 +18,7 @@ use Docalist\Biblio\Field\Author;
 use stdClass;
 
 /**
- * Une agrégation standard de type "terms" sur le champ "media".
+ * Une agrégation standard de type "terms" sur le champ "author".
  */
 class TermsAuthor extends TermsAggregation
 {
@@ -47,6 +47,5 @@ class TermsAuthor extends TermsAggregation
         $author = new Author(['name' => $name, 'firstname' => $firstname]);
 
         return $author->getFormattedValue(['format' => 'f n']); // ou 'n (f)'
-
     }
 }
