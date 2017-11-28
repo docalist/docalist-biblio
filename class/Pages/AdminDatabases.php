@@ -27,12 +27,8 @@ use Docalist\Biblio\Grid;
 /**
  * Gestion des bases de données.
  */
-class AdminDatabases extends AdminPage {
-    /**
-     * {@inheritdoc}
-     */
-    protected $defaultAction = 'DatabasesList';
-
+class AdminDatabases extends AdminPage
+{
     /**
      * {@inheritdoc}
      */
@@ -75,6 +71,11 @@ class AdminDatabases extends AdminPage {
 
             return $actions;
         });
+    }
+
+    protected function getDefaultAction()
+    {
+        return 'DatabasesList';
     }
 
     /**
