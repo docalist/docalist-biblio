@@ -106,6 +106,9 @@ class ListReferences{
                 try {
                     $ref = $this->database->load($post_id);
                 } catch (Exception $e) {
+                    $msg = ($column === 'type') ? '<abbr style="color:red; cursor:help" title="%s">Erreur</abbr>' : '';
+                    printf($msg, esc_attr($e->getMessage()));
+
                     return;
                 }
             }
@@ -116,15 +119,7 @@ class ListReferences{
                     break;
 
                 case 'type' :
-                    $types = $this->database->settings()->types;
-                    $type = $ref->type();
-                    if (isset($types[$type])) {
-                        echo $types[$type]->label();
-                    } else {
-                        $title = __("Le type %s n'existe pas dans la base %s.", 'docalist-biblio');
-                        $title = sprintf($title, $type, $this->database->settings()->label());
-                        printf('<span style="color:red;" title="%s">%s</span>', $title, $type);
-                    }
+                    echo $ref->getSchema()->label();
                     break;
 
                 case 'creation':
