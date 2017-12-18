@@ -13,11 +13,12 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Type\TypedText;
+use Docalist\Type\Text;
 use Docalist\Table\TableManager;
 use Docalist\Table\TableInterface;
 use Docalist\Forms\TopicsInput;
 use InvalidArgumentException;
-use Docalist\Type\Text;
 
 /**
  * Une liste de mots-clés d'un certain type.

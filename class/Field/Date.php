@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedFuzzyDate;
+use Docalist\Type\TypedFuzzyDate;
 
 /**
  * Dates du document.
@@ -37,6 +37,13 @@ class Date extends TypedFuzzyDate
                 'docalist-biblio'
             ),
             // les sous-champs type et value sont repris tels quels de TypedFuzzyDate.
+            // On précise juste la table utilisée pour le champ 'type'
+            'fields' => [
+                'type' => [
+                    'table' => 'table:dates',
+                ],
+            ]
+
         ];
     }
 }

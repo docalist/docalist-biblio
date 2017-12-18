@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedNumber;
+use Docalist\Type\TypedNumber;
 
 /**
  * Étendue du document catalogué : pagination, nombre de pages, durée, dimensions...

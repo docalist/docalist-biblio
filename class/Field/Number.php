@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedNumber;
+use Docalist\Type\TypedNumber;
 
 /**
  * Un numéro propre au document (DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...)
@@ -36,6 +36,11 @@ class Number extends TypedNumber
                 'Numéros du document (DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...)',
                 'docalist-biblio'
             ),
+            'fields' => [
+                'type' => [
+                    'table' => 'table:numbers',
+                ],
+            ]
         ];
     }
 }

@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedText;
+use Docalist\Type\TypedText;
 use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
 

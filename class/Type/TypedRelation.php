@@ -13,6 +13,7 @@
  */
 namespace Docalist\Biblio\Type;
 
+use Docalist\Type\TypedText;
 use Docalist\Type\TableEntry;
 use Docalist\Biblio\Type\Relation;
 

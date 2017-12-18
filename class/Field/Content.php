@@ -13,7 +13,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedLargeText;
+use Docalist\Type\TypedLargeText;
 
 /**
  * Contenu du document.
