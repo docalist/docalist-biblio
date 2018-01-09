@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\PostTitle;
+use Docalist\Databases\Type\PostTitle;
 
 /**
  * Le titre de la notice.
