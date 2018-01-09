@@ -23,7 +23,7 @@ class Plugin {
         load_plugin_textdomain('docalist-biblio', false, 'docalist-biblio/languages');
 
         // Déclare la liste des types définis dans ce plugin
-        add_filter('docalist_biblio_get_types', function(array $types) {
+        add_filter('docalist_databases_get_types', function(array $types) {
             $types += [
                 'article'           => 'Docalist\Biblio\Reference\Article',
                 'book'              => 'Docalist\Biblio\Reference\Book',
