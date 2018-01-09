@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Reference;
 
@@ -36,6 +32,8 @@ use Docalist\Biblio\Reference;
  * - relié à une école, une fac, une université, etc.
  * - a un seul auteur physique
  * - peut avoir un ou plusieurs maitre de stage, directeur de thèse, etc.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Degree extends Reference
 {

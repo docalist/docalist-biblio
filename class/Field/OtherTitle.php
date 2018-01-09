@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -32,6 +28,8 @@ use Docalist\Type\Text;
  *
  * @property TableEntry $type   Type de titre.
  * @property Text       $value  Autre titre.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class OtherTitle extends TypedText
 {

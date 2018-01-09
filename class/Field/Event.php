@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -25,6 +21,8 @@ use InvalidArgumentException;
  * @property FuzzyDate  $date       Date de l'évènement.
  * @property Text       $place      Lieu de l'événement.
  * @property Text       $number     Numéro éventuel associé à l'évènement.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Event extends Composite
 {

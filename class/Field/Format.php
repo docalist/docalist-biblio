@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -33,6 +29,8 @@ use Docalist\Type\TableEntry;
  * - etc.
  *
  * Le champ est associé à une table d'autorité qui indique les valeurs possibles ("thesaurus:format" par défaut).
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Format extends TableEntry
 {

@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -20,6 +16,8 @@ use Docalist\Type\Text;
  *
  * Ce champ permet de préciser s'il s'agit d'une nouvelle édition, d'une édition revue et corrigée, d'une version
  * expurgée, etc.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Edition extends Text
 {

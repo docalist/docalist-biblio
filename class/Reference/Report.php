@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Reference;
 
@@ -35,6 +31,8 @@ use Docalist\Biblio\Reference;
  * Principales caractéristiques :
  * - pas d'éditeur
  * - pas d'isbn
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Report extends Reference
 {

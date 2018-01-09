@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -22,6 +18,8 @@ use Docalist\Type\TableEntry;
  * s'il s'agit d'un roman, d'un essai, etc.
  *
  * Le champ est associé à une table d'autorité qui indique les valeurs possibles ("thesaurus:genres" par défaut).
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Genre extends TableEntry
 {

@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -23,6 +19,8 @@ use Docalist\Type\TableEntry;
  *
  * Le champ est associé à une table d'autorité qui indique les langues possibles (par défaut : codes ISO à deux
  * lettres des langues de l'Union Européenne).
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Language extends TableEntry
 {

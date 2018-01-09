@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Reference;
 
@@ -28,6 +24,8 @@ use Docalist\Biblio\Reference;
  * - l'auteur est un député, un sénateur, ou le premier ministre
  * - a une date de dépôt
  * - est publié ou nom au bo, au jo, etc.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Legislation extends Reference
 {

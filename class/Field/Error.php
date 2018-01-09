@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -21,6 +17,8 @@ use Docalist\Type\Composite;
  * @property Docalist\Type\Text $code
  * @property Docalist\Type\Text $value
  * @property Docalist\Type\Text $message
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Error extends Composite {
     static public function loadSchema() {

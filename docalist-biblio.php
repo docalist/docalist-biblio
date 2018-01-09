@@ -16,9 +16,7 @@
  * Text Domain: docalist-biblio
  * Domain Path: /languages
  *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio;
 

@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -33,6 +29,8 @@ namespace Docalist\Biblio\Field;
  *
  * Le sous-champ `role` est associé à une table d'autorité qui contient les étiquettes de rôles disponibles
  * (par défaut, il s'agit de la table "marc21 relators").
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Editor extends Organisation
 {

@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -18,6 +14,8 @@ use Docalist\Forms\EntryPicker;
 
 /**
  * Un titre de périodique.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Journal extends Text
 {

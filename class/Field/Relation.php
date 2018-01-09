@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -17,6 +13,8 @@ use Docalist\Biblio\Type\TypedRelation;
 
 /**
  * Relation
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Relation extends TypedRelation
 {

@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Aggregation;
 
@@ -18,6 +14,8 @@ use Docalist\Biblio\Field\Author;
 
 /**
  * Une agrégation standard de type "terms" sur le champ "journal".
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class TermsJournal extends TermsAggregation
 {

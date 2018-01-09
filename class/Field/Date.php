@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -26,6 +22,8 @@ use Docalist\Type\TypedFuzzyDate;
  * - `value` : date.
  *
  * Le sous-champ type est associé à une table d'autorité qui indique les types de dates ("table:dates" par défaut).
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Date extends TypedFuzzyDate
 {

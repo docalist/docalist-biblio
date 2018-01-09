@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Reference;
 
@@ -104,6 +100,8 @@ use Docalist\Biblio\Reference;
  * - a eu lieu a un endroit précis
  * - était organisé à l'initiative d'un ou plusieurs organismes
  * - pas d'auteur personne physique
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Meeting extends Reference
 {

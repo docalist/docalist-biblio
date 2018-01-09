@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio;
 
@@ -73,6 +69,8 @@ use Docalist\Tokenizer;
  *
  * @property Imported       $imported       Notice importée.
  * @property Error[]        $errors         Erreurs.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Reference extends Record
 {

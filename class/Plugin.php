@@ -6,15 +6,13 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio;
 
 /**
  * Plugin de gestion de notices bibliographiques.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Plugin {
     /**

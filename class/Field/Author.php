@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -37,6 +33,8 @@ use InvalidArgumentException;
  * @property Text       $name       Nom de la personne.
  * @property Text       $firstname  Prénom.
  * @property TableEntry $role       Rôle.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Author extends MultiField
 {

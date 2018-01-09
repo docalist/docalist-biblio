@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -28,6 +24,8 @@ use Docalist\Type\Text;
  *
  * @property Text   $name   Nom de la collection.
  * @property Text   $number Numéro au sein de la collection.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Collection extends Composite
 {

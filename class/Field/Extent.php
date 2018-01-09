@@ -6,10 +6,6 @@
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio\Field;
 
@@ -24,6 +20,8 @@ use Docalist\Type\TypedNumber;
  *
  * Le sous-champ type est associé à une table d'autorité qui indique les types d'étendues autorisées
  * ("table:extent" par défaut).
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Extent extends TypedNumber
 {
