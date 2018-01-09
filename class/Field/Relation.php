@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Type\TypedRelation;
+use Docalist\Databases\Type\TypedRelation;
 
 /**
  * Relation
