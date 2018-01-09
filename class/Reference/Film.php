@@ -172,7 +172,7 @@ class Film extends Reference
 
                 // Champs affichés
                 'group1' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Champs affichés', 'docalist-biblio'),
                     'format' => '<span style="margin-left: -200px;float: left; font-weight: bold;">%label : </span>%content',
                     'before' => '<p style="margin-left: 200px">',
@@ -251,7 +251,7 @@ class Film extends Reference
 
                 // Résumé, présentation, notes
                 'group3' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Résumé, présentation, notes', 'docalist-biblio'),
                     'format' => "<h3>%label</h3>\r\n<blockquote style=\"font-style:italic\">%content</blockquote>"
                 ],
@@ -264,7 +264,7 @@ class Film extends Reference
 
                 // Liens, extrait, bande annonce...
                 'group4' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Liens, extrait, bande annonce...', 'docalist-biblio'),
                     'format' => "<h3>%label</h3>\r\n<blockquote>%content</blockquote>"
                 ],
@@ -276,7 +276,7 @@ class Film extends Reference
 
                 // Champs de gestion
                 'group5' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Champs de gestion', 'docalist-biblio'),
                     'before' => '<p style="margin-left: 200px">',
                     'format' => '<span style="margin-left: -200px;float: left; font-weight: bold;">%label : </span>%content',
@@ -298,7 +298,7 @@ class Film extends Reference
 
                 // Champs non affichés
                 'group2' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Champs non affichés', 'docalist-biblio')
                 ],
                 'posttype',
@@ -317,7 +317,7 @@ class Film extends Reference
 
                 // Premier auteur, support, date, genre, durée
                 'group1' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Premier auteur, support, date, genre, durée', 'docalist-biblio'),
                     'format' => '%content',
                     'sep' => ', '
@@ -343,7 +343,7 @@ class Film extends Reference
 
                 // Producteur / distributeur
                 'group2' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Producteur / distributeur', 'docalist-biblio'),
                     'format' => '%label : %content',
                     'before' => '<p>',
@@ -364,7 +364,7 @@ class Film extends Reference
 
                 // Début du résumé et mots-clés
                 'group3' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Début du résumé et mots-clés', 'docalist-biblio'),
                     'format' => '%content'
                 ],
@@ -378,7 +378,7 @@ class Film extends Reference
 
                 // Mots-clés
                 'group6' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Mots-clés', 'docalist-biblio'),
                     'before' => '<p>',
                     'format' => '%label : %content',
@@ -392,7 +392,7 @@ class Film extends Reference
 
                 // Bande annonce, extrait ou lien
                 'group4' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Bande annonce, extrait ou lien', 'docalist-biblio'),
                     'format' => '%content'
                 ],
@@ -404,7 +404,7 @@ class Film extends Reference
 
                 // Champs non affichés
                 'group5' => [
-                    'type' => 'Docalist\Biblio\Type\Group',
+                    'type' => 'Docalist\Databases\Type\Group',
                     'label' => __('Champs non affichés', 'docalist-biblio')
                 ],
                 'number',

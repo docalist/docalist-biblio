@@ -168,7 +168,7 @@ class Reference extends Record
             // Crée le groupe
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
-                'type' => 'Docalist\Biblio\Type\Group',
+                'type' => 'Docalist\Databases\Type\Group',
                 'label' => $label
             ];
 
@@ -200,7 +200,7 @@ class Reference extends Record
         if ($allFields) {
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
-                'type' => 'Docalist\Biblio\Type\Group',
+                'type' => 'Docalist\Databases\Type\Group',
                 'label' => __('Champs non utilisés', 'docalist-biblio'),
                 'state' => 'hidden',
                 'description' => __(
