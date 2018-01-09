@@ -13,6 +13,7 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Databases\Record;
 use Docalist\Biblio\Field\Genre;
 use Docalist\Biblio\Field\Media;
 use Docalist\Biblio\Field\Title;
@@ -30,9 +31,9 @@ use Docalist\Biblio\Field\Editor;
 use Docalist\Biblio\Field\Collection;
 use Docalist\Biblio\Field\Edition;
 use Docalist\Biblio\Field\Event;
-use Docalist\Biblio\Type\Topic;
+use Docalist\Databases\Type\Topic;
 use Docalist\Biblio\Field\Content;
-use Docalist\Biblio\Type\Link;
+use Docalist\Databases\Type\Link;
 use Docalist\Biblio\Field\Relation;
 use Docalist\Biblio\Field\Owner;
 use Docalist\Biblio\Field\Imported;
@@ -73,7 +74,7 @@ use Docalist\Tokenizer;
  * @property Imported       $imported       Notice importée.
  * @property Error[]        $errors         Erreurs.
  */
-class Reference extends Type
+class Reference extends Record
 {
     public static function loadSchema()
     {
@@ -99,9 +100,9 @@ class Reference extends Type
                 'collection'    => 'Docalist\Biblio\Field\Collection*',
                 'edition'       => 'Docalist\Biblio\Field\Edition*',
                 'event'         => 'Docalist\Biblio\Field\Event',
-                'topic'         => 'Docalist\Biblio\Type\Topic*',
+                'topic'         => 'Docalist\Databases\Type\Topic*',
                 'content'       => 'Docalist\Biblio\Field\Content*',
-                'link'          => 'Docalist\Biblio\Type\Link*',
+                'link'          => 'Docalist\Databases\Type\Link*',
                 'relation'      => 'Docalist\Biblio\Field\Relation*',
                 'owner'         => 'Docalist\Biblio\Field\Owner*',
 
