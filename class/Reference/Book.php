@@ -74,7 +74,7 @@ class Book extends Reference
             'fields' => [
 
                 // Champs affichés
-                'group1' => [ 'type' => 'Docalist\Databases\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'format' => '<tr><th style="width: 200px; text-align: right; vertical-align: top">%label : </th><td>%content</td></tr>', 'before' => '<table>', 'after' => '</table>' ],
+                'group1' => [ 'type' => 'Docalist\Data\Type\Group', 'label' => __('Champs affichés', 'docalist-biblio'), 'format' => '<tr><th style="width: 200px; text-align: right; vertical-align: top">%label : </th><td>%content</td></tr>', 'before' => '<table>', 'after' => '</table>' ],
                 'ref',
                 'parent',
                 'status',
@@ -170,7 +170,7 @@ class Book extends Reference
                 ],
 
                 // Champs non affichés
-                'group2' => [ 'type' => 'Docalist\Databases\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+                'group2' => [ 'type' => 'Docalist\Data\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
                 'title',
             ]
         ]);
@@ -184,7 +184,7 @@ class Book extends Reference
             'fields' => [
 
                 // Premier auteur
-                'group3' => [ 'label' => __('Premier auteur', 'docalist-biblio'), 'setup' => '', 'format' => '%content', 'type' => 'Docalist\Databases\Type\Group' ],
+                'group3' => [ 'label' => __('Premier auteur', 'docalist-biblio'), 'setup' => '', 'format' => '%content', 'type' => 'Docalist\Data\Type\Group' ],
                 'author' => [
                     'format' => 'f n',
                     'sep' => ', ',
@@ -196,7 +196,7 @@ class Book extends Reference
                 ],
 
                 // Genre et support entre parenthèses
-                'group4' => [ 'label' => __('Genre et support entre parenthèses', 'docalist-biblio'), 'before' => ' <span style="text-transform: lowercase">(', 'format' => '%content', 'after' => ')</span>', 'sep' => ', ', 'type' => 'Docalist\Databases\Type\Group' ],
+                'group4' => [ 'label' => __('Genre et support entre parenthèses', 'docalist-biblio'), 'before' => ' <span style="text-transform: lowercase">(', 'format' => '%content', 'after' => ')</span>', 'sep' => ', ', 'type' => 'Docalist\Data\Type\Group' ],
                 'genre' => [
                     'sep' => ', ',
                 ],
@@ -205,7 +205,7 @@ class Book extends Reference
                 ],
 
                 // Infos éditeur
-                'group6' => [ 'label' => __('Infos éditeur', 'docalist-biblio'), 'before' => "<p>\r\n<i>Publié chez : </i>", 'format' => '%content', 'after' => '</p>', 'sep' => ', ', 'type' => 'Docalist\Databases\Type\Group' ],
+                'group6' => [ 'label' => __('Infos éditeur', 'docalist-biblio'), 'before' => "<p>\r\n<i>Publié chez : </i>", 'format' => '%content', 'after' => '</p>', 'sep' => ', ', 'type' => 'Docalist\Data\Type\Group' ],
                 'editor' => [
                     'before' => '<b>',
                     'after' => '</b>',
@@ -232,7 +232,7 @@ class Book extends Reference
                 ],
 
                 // Résumé, mots-clés et premier lien
-                'group7' => [ 'label' => __('Résumé, mots-clés et premier lien', 'docalist-biblio'), 'format' => '<p>%content</p>', 'type' => 'Docalist\Databases\Type\Group' ],
+                'group7' => [ 'label' => __('Résumé, mots-clés et premier lien', 'docalist-biblio'), 'format' => '<p>%content</p>', 'type' => 'Docalist\Data\Type\Group' ],
                 'content' => [
                     'format' => 'v',
                     'sep' => ', ',
@@ -253,7 +253,7 @@ class Book extends Reference
                 ],
 
                 // Champs non affichés
-                'group2' => [ 'type' => 'Docalist\Databases\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
+                'group2' => [ 'type' => 'Docalist\Data\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
                 'ref',
                 'parent',
                 'title',

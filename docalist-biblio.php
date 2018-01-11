@@ -51,7 +51,7 @@ define('DOCALIST_BIBLIO_URL', plugins_url('', DOCALIST_BIBLIO));
  */
 add_action('plugins_loaded', function () {
     // Auto désactivation si les plugins dont on a besoin ne sont pas activés
-    $dependencies = ['DOCALIST_DATABASES'];
+    $dependencies = ['DOCALIST_DATA'];
     foreach ($dependencies as $dependency) {
         if (! defined($dependency)) {
             return add_action('admin_notices', function () use ($dependency) {

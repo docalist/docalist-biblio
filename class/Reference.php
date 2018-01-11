@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio;
 
-use Docalist\Databases\Record;
+use Docalist\Data\Record;
 use Docalist\Biblio\Field\Genre;
 use Docalist\Biblio\Field\Media;
 use Docalist\Biblio\Field\Title;
@@ -27,9 +27,9 @@ use Docalist\Biblio\Field\Editor;
 use Docalist\Biblio\Field\Collection;
 use Docalist\Biblio\Field\Edition;
 use Docalist\Biblio\Field\Event;
-use Docalist\Databases\Type\Topic;
+use Docalist\Data\Type\Topic;
 use Docalist\Biblio\Field\Content;
-use Docalist\Databases\Type\Link;
+use Docalist\Data\Type\Link;
 use Docalist\Biblio\Field\Relation;
 use Docalist\Biblio\Field\Owner;
 use Docalist\Biblio\Field\Imported;
@@ -98,9 +98,9 @@ class Reference extends Record
                 'collection'    => 'Docalist\Biblio\Field\Collection*',
                 'edition'       => 'Docalist\Biblio\Field\Edition*',
                 'event'         => 'Docalist\Biblio\Field\Event',
-                'topic'         => 'Docalist\Databases\Type\Topic*',
+                'topic'         => 'Docalist\Data\Type\Topic*',
                 'content'       => 'Docalist\Biblio\Field\Content*',
-                'link'          => 'Docalist\Databases\Type\Link*',
+                'link'          => 'Docalist\Data\Type\Link*',
                 'relation'      => 'Docalist\Biblio\Field\Relation*',
                 'owner'         => 'Docalist\Biblio\Field\Owner*',
 
@@ -168,7 +168,7 @@ class Reference extends Record
             // Crée le groupe
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
-                'type' => 'Docalist\Databases\Type\Group',
+                'type' => 'Docalist\Data\Type\Group',
                 'label' => $label
             ];
 
@@ -200,7 +200,7 @@ class Reference extends Record
         if ($allFields) {
             $group = 'group' . $groupNumber++;
             $grid[$group] = [
-                'type' => 'Docalist\Databases\Type\Group',
+                'type' => 'Docalist\Data\Type\Group',
                 'label' => __('Champs non utilisés', 'docalist-biblio'),
                 'state' => 'hidden',
                 'description' => __(
