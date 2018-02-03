@@ -9,23 +9,19 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Data\Type\PostTitle;
+use Docalist\Data\Field\Title as BaseTitle;
 
 /**
  * Le titre de la notice.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Title extends PostTitle
+class Title extends BaseTitle
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Titre', 'docalist-biblio'),
-            'description' => __(
-                'Titre original du document.',
-                'docalist-biblio'
-            ),
+            'description' => __('Titre original du document.', 'docalist-biblio'),
         ];
     }
 }
