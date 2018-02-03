@@ -2,14 +2,14 @@
 /**
  * This file is part of the 'Docalist Biblio' plugin.
  *
- * Copyright (C) 2012-2017 Daniel Ménard
+ * Copyright (C) 2012-2018 Daniel Ménard
  *
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TypedLargeText;
+use Docalist\Data\Field\Content as BaseContent;
 
 /**
  * Contenu du document.
@@ -27,12 +27,11 @@ use Docalist\Type\TypedLargeText;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Content extends TypedLargeText
+class Content extends BaseContent
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Contenu', 'docalist-biblio'),
             'description' => __(
                 'Description textuelle du document : résumé, présentation, critique, remarques...',
                 'docalist-biblio'
@@ -40,7 +39,6 @@ class Content extends TypedLargeText
             'fields' => [
                 'type' => [
                     'table' => 'table:content',
-                    'label' => __('Type', 'docalist-biblio'),
                 ],
                 'value' => [
                     'label' => __('Contenu', 'docalist-biblio'),
