@@ -15,14 +15,15 @@ use Docalist\Type\TableEntry;
 use InvalidArgumentException;
 
 /**
- * Champ "author" : une personne physique ayant contribué au document catalogué.
+ * Champ "author" : personnes physiques ayant contribué au document catalogué.
  *
- * Ce champ permet de saisir les noms et prénoms des personnes qui ont contribué à l'élaboration du document catalogué.
+ * Ce champ répétable permet de saisir les noms et prénoms des personnes qui ont contribué à l'élaboration du
+ * document catalogué.
  *
  * On peut également indiquer pour chaque personne une étiquette de rôle qui précise la nature de sa contribution
  * (traducteur, auteur de la préface, illustrations...)
  *
- * Chaque auteur comporte trois sous-champs :
+ * Chaque occurence du chap author comporte trois sous-champs :
  * - `name` : nom de la personne,
  * - `firstname` : prénom ou initiale de la personne,
  * - `role` : étiquette de rôle éventuelle.
@@ -42,6 +43,7 @@ class Author extends MultiField
     {
         return [
             'name' => 'author',
+            'repeatable' => true,
             'label' => __('Auteurs', 'docalist-biblio'),
             'description' => __(
                 "Personnes qui ont contribué au document (auteur, coordonnateur, réalisateur...)",
