@@ -15,7 +15,7 @@ use Docalist\Type\TableEntry;
 use InvalidArgumentException;
 
 /**
- * Auteur personne physique.
+ * Champ "author" : une personne physique ayant contribué au document catalogué.
  *
  * Ce champ permet de saisir les noms et prénoms des personnes qui ont contribué à l'élaboration du document catalogué.
  *
@@ -41,6 +41,7 @@ class Author extends MultiField
     public static function loadSchema()
     {
         return [
+            'name' => 'author',
             'label' => __('Auteurs', 'docalist-biblio'),
             'description' => __(
                 "Personnes qui ont contribué au document (auteur, coordonnateur, réalisateur...)",
@@ -48,17 +49,17 @@ class Author extends MultiField
             ),
             'fields' => [
                 'name' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Nom', 'docalist-biblio'),
                     'description' => __("Nom de la personne", 'docalist-biblio'),
                 ],
                 'firstname' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Prénom', 'docalist-biblio'),
                     'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
                 ],
                 'role' => [
-                    'type' => 'Docalist\Type\TableEntry',
+                    'type' => TableEntry::class,
                     'label' => __('Rôle', 'docalist-biblio'),
                     'description' => __('Fonction', 'docalist-biblio'),
                     'table' => 'thesaurus:marc21-relators_fr',
