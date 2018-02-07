@@ -14,8 +14,8 @@ use Docalist\Data\Field\ContentField;
 /**
  * Champ "content" : les contenus textuels décrivant le document catalogué.
  *
- * Ce champ permet de décrire le contenu du document et d'indiquer une présentation, un résumé, des remarques, une
- * critique, etc.
+ * Ce champ répétable permet de décrire le contenu du document et d'indiquer une présentation, un résumé,
+ * des remarques, une critique, etc.
  *
  * Chaque occurence du champ content comporte deux sous-champs :
  * - `type` : type de contenu,
