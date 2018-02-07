@@ -30,6 +30,8 @@ class Collection extends Composite
     public static function loadSchema()
     {
         return [
+            'name' => 'collection',
+            'repeatable' => true,
             'label' => __('Collection', 'docalist-biblio'),
             'description' => __(
                 'Nom de la collection à laquelle appartient le document et son numéro au sein de cette collection.',
