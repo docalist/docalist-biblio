@@ -9,25 +9,27 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Data\Field\Content as BaseContent;
+use Docalist\Data\Field\ContentField;
 
 /**
- * Contenu du document.
+ * Champ "content" : les contenus textuels décrivant le document catalogué.
  *
- * Ce champ permet de décrire le contenu du document : présentation, résumé, remarques, critique, etc.
+ * Ce champ permet de décrire le contenu du document et d'indiquer une présentation, un résumé, des remarques, une
+ * critique, etc.
  *
- * Chaque occurence comporte deux sous-champs :
+ * Chaque occurence du champ content comporte deux sous-champs :
  * - `type` : type de contenu,
  * - `value` : contenu.
  *
- * Le sous-champ type est associé à une table d'autorité qui indique les valeurs possibles ("table:content" par défaut).
+ * Le sous-champ type est associé à une table d'autorité qui indique les valeurs possibles
+ * ("table:content" par défaut).
  *
  * @property TableEntry $type   Type de contenu.
  * @property Text       $value  Contenu.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Content extends BaseContent
+class Content extends ContentField
 {
     public static function loadSchema()
     {
