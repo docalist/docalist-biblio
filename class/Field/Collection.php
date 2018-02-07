@@ -13,12 +13,10 @@ use Docalist\Type\Composite;
 use Docalist\Type\Text;
 
 /**
- * Collection et numéro au sein de la collection de l'éditeur.
+ * Champ "collection" : le nom d'une collection sous laquelle sont regroupés des travaux de mêmes nature et le numéro
+ * du document catalogué au sein de cette collection.
  *
- * Ce champ composite permet d'indiquer le nom de la collection de l'éditeur à laquelle appartient le document
- * catalogué et de préciser le numéro de ce document au sein de cette collection.
- *
- * Chaque occurence du champ comporte deux sous-champs :
+ * Chaque occurence du champ collection comporte deux sous-champs :
  * - `name` : nom de la collection,
  * - `number` : numéro au sein de la collection,
  *
@@ -34,22 +32,19 @@ class Collection extends Composite
         return [
             'label' => __('Collection', 'docalist-biblio'),
             'description' => __(
-                "Collection et numéro au sein de la collection de l'éditeur.",
+                'Nom de la collection à laquelle appartient le document et son numéro au sein de cette collection.',
                 'docalist-biblio'
             ),
             'fields' => [
                 'name' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __("Nom", 'docalist-biblio'),
-                    'description' => __('Nom de la collection ou de la sous-collection.', 'docalist-biblio'),
+                    'description' => __('Nom de la collection.', 'docalist-biblio'),
                 ],
                 'number' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Numéro', 'docalist-biblio'),
-                    'description' => __(
-                        'Numéro au sein de la collection ou de la sous-collection.',
-                        'docalist-biblio'
-                    ),
+                    'description' => __('Numéro au sein de la collection.', 'docalist-biblio'),
                 ]
             ]
         ];
