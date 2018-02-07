@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TypedFuzzyDate;
+use Docalist\Data\Field\DateField as BaseDateField;
 
 /**
  * Dates du document.
@@ -25,7 +25,7 @@ use Docalist\Type\TypedFuzzyDate;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Date extends TypedFuzzyDate
+class Date extends BaseDateField
 {
     public static function loadSchema()
     {
@@ -34,14 +34,11 @@ class Date extends TypedFuzzyDate
                 "Dates associées au document catalogué : date de publication, date d'enregistrement...",
                 'docalist-biblio'
             ),
-            // les sous-champs type et value sont repris tels quels de TypedFuzzyDate.
-            // On précise juste la table utilisée pour le champ 'type'
             'fields' => [
                 'type' => [
                     'table' => 'table:dates',
                 ],
-            ]
-
+            ],
         ];
     }
 }
