@@ -12,10 +12,10 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\Text;
 
 /**
- * Mention d'édition.
+ * Champ "edition" : mentions permettant d'identifier un tirage ou une version spécifique du document catalogué.
  *
- * Ce champ permet de préciser s'il s'agit d'une nouvelle édition, d'une édition revue et corrigée, d'une version
- * expurgée, etc.
+ * Ce champ répétable permet de préciser s'il s'agit d'une nouvelle édition, d'une édition revue et corrigée,
+ * d'une version expurgée, etc.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
@@ -24,9 +24,12 @@ class Edition extends Text
     public static function loadSchema()
     {
         return [
+            'name' => 'edition',
+            'repeatable' => true,
             'label' => __("Mentions d'édition", 'docalist-biblio'),
             'description' => __(
-                "Nouvelle édition, édition revue et corrigée, version expurgée...",
+                "Mentions permettant d'identifier un tirage ou une version spécifique du document catalogué
+                (nouvelle édition, version expurgée...)",
                 'docalist-biblio'
             ),
         ];
