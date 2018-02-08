@@ -12,10 +12,10 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TableEntry;
 
 /**
- * Langue du document.
+ * Champ 'language" : langues du document catalogué.
  *
- * Ce champ permet de préciser la langue du document catalogué : la langue des textes pour un document écrit, les
- * pistes audio disponibles pour un film, etc.
+ * Ce champ répétable permet de préciser la langue du document catalogué : la langue des textes pour un document
+ * écrit, les pistes audio disponibles pour un film, etc.
  *
  * Le champ est associé à une table d'autorité qui indique les langues possibles (par défaut : codes ISO à deux
  * lettres des langues de l'Union Européenne).
@@ -27,6 +27,8 @@ class Language extends TableEntry
     public static function loadSchema()
     {
         return [
+            'name' => 'language',
+            'repeatable' => true,
             'label' => __('Langue', 'docalist-biblio'),
             'description' => __(
                 'Langue du document : langue des textes qui figurent dans le document, pistes audio disponibles...',
