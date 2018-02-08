@@ -10,15 +10,15 @@
 namespace Docalist\Biblio\Aggregation;
 
 use Docalist\Search\Aggregation\Bucket\TermsAggregation;
-use Docalist\Biblio\Field\Organisation;
+use Docalist\Biblio\Field\Corporation;
 use stdClass;
 
 /**
- * Une agrégation standard de type "terms" sur le champ "organisation".
+ * Une agrégation standard de type "terms" sur le champ "corporation".
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class TermsOrganisation extends TermsAggregation
+class TermsCorporation extends TermsAggregation
 {
     /**
      * Constructeur
@@ -29,21 +29,21 @@ class TermsOrganisation extends TermsAggregation
     public function __construct(array $parameters = [], array $options = [])
     {
         !isset($parameters['size']) && $parameters['size'] = 10;
-        !isset($options['title']) && $options['title'] = __('Organisme', 'docalist-search');
-        parent::__construct('organisation.filter', $parameters, $options);
+        !isset($options['title']) && $options['title'] = __('Auteurs moraux', 'docalist-search');
+        parent::__construct('corporation.filter', $parameters, $options);
     }
 
     public function getBucketLabel(stdClass $bucket)
     {
         // Le bucket est de la forme 'nom¤prénom' (cf. Reference::map)
         list($name, $acronym, $city, $country) = explode('¤', $bucket->key);
-        $org = new Organisation([
+        $corp = new Corporation([
             'name' => $name,
             'acronym' => $acronym,
             'city' => $city,
             'country' => $country,
         ]);
 
-        return $org->getFormattedValue(['format' => 'name']);
+        return $corp->getFormattedValue(['format' => 'name']);
     }
 }
