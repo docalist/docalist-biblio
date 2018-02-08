@@ -11,14 +11,14 @@ namespace Docalist\Biblio\Field;
 use Docalist\Biblio\Field\Corporation;
 
 /**
- * Éditeur.
+ * Champ "editor" : organismes éditeur.
  *
- * Ce champ permet de saisir les organismes en charge de l'édition, de la diffusion et de la distribution
+ * Ce champ répétable permet de saisir les organismes en charge de l'édition, de la diffusion et de la distribution
  * du document
  *
  * On peut également indiquer pour chaque organisme une étiquette qui précise son rôle (éditeur, diffuseur...)
  *
- * Chaque organisme comporte cinq sous-champs :
+ * Chaque occurence du champ editor comporte cinq sous-champs :
  * - `name` : nom de l'organisme,
  * - `acronym` : sigle ou acronym éventuel,
  * - `city` : ville,
@@ -38,9 +38,11 @@ class Editor extends Corporation
     public static function loadSchema()
     {
         return [
+            'name' => 'editor',
+            // repeatable : oui, déjà dans dit dans Corporation
             'label' => __('Editeurs', 'docalist-biblio'),
             'description' => __(
-                "Organisme délégué par l'auteur pour assurer la diffusion et la distribution du document.",
+                "Organismes délégués par l'auteur pour assurer la diffusion et la distribution du document.",
                 'docalist-biblio'
             ),
             'fields' => [
