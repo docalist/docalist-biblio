@@ -17,43 +17,45 @@ use InvalidArgumentException;
 /**
  * Description de l'événement à l'origine du document cataogué (colloque, réunion, soutenance, etc.)
  *
- * @property Text       $title      Nom de l'événement.
- * @property FuzzyDate  $date       Date de l'évènement.
- * @property Text       $place      Lieu de l'événement.
- * @property Text       $number     Numéro éventuel associé à l'évènement.
+ * @property Text       $title      Nom ou description du contexte.
+ * @property FuzzyDate  $date       Date liée.
+ * @property Text       $place      Lieu associé.
+ * @property Text       $number     Numéro éventuel.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Event extends Composite
+class Context extends Composite
 {
     public static function loadSchema()
     {
         return [
-            'label' => __('Événement', 'docalist-biblio'),
+            'name' => 'context',
+            'repeatable' => false,
+            'label' => __('Contexte', 'docalist-biblio'),
             'description' => __(
-                "Événement à l'origine du document (congrès, colloque, manifestation, soutenance de thèse...)",
+                'Contexte dans lequel a été produit le document (congrès, soutenance de thèse, exposition...)',
                 'docalist-biblio'
             ),
             'fields' => [
                 'title' => [
-                    'type' => 'Docalist\Type\Text',
-                    'label' => __('Nom', 'docalist-biblio'),
-                    'description' => __("Nom du congrès, de la réunion, etc.", 'docalist-biblio'),
+                    'type' => Text::class,
+                    'label' => __('Nom ou description', 'docalist-biblio'),
+                    'description' => __('Nom du congrès, de la réunion, etc.', 'docalist-biblio'),
                 ],
                 'date' => [
-                    'type' => 'Docalist\Type\FuzzyDate',
+                    'type' => FuzzyDate::class,
                     'label' => __('Date', 'docalist-biblio'),
-                    'description' => __("Date de l'évènement.", 'docalist-biblio'),
+                    'description' => __('Date liée.', 'docalist-biblio'),
                 ],
                 'place' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Lieu', 'docalist-biblio'),
-                    'description' => __("Lieu de l'événement (ville et/ou pays).", 'docalist-biblio'),
+                    'description' => __('Lieu associé.', 'docalist-biblio'),
                 ],
                 'number' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Numéro', 'docalist-biblio'),
-                    'description' => __("Numéro éventuel associé à l'évènement.", 'docalist-biblio'),
+                    'description' => __('Numéro éventuel.', 'docalist-biblio'),
                 ]
             ]
         ];
