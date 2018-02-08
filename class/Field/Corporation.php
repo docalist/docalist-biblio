@@ -24,10 +24,10 @@ use InvalidArgumentException;
  *
  * Chaque occurence du champ corporation comporte cinq sous-champs :
  * - `name` : nom de l'organisme,
- * - `acronym` : sigle ou acronym éventuel,
+ * - `acronym` : sigle ou acronyme,
  * - `city` : ville,
  * - `country` : pays,
- * - `role` : étiquette de rôle éventuelle.
+ * - `role` : étiquette de rôle.
  *
  * Le sous-champ `country` est associé à une table d'autorité qui contient les codes pays disponibles
  * (par défaut, il s'agit de la table des codes ISO à trois lettres).
