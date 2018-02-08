@@ -9,12 +9,13 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TypedNumber;
+use Docalist\Data\Field\NumberField as BaseNumberField;
 
 /**
- * Un numéro propre au document (DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...)
+ * Champ "number" : numéros du document.
  *
- * Ce champ permet de cataloguer les numéros associés au document
+ * Ce champ répétable permet de cataloguer les numéros (officiels ou non) associés au document :
+ * DOI, ISSN, ISBN, numéro de volume, numéro de fascicule...
  *
  * Chaque numéro comporte deux sous-champs :
  * - `type` : type de numéro,
@@ -25,7 +26,7 @@ use Docalist\Type\TypedNumber;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Number extends TypedNumber
+class Number extends BaseNumberField
 {
     public static function loadSchema()
     {
