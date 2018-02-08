@@ -12,9 +12,11 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TypedNumber;
 
 /**
- * Étendue du document catalogué : pagination, nombre de pages, durée, dimensions...
+ * Champ "extent" : étendue du document catalogué (durée, nombre de pages, poids...)
  *
- * Le champ comporte deux sous-champs :
+ * Ce champ répétable permet de préciser la taille, les dimensions ou la pagination du document catalogué.
+ *
+ * Chaque occurence du champ extent comporte deux sous-champs :
  * - `type` : type d'étendue,
  * - `value` : valeur.
  *
@@ -25,14 +27,19 @@ use Docalist\Type\TypedNumber;
  */
 class Extent extends TypedNumber
 {
+    /*
+     * Remarque : ce champ est très similaire au champ standard "figure", mais la table d'autorité associée
+     * peut contenir autre chose que des nombres (non paginé, pagination en chiffre romains, etc.)
+     * Du coup, le sous-champ "value" est de type "number" et non pas de type "decimal".
+     */
+
     public static function loadSchema()
     {
         return [
+            'name' => 'extent',
+            'repeatable' => true,
             'label' => __('Etendue', 'docalist-biblio'),
-            'description' => __(
-                'Pagination, nombre de pages, durée, dimensions...',
-                'docalist-biblio'
-            ),
+            'description' => __('Pagination, nombre de pages, durée, dimensions...', 'docalist-biblio' ),
             'fields' => [
                 'type' => [
                     'table' => 'table:extent',
