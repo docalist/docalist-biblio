@@ -12,12 +12,31 @@ namespace Docalist\Biblio\Field;
 use Docalist\Data\Type\TypedRelation;
 
 /**
- * Relation
+ * Champ "relation" : relations entre le document catalogué et d'autres documents.
+ *
+ * Champ répétable.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Relation extends TypedRelation
 {
+    public static function loadSchema()
+    {
+        return [
+            'name' => 'relation',
+            'repeatable' => true,
+            'fields' => [
+                'type' => [
+                    'table' => 'table:relations',
+                ],
+                'value' => [
+                    'label' => __('Référence liée', 'docalist-biblio'),
+                    'description' => __('ID WordPress de la référence liée.', 'docalist-biblio'),
+                ],
+            ],
+        ];
+    }
+
 /*
     public function setupMapping(MappingBuilder $mapping)
     {
