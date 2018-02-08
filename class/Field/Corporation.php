@@ -15,14 +15,14 @@ use Docalist\Type\TableEntry;
 use InvalidArgumentException;
 
 /**
- * Organisme auteur.
+ * Champ "corporation" : auteurs moraux ayant contribué au document catalogué.
  *
- * Ce champ permet de saisir les organismes qui ont contribué à l'élaboration du document catalogué.
+ * Ce champ répétable permet de saisir les organismes qui ont contribué à l'élaboration du document catalogué.
  *
- * On peut également indiquer pour chaque organisme une étiquette de rôle qui précise la nature de sa contribution
- * (organisme auteur, commanditaire, financeur...)
+ * On peut également indiquer pour chaque organisme auteur une étiquette de rôle qui précise la nature de sa
+ * contribution (auteur, commanditaire, financeur...)
  *
- * Chaque organisme comporte cinq sous-champs :
+ * Chaque occurence du champ corporation comporte cinq sous-champs :
  * - `name` : nom de l'organisme,
  * - `acronym` : sigle ou acronym éventuel,
  * - `city` : ville,
@@ -43,11 +43,13 @@ use InvalidArgumentException;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Organisation extends MultiField
+class Corporation extends MultiField
 {
     public static function loadSchema()
     {
         return [
+            'name' => 'corporation',
+            'repeatable' => true,
             'label' => __('Organismes', 'docalist-biblio'),
             'description' => __(
                 "Organismes qui ont contribué au document (organisme auteur, commanditaire, financeur...)",
@@ -55,28 +57,28 @@ class Organisation extends MultiField
             ),
             'fields' => [
                 'name' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Nom', 'docalist-biblio'),
                     'description' => __("Nom de l'organisme", 'docalist-biblio'),
                 ],
                 'acronym' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Sigle', 'docalist-biblio'),
                     'description' => __("Sigle ou acronyme", 'docalist-biblio'),
                 ],
                 'city' => [
-                    'type' => 'Docalist\Type\Text',
+                    'type' => Text::class,
                     'label' => __('Ville', 'docalist-biblio'),
                     'description' => __('Ville du siège social', 'docalist-biblio'),
                 ],
                 'country' => [
-                    'type' => 'Docalist\Type\TableEntry',
+                    'type' => TableEntry::class,
                     'table' => 'table:ISO-3166-1_alpha2_fr',
                     'label' => __('Pays', 'docalist-biblio'),
                     'description' => __('Pays du siège social', 'docalist-biblio'),
                 ],
                 'role' => [
-                    'type' => 'Docalist\Type\TableEntry',
+                    'type' => TableEntry::class,
                     'table' => 'thesaurus:marc21-relators_fr',
                     'label' => __('Rôle', 'docalist-biblio'),
                     'description' => __('Fonction', 'docalist-biblio'),
