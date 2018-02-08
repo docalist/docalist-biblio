@@ -14,13 +14,13 @@ use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
 
 /**
- * Autre titre du document.
+ * Champ "othertitle" : autres titres du document.
  *
- * Ce champ permet de cataloguer d'autres titres associés au document (différents du titre exact catalogué dans le
- * champ title) : un complément de titre, un sous-titre, le titre de la série, un sigle ou un titre abrégé, l'ancien
- * titre, etc.
+ * Ce champ répétable permet d'indiquer d'autres titres associés au document catalogué mais différents du titre
+ * exact indiqué dans le champ title) : un complément de titre, un sous-titre, le titre de la série, un sigle ou
+ * un titre abrégé, l'ancien titre du document, etc.
  *
- * Chaque occurence comporte deux sous-champs :
+ * Chaque occurence du champ othertitle comporte deux sous-champs :
  * - `type` : type de titre,
  * - `value` : titre.
  *
@@ -36,6 +36,8 @@ class OtherTitle extends TypedText
     public static function loadSchema()
     {
         return [
+            'name' => 'othertitle',
+            'repeatable' => true,
             'label' => __('Autre titre', 'docalist-biblio'),
             'description' => __('Autre titre du document : titre du dossier, ancien titre...', 'docalist-biblio'),
             'fields' => [
