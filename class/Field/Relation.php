@@ -25,6 +25,8 @@ class Relation extends TypedRelation
         return [
             'name' => 'relation',
             'repeatable' => true,
+            'label' => __('Relations', 'docalist-biblio'),
+            'description' => __("Relations typées vers d'autres contenus.", 'docalist-biblio'),
             'fields' => [
                 'type' => [
                     'table' => 'table:relations',
