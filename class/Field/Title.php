@@ -9,10 +9,10 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Data\Field\Title as BaseTitle;
+use Docalist\Data\Field\TitleField as BaseTitle;
 
 /**
- * Le titre de la notice.
+ * Champ "title" : titre original du document catalogué.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
