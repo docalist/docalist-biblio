@@ -12,10 +12,10 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TableEntry;
 
 /**
- * Genre du document.
+ * Champ "genre" : genre du document.
  *
- * Ce champ permet de préciser la nature du document catalogué : pour un livre, par exemple, il permet d'indiquer
- * s'il s'agit d'un roman, d'un essai, etc.
+ * Ce champ répétable permet d'indiquer des mots-clés qui décrivent la nature et les catégories stylistiques
+ * auxquelles appartient le document catalogué (roman, essai, science-fiction, documentaire, législation...)
  *
  * Le champ est associé à une table d'autorité qui indique les valeurs possibles ("thesaurus:genres" par défaut).
  *
@@ -23,9 +23,18 @@ use Docalist\Type\TableEntry;
  */
 class Genre extends TableEntry
 {
+    /*
+     * Remarque : sur le fond, ce champ est juste un type particulier d'indexation (d'ailleurs la table par
+     * défaut est un théaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
+     * On garde un champ distinct pour le moment, à reconsidérer si un jour le champ topic supporte "explode" et
+     * qu'on peut mettre l'indexation "genre" au bon endroit.
+     */
+
     public static function loadSchema()
     {
         return [
+            'name' => 'genre',
+            'repeatable' => true,
             'label' => __('Genre', 'docalist-biblio'),
             'description' => __('Nature du document.', 'docalist-biblio'),
             'table' => 'thesaurus:genres',
