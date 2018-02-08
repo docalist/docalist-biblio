@@ -12,13 +12,10 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TableEntry;
 
 /**
- * Une étiquette de collation.
- */
-/**
- * Format du document.
+ * Champ "format" : étiquettes de collation.
  *
- * Ce champ contient des tags (des étiquettes de collation) qui décrivent le format, les caractéristiques et la
- * composition du document catalogué :
+ * Ce champ répétable permet d'indiquer des mots-clés (étiquettes de collation) qui décrivent le format du
+ * document catalogué, ses caractéristiques, sa composition et le matériel qui l'accompagne :
  *
  * - contenu (bibliographie, annexes, cartes, photos, glossaire...),
  * - matériel d'accompagnement (dvd, livret...),
@@ -34,12 +31,24 @@ use Docalist\Type\TableEntry;
  */
 class Format extends TableEntry
 {
+    /*
+     * Remarque : sur le fond, ce champ est juste un type particulier d'indexation (d'ailleurs la table par
+     * défaut est un théaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
+     * Cependant, dans le formulaire de saisie, il est logique que le champ apparaisse dans le bloc "informations
+     * bibliographiques" et non dans la partie "indexation". Donc on garde un champ distinct pour le moment,
+     * à reconsidérer si un jour le champ topic supporte "explode" et qu'on peut mettre l'indexation "format"
+     * au bon endroit.
+     */
+
     public static function loadSchema()
     {
         return [
+            'name' => 'format',
+            'repeatable' => true,
             'label' => __('Format', 'docalist-biblio'),
             'description' => __(
-                "Etiquettes de collation indiquant le contenu du document (tableaux, annexes, références...)",
+                "Mots-clés (étiquettes de collation) indiquant les caractéristiques du document 
+                (tableaux, annexes, références...)",
                 'docalist-biblio'
             ),
             'table' => 'thesaurus:format',
