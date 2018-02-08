@@ -51,7 +51,7 @@ class WebSite extends Reference
         return static::buildEditGrid([
             __('Type de site', 'docalist-biblio')                   => 'genre',
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
-            __('Auteurs', 'docalist-biblio')                        => 'organisation,author',
+            __('Auteurs', 'docalist-biblio')                        => 'corporation,author',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,edition',
             __('Congrès et diplômes', 'docalist-biblio')            => 'event',

@@ -50,7 +50,7 @@ class Legislation extends Reference
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Journal / Périodique', 'docalist-biblio')           => 'journal,number,edition',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,extent,format',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',

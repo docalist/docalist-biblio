@@ -58,7 +58,7 @@ class Report extends Reference
         return static::buildEditGrid([
             __('Type de rapport', 'docalist-biblio')                => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title,translation',
-            __('Auteurs', 'docalist-biblio')                        => 'organisation,author',
+            __('Auteurs', 'docalist-biblio')                        => 'corporation,author',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,extent,format',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',

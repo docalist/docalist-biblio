@@ -55,7 +55,7 @@ class Book extends Reference
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
             __('Congrès et diplômes', 'docalist-biblio')            => 'event',
@@ -94,7 +94,7 @@ class Book extends Reference
                     'format' => 'f n',
                     'sep' => ', ',
                 ],
-                'organisation' => [
+                'corporation' => [
                     'format' => 'n (a), t, c, r',
                     'sep' => ' ; ',
                     'explode' => true,
@@ -263,7 +263,7 @@ class Book extends Reference
                 'password',
                 'posttype',
                 'type',
-                'organisation',
+                'corporation',
                 'othertitle',
                 'translation',
                 'language',

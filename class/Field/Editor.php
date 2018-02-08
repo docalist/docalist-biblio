@@ -8,6 +8,7 @@
  * LICENSE.txt file that was distributed with this source code.
  */
 namespace Docalist\Biblio\Field;
+use Docalist\Biblio\Field\Corporation;
 
 /**
  * Éditeur.
@@ -32,7 +33,7 @@ namespace Docalist\Biblio\Field;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Editor extends Organisation
+class Editor extends Corporation
 {
     public static function loadSchema()
     {

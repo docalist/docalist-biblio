@@ -39,7 +39,7 @@ class PeriodicalIssue extends Reference
                 'othertitle'    => ['unused' => true],
                 'translation'   => ['unused' => true],
                 'author'        => ['unused' => true],
-                'organisation'  => ['unused' => true],
+                'corporation'   => ['unused' => true],
                 'journal'       => ['unused' => true],
                 'language'      => ['unused' => true],
                 'editor'        => ['unused' => true],

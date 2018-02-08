@@ -75,7 +75,7 @@ class Periodical extends Reference
         return static::buildEditGrid([
             __('Type de périodique', 'docalist-biblio')             => 'genre,media',
             __('Périodique', 'docalist-biblio')                     => 'title,number,othertitle',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',

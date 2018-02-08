@@ -16,7 +16,7 @@ use Docalist\Biblio\Field\Title;
 use Docalist\Biblio\Field\OtherTitle;
 use Docalist\Biblio\Field\Translation;
 use Docalist\Biblio\Field\Author;
-use Docalist\Biblio\Field\Organisation;
+use Docalist\Biblio\Field\Corporation;
 use Docalist\Biblio\Field\Date;
 use Docalist\Biblio\Field\Journal;
 use Docalist\Biblio\Field\Number;
@@ -49,8 +49,8 @@ use Docalist\Tokenizer;
  * @property Title          $title          Titre du document.
  * @property OtherTitle[]   $othertitle     Autres titres.
  * @property Translation[]  $translation    Traductions du titre.
- * @property Author[]       $author         Personnes auteurs.
- * @property Organisation[] $organisation   Organismes auteurs.
+ * @property Author[]       $author         Personnes auteurs (auteurs physiques).
+ * @property Corporation[]  $corporation    Organismes auteurs (auteurs moraux).
  * @property Date[]         $date           Dates du document.
  * @property Journal        $journal        Périodique.
  * @property Number[]       $number         Numéros du document.
@@ -87,7 +87,7 @@ class Reference extends Record
                 'othertitle'    => 'Docalist\Biblio\Field\OtherTitle*',
                 'translation'   => 'Docalist\Biblio\Field\Translation*',
                 'author'        => 'Docalist\Biblio\Field\Author*',
-                'organisation'  => 'Docalist\Biblio\Field\Organisation*',
+                'corporation'   => 'Docalist\Biblio\Field\Corporation*',
                 'date'          => 'Docalist\Biblio\Field\Date*',
                 'journal'       => 'Docalist\Biblio\Field\Journal',
                 'number'        => 'Docalist\Biblio\Field\Number*',
@@ -98,9 +98,9 @@ class Reference extends Record
                 'collection'    => 'Docalist\Biblio\Field\Collection*',
                 'edition'       => 'Docalist\Biblio\Field\Edition*',
                 'event'         => 'Docalist\Biblio\Field\Event',
-                'topic'         => 'Docalist\Data\Type\Topic*',
+                'topic'         => 'Docalist\Data\Field\TopicField*',
                 'content'       => 'Docalist\Biblio\Field\Content*',
-                'link'          => 'Docalist\Data\Type\Link*',
+                'link'          => 'Docalist\Data\Field\LinkField*',
                 'relation'      => 'Docalist\Biblio\Field\Relation*',
                 'owner'         => 'Docalist\Biblio\Field\Owner*',
 
@@ -134,6 +134,11 @@ class Reference extends Record
     public function assign($value)
     {
         ($value instanceof Any) && $value = $value->getPhpValue();
+
+        // Le champ "corporation" s'appellait "organisation" avant
+        if (is_array($value) && isset($value['organisation'])) {
+            $value['corporation'] = $value['organisation'];
+        }
 
         // Ignore (efface) les relations qui utilisent l'ancien type de champ
         if (is_array($value) && isset($value['relation']) && isset(reset($value['relation'])['ref'])) {
@@ -228,7 +233,7 @@ class Reference extends Record
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'journal,date,language,number,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
             __('Congrès et diplômes', 'docalist-biblio')            => 'event',
@@ -265,10 +270,10 @@ class Reference extends Record
         $mapping->addField('author')->literal()->filter()->suggest()
                 ->addTemplate('author-*')->copyFrom('author')->copyDataTo('author');
 
-        // organisation
-        $mapping->addField('organisation')->text()->filter()->suggest()
-                ->addTemplate('organisation-*')->copyFrom('organisation')->copyDataTo('organisation');
-        // Exemples d'options pour l'indexation du champ 'organisme' :
+        // corporation
+        $mapping->addField('corporation')->text()->filter()->suggest()
+                ->addTemplate('corporation-*')->copyFrom('corporation')->copyDataTo('corporation');
+        // Exemples d'options pour l'indexation du champ 'corporation' :
         // indexer ou pas les organismes
         // faire ou pas un champ séparé pour chaque rôle (multifield)
         // indexer ville+pays dans un champ à part (pour faire du lookup sur index)
@@ -372,14 +377,14 @@ class Reference extends Record
             return sprintf('%s¤%s', $aut->name->getPhpValue(), $aut->firstname->getPhpValue());
         });
 
-        // organisation
-        $this->mapMultiField($document, 'organisation', function(Organisation $org) {
+        // corporation
+        $this->mapMultiField($document, 'corporation', function(Corporation $corp) {
             return sprintf(
                 '%s¤%s¤%s¤%s',
-                $org->name->getPhpValue(),
-                $org->acronym->getPhpValue(),
-                $org->city->getPhpValue(),
-                $org->country->getPhpValue()
+                $corp->name->getPhpValue(),
+                $corp->acronym->getPhpValue(),
+                $corp->city->getPhpValue(),
+                $corp->country->getPhpValue()
             );
          });
 
@@ -406,13 +411,13 @@ class Reference extends Record
         // format : non indexé
 
         // editor
-        $this->mapMultiField($document, 'editor', function(Editor $org) { // cc organisme
+        $this->mapMultiField($document, 'editor', function(Editor $ed) { // cc organisme
             return sprintf(
                 '%s¤%s¤%s¤%s',
-                $org->name->getPhpValue(),
-                $org->acronym->getPhpValue(),
-                $org->city->getPhpValue(),
-                $org->country->getPhpValue()
+                $ed->name->getPhpValue(),
+                $ed->acronym->getPhpValue(),
+                $ed->city->getPhpValue(),
+                $ed->country->getPhpValue()
             );
         });
 

@@ -58,7 +58,7 @@ class Film extends Reference
                         'docalist-biblio'
                     ),
                 ],
-                'organisation' => [
+                'corporation' => [
                     'description'   => __(
                         'Organismes considéré comme auteur, organisme commanditaire, financeur, producteur...',
                         'docalist-biblio'
@@ -152,7 +152,7 @@ class Film extends Reference
         return static::buildEditGrid([
             __('Type de film et support', 'docalist-biblio')        => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
-            __('Distribution et production', 'docalist-biblio')     => 'author,organisation,editor',
+            __('Distribution et production', 'docalist-biblio')     => 'author,corporation,editor',
             __("Événement à l'origine du film", 'docalist-biblio')  => 'event',
             __('Caractéristiques', 'docalist-biblio')               => 'date,extent,language,edition,format',
             __('Collection et numéros', 'docalist-biblio')          => 'collection,number',
@@ -200,7 +200,7 @@ class Film extends Reference
                     'format' => 'f n',
                     'sep' => ', '
                 ],
-                'organisation' => [
+                'corporation' => [
                     'format' => 'n (a), t, c, r',
                     'sep' => ' ; ',
                     'explode' => true
@@ -350,7 +350,7 @@ class Film extends Reference
                     'after' => '.</p>',
                     'sep' => ', '
                 ],
-                'organisation' => [
+                'corporation' => [
                     'format' => 'name',
                     'sep' => ', ',
                     'limit' => 1,

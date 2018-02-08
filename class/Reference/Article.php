@@ -61,7 +61,7 @@ class Article extends Reference
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,event',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Journal / Périodique', 'docalist-biblio')           => 'journal,number,date,edition',
             __('Informations bibliographiques', 'docalist-biblio')  => 'language,extent,format',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
@@ -102,7 +102,7 @@ class Article extends Reference
                     'format' => 'f n (r)',
                     'sep' => ', ',
                 ],
-                'organisation' => [
+                'corporation' => [
                     'explode' => true,
                     'format' => 'n (a), t, c, r',
                     'sep' => ', ',
@@ -241,7 +241,7 @@ class Article extends Reference
                 'title',
                 'translation',
                 'othertitle',
-                'organisation',
+                'corporation',
                 'type',
                 'ref',
                 'owner',

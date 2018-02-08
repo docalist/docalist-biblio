@@ -54,7 +54,7 @@ class BookChapter extends Reference
     {
         return static::buildEditGrid([
             __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
-            __('Auteurs', 'docalist-biblio')                        => 'author,organisation',
+            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,extent,format',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
