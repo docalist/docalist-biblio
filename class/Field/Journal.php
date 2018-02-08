@@ -13,7 +13,9 @@ use Docalist\Type\Text;
 use Docalist\Forms\EntryPicker;
 
 /**
- * Un titre de périodique.
+ * Champ "journal" : titre du périodique dans lequel a été publié le document.
+ *
+ * Ce champ n'est pas répétable.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
@@ -22,6 +24,7 @@ class Journal extends Text
     public static function loadSchema()
     {
         return [
+            'name' => 'journal',
             'label' => __('Périodique', 'docalist-biblio'),
             'description' => __(
                 'Nom du journal (revue, magazine, périodique...) dans lequel a été publié le document.',
