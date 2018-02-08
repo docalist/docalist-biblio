@@ -291,9 +291,6 @@ class Film extends Reference
                 'owner' => [
                     'sep' => ', '
                 ],
-                'errors' => [
-                    'sep' => ', '
-                ],
 
                 // Champs non affichés
                 'group2' => [
@@ -425,7 +422,6 @@ class Film extends Reference
                 'event',
                 'relation',
                 'owner',
-                'errors',
             ]
         ]);
     }

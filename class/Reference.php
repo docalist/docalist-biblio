@@ -32,7 +32,6 @@ use Docalist\Biblio\Field\Content;
 use Docalist\Data\Type\Link;
 use Docalist\Biblio\Field\Relation;
 use Docalist\Biblio\Field\Owner;
-use Docalist\Biblio\Field\Error;
 
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
@@ -65,8 +64,6 @@ use Docalist\Tokenizer;
  * @property Link[]         $link           Liens internet.
  * @property Relation[]     $relation       Relations avec d'autres références.
  * @property Owner[]        $owner          Producteur de la notice.
- *
- * @property Error[]        $errors         Erreurs.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
@@ -101,13 +98,6 @@ class Reference extends Record
                 'link'          => 'Docalist\Data\Field\LinkField*',
                 'relation'      => 'Docalist\Biblio\Field\Relation*',
                 'owner'         => 'Docalist\Biblio\Field\Owner*',
-
-                // Les champs qui suivent ne font pas partie du format docalist
-
-                'errors' => [
-                    'type' => 'Docalist\Biblio\Field\Error*',
-                    'label' => __('Erreurs()', 'docalist-biblio'),
-                ],
             ],
         ];
     }
@@ -133,8 +123,11 @@ class Reference extends Record
             $value['corporation'] = $value['organisation'];
         }
 
-        // Le champ "imported" n'existe plus
+        // Le champ "imported" n'existe plus (08/02/18)
         unset($value['imported']);
+
+        // Le champ "errors" n'existe plus (08/02/18)
+        unset($value['errors']);
 
         // Ignore (efface) les relations qui utilisent l'ancien type de champ
         if (is_array($value) && isset($value['relation']) && isset(reset($value['relation'])['ref'])) {
@@ -330,8 +323,6 @@ class Reference extends Record
         // owner
         $mapping->addField('owner')->text()->filter();
 
-        // errors
-
         return $mapping;
     }
 
@@ -463,8 +454,6 @@ class Reference extends Record
         if (isset($this->owner)) {
             $document['owner'] = $this->owner->getPhpValue();
         }
-
-        // errors
 
         // Ok
         return $document;

@@ -164,9 +164,6 @@ class Book extends Reference
                 'owner' => [
                     'sep' => ', ',
                 ],
-                'errors' => [
-                    'sep' => ', ',
-                ],
 
                 // Champs non affichés
                 'group2' => [ 'type' => 'Docalist\Data\Type\Group', 'label' => __('Champs non affichés', 'docalist-biblio') ],
@@ -270,7 +267,6 @@ class Book extends Reference
                 'event',
                 'relation',
                 'owner',
-                'errors',
             ]
         ]);
     }
