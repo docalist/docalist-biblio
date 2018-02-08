@@ -14,12 +14,12 @@ use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
 
 /**
- * Traduction du titre original du document.
+ * Champ "translation" : traductions dans d'autres langues du titre original du document catalogué.
  *
- * Ce champ permet de traduire le titre original du document dans une autre langue. Par exemple si le titre original
- * du document est en anglais, ça permet d'indiquer la traduction en français ou dans une autre langue.
+ * Ce champ répétable permet de traduire le titre original du document dans d'autres langues. Par exemple
+ * si le titre d'origine est en anglais, ça permet d'indiquer la traduction en français et en anglais.
  *
- * Chaque traduction comporte deux sous-champs :
+ * Chaque occurence du champ translation comporte deux sous-champs :
  * - `type` : langue de la traduction,
  * - `value` : titre traduit.
  *
@@ -36,11 +36,10 @@ class Translation extends TypedText
     public static function loadSchema()
     {
         return [
+            'name' => 'translation',
+            'repeatable' => true,
             'label' => __('Titre traduit', 'docalist-biblio'),
-            'description' => __(
-                'Traduction en une ou plusieurs langues du titre original du document.',
-                'docalist-biblio'
-            ),
+            'description' => __('Traductions du titre original du document.', 'docalist-biblio'),
             'fields' => [
                 'type' => [ // s'appellait "language" avant
                     'label' => __('Langue', 'docalist-biblio'),
