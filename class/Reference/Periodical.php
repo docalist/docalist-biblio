@@ -65,7 +65,7 @@ class Periodical extends Reference
                 'translation'   => ['unused' => true],
                 'journal'       => ['unused' => true],
                 'edition'       => ['unused' => true],
-                'event'         => ['unused' => true],
+                'context'       => ['unused' => true],
             ],
         ];
     }

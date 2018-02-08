@@ -26,7 +26,7 @@ use Docalist\Biblio\Field\Format;
 use Docalist\Biblio\Field\Editor;
 use Docalist\Biblio\Field\Collection;
 use Docalist\Biblio\Field\Edition;
-use Docalist\Biblio\Field\Event;
+use Docalist\Biblio\Field\Context;
 use Docalist\Data\Type\Topic;
 use Docalist\Biblio\Field\Content;
 use Docalist\Data\Type\Link;
@@ -58,7 +58,7 @@ use Docalist\Tokenizer;
  * @property Editor[]       $editor         Editeurs.
  * @property Collection[]   $collection     Collection et numéro dans la collection.
  * @property Edition[]      $edition        Mentions d'édition.
- * @property Event          $event          Événement à l'origine du document.
+ * @property Context        $context        Contexte dans lequel a été produit le document.
  * @property Topic[]        $topic          Mots-clés.
  * @property Content[]      $content        Contenu du document.
  * @property Link[]         $link           Liens internet.
@@ -92,7 +92,7 @@ class Reference extends Record
                 'editor'        => 'Docalist\Biblio\Field\Editor*',
                 'collection'    => 'Docalist\Biblio\Field\Collection*',
                 'edition'       => 'Docalist\Biblio\Field\Edition*',
-                'event'         => 'Docalist\Biblio\Field\Event',
+                'context'       => 'Docalist\Biblio\Field\Context',
                 'topic'         => 'Docalist\Data\Field\TopicField*',
                 'content'       => 'Docalist\Biblio\Field\Content*',
                 'link'          => 'Docalist\Data\Field\LinkField*',
@@ -103,14 +103,17 @@ class Reference extends Record
     }
 
     /**
-     * Compatibilité : le type du champ relation a changé.
+     * Compatibilité ascendante
      *
-     * Auparavant, c'était un multifield du style type+ref*. Désormais, c'est un TypedRelation, le champ ref
-     * n'existe plus et le champ value n'est pas répétable.
-     *
-     * Comme le champ n'était pas utilisé et que de toute façon ce serait difficile de gérer la compatibilité
-     * ascendante (il faudrait traduire les n° de réf en Post ID), on se contente de supprimer la valeur
-     * existante si on rencontre un champ relation qui a l'ancienne forme.
+     * - Champ "corporation" : auparavant, le champ le champ s'appellait "organisation", on renomme à la volée.
+     * - Champ "context" : auparavant, le champ le champ s'appellait "event", on renomme à la volée.
+     * - Champ "imported" : le champ a été supprimé, on ignore les valeurs qu'on rencontre.
+     * - Champ "errors" : le champ a été supprimé, on ignore les valeurs qu'on rencontre.
+     * - Champ "relation" : Auparavant, c'était un multifield du style type+ref*. Désormais, c'est un TypedRelation,
+     *   donc le champ ref n'existe plus et le champ value n'est pas répétable. Comme le champ n'était pas utilisé
+     *   et que de toute façon ce serait difficile de gérer la compatibilité ascendante (il faudrait traduire
+     *   les n° de réf en Post ID), on se contente de supprimer la valeur existante si on rencontre un champ
+     *   relation qui a l'ancienne forme.
      *
      * {@inheritDoc}
      */
@@ -118,9 +121,16 @@ class Reference extends Record
     {
         ($value instanceof Any) && $value = $value->getPhpValue();
 
-        // Le champ "corporation" s'appellait "organisation" avant
+        // Le champ "corporation" s'appellait "organisation" avant (08/02/18)
         if (is_array($value) && isset($value['organisation'])) {
             $value['corporation'] = $value['organisation'];
+            unset($value['organisation']);
+        }
+
+        // Le champ "context" s'appellait "event" avant (08/02/18)
+        if (is_array($value) && isset($value['event'])) {
+            $value['context'] = $value['event'];
+            unset($value['event']);
         }
 
         // Le champ "imported" n'existe plus (08/02/18)
@@ -221,11 +231,10 @@ class Reference extends Record
     {
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
             __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'journal,date,language,number,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
-            __('Congrès et diplômes', 'docalist-biblio')            => 'event',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
             __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
@@ -296,8 +305,8 @@ class Reference extends Record
         // edition
         $mapping->addField('edition')->text()->filter();
 
-        // event
-        $mapping->addField('event')->text()->filter();
+        // context
+        $mapping->addField('context')->text()->filter();
 
         // topic
         $mapping->addField('topic')->text()->filter()->suggest()
@@ -419,14 +428,14 @@ class Reference extends Record
             $document['edition'] = $this->edition->getPhpValue(); // multivalué, retourne un tableau
         }
 
-        // event
-        if (isset($this->event)) {
-            $document['event'] = sprintf(
+        // context
+        if (isset($this->context)) {
+            $document['context'] = sprintf(
                 '%s¤%s¤%s¤%s',
-                $this->event->title->getPhpValue(),
-                $this->event->date->getPhpValue(),
-                $this->event->place->getPhpValue(),
-                $this->event->number->getPhpValue()
+                $this->context->title->getPhpValue(),
+                $this->context->date->getPhpValue(),
+                $this->context->place->getPhpValue(),
+                $this->context->number->getPhpValue()
             );
         }
 

@@ -51,7 +51,7 @@ class PeriodicalIssue extends Reference
     public static function getEditGrid()
     {
         return static::buildEditGrid([
-            __('Titres', 'docalist-biblio')                         => 'number,title,event',
+            __('Titres', 'docalist-biblio')                         => 'number,title,context',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,edition,extent,format',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',

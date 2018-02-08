@@ -151,9 +151,8 @@ class Film extends Reference
     {
         return static::buildEditGrid([
             __('Type de film et support', 'docalist-biblio')        => 'genre,media',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
             __('Distribution et production', 'docalist-biblio')     => 'author,corporation,editor',
-            __("Événement à l'origine du film", 'docalist-biblio')  => 'event',
             __('Caractéristiques', 'docalist-biblio')               => 'date,extent,language,edition,format',
             __('Collection et numéros', 'docalist-biblio')          => 'collection,number',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
@@ -237,7 +236,6 @@ class Film extends Reference
                     'sep' => ', ',
                     'explode' => true
                 ],
-                'event',
                 'topic' => [
                     'explode' => true,
                     'format' => 'v',
@@ -419,7 +417,6 @@ class Film extends Reference
                 'translation',
                 'language',
                 'format',
-                'event',
                 'relation',
                 'owner',
             ]

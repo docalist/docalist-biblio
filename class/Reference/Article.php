@@ -60,7 +60,7 @@ class Article extends Reference
     {
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,event',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
             __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Journal / Périodique', 'docalist-biblio')           => 'journal,number,date,edition',
             __('Informations bibliographiques', 'docalist-biblio')  => 'language,extent,format',

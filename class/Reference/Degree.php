@@ -49,7 +49,7 @@ class Degree extends Reference
                 'editor'        => ['unused' => true],
                 'collection'    => ['unused' => true],
                 'edition'       => ['unused' => true],
-                'event'         => ['unused' => true],
+                'context'       => ['unused' => true],
             ],
         ];
     }

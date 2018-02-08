@@ -40,7 +40,7 @@ class Legislation extends Reference
                 'translation'   => ['unused' => true],
                 'editor'        => ['unused' => true],
                 'collection'    => ['unused' => true],
-                'event'         => ['unused' => true],
+                'context'       => ['unused' => true],
             ],
         ];
     }

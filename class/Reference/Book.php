@@ -54,11 +54,10 @@ class Book extends Reference
     {
         return static::buildEditGrid([
             __('Nature du document', 'docalist-biblio')             => 'genre,media',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation',
+            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
             __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
-            __('Congrès et diplômes', 'docalist-biblio')            => 'event',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
             __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
@@ -140,7 +139,6 @@ class Book extends Reference
                 'collection' => [
                     'sep' => ', ',
                 ],
-                'event',
                 'topic' => [
                     'explode' => true,
                     'format' => 'v',
@@ -264,7 +262,6 @@ class Book extends Reference
                 'translation',
                 'language',
                 'format',
-                'event',
                 'relation',
                 'owner',
             ]
