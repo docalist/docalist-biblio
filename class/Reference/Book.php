@@ -164,7 +164,6 @@ class Book extends Reference
                 'owner' => [
                     'sep' => ', ',
                 ],
-                'imported',
                 'errors' => [
                     'sep' => ', ',
                 ],
@@ -271,7 +270,6 @@ class Book extends Reference
                 'event',
                 'relation',
                 'owner',
-                'imported',
                 'errors',
             ]
         ]);

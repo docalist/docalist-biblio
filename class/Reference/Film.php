@@ -291,7 +291,6 @@ class Film extends Reference
                 'owner' => [
                     'sep' => ', '
                 ],
-                'imported',
                 'errors' => [
                     'sep' => ', '
                 ],
@@ -426,7 +425,6 @@ class Film extends Reference
                 'event',
                 'relation',
                 'owner',
-                'imported',
                 'errors',
             ]
         ]);

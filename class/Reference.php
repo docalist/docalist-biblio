@@ -32,7 +32,6 @@ use Docalist\Biblio\Field\Content;
 use Docalist\Data\Type\Link;
 use Docalist\Biblio\Field\Relation;
 use Docalist\Biblio\Field\Owner;
-use Docalist\Biblio\Field\Imported;
 use Docalist\Biblio\Field\Error;
 
 use Docalist\Search\MappingBuilder;
@@ -67,7 +66,6 @@ use Docalist\Tokenizer;
  * @property Relation[]     $relation       Relations avec d'autres références.
  * @property Owner[]        $owner          Producteur de la notice.
  *
- * @property Imported       $imported       Notice importée.
  * @property Error[]        $errors         Erreurs.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
@@ -106,11 +104,6 @@ class Reference extends Record
 
                 // Les champs qui suivent ne font pas partie du format docalist
 
-                'imported' => [
-                    'type' => 'Docalist\Biblio\Field\Imported',
-                    'label' => __('Notice importée', 'docalist-biblio'),
-//                    'editor' => 'textarea',
-                ],
                 'errors' => [
                     'type' => 'Docalist\Biblio\Field\Error*',
                     'label' => __('Erreurs()', 'docalist-biblio'),
@@ -139,6 +132,9 @@ class Reference extends Record
         if (is_array($value) && isset($value['organisation'])) {
             $value['corporation'] = $value['organisation'];
         }
+
+        // Le champ "imported" n'existe plus
+        unset($value['imported']);
 
         // Ignore (efface) les relations qui utilisent l'ancien type de champ
         if (is_array($value) && isset($value['relation']) && isset(reset($value['relation'])['ref'])) {
@@ -334,7 +330,6 @@ class Reference extends Record
         // owner
         $mapping->addField('owner')->text()->filter();
 
-        // imported
         // errors
 
         return $mapping;
@@ -469,7 +464,6 @@ class Reference extends Record
             $document['owner'] = $this->owner->getPhpValue();
         }
 
-        // imported
         // errors
 
         // Ok
