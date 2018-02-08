@@ -4,7 +4,8 @@
 # sources : onix list 15/unimarc
 #
 # 2013-10-03 Version initiale
-# 2014-06-20 Ajout des codes manquants, ajout de l'entrée 'degree' (#111).
+# 2014-06-20 Ajout des codes manquants, ajout de l'entrée 'degree' 
+#            https://github.com/docalist/docalist/issues/111
 # ------------------------------------------------------------------------------
 code;label;description
 subtitle;Sous-titre;

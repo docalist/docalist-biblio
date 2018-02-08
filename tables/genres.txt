@@ -3,15 +3,15 @@
 #
 # 2014-07-17 Version initiale au format table.
 #            Basée sur les tables qu'on avait avant (tables spécifiques par
-#            type) et sur les valeurs trouvées dans les abses Prisme/Afertes.
-#            cf. https://github.com/daniel-menard/prisme/issues/93
-# 2014-10-16 Ajout des entrées leaving-certificate, licence, master et 
-#            doctorate (https://github.com/daniel-menard/prisme/issues/202)
+#            type) et sur les valeurs trouvées dans les bases Prisme/Afertes.
+#            https://github.com/docalist/docalist/issues/93
+# 2014-10-16 Ajout des entrées leaving-certificate, licence, master et doctorate 
+#            https://github.com/docalist/docalist/issues/202
 # 2014-12-11 Ajout de HDR et ajout d'un "voir aussi" vers hdr pour thesis, 
 #            mémoire et professional-practices. 
-#            (https://github.com/daniel-menard/prisme/issues/219)
+#            https://github.com/docalist/docalist/issues/219
 # 2015-06-22 Ajout de association-website 
-#            (https://github.com/daniel-menard/prisme/issues/232)
+#            https://github.com/docalist/docalist/issues/232
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HN
 #

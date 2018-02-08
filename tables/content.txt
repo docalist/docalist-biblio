@@ -5,7 +5,7 @@
 # 02/06/14, DM Ajout de plusieurs entrées suite à l'intégration du champ résumé 
 #              dans le champ notes.
 # 30/09/14, DM Ajout des entrées explanatory-memo et explanatory-memo-excerpt.
-#              https://github.com/daniel-menard/prisme/issues/192
+#              https://github.com/docalist/docalist/issues/192
 # ------------------------------------------------------------------------------
 code;label;description
 # ------------------------------------------------------------------------------
