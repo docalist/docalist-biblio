@@ -12,7 +12,7 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TableEntry;
 
 /**
- * Champ "genre" : genre du document.
+ * Champ "genre" : mots-clés décrivant le genre et la nature du document catalogué.
  *
  * Ce champ répétable permet d'indiquer des mots-clés qui décrivent la nature et les catégories stylistiques
  * auxquelles appartient le document catalogué (roman, essai, science-fiction, documentaire, législation...)
