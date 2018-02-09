@@ -10,28 +10,28 @@
 namespace Docalist\Biblio;
 
 use Docalist\Data\Record;
-use Docalist\Biblio\Field\Genre;
-use Docalist\Biblio\Field\Media;
-use Docalist\Biblio\Field\Title;
-use Docalist\Biblio\Field\OtherTitle;
-use Docalist\Biblio\Field\Translation;
-use Docalist\Biblio\Field\Author;
-use Docalist\Biblio\Field\Corporation;
-use Docalist\Biblio\Field\Date;
-use Docalist\Biblio\Field\Journal;
-use Docalist\Biblio\Field\Number;
-use Docalist\Biblio\Field\Language;
-use Docalist\Biblio\Field\Extent;
-use Docalist\Biblio\Field\Format;
-use Docalist\Biblio\Field\Editor;
-use Docalist\Biblio\Field\Collection;
-use Docalist\Biblio\Field\Edition;
-use Docalist\Biblio\Field\Context;
-use Docalist\Data\Type\Topic;
-use Docalist\Biblio\Field\Content;
-use Docalist\Data\Type\Link;
-use Docalist\Biblio\Field\Relation;
-use Docalist\Biblio\Field\Owner;
+use Docalist\Biblio\Field\GenreField;
+use Docalist\Biblio\Field\MediaField;
+use Docalist\Biblio\Field\TitleField;
+use Docalist\Biblio\Field\OtherTitleField;
+use Docalist\Biblio\Field\TranslationField;
+use Docalist\Biblio\Field\AuthorField;
+use Docalist\Biblio\Field\CorporationField;
+use Docalist\Biblio\Field\DateField;
+use Docalist\Biblio\Field\JournalField;
+use Docalist\Biblio\Field\NumberField;
+use Docalist\Biblio\Field\LanguageField;
+use Docalist\Biblio\Field\ExtentField;
+use Docalist\Biblio\Field\FormatField;
+use Docalist\Biblio\Field\EditorField;
+use Docalist\Biblio\Field\CollectionField;
+use Docalist\Biblio\Field\EditionField;
+use Docalist\Biblio\Field\ContextField;
+use Docalist\Biblio\Field\TopicField;
+use Docalist\Biblio\Field\ContentField;
+use Docalist\Biblio\Field\LinkField;
+use Docalist\Biblio\Field\RelationField;
+use Docalist\Biblio\Field\OwnerField;
 
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
@@ -42,28 +42,28 @@ use Docalist\Tokenizer;
  * Le schéma d'une référence est fixe : les classes descendantes (Article, Book, ...) ne doivent pas créer
  * de nouveaux champs, elles peuvent juste paramétrer les champs existant ou les marquer "unused".
  *
- * @property Genre[]        $genre          Genres.
- * @property Media[]        $media          Supports.
- * @property Title          $title          Titre du document.
- * @property OtherTitle[]   $othertitle     Autres titres.
- * @property Translation[]  $translation    Traductions du titre.
- * @property Author[]       $author         Personnes auteurs (auteurs physiques).
- * @property Corporation[]  $corporation    Organismes auteurs (auteurs moraux).
- * @property Date[]         $date           Dates du document.
- * @property Journal        $journal        Périodique.
- * @property Number[]       $number         Numéros du document.
- * @property Language[]     $language       Langues des textes.
- * @property Extent[]       $extent         Etendue.
- * @property Format[]       $format         Format et étiquettes de collation.
- * @property Editor[]       $editor         Editeurs.
- * @property Collection[]   $collection     Collection et numéro dans la collection.
- * @property Edition[]      $edition        Mentions d'édition.
- * @property Context        $context        Contexte dans lequel a été produit le document.
- * @property Topic[]        $topic          Mots-clés.
- * @property Content[]      $content        Contenu du document.
- * @property Link[]         $link           Liens internet.
- * @property Relation[]     $relation       Relations avec d'autres références.
- * @property Owner[]        $owner          Producteur de la notice.
+ * @property GenreField[]       $genre          Genres.
+ * @property MediaField[]       $media          Supports.
+ * @property TitleField         $title          Titre du document.
+ * @property OtherTitleField[]  $othertitle     Autres titres.
+ * @property TranslationField[] $translation    Traductions du titre.
+ * @property AuthorField[]      $author         Personnes auteurs (auteurs physiques).
+ * @property CorporationField[] $corporation    Organismes auteurs (auteurs moraux).
+ * @property DateField[]        $date           Dates du document.
+ * @property JournalField       $journal        Périodique.
+ * @property NumberField[]      $number         Numéros du document.
+ * @property LanguageField[]    $language       Langues des textes.
+ * @property ExtentField[]      $extent         Etendue.
+ * @property FormatField[]      $format         Format et étiquettes de collation.
+ * @property EditorField[]      $editor         Editeurs.
+ * @property CollectionField[]  $collection     Collection et numéro dans la collection.
+ * @property EditionField[]     $edition        Mentions d'édition.
+ * @property ContextField       $context        Contexte dans lequel a été produit le document.
+ * @property TopicField[]       $topic          Mots-clés.
+ * @property ContentField[]     $content        Contenu du document.
+ * @property LinkField[]        $link           Liens internet.
+ * @property RelationField[]    $relation       Relations avec d'autres références.
+ * @property OwnerField[]       $owner          Producteur de la notice.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
@@ -76,28 +76,28 @@ class Reference extends Record
             'label' => __('Référence', 'docalist-biblio'),
             'description' => __('Une référence documentaire.', 'docalist-biblio'),
             'fields' => [
-                'genre'         => 'Docalist\Biblio\Field\Genre*',
-                'media'         => 'Docalist\Biblio\Field\Media*',
-                'title'         => 'Docalist\Biblio\Field\Title',
-                'othertitle'    => 'Docalist\Biblio\Field\OtherTitle*',
-                'translation'   => 'Docalist\Biblio\Field\Translation*',
-                'author'        => 'Docalist\Biblio\Field\Author*',
-                'corporation'   => 'Docalist\Biblio\Field\Corporation*',
-                'date'          => 'Docalist\Biblio\Field\Date*',
-                'journal'       => 'Docalist\Biblio\Field\Journal',
-                'number'        => 'Docalist\Biblio\Field\Number*',
-                'language'      => 'Docalist\Biblio\Field\Language*',
-                'extent'        => 'Docalist\Biblio\Field\Extent*',
-                'format'        => 'Docalist\Biblio\Field\Format*',
-                'editor'        => 'Docalist\Biblio\Field\Editor*',
-                'collection'    => 'Docalist\Biblio\Field\Collection*',
-                'edition'       => 'Docalist\Biblio\Field\Edition*',
-                'context'       => 'Docalist\Biblio\Field\Context',
-                'topic'         => 'Docalist\Data\Field\TopicField*',
-                'content'       => 'Docalist\Biblio\Field\Content*',
-                'link'          => 'Docalist\Data\Field\LinkField*',
-                'relation'      => 'Docalist\Biblio\Field\Relation*',
-                'owner'         => 'Docalist\Biblio\Field\Owner*',
+                'genre'         => GenreField::class,
+                'media'         => MediaField::class,
+                'title'         => TitleField::class,
+                'othertitle'    => OtherTitleField::class,
+                'translation'   => TranslationField::class,
+                'author'        => AuthorField::class,
+                'corporation'   => CorporationField::class,
+                'date'          => DateField::class,
+                'journal'       => JournalField::class,
+                'number'        => NumberField::class,
+                'language'      => LanguageField::class,
+                'extent'        => ExtentField::class,
+                'format'        => FormatField::class,
+                'editor'        => EditorField::class,
+                'collection'    => CollectionField::class,
+                'edition'       => EditionField::class,
+                'context'       => ContextField::class,
+                'topic'         => TopicField::class,
+                'content'       => ContentField::class,
+                'link'          => LinkField::class,
+                'relation'      => RelationField::class,
+                'owner'         => OwnerField::class,
             ],
         ];
     }
