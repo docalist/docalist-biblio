@@ -10,7 +10,7 @@
 namespace Docalist\Biblio\Aggregation;
 
 use Docalist\Search\Aggregation\Bucket\TermsAggregation;
-use Docalist\Biblio\Field\Corporation;
+use Docalist\Biblio\Field\CorporationField;
 use stdClass;
 
 /**
@@ -37,7 +37,7 @@ class TermsCorporation extends TermsAggregation
     {
         // Le bucket est de la forme 'nom¤prénom' (cf. Reference::map)
         list($name, $acronym, $city, $country) = explode('¤', $bucket->key);
-        $corp = new Corporation([
+        $corp = new CorporationField([
             'name' => $name,
             'acronym' => $acronym,
             'city' => $city,

@@ -10,7 +10,7 @@
 namespace Docalist\Biblio\Aggregation;
 
 use Docalist\Search\Aggregation\Bucket\TermsAggregation;
-use Docalist\Biblio\Field\Author;
+use Docalist\Biblio\Field\AuthorField;
 use stdClass;
 
 /**
@@ -42,7 +42,7 @@ class TermsAuthor extends TermsAggregation
 
         // Le bucket est de la forme 'nom¤prénom' (cf. Reference::map)
         list($name, $firstname) = explode('¤', $bucket->key);
-        $author = new Author(['name' => $name, 'firstname' => $firstname]);
+        $author = new AuthorField(['name' => $name, 'firstname' => $firstname]);
 
         return $author->getFormattedValue(['format' => 'f n']); // ou 'n (f)'
     }
