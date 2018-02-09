@@ -342,14 +342,14 @@ class Reference extends Record
 
         // genre
         if (isset($this->genre)) {
-            $document['genre'] = $this->genre->map(function(Genre $genre) { // Indexer le code
+            $document['genre'] = $this->genre->map(function(GenreField $genre) { // Indexer le code
                 return $genre->getEntryLabel();
             });
         }
 
         // media
         if (isset($this->media)) {
-            $document['media'] = $this->media->map(function(Media $media) { // Indexer le code
+            $document['media'] = $this->media->map(function(MediaField $media) { // Indexer le code
                 return $media->getEntryLabel();
             });
         }
@@ -368,12 +368,12 @@ class Reference extends Record
         $this->mapMultiField($document, 'translation');
 
         // author
-        $this->mapMultiField($document, 'author', function(Author $aut) {
+        $this->mapMultiField($document, 'author', function(AuthorField $aut) {
             return sprintf('%s¤%s', $aut->name->getPhpValue(), $aut->firstname->getPhpValue());
         });
 
         // corporation
-        $this->mapMultiField($document, 'corporation', function(Corporation $corp) {
+        $this->mapMultiField($document, 'corporation', function(CorporationField $corp) {
             return sprintf(
                 '%s¤%s¤%s¤%s',
                 $corp->name->getPhpValue(),
@@ -396,7 +396,7 @@ class Reference extends Record
 
         // language
         if (isset($this->language)) {
-            $document['language'] = $this->language->map(function(Language $language) { // Indexer le code
+            $document['language'] = $this->language->map(function(LanguageField $language) { // Indexer le code
                 return $language->getEntryLabel();
             });
         }
@@ -406,7 +406,7 @@ class Reference extends Record
         // format : non indexé
 
         // editor
-        $this->mapMultiField($document, 'editor', function(Editor $ed) { // cc organisme
+        $this->mapMultiField($document, 'editor', function(EditorField $ed) { // cc organisme
             return sprintf(
                 '%s¤%s¤%s¤%s',
                 $ed->name->getPhpValue(),
@@ -418,7 +418,7 @@ class Reference extends Record
 
         // collection
         if (isset($this->collection)) {
-            $document['collection'] = array_filter($this->collection->map(function(Collection $col) {
+            $document['collection'] = array_filter($this->collection->map(function(CollectionField $col) {
                 return $col->name->getPhpValue();
             }));
         }
