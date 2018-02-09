@@ -12,7 +12,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Type\Text;
 use Docalist\Type\TableEntry;
-use InvalidArgumentException;
 
 /**
  * Champ "author" : personnes physiques ayant contribué au document catalogué.
@@ -124,7 +123,7 @@ class AuthorField extends MultiField
                 break;
 
             default:
-                throw new InvalidArgumentException("Invalid Author format '$format'");
+                return parent::getFormattedValue($options);
         }
 
         return implode(' ', $t); // espace insécable
