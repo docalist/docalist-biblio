@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Entity;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Entity\ReferenceEntity;
 
 /**
  * Film.
@@ -20,7 +20,7 @@ use Docalist\Biblio\Entity\Reference;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Film extends Reference
+class FilmEntity extends ReferenceEntity
 {
     public static function loadSchema()
     {

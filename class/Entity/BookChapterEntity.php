@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Entity;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Entity\ReferenceEntity;
 
 /**
  * Chapitre de livre.
@@ -30,7 +30,7 @@ use Docalist\Biblio\Entity\Reference;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class BookChapter extends Reference
+class BookChapterEntity extends ReferenceEntity
 {
     public static function loadSchema()
     {

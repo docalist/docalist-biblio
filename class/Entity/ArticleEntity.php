@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Entity;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Entity\ReferenceEntity;
 
 /**
  * Article.
@@ -35,7 +35,7 @@ use Docalist\Biblio\Entity\Reference;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Article extends Reference
+class ArticleEntity extends ReferenceEntity
 {
     // Un type de référence ne doit pas créer de champs, juste paramétrer les champs existant ou les marquer "unused".
 

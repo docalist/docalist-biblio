@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Entity;
 
-use Docalist\Biblio\Entity\Reference;
+use Docalist\Biblio\Entity\ReferenceEntity;
 
 /**
  * Un périodique.
@@ -53,7 +53,7 @@ use Docalist\Biblio\Entity\Reference;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Periodical extends Reference
+class PeriodicalEntity extends ReferenceEntity
 {
     public static function loadSchema()
     {

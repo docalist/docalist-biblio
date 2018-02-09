@@ -68,7 +68,7 @@ use Docalist\Tokenizer;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Reference extends Record
+class ReferenceEntity extends Record
 {
     public static function loadSchema()
     {

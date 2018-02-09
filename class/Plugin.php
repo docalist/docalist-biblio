@@ -9,6 +9,18 @@
  */
 namespace Docalist\Biblio;
 
+use Docalist\Biblio\Entity\ArticleEntity;
+use Docalist\Biblio\Entity\BookEntity;
+use Docalist\Biblio\Entity\BookChapterEntity;
+use Docalist\Biblio\Entity\DegreeEntity;
+use Docalist\Biblio\Entity\FilmEntity;
+use Docalist\Biblio\Entity\LegislationEntity;
+use Docalist\Biblio\Entity\MeetingEntity;
+use Docalist\Biblio\Entity\PeriodicalEntity;
+use Docalist\Biblio\Entity\PeriodicalIssueEntity;
+use Docalist\Biblio\Entity\ReportEntity;
+use Docalist\Biblio\Entity\WebSiteEntity;
+
 /**
  * Plugin de gestion de notices bibliographiques.
  *
@@ -25,17 +37,17 @@ class Plugin {
         // Déclare la liste des types définis dans ce plugin
         add_filter('docalist_databases_get_types', function(array $types) {
             $types += [
-                'article'           => 'Docalist\Biblio\Reference\Article',
-                'book'              => 'Docalist\Biblio\Reference\Book',
-                'book-chapter'      => 'Docalist\Biblio\Reference\BookChapter',
-                'degree'            => 'Docalist\Biblio\Reference\Degree',
-                'film'              => 'Docalist\Biblio\Reference\Film',
-                'legislation'       => 'Docalist\Biblio\Reference\Legislation',
-                'meeting'           => 'Docalist\Biblio\Reference\Meeting',
-                'periodical'        => 'Docalist\Biblio\Reference\Periodical',
-                'periodical-issue'  => 'Docalist\Biblio\Reference\PeriodicalIssue',
-                'report'            => 'Docalist\Biblio\Reference\Report',
-                'website'           => 'Docalist\Biblio\Reference\WebSite',
+                'article'           => ArticleEntity::class,
+                'book'              => BookEntity::class,
+                'book-chapter'      => BookChapterEntity::class,
+                'degree'            => DegreeEntity::class,
+                'film'              => FilmEntity::class,
+                'legislation'       => LegislationEntity::class,
+                'meeting'           => MeetingEntity::class,
+                'periodical'        => PeriodicalEntity::class,
+                'periodical-issue'  => PeriodicalIssueEntity::class,
+                'report'            => ReportEntity::class,
+                'website'           => WebSiteEntity::class,
             ];
 
             return $types;
