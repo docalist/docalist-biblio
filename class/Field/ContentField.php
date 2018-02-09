@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio' plugin.
+ * This file is part of Docalist Biblio.
  *
  * Copyright (C) 2012-2018 Daniel Ménard
  *
