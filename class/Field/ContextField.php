@@ -12,7 +12,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\Composite;
 use Docalist\Type\Text;
 use Docalist\Type\FuzzyDate;
-use InvalidArgumentException;
 
 /**
  * Description de l'événement à l'origine du document cataogué (colloque, réunion, soutenance, etc.)
@@ -91,7 +90,7 @@ class ContextField extends Composite
                 return $h;
         }
 
-        throw new InvalidArgumentException("Invalid Event format '$format'");
+        return parent::getFormattedValue($options);
     }
 
     public function filterEmpty($strict = true)
