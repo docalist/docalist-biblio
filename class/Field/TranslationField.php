@@ -12,6 +12,7 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\TypedText;
 use Docalist\Type\TableEntry;
 use Docalist\Type\Text;
+use Docalist\Type\Any;
 
 /**
  * Champ "translation" : traductions dans d'autres langues du titre original du document catalogué.
