@@ -10,7 +10,6 @@
 namespace Docalist\Biblio\Aggregation;
 
 use Docalist\Search\Aggregation\Bucket\TermsAggregation;
-use Docalist\Biblio\Field\Author;
 
 /**
  * Une agrégation standard de type "terms" sur le champ "journal".
