@@ -91,6 +91,6 @@ class CollectionField extends Composite
                 return $name;
         }
 
-        throw new InvalidArgumentException("Invalid Collection format '$format'");
+        return parent::getFormattedValue($options);
     }
 }
