@@ -25,7 +25,7 @@ use Docalist\Type\TypedNumber;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Extent extends TypedNumber
+class ExtentField extends TypedNumber
 {
     /*
      * Remarque : ce champ est très similaire au champ standard "figure", mais la table d'autorité associée

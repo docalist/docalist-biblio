@@ -37,7 +37,7 @@ use InvalidArgumentException;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Author extends MultiField
+class AuthorField extends MultiField
 {
     public static function loadSchema()
     {

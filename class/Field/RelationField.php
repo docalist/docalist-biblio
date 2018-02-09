@@ -18,7 +18,7 @@ use Docalist\Data\Type\TypedRelation;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Relation extends TypedRelation
+class RelationField extends TypedRelation
 {
     public static function loadSchema()
     {

@@ -26,7 +26,7 @@ use Docalist\Data\Field\NumberField as BaseNumberField;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Number extends BaseNumberField
+class NumberField extends BaseNumberField
 {
     public static function loadSchema()
     {

@@ -29,7 +29,7 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Format extends TableEntry
+class FormatField extends TableEntry
 {
     /*
      * Remarque : sur le fond, ce champ est juste un type particulier d'indexation (d'ailleurs la table par

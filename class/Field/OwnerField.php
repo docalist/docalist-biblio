@@ -18,7 +18,7 @@ use Docalist\Type\Text;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Owner extends Text
+class OwnerField extends Text
 {
     /*
      * Il y a un problème de définition du rôle exact de ce champ. Qu'est-ce qu'il contient exactment ?

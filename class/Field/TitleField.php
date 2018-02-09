@@ -16,7 +16,7 @@ use Docalist\Data\Field\TitleField as BaseTitle;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Title extends BaseTitle
+class TitleField extends BaseTitle
 {
     public static function loadSchema()
     {

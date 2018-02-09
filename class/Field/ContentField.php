@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Data\Field\ContentField;
+use Docalist\Data\Field\ContentField as BaseContentField;
 
 /**
  * Champ "content" : les contenus textuels décrivant le document catalogué.
@@ -29,7 +29,7 @@ use Docalist\Data\Field\ContentField;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Content extends ContentField
+class ContentField extends BaseContentField
 {
     public static function loadSchema()
     {

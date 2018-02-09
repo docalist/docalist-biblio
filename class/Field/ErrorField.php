@@ -22,8 +22,10 @@ use Docalist\Type\Composite;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Error extends Composite {
-    static public function loadSchema() {
+class ErrorField extends Composite
+{
+    public static function loadSchema()
+    {
         return [
             'fields' => [
                 'code' => 'Docalist\Type\Text',
@@ -32,14 +34,4 @@ class Error extends Composite {
             ],
         ];
     }
-/*
-    public function setupMapping(MappingBuilder $mapping)
-    {
-        $mapping->addField('error')->text()->filter();
-    }
-
-    public function mapData(array & $document) {
-        $document['error'][] = $this->message();
-    }
-*/
 }

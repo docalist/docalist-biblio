@@ -25,7 +25,7 @@ use Docalist\Type\Text;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Collection extends Composite
+class CollectionField extends Composite
 {
     public static function loadSchema()
     {

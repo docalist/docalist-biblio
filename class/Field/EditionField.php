@@ -19,7 +19,7 @@ use Docalist\Type\Text;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Edition extends Text
+class EditionField extends Text
 {
     public static function loadSchema()
     {

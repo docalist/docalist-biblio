@@ -24,7 +24,7 @@ use InvalidArgumentException;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Context extends Composite
+class ContextField extends Composite
 {
     public static function loadSchema()
     {

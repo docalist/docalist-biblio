@@ -22,7 +22,7 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Language extends TableEntry
+class LanguageField extends TableEntry
 {
     public static function loadSchema()
     {

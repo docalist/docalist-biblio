@@ -18,7 +18,7 @@ use Docalist\Type\LargeText;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Imported extends LargeText
+class ImportedField extends LargeText
 {
     // map : champ non indexé
 }

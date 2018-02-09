@@ -25,7 +25,7 @@ use Docalist\Data\Field\DateField as BaseDateField;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Date extends BaseDateField
+class DateField extends BaseDateField
 {
     public static function loadSchema()
     {

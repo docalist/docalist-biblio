@@ -31,7 +31,7 @@ use Docalist\Type\Text;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Translation extends TypedText
+class TranslationField extends TypedText
 {
     public static function loadSchema()
     {

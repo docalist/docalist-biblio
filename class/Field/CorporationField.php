@@ -43,7 +43,7 @@ use InvalidArgumentException;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Corporation extends MultiField
+class CorporationField extends MultiField
 {
     public static function loadSchema()
     {

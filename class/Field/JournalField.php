@@ -19,7 +19,7 @@ use Docalist\Forms\EntryPicker;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class Journal extends Text
+class JournalField extends Text
 {
     public static function loadSchema()
     {
