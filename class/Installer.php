@@ -149,15 +149,6 @@ class Installer {
                 'creation' => '2013-11-04 01:28:47',
             ],
 
-            // Vocabulaires disponibles
-            'topics' => [
-                'path' => $dir . 'topics.php',
-                'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
-                'format' => 'table',
-                'type' => 'topics',
-                'creation' => '2014-02-05 08:38:11',
-            ],
-
             // Types de contenus
             'content' => [
                 'path' => $dir . 'content.txt',
