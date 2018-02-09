@@ -9,7 +9,7 @@
  */
 namespace Docalist\Biblio\Field;
 
-use Docalist\Biblio\Field\Corporation;
+use Docalist\Biblio\Field\CorporationField;
 
 /**
  * Champ "editor" : organismes éditeur.
@@ -34,7 +34,7 @@ use Docalist\Biblio\Field\Corporation;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class EditorField extends Corporation
+class EditorField extends CorporationField
 {
     public static function loadSchema()
     {
