@@ -12,7 +12,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Type\Text;
 use Docalist\Type\TableEntry;
-use InvalidArgumentException;
 
 /**
  * Champ "corporation" : auteurs moraux ayant contribué au document catalogué.
@@ -133,7 +132,8 @@ class CorporationField extends MultiField
             case 'name':
                 return $this->formatField(isset($this->name) ? 'name' : 'acronym', $options);
         }
-        throw new InvalidArgumentException("Invalid Organization format '$format'");
+
+        return parent::getFormattedValue($options);
     }
 
     public function filterEmpty($strict = true)
