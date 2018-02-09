@@ -7,9 +7,9 @@
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  */
-namespace Docalist\Biblio\Reference;
+namespace Docalist\Biblio\Entity;
 
-use Docalist\Biblio\Reference;
+use Docalist\Biblio\Entity\Reference;
 
 /**
  * Un périodique.

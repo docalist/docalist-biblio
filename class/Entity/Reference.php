@@ -7,7 +7,7 @@
  * For copyright and license information, please view the
  * LICENSE.txt file that was distributed with this source code.
  */
-namespace Docalist\Biblio;
+namespace Docalist\Biblio\Entity;
 
 use Docalist\Data\Record;
 use Docalist\Type\Any;
