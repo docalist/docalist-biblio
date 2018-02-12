@@ -9,7 +9,8 @@
 # A réfléchir : On ne peut faire des liens que vers des notices du même type ?
 #
 # 2013-10-05 Version initiale
-# 2014-06-27 Mise à jour (daniel-menard/prisme#110)
+# 2014-06-27 Mise à jour 
+#            https://github.com/docalist/docalist/issues/110
 # ------------------------------------------------------------------------------
 code;label;reverse;description
 #

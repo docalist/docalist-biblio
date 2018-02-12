@@ -1,31 +1,29 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio' plugin.
+ * This file is part of Docalist Biblio.
  *
- * Copyright (C) 2012-2017 Daniel Ménard
+ * Copyright (C) 2012-2018 Daniel Ménard
  *
  * For copyright and license information, please view the
- * LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org/
  * Description: Docalist: bibliographic data manager.
- * Version:     0.15.0
+ * Version:     0.16.0
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Text Domain: docalist-biblio
  * Domain Path: /languages
  *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 namespace Docalist\Biblio;
 
 /**
  * Version du plugin.
  */
-define('DOCALIST_BIBLIO_VERSION', '0.15.0'); // Garder synchro avec la version indiquée dans l'entête
+define('DOCALIST_BIBLIO_VERSION', '0.16.0'); // Garder synchro avec la version indiquée dans l'entête
 
 /**
  * Path absolu du répertoire dans lequel le plugin est installé.
@@ -53,7 +51,7 @@ define('DOCALIST_BIBLIO_URL', plugins_url('', DOCALIST_BIBLIO));
  */
 add_action('plugins_loaded', function () {
     // Auto désactivation si les plugins dont on a besoin ne sont pas activés
-    $dependencies = ['DOCALIST_CORE', 'DOCALIST_SEARCH'];
+    $dependencies = ['DOCALIST_DATA'];
     foreach ($dependencies as $dependency) {
         if (! defined($dependency)) {
             return add_action('admin_notices', function () use ($dependency) {

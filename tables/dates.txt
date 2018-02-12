@@ -17,9 +17,9 @@
 # - Date attendue de livraison (expectedDate)
 # - Date de remise en vente (reissueDate)
 # 30/09/14, DM Ajout de l'entrée "signing-date"
-#           https://github.com/daniel-menard/prisme/issues/192
+#           https://github.com/docalist/docalist/issues/192
 # 16/10/14, DM Ajout de l'entrée "presentation-date"
-#           https://github.com/daniel-menard/prisme/issues/201
+#           https://github.com/docalist/docalist/issues/201
 # ------------------------------------------------------------------------------
 code;label;description
 # Entrées Onix :

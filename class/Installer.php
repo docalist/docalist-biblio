@@ -1,15 +1,11 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio' plugin.
+ * This file is part of Docalist Biblio.
  *
- * Copyright (C) 2012-2017 Daniel Ménard
+ * Copyright (C) 2012-2018 Daniel Ménard
  *
  * For copyright and license information, please view the
- * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * LICENSE file that was distributed with this source code.
  */
 namespace Docalist\Biblio;
 
@@ -18,6 +14,8 @@ use Docalist\Table\TableInfo;
 
 /**
  * Installation/désinstallation de docalist-biblio.
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class Installer {
 
@@ -149,15 +147,6 @@ class Installer {
                 'format' => 'table',
                 'type' => 'titles',
                 'creation' => '2013-11-04 01:28:47',
-            ],
-
-            // Vocabulaires disponibles
-            'topics' => [
-                'path' => $dir . 'topics.php',
-                'label' => __("Liste des vocabulaires disponibles pour l'indexation", 'docalist-biblio'),
-                'format' => 'table',
-                'type' => 'topics',
-                'creation' => '2014-02-05 08:38:11',
             ],
 
             // Types de contenus

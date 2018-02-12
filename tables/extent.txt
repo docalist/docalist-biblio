@@ -1,12 +1,12 @@
 # ------------------------------------------------------------------------------
 # Table "Etendues" (types de pagination)
 #
-# 12/06/14, DM Version initiale (cf. daniel-menard/prisme#139).
+# 12/06/14, DM Version initiale (cf. docalist/docalist#139).
 # 05/09/14, DM Utilise des espaces insécables après les mentions 'p.' et 'pp'.
 # 24/09/14, DM Ajoute le point qui manquait à "pp." 
-#           (https://github.com/daniel-menard/prisme/issues/146)
+#           https://github.com/docalist/docalist/issues/146
 # 26/09/14, DM Ajoute un espace entre "nombre de pages" et "p."
-#           https://github.com/daniel-menard/prisme/issues/146#issuecomment-56946768
+#           https://github.com/docalist/docalist/issues/146#issuecomment-56946768
 # ------------------------------------------------------------------------------
 code;label;format;description
 no-pages;Document non paginé;n.p. %s;A employer lorsque les pages du document catalogué ne sont pas paginées.

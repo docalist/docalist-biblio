@@ -1,15 +1,11 @@
 <?php
 /**
- * This file is part of the 'Docalist Biblio' plugin.
+ * This file is part of Docalist Biblio.
  *
- * Copyright (C) 2012-2017 Daniel Ménard
+ * Copyright (C) 2012-2018 Daniel Ménard
  *
  * For copyright and license information, please view the
- * LICENSE.txt file that was distributed with this source code.
- *
- * @package     Docalist
- * @subpackage  Biblio
- * @author      Daniel Ménard <daniel.menard@laposte.net>
+ * LICENSE file that was distributed with this source code.
  */
 namespace Docalist\Biblio\Aggregation;
 
@@ -17,6 +13,8 @@ use Docalist\Search\Aggregation\Bucket\TableEntriesAggregation;
 
 /**
  * Une agrégation standard de type "terms" sur le champ "genre".
+ *
+ * @author Daniel Ménard <daniel.menard@laposte.net>
  */
 class TermsGenre extends TableEntriesAggregation
 {

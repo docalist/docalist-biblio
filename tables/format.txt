@@ -1,15 +1,16 @@
 # ------------------------------------------------------------------------------
 # Table "Format du document" (étiquettes de collation)
 #
-# - 11-06-14, DM Version initiale (cf. daniel-menard/prisme#106).
+# - 11-06-14, DM Version initiale
+#             https://github.com/docalist/docalist/issues/106.
 # - 23/09/14, DM Ajout de audiodescription, sdh, bonus et booklet
-#             (https://github.com/daniel-menard/prisme/issues/177)
+#             https://github.com/docalist/docalist/issues/177
 # - 28/01/15, DM Ajout de vost et subtitles-fra/eng/spa/ger/ita/rus/ara
-#             (https://github.com/daniel-menard/prisme/issues/177)
+#             https://github.com/docalist/docalist/issues/177
 # - 17/02/15, DM Hiérarchise les formats de fichiers en introduisant des TG
-#             (https://github.com/daniel-menard/prisme/issues/226)
+#             https://github.com/docalist/docalist/issues/226
 # - 17/05/15, DM Ajout des étiquettes de périodicité
-#             (https://github.com/daniel-menard/prisme/issues/224)
+#             https://github.com/docalist/docalist/issues/224
 # ------------------------------------------------------------------------------
 code;label;USE;MT;BT;RT;description;SN;HS
 # ------------------------------------------------------------------------------

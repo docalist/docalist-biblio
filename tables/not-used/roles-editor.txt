@@ -5,8 +5,6 @@
 #
 # Les libellés en français ont été traduits et adaptés.
 #
-# @todo: La description n'a pas encore été traduite.
-#
 # 2013-10-02 Version initiale
 # ------------------------------------------------------------------------------
 code;label;description
