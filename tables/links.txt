@@ -1,9 +1,10 @@
 # ------------------------------------------------------------------------------
-# Table "Autres titres"
+# Table "Types de liens"
 #
 # sources : onix list 73
 #
 # 2013-10-03 Version initiale
+# 2018-04-13 : Ajout de DOI qui était géré dans la table numbers avant.
 # ------------------------------------------------------------------------------
 code;label;description
 #
@@ -16,6 +17,7 @@ G02;Courriel;
 # ------------------------------------------------------------------------------
 # D - Doc. Infos sur le document
 # ------------------------------------------------------------------------------
+doi;DOI;Digital Object Identifier (identifiant d'un document numérique). Exemple : 10.4000/cybergeo.23737
 D01;Présentation du document;
 D02;Extrait du document;
 D03;Texte intégral du document;Document en open-access
