@@ -27,6 +27,11 @@
 # 03/06/15, DM Harmonise la casse des libellés, typo dans la description de 
 #           "isbn", format incorrect pour "official-number".
 #           https://github.com/docalist/docalist/issues/284
+# 27/03/18, DM Ajout de issn-p, issn-e et issn-l
+#           https://github.com/docalist/docalist/issues/321
+# 27/03/18, DM Change le format d'affichage des DOI 
+#           Le DOI doit être affiché sous forme de lien (https://doi.org/xxx).
+# 13/04/18, DM Indique que le DOI est maintenant géré sous forme de lien.
 # ------------------------------------------------------------------------------
 code;type;format;label;description
 # ------------------------------------------------------------------------------
@@ -53,9 +58,12 @@ other-no;;%s (autre nº);autre numéro;Utilisé pour les numéros qui ne font pa
 # ------------------------------------------------------------------------------
 # Numéros et identifiants relevant d'un standard ou faisant l'objet d'une norme
 # ------------------------------------------------------------------------------
-doi;std;doi:%s;DOI;Digital Object Identifier (identifiant d'un document numérique). Exemple : 10.4000/cybergeo.23737
+doi;std;https://doi.org/%s;DOI;Ne plus utiliser, depuis 2018 le DOI est géré comme un lien (un URI). 
 isbn;std;ISBN %s;ISBN;International Standard Book Number (identifiant du livre) composé de 13 chiffres (10 pour les ouvrages anciens). Exemple : 978-1-2345-6789-7
 issn;std;ISSN %s;ISSN;International Standard Serial Number (identifiant du périodique). Exemple : 1234-567X.
+issn-p;std;ISSN %s (Imprimé);ISSN (imprimé);ISSN de presse écrite.
+issn-e;std;ISSN %s (En ligne);ISSN (en ligne);ISSN de presse électronique.
+issn-l;std;ISSN-L %s;ISSN (liaison);ISSN de liaison.
 isrn;std;IRSN %s;ISRN;International standard technical report number (identifiant du rapport). Exemple : I3S/RR-2013-05-FRA 
 ismn;std;ISMN %s;ISMN;International Standard Music Number (identifiant de la partition). Exemple : 979-0-2600-0043-8
 isan;std;ISAN %s;ISAN;International Standard Audiovisual Number (identifiant d'une œuvre audiovisuelle). Exemple : 0000-0001-8947-0000-8-0000-0000-D
