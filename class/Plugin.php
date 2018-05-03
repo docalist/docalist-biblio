@@ -20,6 +20,8 @@ use Docalist\Biblio\Entity\PeriodicalEntity;
 use Docalist\Biblio\Entity\PeriodicalIssueEntity;
 use Docalist\Biblio\Entity\ReportEntity;
 use Docalist\Biblio\Entity\WebSiteEntity;
+use Docalist\Data\Database;
+use Docalist\Biblio\Import\Crossref\CrossrefImporter;
 
 /**
  * Plugin de gestion de notices bibliographiques.
@@ -52,5 +54,12 @@ class Plugin {
 
             return $types;
         });
+
+        // Déclare l'import Crossref
+        add_filter('docalist_databases_get_importers', function(array $importers, Database $database) {
+            $formats[CrossrefImporter::getID()] = CrossrefImporter::class;
+
+            return $formats;
+        }, 10, 2);
     }
 }
