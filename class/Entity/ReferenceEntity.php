@@ -32,7 +32,6 @@ use Docalist\Biblio\Field\TopicField;
 use Docalist\Biblio\Field\ContentField;
 use Docalist\Biblio\Field\LinkField;
 use Docalist\Biblio\Field\RelationField;
-use Docalist\Biblio\Field\OwnerField;
 
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
@@ -64,7 +63,6 @@ use Docalist\Tokenizer;
  * @property ContentField[]     $content        Contenu du document.
  * @property LinkField[]        $link           Liens internet.
  * @property RelationField[]    $relation       Relations avec d'autres références.
- * @property OwnerField[]       $owner          Producteur de la notice.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
@@ -98,7 +96,6 @@ class ReferenceEntity extends Record
                 'content'       => ContentField::class,
                 'link'          => LinkField::class,
                 'relation'      => RelationField::class,
-                'owner'         => OwnerField::class,
             ],
         ];
     }
@@ -145,6 +142,14 @@ class ReferenceEntity extends Record
             unset($value['relation']);
         }
 
+        // Le champ "owner" est remplacé par le champ "source" (04/05/18)
+        if (isset($value['owner'])) {
+            foreach ((array) $value['owner'] as $owner) {
+                (! empty($owner)) && $value['source'][] = ['type' => $owner];
+            }
+            unset($value['owner']);
+        }
+        
         return parent::assign($value);
     }
 
@@ -238,7 +243,7 @@ class ReferenceEntity extends Record
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
-            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,source',
         ]);
     }
 
@@ -329,9 +334,6 @@ class ReferenceEntity extends Record
         // relation
         $mapping->addField('relation')->integer()
                 ->addTemplate('relation-*')->copyFrom('relation')->copyDataTo('relation');
-
-        // owner
-        $mapping->addField('owner')->text()->filter();
 
         return $mapping;
     }
@@ -459,11 +461,6 @@ class ReferenceEntity extends Record
 
         // relation
         $this->mapMultiField($document, 'relation');
-
-        // owner
-        if (isset($this->owner)) {
-            $document['owner'] = $this->owner->getPhpValue();
-        }
 
         // Ok
         return $document;
