@@ -157,7 +157,7 @@ class FilmEntity extends ReferenceEntity
             __('Collection et numéros', 'docalist-biblio')          => 'collection,number',
             __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
             __('Liens et relations', 'docalist-biblio')             => 'link,relation',
-            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,owner',
+            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,source',
         ]);
     }
 
