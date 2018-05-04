@@ -28,6 +28,7 @@ class CrossrefConverter implements Converter
         try {
             $ref = new ReferenceEntity();           // Champs Crossref traités
             $this->doType($data, $ref);             // type
+            $this->doSource($data, $ref);           //
             $this->doTitles($data, $ref);           // title, original-title, short-title, subtitle
             $this->doContainerTitle($data, $ref);   // container-title, short-container-title, group-title
             $this->doAuthors($data, $ref);          // author, editor, chair, translator
@@ -111,6 +112,15 @@ class CrossrefConverter implements Converter
         }
 
         $ref->type = $types[$type];
+    }
+
+    protected function doSource(array $data, ReferenceEntity $ref)
+    {
+        $source = ['type' => 'crossref','value' => date('Y-m-d')];
+        if (isset($data['DOI'])) {
+            $source['url'] = 'https://api.crossref.org/v1/works/' . $data['DOI'];
+        }
+        $ref->source = [$source];
     }
 
     protected function doTitles(array $data, ReferenceEntity $ref)
