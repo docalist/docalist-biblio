@@ -195,7 +195,7 @@ class ReferenceEntity extends Record
                 unset($allFields[$field]);
 
                 // Ajoute le champ
-                $grid[] = $field;
+                $grid[$field] = [];
             }
         }
 
