@@ -56,7 +56,8 @@ class ContextField extends Composite
                     'label' => __('Numéro', 'docalist-biblio'),
                     'description' => __('Numéro éventuel.', 'docalist-biblio'),
                 ]
-            ]
+            ],
+            'editor' => 'table',
         ];
     }
 
