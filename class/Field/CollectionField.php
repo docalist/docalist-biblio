@@ -48,7 +48,8 @@ class CollectionField extends Composite
                     'label' => __('Numéro', 'docalist-biblio'),
                     'description' => __('Numéro au sein de la collection.', 'docalist-biblio'),
                 ]
-            ]
+            ],
+            'editor' => 'table',
         ];
     }
 
