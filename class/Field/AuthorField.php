@@ -77,7 +77,7 @@ class AuthorField extends MultiField
     /**
      * Retourne l'auteur "et al."
      *
-     * @return Author
+     * @return AuthorField
      */
     public static function etal()
     {
