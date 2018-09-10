@@ -294,7 +294,7 @@ class CrossrefConverter implements Converter
         // 'created', 'deposited', 'indexed' : ignorés
         $issued = isset($data['issued']) ? $this->partialDate($data['issued']) : null;
         $posted = isset($data['posted']) ? $this->partialDate($data['posted']) : null;
-        $accepted = isset($data['accepted']) ? $this->partialDate($data['accepted']) : null;
+//        $accepted = isset($data['accepted']) ? $this->partialDate($data['accepted']) : null;
         $print = isset($data['print']) ? $this->partialDate($data['print']) : null;
         $online = isset($data['online']) ? $this->partialDate($data['online']) : null;
 
