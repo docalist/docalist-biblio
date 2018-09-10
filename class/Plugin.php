@@ -57,9 +57,9 @@ class Plugin {
 
         // Déclare l'import Crossref
         add_filter('docalist_databases_get_importers', function(array $importers, Database $database) {
-            $formats[CrossrefImporter::getID()] = CrossrefImporter::class;
+            $importers[CrossrefImporter::getID()] = CrossrefImporter::class;
 
-            return $formats;
+            return $importers;
         }, 10, 2);
     }
 }
