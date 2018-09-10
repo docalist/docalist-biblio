@@ -106,7 +106,7 @@ $relators = $graph->allOfType('mads:Authority');
 echo "- Generation du fichier CSV, ", count($relators), " entrees :\n";
 $nb = 0;
 
-/** @var EasyRdf_Resource $relator */
+/* @var EasyRdf_Resource $relator */
 $rows = [];
 foreach($relators as $relator) {
     // Nouvelle ligne
