@@ -50,11 +50,11 @@ class CrossrefReader implements Reader
 
         // Entre dans l'objet root et recherche la clé "message"
         $json->get('{');
-        $meta = $this->findKey($json, 'message');
+        $this->findKey($json, 'message');
 
         // Entre dans l'objet message et recherche la clé "items"
         $json->get('{');
-        $meta = $this->findKey($json, 'items');
+        $this->findKey($json, 'items');
 
         // Items doit être un tableau
         $json->get('[');
