@@ -1,7 +1,7 @@
 {
 	"type": "wordpress-plugin",
 	"name": "docalist/docalist-biblio",
-	"description": "Docalist: bibliographic data manager.",
+	"description": "Docalist : gestion de références bibliographiques.",
     "homepage": "https://docalist.org/",
 	"license": "GPL-2.0-or-later",
 
