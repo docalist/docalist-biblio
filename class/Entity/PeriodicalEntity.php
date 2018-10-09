@@ -74,7 +74,7 @@ class PeriodicalEntity extends ReferenceEntity
     {
         return static::buildEditGrid([
             __('Type de périodique', 'docalist-biblio')             => 'genre,media',
-            __('Périodique', 'docalist-biblio')                     => 'title,number,othertitle',
+            __('Périodique', 'docalist-biblio')                     => 'title,othertitle,number',
             __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
             __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,extent,format',
             __('Informations éditeur', 'docalist-biblio')           => 'editor,collection',
