@@ -149,7 +149,7 @@ class ReferenceEntity extends Record
             }
             unset($value['owner']);
         }
-        
+
         return parent::assign($value);
     }
 
@@ -299,7 +299,8 @@ class ReferenceEntity extends Record
 
         // extent : non indexé
 
-        // format : non indexé
+        // format (demande de Marion, cf. mail NL 12/03/18)
+        $mapping->addField('format')->text()->filter();
 
         // editor
         $mapping->addField('editor')->text()->filter()->suggest() // cc organisme
@@ -406,7 +407,12 @@ class ReferenceEntity extends Record
 
         // extent : non indexé
 
-        // format : non indexé
+        // format (demande de Marion, cf. mail NL 12/03/18)
+        if (isset($this->format)) {
+            $document['format'] = $this->format->map(function(FormatField $format) { // Indexer le code ?
+                return $format->getEntryLabel();
+            });
+        }
 
         // editor
         $this->mapMultiField($document, 'editor', function(EditorField $ed) { // cc organisme
