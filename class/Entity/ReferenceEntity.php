@@ -321,7 +321,7 @@ class ReferenceEntity extends Record
 
         // topic-hierarchy : crée un champ 'hierarchy' pour tous les topics qui sont associés à une table de type thesaurus
         foreach($this->topic->getThesaurusTopics() as $topic) {
-            $mapping->addField("topic-$topic-hierarchy")->text('hierarchy')->setProperty('search_analyzer', 'keyword');
+            $mapping->addField("topic-$topic-hierarchy")->hierarchy();
         }
 
         // content
