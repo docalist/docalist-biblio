@@ -52,12 +52,12 @@ class AuthorField extends MultiField
                 'name' => [
                     'type' => Text::class,
                     'label' => __('Nom', 'docalist-biblio'),
-                    'description' => __("Nom de la personne", 'docalist-biblio'),
+                    'description' => __('Nom de la personne.', 'docalist-biblio'),
                 ],
                 'firstname' => [
                     'type' => Text::class,
                     'label' => __('Prénom', 'docalist-biblio'),
-                    'description' => __("Prénom(s) ou initiales", 'docalist-biblio'),
+                    'description' => __('Prénom(s) ou initiales.', 'docalist-biblio'),
                 ],
                 'role' => [
                     'type' => TableEntry::class,
@@ -90,7 +90,7 @@ class AuthorField extends MultiField
             'f n (r)'   => __('Charlie Chaplin (Acteur)', 'docalist-biblio'),
             'f n'       => __('Charlie Chaplin', 'docalist-biblio'),
             'n (f) / r' => __('Chaplin (Charlie) / Acteur', 'docalist-biblio'),
-            'n (f)'     => __('Chaplin (Charlie) / Acteur', 'docalist-biblio'),
+            'n (f)'     => __('Chaplin (Charlie)', 'docalist-biblio'),
         ];
     }
 
