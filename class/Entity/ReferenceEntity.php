@@ -71,6 +71,9 @@ use Docalist\Tokenizer;
  */
 class ReferenceEntity extends Record
 {
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema()
     {
         return [
@@ -212,6 +215,9 @@ class ReferenceEntity extends Record
         return $builder->getGrid();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function buildMapping(MappingBuilder $mapping)
     {
         // Le mapping des champs de base est construit par la classe parent
@@ -304,6 +310,9 @@ class ReferenceEntity extends Record
         return $mapping;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function map()
     {
         // Le mapping des champs de base est fait par la classe parent
