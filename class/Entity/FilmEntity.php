@@ -55,7 +55,6 @@ class FilmEntity extends ReferenceEntity
                 ],
                 'extent' => [
                     'label'         => __('Durée du film', 'docalist-biblio'),
-                    'default'       => [['type' => 'minutes']],
                 ],
                 'author' => [
                     'label'         => __('Équipe technique et casting', 'docalist-biblio'),
