@@ -97,6 +97,53 @@ class DegreeEntity extends ReferenceEntity
             'collapsed'
         );
 
+        $builder->setDefaultValues([
+            'genre' => [
+                'mémoire',                              // Mémoire
+            ],
+            'media' => [
+                'PA',                                   // Imprimés divers
+                'EB',                                   // Document à télécharger ou en ligne
+            ],
+            'othertitle' => [
+                ['type' => 'degree'],                   // Titre du diplôme
+                ['type' => 'complement'],               // Complément du titre
+            ],
+            'author' => [
+                ['role' => 'aut'],                      // Auteur
+                ['role' => 'dgs'],                      // Superviseur de thèse
+            ],
+            'corporation' => [
+                ['country' => 'FR', 'role' => 'sht'],   // Pays France, organisme de soutien
+            ],
+            'number' => [
+                ['type' => 'diploma-no'],               // Numéro de diplôme
+                ['type' => 'nnt'],                      // Numéro de thèse
+            ],
+            'date' => [
+                ['type' => 'publication'],              // Date de publication
+                ['type' => 'presentation-date'],        // Date de soutenance
+            ],
+            'language' => [
+                'fre',                                  // En français
+            ],
+            'extent' => [
+                ['type' => 'pages'],                    // Nombre de pages
+            ],
+            'format' => [
+                'graphics',                             // Graphiques
+                'figures',                              // Figures
+                'bibliography',                         // Bibliographie
+                'appendices',                           // Annexes
+            ],
+            'content' => [
+                ['type' => 'author-abstract'],          // Présentation de l'éditeur
+            ],
+            'link' => [
+                ['type' => 'D04'],                      // Accès à la version en ligne
+            ],
+        ]);
+
         return $builder->getGrid();
     }
 }
