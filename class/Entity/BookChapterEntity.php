@@ -89,6 +89,47 @@ class BookChapterEntity extends ReferenceEntity
             'collapsed'
         );
 
+        $builder->setDefaultValues([
+            'othertitle' => [
+                ['type' => 'common'],                   // Titre de l'ensemble
+            ],
+            'translation' => [
+                ['type' => 'fre'],                      // Traduction en français
+            ],
+            'author' => [
+                ['role' => 'aut'],                      // Rôle auteur
+            ],
+            'corporation' => [
+                ['country' => 'FR', 'role' => 'aut'],   // Pays France, rôle auteur
+            ],
+            'number' => [
+                ['type' => 'isbn'],                     // ISBN
+                ['type' => 'ean'],                      // EAN
+                ['type' => 'official-number'],          // Numéro officiel
+                ['type' => 'part-no'],                  // Numéro de tome
+            ],
+            'date' => [
+                ['type' => 'publication'],              // Date de publication
+                ['type' => 'print'],                    // Date de la version imprimée
+            ],
+            'language' => [
+                'fre',                                  // En français
+            ],
+            'extent' => [
+                ['type' => 'page-range'],               // Pages début-fin
+                ['type' => 'pages'],                    // Nombre de pages
+            ],
+            'content' => [
+                ['type' => 'abstract'],                 // Résumé
+            ],
+            'link' => [
+                ['type' => 'D04'],                      // Accès à la version en ligne
+            ],
+            'relation' => [
+                ['type' => 'is-part-of'],               // Fait partie de
+            ],
+        ]);
+
         return $builder->getGrid();
     }
 }
