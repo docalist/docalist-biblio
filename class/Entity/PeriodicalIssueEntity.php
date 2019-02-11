@@ -61,6 +61,8 @@ class PeriodicalIssueEntity extends ReferenceEntity
     {
         $builder = new EditGridBuilder(self::class);
 
+        $builder->setProperty('stylesheet', 'docalist-biblio-edit-reference');
+
         $builder->addGroup(
             __('Titres', 'docalist-biblio'),
             'number,title,context'

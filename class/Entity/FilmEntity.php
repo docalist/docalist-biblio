@@ -159,6 +159,8 @@ class FilmEntity extends ReferenceEntity
     {
         $builder = new EditGridBuilder(self::class);
 
+        $builder->setProperty('stylesheet', 'docalist-biblio-edit-reference');
+
         $builder->addGroup(
             __('Type de film et support', 'docalist-biblio'),
             'genre,media'

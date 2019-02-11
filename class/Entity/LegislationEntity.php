@@ -58,6 +58,8 @@ class LegislationEntity extends ReferenceEntity
     {
         $builder = new EditGridBuilder(self::class);
 
+        $builder->setProperty('stylesheet', 'docalist-biblio-edit-reference');
+
         $builder->addGroup(
             __('Nature du document', 'docalist-biblio'),
             'genre,media'
