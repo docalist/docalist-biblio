@@ -97,6 +97,55 @@ class BookEntity extends ReferenceEntity
             'collapsed'
         );
 
+        $builder->setDefaultValues([
+            'media' => [
+                'PA',                                   // Imprimés divers
+                'EB',                                   // Document à télécharger ou en ligne
+            ],
+            'othertitle' => [
+                ['type' => 'complement'],               // Complément du titre
+            ],
+            'translation' => [
+                ['type' => 'fre'],                      // Traduction en français
+            ],
+            'author' => [
+                ['role' => 'aut'],                      // Rôle auteur
+            ],
+            'corporation' => [
+                ['country' => 'FR', 'role' => 'aut'],   // Pays France, rôle auteur
+                ['country' => 'FR', 'role' => 'spn'],   // Pays France, rôle commanditaire
+            ],
+            'number' => [
+                ['type' => 'isbn'],                     // ISBN
+                ['type' => 'ean'],                      // EAN
+                ['type' => 'official-number'],          // Numéro officiel
+                ['type' => 'part-no'],                  // Numéro de tome
+            ],
+            'date' => [
+                ['type' => 'publication'],              // Date de publication
+                ['type' => 'print'],                    // Date de la version imprimée
+            ],
+            'language' => [
+                'fre',                                  // En français
+            ],
+            'extent' => [
+                ['type' => 'pages'],                    // Nombre de pages
+            ],
+            'editor' => [
+                ['country' => 'FR', 'role' => 'pbl'],   // Pays France, rôle éditeur
+            ],
+            'content' => [
+                ['type' => 'publisher-abstract'],       // Présentation de l'éditeur
+            ],
+            'link' => [
+                ['type' => 'D04'],                      // Accès à la version en ligne
+                ['type' => 'D06'],                      // Site de l'éditeur sur le document
+            ],
+            'relation' => [
+                ['type' => 'new-edition-of'],           // Nouvelle édition de
+            ],
+        ]);
+
         return $builder->getGrid();
     }
 
