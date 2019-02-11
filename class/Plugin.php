@@ -57,6 +57,9 @@ class Plugin {
             return $types;
         });
 
+        // Déclare nos assets
+        require_once dirname(__DIR__) . '/assets/register.php';
+
         // Déclare l'import Crossref
         add_filter('docalist_databases_get_importers', function(array $importers, Database $database) {
             $importers[CrossrefImporter::getID()] = CrossrefImporter::class;
