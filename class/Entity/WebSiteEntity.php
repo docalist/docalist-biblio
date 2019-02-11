@@ -10,6 +10,7 @@
 namespace Docalist\Biblio\Entity;
 
 use Docalist\Biblio\Entity\ReferenceEntity;
+use Docalist\Data\GridBuilder\EditGridBuilder;
 
 /**
  * Décrit un site web.
@@ -31,6 +32,9 @@ use Docalist\Biblio\Entity\ReferenceEntity;
  */
 class WebSiteEntity extends ReferenceEntity
 {
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema()
     {
         return [
@@ -46,17 +50,47 @@ class WebSiteEntity extends ReferenceEntity
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function getEditGrid()
     {
-        return static::buildEditGrid([
-            __('Type de site', 'docalist-biblio')                   => 'genre',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
-            __('Auteurs', 'docalist-biblio')                        => 'corporation,author',
-            __('Informations bibliographiques', 'docalist-biblio')  => 'date,language,number,format',
-            __('Informations éditeur', 'docalist-biblio')           => 'editor,edition',
-            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
-            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
-            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,source',
-        ]);
+        $builder = new EditGridBuilder(static::class);
+
+        $builder->addGroup(
+            __('Type de site', 'docalist-biblio'),
+            'genre'
+        );
+        $builder->addGroup(
+            __('Titres', 'docalist-biblio'),
+            'title,othertitle,translation,context'
+        );
+        $builder->addGroup(
+            __('Auteurs', 'docalist-biblio'),
+            'corporation,author'
+        );
+        $builder->addGroup(
+            __('Informations bibliographiques', 'docalist-biblio'),
+            'date,language,number,format'
+        );
+        $builder->addGroup(
+            __('Informations éditeur', 'docalist-biblio'),
+            'editor,edition'
+        );
+        $builder->addGroup(
+            __('Indexation et résumé', 'docalist-biblio'),
+            'topic,content'
+        );
+        $builder->addGroup(
+            __('Liens et relations', 'docalist-biblio'),
+            'link,relation'
+        );
+        $builder->addGroup(
+            __('Informations de gestion', 'docalist-biblio'),
+            'type,ref,source',
+            'collapsed'
+        );
+
+        return $builder->getGrid();
     }
 }
