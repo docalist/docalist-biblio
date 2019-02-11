@@ -1,8 +1,0 @@
-# ------------------------------------------------------------------------------
-# Table des genres pour les notices de type Article
-#
-# 2013-10-31 Version initiale
-# ------------------------------------------------------------------------------
-code;label;description
-interview;Interview;
-etc;ect.;
