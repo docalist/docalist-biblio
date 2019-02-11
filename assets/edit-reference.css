@@ -1,0 +1,50 @@
+/**
+ * This file is part of Docalist Biblio.
+ *
+ * Copyright (C) 2012-2019 Daniel Ménard
+ *
+ * For copyright and license information, please view the
+ * LICENSE file that was distributed with this source code.
+ */
+
+.field-othertitle th.field-type     { width: 30%; }
+.field-othertitle .field-value      { width: 70%; }
+
+.field-translation th.field-type    { width: 20%; }
+.field-translation .field-value     { width: 80%; }
+
+.field-author .field-name           { width: 35%; }
+.field-author .field-firstname      { width: 30%; }
+.field-author th.field-role         { width: 35%; }
+
+.field-corporation .field-name      { width: 30%; }
+.field-corporation .field-acronym   { width: 10%; }
+.field-corporation .field-city      { width: 20%; }
+.field-corporation th.field-country { width: 20%; }
+.field-corporation th.field-role    { width: 20%; }
+
+.field-editor .field-name           { width: 30%; }
+.field-editor .field-acronym        { width: 10%; }
+.field-editor .field-city           { width: 20%; }
+.field-editor th.field-country      { width: 20%; }
+.field-editor th.field-role         { width: 20%; }
+
+.field-collection .field-name       { width: 80%; }
+.field-collection .field-number     { width: 20%; }
+
+.field-context .field-title         { width: 50%; }
+.field-context .field-date          { width: 10%; }
+.field-context .field-place         { width: 20%; }
+.field-context .field-number        { width: 20%; }
+
+.field-link th.field-type           { width: 25%; }
+.field-link .field-url              { width: 40%; }
+.field-link .field-label            { width: 25%; }
+.field-link .field-date             { width: 10%; }
+
+.field-relation th.field-type       { width: 25%; }
+.field-relation th.field-value      { width: 75%; }
+
+.field-content .composite-integrated + .composite-integrated {
+    margin-top: 0.5em;
+}
