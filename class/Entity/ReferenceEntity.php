@@ -32,6 +32,7 @@ use Docalist\Biblio\Field\TopicField;
 use Docalist\Biblio\Field\ContentField;
 use Docalist\Biblio\Field\LinkField;
 use Docalist\Biblio\Field\RelationField;
+use Docalist\Data\GridBuilder\EditGridBuilder;
 
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
@@ -165,86 +166,48 @@ class ReferenceEntity extends Record
         isset($this->title) && $this->posttitle = $this->title->getPhpValue();
     }
 
-
-    protected static function buildEditGrid(array $groups)
-    {
-        $allFields = static::getDefaultSchema()->getFields();
-        $grid = [];
-        $groupNumber = 1;
-        foreach ($groups as $label => $fields) {
-            // Pour chaque groupe de champs, la liste de champs est une chaine ou un tableau
-            is_string($fields) && $fields = explode(',', $fields);
-
-            // Crée le groupe
-            $group = 'group' . $groupNumber++;
-            $grid[$group] = [
-                'type' => 'Docalist\Data\Type\Group',
-                'label' => $label
-            ];
-
-            // Ajoute tous les champs de ce groupe
-            foreach ($fields as $field) {
-                // La chaine '-' est utilisée pour indiquer une boite "collapsed"
-                if ($field==='-') {
-                    $grid[$group]['state'] = 'collapsed';
-                    continue;
-                }
-                // Vérifie que le champ existe et qu'il n'apparait qu'une seule fois dans la grille
-                $field = trim($field);
-                if (!isset($allFields[$field])) {
-                    throw new \InvalidArgumentException(sprintf('Field "%s" not in schema or defined twice', $field));
-                }
-                if ($allFields[$field]->unused()) {
-                    throw new \InvalidArgumentException(sprintf('Field "%s" is marked "unused" in schema', $field));
-                }
-                unset($allFields[$field]);
-
-                // Ajoute le champ
-                $grid[$field] = [];
-            }
-        }
-
-        // Ajoute tous les champs qui ne sont pas listés dans un groupe caché "champs non utilisés"
-        /*
-         Désactivé car ça crée un conflit entre l'UI wordpress et la notre (les notices restent en auto-draft)
-        if ($allFields) {
-            $group = 'group' . $groupNumber++;
-            $grid[$group] = [
-                'type' => 'Docalist\Data\Type\Group',
-                'label' => __('Champs non utilisés', 'docalist-biblio'),
-                'state' => 'hidden',
-                'description' => __(
-                    '<b>ATTENTION</b> : les champs suivants ne sont pas utilisés ou sont des champs de
-                    gestion gérés directement par WordPress. <b>VOUS NE DEVRIEZ PAS LES MODIFIER<b>.',
-                    'docalist-biblio'
-                )
-            ];
-            $grid = array_merge($grid, array_keys($allFields));
-        }
-        */
-
-        // Construit la grille finale
-        return [
-            'name' => 'edit',
-            'gridtype' => 'edit',
-            'label' => __('Formulaire de saisie', 'docalist-biblio'),
-            //'description' => $description,
-            'fields' => $grid,
-        ];
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public static function getEditGrid()
     {
-        return static::buildEditGrid([
-            __('Nature du document', 'docalist-biblio')             => 'genre,media',
-            __('Titres', 'docalist-biblio')                         => 'title,othertitle,translation,context',
-            __('Auteurs', 'docalist-biblio')                        => 'author,corporation',
-            __('Informations bibliographiques', 'docalist-biblio')  => 'journal,date,language,number,extent,format',
-            __('Informations éditeur', 'docalist-biblio')           => 'editor,collection,edition',
-            __('Indexation et résumé', 'docalist-biblio')           => 'topic,content',
-            __('Liens et relations', 'docalist-biblio')             => 'link,relation',
-            __('Informations de gestion', 'docalist-biblio')        => '-,type,ref,source',
-        ]);
+        $builder = new EditGridBuilder(static::class);
+
+        $builder->addGroup(
+            __('Nature du document', 'docalist-biblio'),
+            'genre,media'
+        );
+        $builder->addGroup(
+            __('Titres', 'docalist-biblio'),
+            'title,othertitle,translation,context'
+        );
+        $builder->addGroup(
+            __('Auteurs', 'docalist-biblio'),
+            'author,corporation'
+        );
+        $builder->addGroup(
+            __('Informations bibliographiques', 'docalist-biblio'),
+            'journal,date,language,number,extent,format'
+        );
+        $builder->addGroup(
+            __('Informations éditeur', 'docalist-biblio'),
+            'editor,collection,edition'
+        );
+        $builder->addGroup(
+            __('Indexation et résumé', 'docalist-biblio'),
+            'topic,content'
+        );
+        $builder->addGroup(
+            __('Liens et relations', 'docalist-biblio'),
+            'link,relation'
+        );
+        $builder->addGroup(
+            __('Informations de gestion', 'docalist-biblio'),
+            'type,ref,source',
+            'collapsed'
+        );
+
+        return $builder->getGrid();
     }
 
     protected function buildMapping(MappingBuilder $mapping)
