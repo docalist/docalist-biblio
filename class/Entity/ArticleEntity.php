@@ -103,6 +103,51 @@ class ArticleEntity extends ReferenceEntity
             'collapsed'
         );
 
+        $builder->setDefaultValues([
+            'media' => [
+                'PA',                                   // Imprimés divers
+                'EB',                                   // Document à télécharger ou en ligne
+            ],
+            'othertitle' => [
+                ['type' => 'focus'],                    // Titre du dossier
+                ['type' => 'complement'],               // Complément du titre
+            ],
+            'translation' => [
+                ['type' => 'fre'],                      // Traduction en français
+            ],
+            'author' => [
+                ['role' => 'aut'],                      // Rôle auteur
+            ],
+            'corporation' => [
+                ['country' => 'FR', 'role' => 'aut'],   // Pays France, rôle auteur
+                ['country' => 'FR', 'role' => 'spn'],   // Pays France, rôle commanditaire
+            ],
+            'number' => [
+                ['type' => 'issn-p'],                   // ISSN de la version imprimée
+                ['type' => 'issn-e'],                   // ISSN de la version en ligne
+                ['type' => 'volume-no'],                // Numéro de volume
+                ['type' => 'issue-no'],                 // Numéro de fascicule
+                ['type' => 'special-issue-no'],         // Numéro de hors série
+            ],
+            'date' => [
+                ['type' => 'publication'],              // Date de publication
+                ['type' => 'print'],                    // Date de la version imprimée
+            ],
+            'language' => [
+                'fre',                                  // En français
+            ],
+            'extent' => [
+                ['type' => 'page-range'],               // Pages début-fin
+            ],
+            'content' => [
+                ['type' => 'publisher-abstract'],       // Présentation de l'éditeur
+            ],
+            'link' => [
+                ['type' => 'doi'],                      // DOI
+                ['type' => 'D04'],                      // Accès à la version en ligne
+            ],
+        ]);
+
         return $builder->getGrid();
     }
 
