@@ -156,7 +156,7 @@ class FilmEntity extends ReferenceEntity
      */
     public static function getEditGrid()
     {
-        $builder = new EditGridBuilder(static::class);
+        $builder = new EditGridBuilder(self::class);
 
         $builder->addGroup(
             __('Type de film et support', 'docalist-biblio'),

@@ -79,7 +79,7 @@ class PeriodicalEntity extends ReferenceEntity
      */
     public static function getEditGrid()
     {
-        $builder = new EditGridBuilder(static::class);
+        $builder = new EditGridBuilder(self::class);
 
         $builder->addGroup(
             __('Type de périodique', 'docalist-biblio'),

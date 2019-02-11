@@ -62,7 +62,7 @@ class ReportEntity extends ReferenceEntity
      */
     public static function getEditGrid()
     {
-        $builder = new EditGridBuilder(static::class);
+        $builder = new EditGridBuilder(self::class);
 
         $builder->addGroup(
             __('Type de rapport', 'docalist-biblio'),

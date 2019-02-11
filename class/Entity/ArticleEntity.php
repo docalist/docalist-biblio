@@ -65,7 +65,7 @@ class ArticleEntity extends ReferenceEntity
      */
     public static function getEditGrid()
     {
-        $builder = new EditGridBuilder(static::class);
+        $builder = new EditGridBuilder(self::class);
 
         $builder->addGroup(
             __('Nature du document', 'docalist-biblio'),

@@ -55,7 +55,7 @@ class WebSiteEntity extends ReferenceEntity
      */
     public static function getEditGrid()
     {
-        $builder = new EditGridBuilder(static::class);
+        $builder = new EditGridBuilder(self::class);
 
         $builder->addGroup(
             __('Type de site', 'docalist-biblio'),
