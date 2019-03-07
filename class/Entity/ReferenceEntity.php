@@ -70,7 +70,7 @@ use Docalist\Tokenizer;
  * @property Collection                 $context        Contexte dans lequel a été produit le document.
  * @property TopicCollection            $topic          Mots-clés.
  * @property TypedValueCollection       $content        Contenu du document.
- * @property Collection                 $link           Liens internet.
+ * @property MultiFieldCollection       $link           Liens internet.
  * @property TypedRelationCollection    $relation       Relations avec d'autres références.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
