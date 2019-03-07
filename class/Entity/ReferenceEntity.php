@@ -36,6 +36,12 @@ use Docalist\Biblio\Field\LinkField;
 use Docalist\Biblio\Field\RelationField;
 use Docalist\Data\GridBuilder\EditGridBuilder;
 
+use Docalist\Type\Collection;
+use Docalist\Type\Collection\TypedValueCollection;
+use Docalist\Type\Collection\MultiFieldCollection;
+use Docalist\Data\Type\Collection\TopicCollection;
+use Docalist\Data\Type\Collection\TypedRelationCollection;
+
 use Docalist\Search\MappingBuilder;
 use Docalist\Tokenizer;
 
@@ -45,27 +51,27 @@ use Docalist\Tokenizer;
  * Le schéma d'une référence est fixe : les classes descendantes (Article, Book, ...) ne doivent pas créer
  * de nouveaux champs, elles peuvent juste paramétrer les champs existant ou les marquer "unused".
  *
- * @property GenreField[]       $genre          Genres.
- * @property MediaField[]       $media          Supports.
- * @property TitleField         $title          Titre du document.
- * @property OtherTitleField[]  $othertitle     Autres titres.
- * @property TranslationField[] $translation    Traductions du titre.
- * @property AuthorField[]      $author         Personnes auteurs (auteurs physiques).
- * @property CorporationField[] $corporation    Organismes auteurs (auteurs moraux).
- * @property DateField[]        $date           Dates du document.
- * @property JournalField       $journal        Périodique.
- * @property NumberField[]      $number         Numéros du document.
- * @property LanguageField[]    $language       Langues des textes.
- * @property ExtentField[]      $extent         Etendue.
- * @property FormatField[]      $format         Format et étiquettes de collation.
- * @property EditorField[]      $editor         Editeurs.
- * @property CollectionField[]  $collection     Collection et numéro dans la collection.
- * @property EditionField[]     $edition        Mentions d'édition.
- * @property ContextField       $context        Contexte dans lequel a été produit le document.
- * @property TopicField[]       $topic          Mots-clés.
- * @property ContentField[]     $content        Contenu du document.
- * @property LinkField[]        $link           Liens internet.
- * @property RelationField[]    $relation       Relations avec d'autres références.
+ * @property Collection                 $genre          Genres.
+ * @property Collection                 $media          Supports.
+ * @property TitleField                 $title          Titre du document.
+ * @property TypedValueCollection       $othertitle     Autres titres.
+ * @property TypedValueCollection       $translation    Traductions du titre.
+ * @property MultiFieldCollection       $author         Personnes auteurs (auteurs physiques).
+ * @property MultiFieldCollection       $corporation    Organismes auteurs (auteurs moraux).
+ * @property TypedValueCollection       $date           Dates du document.
+ * @property JournalField               $journal        Périodique.
+ * @property TypedValueCollection       $number         Numéros du document.
+ * @property Collection                 $language       Langues des textes.
+ * @property TypedValueCollection       $extent         Etendue.
+ * @property Collection                 $format         Format et étiquettes de collation.
+ * @property MultiFieldCollection       $editor         Editeurs.
+ * @property Collection                 $collection     Collection et numéro dans la collection.
+ * @property Collection                 $edition        Mentions d'édition.
+ * @property Collection                 $context        Contexte dans lequel a été produit le document.
+ * @property TopicCollection            $topic          Mots-clés.
+ * @property TypedValueCollection       $content        Contenu du document.
+ * @property Collection                 $link           Liens internet.
+ * @property TypedRelationCollection    $relation       Relations avec d'autres références.
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
