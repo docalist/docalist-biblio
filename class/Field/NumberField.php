@@ -30,7 +30,7 @@ use Docalist\Data\Field\NumberField as BaseNumberField;
  */
 class NumberField extends BaseNumberField
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'description' => __(

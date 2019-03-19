@@ -31,7 +31,7 @@ use Docalist\Data\Field\LinkField as BaseLinkField;
  */
 class LinkField extends BaseLinkField
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'fields' => [

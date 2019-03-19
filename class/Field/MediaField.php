@@ -32,7 +32,7 @@ class MediaField extends TableEntry
      * qu'on peut mettre l'indexation "media" où on veut dans le formulaire de saisie.
      */
 
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'media',

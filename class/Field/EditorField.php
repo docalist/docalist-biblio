@@ -38,7 +38,7 @@ use Docalist\Biblio\Field\CorporationField;
  */
 class EditorField extends CorporationField
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'editor',

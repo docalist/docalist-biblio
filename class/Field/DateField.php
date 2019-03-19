@@ -29,7 +29,7 @@ use Docalist\Data\Field\DateField as BaseDateField;
  */
 class DateField extends BaseDateField
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'description' => __(

@@ -20,7 +20,7 @@ use Docalist\Data\Field\TitleField as BaseTitle;
  */
 class TitleField extends BaseTitle
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'description' => __('Titre original du document.', 'docalist-biblio'),

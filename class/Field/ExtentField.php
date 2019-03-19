@@ -35,7 +35,7 @@ class ExtentField extends TypedNumber
      * Du coup, le sous-champ "value" est de type "number" et non pas de type "decimal".
      */
 
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'extent',

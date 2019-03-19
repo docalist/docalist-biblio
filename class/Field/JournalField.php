@@ -23,7 +23,7 @@ use Docalist\Forms\EntryPicker;
  */
 class JournalField extends Text
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'journal',

@@ -33,7 +33,7 @@ class OwnerField extends Text
      * A revoir.
      */
 
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'owner',

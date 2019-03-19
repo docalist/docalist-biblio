@@ -36,7 +36,7 @@ use Docalist\Type\Any;
  */
 class TranslationField extends TypedText
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'translation',
@@ -68,7 +68,7 @@ class TranslationField extends TypedText
      *
      * {@inheritDoc}
      */
-    public function assign($value)
+    public function assign($value): void
     {
         ($value instanceof Any) && $value = $value->getPhpValue();
 
@@ -81,6 +81,6 @@ class TranslationField extends TypedText
             }
         }
 
-        return parent::assign($value);
+        parent::assign($value);
     }
 }

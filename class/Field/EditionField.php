@@ -23,7 +23,7 @@ use Docalist\Type\Text;
  */
 class EditionField extends Text
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'edition',

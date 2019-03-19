@@ -32,7 +32,7 @@ class GenreField extends TableEntry
      * qu'on peut mettre l'indexation "genre" au bon endroit.
      */
 
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'genre',

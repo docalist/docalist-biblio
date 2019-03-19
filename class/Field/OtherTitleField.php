@@ -35,7 +35,7 @@ use Docalist\Type\Text;
  */
 class OtherTitleField extends TypedText
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'othertitle',

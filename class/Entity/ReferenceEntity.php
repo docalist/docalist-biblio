@@ -80,7 +80,7 @@ class ReferenceEntity extends Record
     /**
      * {@inheritDoc}
      */
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'reference',
@@ -127,7 +127,7 @@ class ReferenceEntity extends Record
      *
      * {@inheritDoc}
      */
-    public function assign($value)
+    public function assign($value): void
     {
         ($value instanceof Any) && $value = $value->getPhpValue();
 
@@ -162,7 +162,7 @@ class ReferenceEntity extends Record
             unset($value['owner']);
         }
 
-        return parent::assign($value);
+        parent::assign($value);
     }
 
     /**

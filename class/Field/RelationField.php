@@ -22,7 +22,7 @@ use Docalist\Data\Type\TypedRelation;
  */
 class RelationField extends TypedRelation
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'relation',

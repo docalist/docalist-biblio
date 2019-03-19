@@ -27,7 +27,7 @@ use Docalist\Type\FuzzyDate;
  */
 class ContextField extends Composite
 {
-    public static function loadSchema()
+    public static function loadSchema(): array
     {
         return [
             'name' => 'context',
