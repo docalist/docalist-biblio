@@ -93,7 +93,7 @@ class CorporationField extends MultiField
         return 'role';
     }
 
-    public function getAvailableFormats()
+    public function getAvailableFormats(): array
     {
         return [
             'n (a), t, c, r' => 'Nom (sigle), ville, pays, rôle',
@@ -138,7 +138,7 @@ class CorporationField extends MultiField
         return parent::getFormattedValue($options);
     }
 
-    public function filterEmpty($strict = true)
+    public function filterEmpty(bool $strict = true): bool
     {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();

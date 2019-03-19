@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
+use Docalist\Forms\Element;
 use Docalist\Forms\EntryPicker;
 
 /**
@@ -35,7 +36,7 @@ class JournalField extends Text
         ];
     }
 
-    public function getEditorForm($options = null)
+    public function getEditorForm($options = null): Element
     {
         return (new EntryPicker('journal'))->setOptions('index:journal')->addClass('large-text');
     }

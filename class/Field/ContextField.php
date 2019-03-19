@@ -73,7 +73,7 @@ class ContextField extends Composite
         $document['event'][] = $this->title() . '¤' . $this->date() . '¤' . $this->place() . '¤' . $this->number();
     }
 */
-    public function getAvailableFormats()
+    public function getAvailableFormats(): array
     {
         return [
             't (n), p, d' => __('Nom (numéro), lieu, date', 'docalist-biblio'),
@@ -96,7 +96,7 @@ class ContextField extends Composite
         return parent::getFormattedValue($options);
     }
 
-    public function filterEmpty($strict = true)
+    public function filterEmpty(bool $strict = true): bool
     {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();

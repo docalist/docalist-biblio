@@ -86,7 +86,7 @@ class AuthorField extends MultiField
         return new self(['name' => 'et al.']);
     }
 
-    public function getAvailableFormats()
+    public function getAvailableFormats(): array
     {
         return [
             'f n (r)'   => __('Charlie Chaplin (Acteur)', 'docalist-biblio'),
@@ -131,7 +131,7 @@ class AuthorField extends MultiField
         return implode(' ', $t); // espace insécable
     }
 
-    public function filterEmpty($strict = true)
+    public function filterEmpty(bool $strict = true): bool
     {
         // Supprime les éléments vides
         $empty = parent::filterEmpty();

@@ -55,7 +55,7 @@ class CollectionField extends Composite
         ];
     }
 
-    public function getAvailableFormats()
+    public function getAvailableFormats(): array
     {
         return [
             'n (#)' => __('Collection (numéro)', 'docalist-biblio'),
