@@ -71,7 +71,7 @@ class AuthorField extends MultiField
         ];
     }
 
-    protected function getCategoryField()
+    protected function getCategoryField(): string
     {
         return 'role';
     }
