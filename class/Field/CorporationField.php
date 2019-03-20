@@ -88,9 +88,9 @@ class CorporationField extends MultiField
         ];
     }
 
-    protected function getCategoryField(): string
+    protected function getCategoryField(): TableEntry
     {
-        return 'role';
+        return $this->role;
     }
 
     public function getAvailableFormats(): array
