@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TableEntry;
+use Docalist\Data\Type\IndexableTableEntry;
 
 /**
  * Champ 'language" : langues du document catalogué.
@@ -24,8 +24,21 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class LanguageField extends TableEntry
+class LanguageField extends IndexableTableEntry
 {
+    /**
+     * {@inheritDoc}
+     */
+    public const SEARCH_FIELD = 'language';
+
+    /**
+     * {@inheritDoc}
+     */
+    public const LABEL_FILTER = 'filter.language.label';
+
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema(): array
     {
         return [
