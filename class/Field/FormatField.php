@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TableEntry;
+use Docalist\Data\Type\IndexableTableEntry;
 
 /**
  * Champ "format" : étiquettes de collation.
@@ -31,17 +31,30 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class FormatField extends TableEntry
+class FormatField extends IndexableTableEntry
 {
     /*
      * Remarque : sur le fond, ce champ est juste un type particulier d'indexation (d'ailleurs la table par
-     * défaut est un théaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
+     * défaut est un thésaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
      * Cependant, dans le formulaire de saisie, il est logique que le champ apparaisse dans le bloc "informations
      * bibliographiques" et non dans la partie "indexation". Donc on garde un champ distinct pour le moment,
      * à reconsidérer si un jour le champ topic supporte "explode" et qu'on peut mettre l'indexation "format"
      * au bon endroit.
      */
 
+    /**
+     * {@inheritDoc}
+     */
+    public const SEARCH_FIELD = 'format';
+
+    /**
+     * {@inheritDoc}
+     */
+    public const LABEL_FILTER = 'filter.format.label';
+
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema(): array
     {
         return [
