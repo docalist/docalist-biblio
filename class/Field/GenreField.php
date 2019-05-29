@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Docalist\Biblio\Field;
 
-use Docalist\Type\TableEntry;
+use Docalist\Data\Type\IndexableTableEntry;
 
 /**
  * Champ "genre" : mots-clés décrivant le genre et la nature du document catalogué.
@@ -23,15 +23,28 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class GenreField extends TableEntry
+class GenreField extends IndexableTableEntry
 {
     /*
-     * Remarque : sur le fond, ce champ est juste un type particulier d'indexation (d'ailleurs la table par
-     * défaut est un théaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
+     * Remarque : sur le fond, ce champ est juste un type particulier de topic (d'ailleurs la table par
+     * défaut est un thésaurus). On pourrait envisager de le supprimer et d'utiliser le champ "topic" à la place.
      * On garde un champ distinct pour le moment, à reconsidérer si un jour le champ topic supporte "explode" et
      * qu'on peut mettre l'indexation "genre" au bon endroit.
      */
 
+    /**
+     * {@inheritDoc}
+     */
+    public const SEARCH_FIELD = 'genre';
+
+    /**
+     * {@inheritDoc}
+     */
+    public const LABEL_FILTER = 'filter.genre.label';
+
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema(): array
     {
         return [
