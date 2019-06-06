@@ -30,6 +30,6 @@ class TermsJournal extends TermsAggregation
     {
         !isset($parameters['size']) && $parameters['size'] = 10;
         !isset($options['title']) && $options['title'] = __('Périodique', 'docalist-search');
-        parent::__construct('journal.filter', $parameters, $options);
+        parent::__construct('filter.journal', $parameters, $options);
     }
 }
