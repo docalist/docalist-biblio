@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Docalist\Biblio\Field;
 
 use Docalist\Biblio\Field\CorporationField;
-use Docalist\Biblio\Indexer\EditorFieldIndexer;
 
 /**
  * Champ "editor" : organismes éditeur.
@@ -39,9 +38,6 @@ use Docalist\Biblio\Indexer\EditorFieldIndexer;
  */
 class EditorField extends CorporationField
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function loadSchema(): array
     {
         return [
@@ -58,13 +54,5 @@ class EditorField extends CorporationField
                 ],
             ]
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIndexerClass(): string
-    {
-        return EditorFieldIndexer::class;
     }
 }
