@@ -12,9 +12,10 @@ declare(strict_types=1);
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\TypedText;
-use Docalist\Type\TableEntry;
-use Docalist\Type\Text;
 use Docalist\Type\Any;
+use Docalist\Data\Indexable;
+use Docalist\Data\Type\Collection\IndexableTypedValueCollection;
+use Docalist\Biblio\Indexer\TranslationFieldIndexer;
 
 /**
  * Champ "translation" : traductions dans d'autres langues du titre original du document catalogué.
@@ -29,13 +30,13 @@ use Docalist\Type\Any;
  * Le sous-champ type est associé à une table d'autorité qui indique les langues possibles (table des langues de
  * l'union européenne par défaut).
  *
- * @property TableEntry $type   Langue de la traduction.
- * @property Text       $value  Titre traduit.
- *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class TranslationField extends TypedText
+class TranslationField extends TypedText implements Indexable
 {
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema(): array
     {
         return [
@@ -82,5 +83,22 @@ class TranslationField extends TypedText
         }
 
         parent::assign($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getCollectionClass(): string
+    {
+        return IndexableTypedValueCollection::class;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIndexerClass(): string
+    {
+        return TranslationFieldIndexer::class;
     }
 }
