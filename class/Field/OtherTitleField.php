@@ -12,8 +12,9 @@ declare(strict_types=1);
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\TypedText;
-use Docalist\Type\TableEntry;
-use Docalist\Type\Text;
+use Docalist\Data\Indexable;
+use Docalist\Data\Type\Collection\IndexableTypedValueCollection;
+use Docalist\Biblio\Indexer\OtherTitleFieldIndexer;
 
 /**
  * Champ "othertitle" : autres titres du document.
@@ -28,13 +29,13 @@ use Docalist\Type\Text;
  *
  * Le sous-champ type est associé à une table d'autorité qui indique les valeurs possibles ("table:titles" par défaut).
  *
- * @property TableEntry $type   Type de titre.
- * @property Text       $value  Autre titre.
- *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class OtherTitleField extends TypedText
+class OtherTitleField extends TypedText implements Indexable
 {
+    /**
+     * {@inheritDoc}
+     */
     public static function loadSchema(): array
     {
         return [
@@ -52,5 +53,21 @@ class OtherTitleField extends TypedText
                 ]
             ]
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getCollectionClass(): string
+    {
+        return IndexableTypedValueCollection::class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIndexerClass(): string
+    {
+        return OtherTitleFieldIndexer::class;
     }
 }
