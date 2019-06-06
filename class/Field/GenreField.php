@@ -35,16 +35,6 @@ class GenreField extends IndexableTableEntry
     /**
      * {@inheritDoc}
      */
-    public const SEARCH_FIELD = 'genre';
-
-    /**
-     * {@inheritDoc}
-     */
-    public const LABEL_FILTER = 'filter.genre.label';
-
-    /**
-     * {@inheritDoc}
-     */
     public static function loadSchema(): array
     {
         return [
