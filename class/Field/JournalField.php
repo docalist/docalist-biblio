@@ -14,6 +14,8 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\Text;
 use Docalist\Forms\Element;
 use Docalist\Forms\EntryPicker;
+use Docalist\Data\Indexable;
+use Docalist\Biblio\Indexer\JournalFieldIndexer;
 
 /**
  * Champ "journal" : titre du périodique dans lequel a été publié le document.
@@ -22,8 +24,11 @@ use Docalist\Forms\EntryPicker;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class JournalField extends Text
+class JournalField extends Text implements Indexable
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function loadSchema(): array
     {
         return [
@@ -36,8 +41,19 @@ class JournalField extends Text
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEditorForm($options = null): Element
     {
         return (new EntryPicker('journal'))->setOptions('index:journal')->addClass('large-text');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIndexerClass(): string
+    {
+        return JournalFieldIndexer::class;
     }
 }
