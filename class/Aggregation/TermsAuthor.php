@@ -33,7 +33,7 @@ class TermsAuthor extends TermsAggregation
         $parameters['exclude'] = 'et al.¤';
         !isset($parameters['size']) && $parameters['size'] = 10;
         !isset($options['title']) && $options['title'] = __('Auteur', 'docalist-search');
-        parent::__construct('author.filter', $parameters, $options);
+        parent::__construct('filter.author', $parameters, $options);
     }
 
     public function getBucketLabel(stdClass $bucket)
