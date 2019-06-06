@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace Docalist\Biblio\Aggregation;
 
-use Docalist\Search\Aggregation\Bucket\TableEntriesAggregation;
+use Docalist\Search\Aggregation\Bucket\TermsAggregation;
 
 /**
  * Une agrégation standard de type "terms" sur le champ "genre".
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class TermsGenre extends TableEntriesAggregation
+class TermsGenre extends TermsAggregation
 {
     /**
      * Constructeur
@@ -30,6 +30,6 @@ class TermsGenre extends TableEntriesAggregation
     {
         !isset($parameters['size']) && $parameters['size'] = 1000;
         !isset($options['title']) && $options['title'] = __('Genre', 'docalist-search');
-        parent::__construct('genre.filter', 'genres', $parameters, $options);
+        parent::__construct('filter.genre.label', $parameters, $options);
     }
 }
