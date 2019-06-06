@@ -45,16 +45,6 @@ class FormatField extends IndexableTableEntry
     /**
      * {@inheritDoc}
      */
-    public const SEARCH_FIELD = 'format';
-
-    /**
-     * {@inheritDoc}
-     */
-    public const LABEL_FILTER = 'filter.format.label';
-
-    /**
-     * {@inheritDoc}
-     */
     public static function loadSchema(): array
     {
         return [
