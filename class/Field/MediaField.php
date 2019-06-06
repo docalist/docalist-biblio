@@ -35,16 +35,6 @@ class MediaField extends IndexableTableEntry
     /**
      * {@inheritDoc}
      */
-    public const SEARCH_FIELD = 'media';
-
-    /**
-     * {@inheritDoc}
-     */
-    public const LABEL_FILTER = 'filter.media.label';
-
-    /**
-     * {@inheritDoc}
-     */
     public static function loadSchema(): array
     {
         return [
