@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace Docalist\Biblio\Aggregation;
 
-use Docalist\Search\Aggregation\Bucket\TableEntriesAggregation;
+use Docalist\Search\Aggregation\Bucket\TermsAggregation;
 
 /**
  * Une agrégation standard de type "terms" sur le champ "media".
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class TermsMedia extends TableEntriesAggregation
+class TermsMedia extends TermsAggregation
 {
     /**
      * Constructeur
@@ -30,6 +30,6 @@ class TermsMedia extends TableEntriesAggregation
     {
         !isset($parameters['size']) && $parameters['size'] = 1000;
         !isset($options['title']) && $options['title'] = __('Media', 'docalist-search');
-        parent::__construct('media.filter', 'medias', $parameters, $options);
+        parent::__construct('filter.media.label', $parameters, $options);
     }
 }
