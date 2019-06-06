@@ -29,16 +29,6 @@ class LanguageField extends IndexableTableEntry
     /**
      * {@inheritDoc}
      */
-    public const SEARCH_FIELD = 'language';
-
-    /**
-     * {@inheritDoc}
-     */
-    public const LABEL_FILTER = 'filter.language.label';
-
-    /**
-     * {@inheritDoc}
-     */
     public static function loadSchema(): array
     {
         return [
