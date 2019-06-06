@@ -32,7 +32,7 @@ class TermsCorporation extends TermsAggregation
     {
         !isset($parameters['size']) && $parameters['size'] = 10;
         !isset($options['title']) && $options['title'] = __('Auteurs moraux', 'docalist-search');
-        parent::__construct('corporation.filter', $parameters, $options);
+        parent::__construct('filter.corporation', $parameters, $options);
     }
 
     public function getBucketLabel(stdClass $bucket)
