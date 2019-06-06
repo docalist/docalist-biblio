@@ -14,23 +14,27 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Type\Text;
 use Docalist\Type\TableEntry;
+use Docalist\Forms\Container;
+use Docalist\Data\Indexable;
+use Docalist\Data\Type\Collection\IndexableMultiFieldCollection;
+use Docalist\Biblio\Indexer\AuthorFieldIndexer;
 
 /**
  * Champ "author" : personnes physiques ayant contribué au document catalogué.
  *
- * Ce champ répétable permet de saisir les noms et prénoms des personnes qui ont contribué à l'élaboration du
- * document catalogué.
+ * Ce champ répétable permet de saisir les noms et prénoms des personnes qui ont contribué à
+ * l'élaboration du document catalogué.
  *
- * On peut également indiquer pour chaque personne une étiquette de rôle qui précise la nature de sa contribution
- * (traducteur, auteur de la préface, illustrations...)
+ * On peut également indiquer pour chaque personne une étiquette de rôle qui précise la nature
+ * de sa contribution (traducteur, auteur de la préface, illustrations...)
  *
- * Chaque occurence du chap author comporte trois sous-champs :
+ * Chaque occurence du champ author comporte trois sous-champs :
  * - `name` : nom de la personne,
  * - `firstname` : prénom ou initiale de la personne,
  * - `role` : étiquette de rôle éventuelle.
  *
- * Le sous-champ role est associé à une table d'autorité qui contient les étiquettes de rôles disponibles (par
- * défaut, il s'agit de la table "marc21 relators").
+ * Le sous-champ role est associé à une table d'autorité qui contient les étiquettes de rôles
+ * disponibles (par défaut, il s'agit de la table "marc21 relators").
  *
  * @property Text       $name       Nom de la personne.
  * @property Text       $firstname  Prénom.
@@ -38,8 +42,11 @@ use Docalist\Type\TableEntry;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class AuthorField extends MultiField
+class AuthorField extends MultiField implements Indexable
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function loadSchema(): array
     {
         return [
@@ -71,6 +78,25 @@ class AuthorField extends MultiField
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public static function getCollectionClass(): string
+    {
+        return IndexableMultiFieldCollection::class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIndexerClass(): string
+    {
+        return AuthorFieldIndexer::class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected function getCategoryField(): TableEntry
     {
         return $this->role;
@@ -86,6 +112,9 @@ class AuthorField extends MultiField
         return new self(['name' => 'et al.']);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getAvailableFormats(): array
     {
         return [
@@ -96,6 +125,9 @@ class AuthorField extends MultiField
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getFormattedValue($options = null)
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
@@ -131,6 +163,9 @@ class AuthorField extends MultiField
         return implode(' ', $t); // espace insécable
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function filterEmpty(bool $strict = true): bool
     {
         // Supprime les éléments vides
