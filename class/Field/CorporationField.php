@@ -14,10 +14,6 @@ namespace Docalist\Biblio\Field;
 use Docalist\Type\MultiField;
 use Docalist\Type\Text;
 use Docalist\Type\TableEntry;
-use Docalist\Forms\Container;
-use Docalist\Data\Indexable;
-use Docalist\Data\Type\Collection\IndexableMultiFieldCollection;
-use Docalist\Biblio\Indexer\CorporationFieldIndexer;
 
 /**
  * Champ "corporation" : auteurs moraux ayant contribué au document catalogué.
@@ -48,11 +44,8 @@ use Docalist\Biblio\Indexer\CorporationFieldIndexer;
  *
  * @author Daniel Ménard <daniel.menard@laposte.net>
  */
-class CorporationField extends MultiField implements Indexable
+class CorporationField extends MultiField
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function loadSchema(): array
     {
         return [
@@ -95,33 +88,11 @@ class CorporationField extends MultiField implements Indexable
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public static function getCollectionClass(): string
-    {
-        return IndexableMultiFieldCollection::class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIndexerClass(): string
-    {
-        return CorporationFieldIndexer::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getCategoryField(): TableEntry
     {
         return $this->role;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAvailableFormats(): array
     {
         return [
@@ -130,9 +101,6 @@ class CorporationField extends MultiField implements Indexable
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFormattedValue($options = null)
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
@@ -170,9 +138,6 @@ class CorporationField extends MultiField implements Indexable
         return parent::getFormattedValue($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function filterEmpty(bool $strict = true): bool
     {
         // Supprime les éléments vides
