@@ -10,7 +10,7 @@
  * Plugin Name: Docalist Biblio
  * Plugin URI:  http://docalist.org/
  * Description: Docalist: bibliographic data manager.
- * Version:     3.0.0
+ * Version:     4.0.0
  * Author:      Daniel Ménard
  * Author URI:  http://docalist.org/
  * Text Domain: docalist-biblio
@@ -25,7 +25,7 @@ namespace Docalist\Biblio;
 /**
  * Version du plugin.
  */
-define('DOCALIST_BIBLIO_VERSION', '3.0.0'); // Garder synchro avec la version indiquée dans l'entête
+define('DOCALIST_BIBLIO_VERSION', '4.0.0'); // Garder synchro avec la version indiquée dans l'entête
 
 /**
  * Path absolu du répertoire dans lequel le plugin est installé.
