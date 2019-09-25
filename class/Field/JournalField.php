@@ -46,7 +46,13 @@ class JournalField extends Text implements Indexable
      */
     public function getEditorForm($options = null): Element
     {
-        return (new EntryPicker('journal'))->setOptions('index:journal')->addClass('large-text');
+        $name = $this->schema->name() ?? '';
+
+        $form = new EntryPicker($name);
+        $form->setOptions('index:' . $name);
+        $form->addClass('large-text');
+
+        return $this->configureEditorForm($form, $options);
     }
 
     /**
