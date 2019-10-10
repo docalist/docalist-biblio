@@ -129,7 +129,7 @@ class Installer {
                 'path' => $dir . 'format.txt',
                 'label' => __('Etiquettes de format', 'docalist-biblio'),
                 'format' => 'thesaurus',
-                'type' => 'format',
+                'type' => 'formats',
                 'creation' => '2014-06-11 14:26:20',
             ],
 
