@@ -111,7 +111,7 @@ class Installer {
                 'path' => $dir . 'numbers.txt',
                 'label' => __('Types de numéros', 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'numbers',
+                'type' => 'number-type',
                 'creation' => '2014-06-26 00:30:23',
             ],
 
@@ -138,7 +138,7 @@ class Installer {
                 'path' => $dir . 'dates.txt',
                 'label' => __('Types de dates', 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'dates',
+                'type' => 'date-type',
                 'creation' => '2014-06-03 08:01:53',
             ],
 
@@ -147,7 +147,7 @@ class Installer {
                 'path' => $dir . 'titles.txt',
                 'label' => __("Types de titres", 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'titles',
+                'type' => 'title-type',
                 'creation' => '2013-11-04 01:28:47',
             ],
 
@@ -156,7 +156,7 @@ class Installer {
                 'path' => $dir . 'content.txt',
                 'label' => __("Contenu", 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'content',
+                'type' => 'content-type',
                 'creation' => '2013-11-04 03:25:53',
             ],
 
@@ -165,7 +165,7 @@ class Installer {
                 'path' => $dir . 'links.txt',
                 'label' => __("Types de liens", 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'links',
+                'type' => 'link-type',
                 'creation' => '2013-11-05 00:38:40',
             ],
 
@@ -174,7 +174,7 @@ class Installer {
                 'path' => $dir . 'relations.txt',
                 'label' => __("Types de relations", 'docalist-biblio'),
                 'format' => 'table',
-                'type' => 'relations',
+                'type' => 'relation-type',
                 'creation' => '2013-11-05 03:13:18',
             ],
         ];
