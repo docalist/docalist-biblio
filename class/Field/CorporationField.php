@@ -141,30 +141,36 @@ class CorporationField extends MultiField implements Indexable
             case 'n (a), t, c, r':
                 $name = $this->formatField('name', $options);
                 $acronym = $this->formatField('acronym', $options);
-                if ($name && $acronym) {
+                if (!empty($name) && !empty($acronym)) {
                     $h = $name . ' (' . $acronym . ')';
                 } else {
                     $h = $name . $acronym; // l'un des deux est vide
                 }
 
-                if (isset($this->city)) {
+                $city = $this->formatField('city', $options);
+                if (!empty($city)) {
                     $h && $h .= ', ';
-                    $h .= $this->formatField('city', $options);
+                    $h .= $city;
                 }
 
-                if (isset($this->country)) {
+                $country = $this->formatField('country', $options);
+                if (!empty($country)) {
                     $h && $h .= ', ';
-                    $h .= $this->formatField('country', $options);
+                    $h .= $country;
                 }
 
-                if (isset($this->role)) {
+                $role = $this->formatField('role', $options);
+                if (!empty($role)) {
                     $h && $h .= ' / '; // espaces insécables
-                    $h .= $this->formatField('role', $options);
+                    $h .= $role;
                 }
                 return $h;
 
             case 'name':
-                return $this->formatField(isset($this->name) ? 'name' : 'acronym', $options);
+                $result = $this->formatField('name', $options);
+                empty($result) && $result = $this->formatField('acronym', $options);
+
+                return $result;
         }
 
         return parent::getFormattedValue($options);
