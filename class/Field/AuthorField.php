@@ -132,28 +132,32 @@ class AuthorField extends MultiField implements Indexable
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
+        $name = $this->formatField('name', $options);
+        $firstName = $this->formatField('firstname', $options);
         $t = [];
         switch ($format) {
             case 'f n (r)':
-                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);
-                isset($this->name) && $t[] = $this->formatField('name', $options);
-                isset($this->role) && $t[] =  '(' . $this->formatField('role', $options) . ')';
+                $role = $this->formatField('role', $options);
+                !empty($firstName) && $t[] = $firstName;
+                !empty($name) && $t[] = $name;
+                !empty($role) && $t[] =  '(' . $role . ')';
                 break;
 
             case 'f n':
-                isset($this->firstname) && $t[] = $this->formatField('firstname', $options);
-                isset($this->name) && $t[] = $this->formatField('name', $options);
+                !empty($firstName) && $t[] = $firstName;
+                !empty($name) && $t[] = $name;
                 break;
 
             case 'n (f) / r':
-                isset($this->name) && $t[] = $this->formatField('name', $options);
-                isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
-                isset($this->role) && $t[] =  '/ ' . $this->formatField('role', $options); // insécable après le slash
+                $role = $this->formatField('role', $options);
+                !empty($name) && $t[] = $name;
+                !empty($firstName) && $t[] = '(' . $firstName . ')';
+                !empty($role) && $t[] =  '/ ' . $role; // insécable après le slash
                 break;
 
             case 'n (f)':
-                isset($this->name) && $t[] = $this->formatField('name', $options);
-                isset($this->firstname) && $t[] = '(' . $this->formatField('firstname', $options) . ')';
+                !empty($name) && $t[] = $name;
+                !empty($firstName) && $t[] = '(' . $firstName . ')';
                 break;
 
             default:
