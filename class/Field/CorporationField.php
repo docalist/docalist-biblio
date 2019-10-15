@@ -126,6 +126,7 @@ class CorporationField extends MultiField implements Indexable
     {
         return [
             'n (a), t, c, r' => 'Nom (sigle), ville, pays, rôle',
+            'n (a), t, c' => 'Nom (sigle), ville, pays',
             'name' => 'Nom ou sigle uniquement',
         ];
     }
@@ -138,6 +139,7 @@ class CorporationField extends MultiField implements Indexable
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
         switch ($format) {
+            case 'n (a), t, c':
             case 'n (a), t, c, r':
                 $name = $this->formatField('name', $options);
                 $acronym = $this->formatField('acronym', $options);
@@ -159,11 +161,14 @@ class CorporationField extends MultiField implements Indexable
                     $h .= $country;
                 }
 
-                $role = $this->formatField('role', $options);
-                if (!empty($role)) {
-                    $h && $h .= ' / '; // espaces insécables
-                    $h .= $role;
+                if ($format === 'n (a), t, c, r') {
+                    $role = $this->formatField('role', $options);
+                    if (!empty($role)) {
+                        $h && $h .= ' / '; // espaces insécables
+                        $h .= $role;
+                    }
                 }
+
                 return $h;
 
             case 'name':
