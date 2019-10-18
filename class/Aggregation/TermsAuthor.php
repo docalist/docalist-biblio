@@ -36,7 +36,7 @@ class TermsAuthor extends TermsAggregation
         parent::__construct('filter.author', $parameters, $options);
     }
 
-    public function getBucketLabel(stdClass $bucket)
+    public function getBucketLabel(stdClass $bucket): string
     {
         if ($bucket->key === static::MISSING) {
             return $this->getMissingLabel();

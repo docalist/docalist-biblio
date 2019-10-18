@@ -35,7 +35,7 @@ class TermsCorporation extends TermsAggregation
         parent::__construct('filter.corporation', $parameters, $options);
     }
 
-    public function getBucketLabel(stdClass $bucket)
+    public function getBucketLabel(stdClass $bucket): string
     {
         // Le bucket est de la forme 'nom¤prénom' (cf. Reference::map)
         list($name, $acronym, $city, $country) = explode('¤', $bucket->key);
