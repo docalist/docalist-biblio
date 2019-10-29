@@ -143,7 +143,6 @@ class CorporationFieldIndexer extends FieldIndexer
             $mapping
                 ->text($attr['search'])
                 ->setFeatures(Mapping::FULLTEXT)
-                ->setIndexOptions(IndexOptions::INDEX_DOCS)
                 ->setLabel($this->getAttributeLabel('search'))
                 ->setDescription($this->getAttributeDescription('search'));
         }

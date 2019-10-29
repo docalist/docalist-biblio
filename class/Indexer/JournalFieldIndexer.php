@@ -140,7 +140,6 @@ class JournalFieldIndexer extends FieldIndexer
             $mapping
                 ->literal($attr['search'])
                 ->setFeatures(Mapping::FULLTEXT)
-                ->setIndexOptions(IndexOptions::INDEX_DOCS)
                 ->setLabel($this->getAttributeLabel('search'))
                 ->setDescription($this->getAttributeDescription('search'));
         }
