@@ -25,7 +25,9 @@
 	"require": {
 		"composer/installers": "~1.0",
 		"php": ">=7.2",
-        "docalist/docalist": "4.1.0"
+        "docalist/docalist-core": "^3.4.0",
+        "docalist/docalist-search": "^4.2.0",
+        "docalist/docalist-data": "^4.2.0"
 	},
     "autoload" : {
         "psr-4" : {
