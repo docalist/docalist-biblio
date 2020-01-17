@@ -52,3 +52,7 @@ P01;Adresse e-mail de l'éditeur;
 P02;Site de l'éditeur;Site institutionnel de l'éditeur
 P03;Site de réseau social sur l'éditeur;
 P04;Achat/commande/abonnement;
+# ------------------------------------------------------------------------------
+# Divers
+# ------------------------------------------------------------------------------
+internal;Lien privé;Ne sera visible que par les personnes qui ont le droit requis.
