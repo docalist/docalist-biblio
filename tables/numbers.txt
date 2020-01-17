@@ -53,6 +53,7 @@ serial-no;vol;%sème série;nº série;Numéro de la série (par exemple "3ème 
 # ------------------------------------------------------------------------------
 # divers
 # ------------------------------------------------------------------------------
+internal;;"Nº interne %s";"Numéro interne";"Un numéro ou une référence interne."
 disc-no;;disque %s;disque nº;Numéro du disque (nº du CD-ROM, nº du DVD, etc.)
 other-no;;%s (autre nº);autre numéro;Utilisé pour les numéros qui ne font pas l'objet d'une entrée spécifique dans la table.
 # ------------------------------------------------------------------------------
