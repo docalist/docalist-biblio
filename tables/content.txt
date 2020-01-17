@@ -22,7 +22,7 @@ author-abstract;Résumé d'auteur;Résumé réalisé par l'auteur.
 # Général
 # ------------------------------------------------------------------------------
 general;Note;Note d'information générale (à utiliser si aucun type de note ne convient).
-private;Note interne;Note ou remarque "privée", visible uniquement en interne.
+internal;Note interne;Note ou remarque "privée", visible uniquement en interne.
 warning;Avertissement sur le contenu;Remarques sur un contenu litigieux, un document sujet à caution ou ayant fait l'objet d'un polémique, etc.
 comments;Commentaires sur le document;Visibles sur le front-office.
 # ------------------------------------------------------------------------------
