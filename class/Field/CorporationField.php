@@ -128,13 +128,25 @@ class CorporationField extends MultiField implements Indexable
 
         $form->checkbox('searchlink')
         ->setLabel(__('Liens rebonds', 'docalist-biblio'))
-        ->setDescription(__(
-            "Génère un lien de recherche pour chaque organisme
-            (l'attribut <code>filter.corporation</code> doit être actif).",
-            'docalist-biblio')
-        );
+        ->setDescription($this->getSearchLinkDescription());
 
         return $form;
+    }
+
+    /**
+     * Retourne la description à utiliser pour l'option "searchlink".
+     *
+     * Permet à EditorField de modifier la description (cf. getFormatSettingsForm);
+     *
+     * @return string
+     */
+    protected function getSearchLinkDescription(): string
+    {
+        return __(
+            "Génère un lien de recherche pour chaque organisme
+            (l'attribut <code>filter.corporation</code> doit être actif).",
+            'docalist-biblio'
+        );
     }
 
     /**

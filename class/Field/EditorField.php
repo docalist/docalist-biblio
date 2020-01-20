@@ -67,4 +67,16 @@ class EditorField extends CorporationField
     {
         return EditorFieldIndexer::class;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    final protected function getSearchLinkDescription(): string
+    {
+        return __(
+            "Génère un lien de recherche pour chaque éditeur
+            (l'attribut <code>filter.editor</code> doit être actif).",
+            'docalist-biblio'
+        );
+    }
 }
