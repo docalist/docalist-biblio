@@ -115,6 +115,24 @@ class AuthorField extends MultiField implements Indexable
     /**
      * {@inheritDoc}
      */
+    public function getFormatSettingsForm(): Container
+    {
+        $form = parent::getFormatSettingsForm();
+
+        $form->checkbox('searchlink')
+            ->setLabel(__('Liens rebonds', 'docalist-core'))
+            ->setDescription(__(
+                "Génère un lien de recherche pour chaque auteur
+                (l'attribut <code>filter.author</code> doit être actif).",
+                'docalist-core')
+            );
+
+        return $form;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAvailableFormats(): array
     {
         return [
@@ -164,7 +182,24 @@ class AuthorField extends MultiField implements Indexable
                 return parent::getFormattedValue($options);
         }
 
-        return implode(' ', $t); // espace insécable
+        $result = implode(' ', $t); // espace insécable
+
+        if ($this->getOption('searchlink', $options)) {
+            $url = apply_filters('docalist_search_get_search_page_url', '');
+            if (!empty($url)) {
+                $filter = $this->name->getPhpValue() . '¤' . $this->firstname->getPhpValue();
+                $url .= '?filter.author=' . urlencode($filter);
+                $title = __("Rechercher cet auteur", 'docalist-search');
+                $result = sprintf(
+                    '<a class="searchlink" href="%s" title="%s">%s</a>',
+                    esc_attr($url),
+                    esc_attr($title),
+                    $result
+                );
+            }
+        }
+        return $result;
+
     }
 
     /**
