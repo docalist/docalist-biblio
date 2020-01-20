@@ -207,7 +207,7 @@ class CorporationField extends MultiField implements Indexable
                     $this->country->getPhpValue()
                 );
                 $url .= '?filter.corporation=' . urlencode($filter);
-                $title = __("Rechercher cet organisme", 'docalist-search');
+                $title = __("Rechercher cet organisme", 'docalist-biblio');
                 $result = sprintf(
                     '<a class="searchlink" href="%s" title="%s">%s</a>',
                     esc_attr($url),

@@ -189,7 +189,7 @@ class AuthorField extends MultiField implements Indexable
             if (!empty($url)) {
                 $filter = $this->name->getPhpValue() . '¤' . $this->firstname->getPhpValue();
                 $url .= '?filter.author=' . urlencode($filter);
-                $title = __("Rechercher cet auteur", 'docalist-search');
+                $title = __("Rechercher cet auteur", 'docalist-biblio');
                 $result = sprintf(
                     '<a class="searchlink" href="%s" title="%s">%s</a>',
                     esc_attr($url),
