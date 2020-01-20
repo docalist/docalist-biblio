@@ -198,8 +198,8 @@ class AuthorField extends MultiField implements Indexable
                 );
             }
         }
-        return $result;
 
+        return $result;
     }
 
     /**
