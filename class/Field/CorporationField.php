@@ -127,7 +127,7 @@ class CorporationField extends MultiField implements Indexable
         $form = parent::getFormatSettingsForm();
 
         $form->checkbox('searchlink')
-        ->setLabel(__('Liens rebonds', 'docalist-core'))
+        ->setLabel(__('Liens rebonds', 'docalist-biblio'))
         ->setDescription(__(
             "Génère un lien de recherche pour chaque organisme
             (l'attribut <code>filter.corporation</code> doit être actif).",
