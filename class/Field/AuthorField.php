@@ -124,7 +124,7 @@ class AuthorField extends MultiField implements Indexable
             ->setDescription(__(
                 "Génère un lien de recherche pour chaque auteur
                 (l'attribut <code>filter.author</code> doit être actif).",
-                'docalist-core')
+                'docalist-biblio')
             );
 
         return $form;

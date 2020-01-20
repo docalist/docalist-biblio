@@ -131,7 +131,7 @@ class CorporationField extends MultiField implements Indexable
         ->setDescription(__(
             "Génère un lien de recherche pour chaque organisme
             (l'attribut <code>filter.corporation</code> doit être actif).",
-            'docalist-core')
+            'docalist-biblio')
         );
 
         return $form;
