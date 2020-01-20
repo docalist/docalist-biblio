@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Docalist\Biblio\Field;
 
 use Docalist\Type\Text;
+use Docalist\Forms\Container;
 use Docalist\Forms\Element;
 use Docalist\Forms\EntryPicker;
 use Docalist\Data\Indexable;
@@ -61,5 +62,47 @@ class JournalField extends Text implements Indexable
     public function getIndexerClass(): string
     {
         return JournalFieldIndexer::class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFormatSettingsForm(): Container
+    {
+        $form = parent::getFormatSettingsForm();
+
+        $form->checkbox('searchlink')
+            ->setLabel(__('Lien rebond', 'docalist-biblio'))
+            ->setDescription(__(
+                "Génère un lien de recherche pour le périodique
+                (l'attribut <code>filter.journal</code> doit être actif).",
+                'docalist-biblio')
+            );
+
+        return $form;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFormattedValue($options = null)
+    {
+        $result = $this->getPhpValue();
+
+        if ($this->getOption('searchlink', $options)) {
+            $url = apply_filters('docalist_search_get_search_page_url', '');
+            if (!empty($url)) {
+                $url .= '?filter.journal=' . urlencode($result);
+                $title = __("Rechercher ce périodique", 'docalist-biblio');
+                $result = sprintf(
+                    '<a class="searchlink" href="%s" title="%s">%s</a>',
+                    esc_attr($url),
+                    esc_attr($title),
+                    $result
+                );
+            }
+        }
+
+        return $result;
     }
 }
