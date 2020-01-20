@@ -120,6 +120,24 @@ class CorporationField extends MultiField implements Indexable
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getFormatSettingsForm(): Container
+    {
+        $form = parent::getFormatSettingsForm();
+
+        $form->checkbox('searchlink')
+        ->setLabel(__('Liens rebonds', 'docalist-core'))
+        ->setDescription(__(
+            "Génère un lien de recherche pour chaque organisme
+            (l'attribut <code>filter.corporation</code> doit être actif).",
+            'docalist-core')
+        );
+
+        return $form;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getAvailableFormats(): array
@@ -137,48 +155,69 @@ class CorporationField extends MultiField implements Indexable
     public function getFormattedValue($options = null)
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
-
         switch ($format) {
             case 'n (a), t, c':
             case 'n (a), t, c, r':
                 $name = $this->formatField('name', $options);
                 $acronym = $this->formatField('acronym', $options);
                 if (!empty($name) && !empty($acronym)) {
-                    $h = $name . ' (' . $acronym . ')';
+                    $result = $name . ' (' . $acronym . ')';
                 } else {
-                    $h = $name . $acronym; // l'un des deux est vide
+                    $result = $name . $acronym; // l'un des deux est vide
                 }
 
                 $city = $this->formatField('city', $options);
                 if (!empty($city)) {
-                    $h && $h .= ', ';
-                    $h .= $city;
+                    $result && $result .= ', ';
+                    $result .= $city;
                 }
 
                 $country = $this->formatField('country', $options);
                 if (!empty($country)) {
-                    $h && $h .= ', ';
-                    $h .= $country;
+                    $result && $result .= ', ';
+                    $result .= $country;
                 }
 
                 if ($format === 'n (a), t, c, r') {
                     $role = $this->formatField('role', $options);
                     if (!empty($role)) {
-                        $h && $h .= ' / '; // espaces insécables
-                        $h .= $role;
+                        $result && $result .= ' / '; // espaces insécables
+                        $result .= $role;
                     }
                 }
-
-                return $h;
+                break;
 
             case 'name':
                 $result = $this->formatField('name', $options);
                 empty($result) && $result = $this->formatField('acronym', $options);
+                break;
 
-                return $result;
+            default:
+                return parent::getFormattedValue($options);
         }
 
-        return parent::getFormattedValue($options);
+        if ($this->getOption('searchlink', $options)) {
+            $url = apply_filters('docalist_search_get_search_page_url', '');
+            if (!empty($url)) {
+                $filter = sprintf(
+                    '%s¤%s¤%s¤%s',
+                    $this->name->getPhpValue(),
+                    $this->acronym->getPhpValue(),
+                    $this->city->getPhpValue(),
+                    $this->country->getPhpValue()
+                );
+                $url .= '?filter.corporation=' . urlencode($filter);
+                $title = __("Rechercher cet organisme", 'docalist-search');
+                $result = sprintf(
+                    '<a class="searchlink" href="%s" title="%s">%s</a>',
+                    esc_attr($url),
+                    esc_attr($title),
+                    $result
+                );
+            }
+        }
+
+        return $result;
     }
 
     /**
