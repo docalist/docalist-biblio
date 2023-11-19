@@ -85,7 +85,7 @@ class JournalField extends Text implements Indexable
     /**
      * {@inheritDoc}
      */
-    public function getFormattedValue($options = null)
+    public function getFormattedValue($options = null): string
     {
         $result = $this->getPhpValue();
 

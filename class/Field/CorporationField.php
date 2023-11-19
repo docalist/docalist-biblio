@@ -164,7 +164,7 @@ class CorporationField extends MultiField implements Indexable
     /**
      * {@inheritdoc}
      */
-    public function getFormattedValue($options = null)
+    public function getFormattedValue($options = null): string|array
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
         switch ($format) {

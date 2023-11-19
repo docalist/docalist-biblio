@@ -146,7 +146,7 @@ class AuthorField extends MultiField implements Indexable
     /**
      * {@inheritDoc}
      */
-    public function getFormattedValue($options = null)
+    public function getFormattedValue($options = null): string|array
     {
         $format = $this->getOption('format', $options, $this->getDefaultFormat());
 
