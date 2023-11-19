@@ -47,7 +47,7 @@ class JournalField extends Text implements Indexable
      */
     public function getEditorForm($options = null): Element
     {
-        $name = $this->schema->name() ?? '';
+        $name = $this->getSchema()->name() ?? '';
 
         $form = new EntryPicker($name);
         $form->setOptions('index:' . $name);

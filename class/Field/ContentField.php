@@ -83,7 +83,7 @@ class ContentField extends BaseContentField
     }
 
     public function displaySettings() {
-        $name = $this->schema->name();
+        $name = $this->getSchema()->name();
 
         $form = parent::displaySettings();
 
